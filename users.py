@@ -30,6 +30,12 @@ def login():
         
     return redirect(url_for('home.home'))
 
+@users_pages.route("/logout")
+def logout():
+    logout_user()
+    flash("You were just logged out in!", 'success')
+    return redirect(url_for('home.home'))
+
 @users_pages.route("/register", methods=['GET','POST'])
 def register():
     if request.method == 'POST':
