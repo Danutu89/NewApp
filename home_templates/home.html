@@ -1,0 +1,57 @@
+{% extends "index.html" %}
+{% block content %}
+<div class="modal" id="register" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Register</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form class="form-signin" action="/register" role="form" method="POST">
+                    {{register.csrf_token}}
+                    {{register.username}}
+                    <br>
+                    {{register.email}}
+                    <br>
+                    {{register.password}}
+                    <br>
+                    {{register.confirm_password}}
+                    <br>
+                    {{register.submit}}
+                </form>
+            </div>
+            <div class="modal-footer">
+                    Already have an account? <a style="color:#007bff;cursor: pointer;" data-toggle="modal" data-dismiss="modal" data-target="#login"> Login here</a>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal" id="login" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Login</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form class="form-signin" action="/login" role="form" method="POST">
+                        {{register.csrf_token}}
+                        {{login.username}}
+                        <br>
+                        {{login.password}}
+                        <br>
+                        {{login.submit}}
+                    </form>
+                </div>
+                <div class="modal-footer">
+                        You don t have an account? <a style="color:#007bff;cursor: pointer;" data-toggle="modal" data-dismiss="modal" data-target="#register"> Register here</a>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
