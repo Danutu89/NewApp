@@ -10,7 +10,8 @@ users_pages = Blueprint(
     template_folder='user_templates'
 )
 
-from app import db, UserModel, bcrypt, Gits
+from app import db
+from models import UserModel,Gits,bcrypt
 
 @users_pages.route("/login", methods=['GET','POST'])
 def login():

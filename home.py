@@ -1,9 +1,7 @@
-from flask import Blueprint, render_template, abort, request, flash, jsonify
+from flask import Blueprint, render_template, abort, request, flash
 from jinja2 import TemplateNotFound
 from forms import RegisterForm, LoginForm
 from flask_login import login_required, current_user
-import requests
-import json
 
 home_pages = Blueprint(
     'home',__name__,

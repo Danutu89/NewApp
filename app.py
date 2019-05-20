@@ -2,19 +2,15 @@ from flask import Flask, flash, redirect, render_template, request, url_for
 from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
 from flask_login import LoginManager
-from users import users_pages
-from home import home_pages
+
 from sqlalchemy import create_engine
 
 app = Flask(__name__)
 
-app.register_blueprint(users_pages)
-app.register_blueprint(home_pages)
 
 app.secret_key = '\xce,CH\xc0\xd2K9\xe3\x87\xa0Z\x19\x8a\xcd\xf9\x91\x94\xddN\xff\xaf;r\xef'
 app.config['SQLALCHEMY_DATABASE_URI'] = "postgresql:///newapp"
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = "True"
-
 
 db = SQLAlchemy(app)
 db_engine = create_engine('postgresql:///newapp')
@@ -30,8 +26,14 @@ from models import UserModel, Gits
 def load_user(user_id):
     return db.session.query(UserModel).filter(UserModel.id == int(user_id)).first()
 
+from users import users_pages
+from home import home_pages
+
+app.register_blueprint(users_pages)
+app.register_blueprint(home_pages)
+
 if __name__=="__main__":
-    app.run(debug=True)
+    app.run(debug=False)
 
 
 
