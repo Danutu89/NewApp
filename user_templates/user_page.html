@@ -1,0 +1,113 @@
+{% extends "index.html" %}
+{% block content %}
+<hr>
+<div class="container target">
+    <div class="row">
+        <div class="col-sm-10">
+            <h1 style="margin-top:5%;">{{user.name}}</h1>
+            {% if current_user.id == user.id %}
+            <button type="button" class="btn btn-success" data-toggle="modal" data-dismiss="modal"
+                data-target="#modify_profile">Edit Profile</button>
+            {% endif %}
+            <!--<button type="button" class="btn btn-success">Book me!</button> <button type="button"
+                class="btn btn-info">Send me a message</button>-->
+            <br>
+        </div>
+        <div class="col-sm-2"><a class="pull-right"><img title="profile image" class="rounded-circle img-responsive"
+                    src="{{user.avatar}}" height="140px"></a>
+
+        </div>
+    </div>
+    <br>
+    <div class="row">
+        <div class="col-sm-3">
+            <!--left col-->
+            <ul class="list-group">
+                <li class="list-group-item text-muted" contenteditable="false">Profile</li>
+                <li class="list-group-item text-left"><strong class="">Joined:</strong>
+                    {{user.join_date}}</li>
+                <li class="list-group-item text-left"><strong class="">Email:</strong> {{user.email}}</li>
+                <li class="list-group-item text-left"><strong class="">Real
+                        name:</strong> {{user.real_name}}</li>
+                <li class="list-group-item text-left"><strong class="">Role: </strong>
+                    {{user.roleinfo.name}}
+
+                </li>
+            </ul>
+            <br>
+            <ul class="list-group">
+                <li class="list-group-item text-muted">Activity <i class="fa fa-dashboard fa-1x"></i>
+                </li>
+                <li class="list-group-item text-left"><strong class="">Likes:</strong> 13
+                </li>
+                <li class="list-group-item text-left"><strong class="">Posts:</strong> 37
+                </li>
+            </ul>
+            <br>
+            <div class="card">
+                <div class="card-header">
+                    Social Media
+                </div>
+                <div class="card-body">
+                    <a href="https://github.com/{{user.github_name}}"><span class="fab fa-github fa-2x"></span></a>
+                </div>
+            </div>
+        </div>
+        <!--/col-3-->
+        <div class="col-sm-9" contenteditable="false">
+
+            <div class="card">
+                <div class="card-header">
+                    {{user.name}}'s Bio
+                </div>
+                <div class="card-body">
+                    <p class="card-text">{{user.bio}}</p>
+                </div>
+            </div>
+            <hr>
+            {% for gits in repos %}
+            <div class="card-columns">
+                <div class="card" style="width: 18rem;">
+                    <div class="card-body">
+                        <h5 class="card-title">{{gits.name}}</h5>
+                        <h6 class="card-subtitle mb-2 text-muted"><span class="badge badge-success">{{gits.lang}}</span>
+                        </h6>
+                        <p class="card-text">{{gits.desc}}</p>
+                        <a href="{{gits.link}}" class="card-link"><i class="fab fa-github"></i> GitHub</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+       
+        <div class="modal" id="modify_profile" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Edit Profile</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form class="form-signin" action="{{url_for('users.modify_profile',idm=current_user.id)}}" role="form" method="POST">
+                            {{modify_profile.csrf_token}}
+                            {{modify_profile.username}}
+                            <br>
+                            {{modify_profile.email}}
+                            <br>
+                            {{modify_profile.realname}}
+                            <br>
+                            {{modify_profile.bio}}
+                            <br>
+                            {{modify_profile.avatar}}
+                            <br>
+                            {{modify_profile.genre}}
+                            <br>
+                            {{modify_profile.submit}}
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endblock %}
