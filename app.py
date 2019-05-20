@@ -24,11 +24,11 @@ login_manager.init_app(app)
 
 login_manager.login_view = "home.home"
 
-from models import UserModel
+from models import UserModel, Gits
 
 @login_manager.user_loader
 def load_user(user_id):
-    return db.session.query(UserModel).filter(UserModel.id == int(user_id)).first
+    return db.session.query(UserModel).filter(UserModel.id == int(user_id)).first()
 
 if __name__=="__main__":
     app.run(debug=True)

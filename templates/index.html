@@ -39,13 +39,21 @@
           <a class="nav-link" href="#">About</a>
         </li>
       </ul>
-      {% if current_user.is_authenticated == false %}
-      <a style="color:rgba(255,255,255,.5);cursor:pointer;" data-toggle="modal" data-target="#login"><span
-          class="fas fa-sign-in-alt"></span> Login</a>
-      {% endif %}
-      {% if current_user.is_authenticated == true %}
-      <a style="color:rgba(255,255,255,.5);cursor:pointer;"><span
-        class="fas fa-sign-in-alt"></span>{{current_user.name}}</a>
+      <ul class="navbar-nav">
+        {% if current_user.is_authenticated == false %}
+        <li class="nav-item">
+          <a class="nav-link" style="cursor:pointer" data-toggle="modal" data-target="#login"><span class="fas fa-sign-in-alt"></span>
+            Login</a>
+        </li>
+        {% else %}
+        <li class="nav-item">
+          <a class="nav-link" href="{{url_for('users.user',name=current_user.name,id=current_user.id)}}"><span class="fas fa-user"></span> {{current_user.name}}
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/logout"> <span class="fas fa-sign-out-alt"></span> Logout</a>
+        </li>
+      </ul>
       {% endif %}
     </div>
   </nav>
@@ -56,12 +64,12 @@
   <div class="container" style="margin-top: 10px;">
 
     <script>
-      $(document).ready(function() {
-    // show the alert
-    setTimeout(function() {
-        $(".alert").alert('close');
-    }, 2000);
-});
+      $(document).ready(function () {
+        // show the alert
+        setTimeout(function () {
+          $(".alert").alert('close');
+        }, 2000);
+      });
     </script>
 
     {% for success in get_flashed_messages(category_filter=["success"]) %}
