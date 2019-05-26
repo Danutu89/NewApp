@@ -51,22 +51,26 @@ def register():
                 if check is not None:
                     flash('Email taken', 'error')
                 else:
-                    new_user = UserModel(
-                        None,
-                        None,
-                        register.username.data,
-                        register.realname.data,
-                        register.github.data,
-                        register.email.data,
-                        register.password.data,
-                        None,
-                        None,
-                        None,
-                        None
-                    )
-                    db.session.add(new_user)
-                    db.session.commit()
-                    flash('Registration completed successfully, now you can login','success')
+                    check = db.session.query(UserModel).filter_by(github_name=register.github.data).first()
+                    if check is not None:
+                        flash('GitHub account taken', 'error')
+                    else:
+                        new_user = UserModel(
+                            None,
+                            None,
+                            register.username.data,
+                            register.realname.data,
+                            register.github.data,
+                            register.email.data,
+                            register.password.data,
+                            None,
+                            None,
+                            None,
+                            None
+                        )
+                        db.session.add(new_user)
+                        db.session.commit()
+                        flash('Registration completed successfully, now you can login','success')
     return redirect(url_for('home.home'))
 
 @users_pages.route("/user/<string:name>/id=<int:id>")
@@ -99,8 +103,7 @@ def modify_profile(idm):
 
 @users_pages.route("/git")
 def get():
-        dany = 'Danutu89'
-        response = requests.get(('https://api.github.com/users/{}/repos').format(dany))
-        login = response.json()  # obtain the payload as JSON object
-        print(dany)
-        return jsonify(login)
+    dany = 'Danutu89'
+    response = requests.get(('https://api.github.com/users/{}/repos').format(dany))
+    login = response.json()  # obtain the payload as JSON object
+    return jsonify(login)

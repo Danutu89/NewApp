@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import BooleanField, StringField, PasswordField, SelectField, SubmitField, TextField
+from wtforms import BooleanField, StringField, PasswordField, SelectField, SubmitField, TextField, TextAreaField
 from wtforms.validators import Length, Email, EqualTo 
 
 class RegisterForm(FlaskForm):
@@ -158,8 +158,59 @@ class ModifyProfileForm(FlaskForm):
         }
     )
     submit = SubmitField(
-        'ModifyProfile',
+        'Modify Profile',
         render_kw = {
             "class":"btn btn-primary",
+        }
+    )
+
+class SearchForm(FlaskForm):
+    search = TextField(
+        'Arguments_Search',
+        validators = [
+            Length(max=20)
+        ],
+        render_kw = {
+            "class":"form-control form-control-sm",
+            "placeholder":"Search Posts"
+        }
+    )
+    submit = SubmitField(
+        'Search',
+        render_kw = {
+            "class":"btn btn-search my-2 my-sm-0",
+        }
+    )
+
+class NewQuestionForm(FlaskForm):
+    title = TextField(
+        'NewQuestionForm_Title',
+        render_kw = {
+            "class":"form-control form-control-sm",
+            "placeholder":"Title",
+            "style":"margin-bottom: 5px;"
+        }
+    )
+    text = TextAreaField(
+        'NewQuestionForm_Text',
+        render_kw = {
+            "class":"form-control form-control-sm",
+            "placeholder":"Text",
+            "rows":5,
+            "style":"margin-bottom: 5px;"
+        }
+    )
+    tag = TextField(
+        'NewQuestionForm_Tags',
+        render_kw = {
+            "class":"form-control form-control-sm",
+            "placeholder":"Tags"
+        }
+    )
+    submit = SubmitField(
+        'Ask',
+        render_kw = {
+            "class":"btn btn-primary btn-sm",
+            "style":"float:right;"
         }
     )

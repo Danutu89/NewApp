@@ -6,7 +6,7 @@
         <div class="col-sm-10">
             <h1 style="margin-top:5%;">{{user.name}}</h1>
             {% if current_user.id == user.id %}
-            <button type="button" class="btn btn-success" data-toggle="modal" data-dismiss="modal"
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-dismiss="modal"
                 data-target="#modify_profile">Edit Profile</button>
             {% endif %}
             <!--<button type="button" class="btn btn-success">Book me!</button> <button type="button"
@@ -31,6 +31,8 @@
                         name:</strong> {{user.real_name}}</li>
                 <li class="list-group-item text-left"><strong class="">Role: </strong>
                     {{user.roleinfo.name}}
+                <li class="list-group-item text-left"><strong class="">Genre: </strong>
+                    {{user.genre}}
 
                 </li>
             </ul>
@@ -92,21 +94,23 @@
                     <div class="modal-body">
                         <form class="form-signin" action="{{url_for('users.modify_profile',idm=current_user.id)}}" role="form" method="POST">
                             {{modify_profile.csrf_token}}
-                            {{modify_profile.username}}
+                            {{modify_profile.username(value=user.name)}}
                             <br>
-                            {{modify_profile.email}}
+                            {{modify_profile.email(value=user.email)}}
                             <br>
-                            {{modify_profile.realname}}
+                            {{modify_profile.realname(value=user.real_name)}}
                             <br>
-                            {{modify_profile.bio}}
+                            {{modify_profile.bio(value=user.bio)}}
                             <br>
-                            {{modify_profile.avatar}}
+                            {{modify_profile.avatar(value=user.avatar)}}
                             <br>
-                            {{modify_profile.genre}}
+                            {{modify_profile.genre(value=user.genre)}}
                             <br>
-                            {{modify_profile.submit}}
-                        </form>
                     </div>
+                    <div class="modal-footer">
+                        {{modify_profile.submit}}
+                    </div>
+                </form>
                 </div>
             </div>
         </div>
