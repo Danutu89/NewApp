@@ -28,13 +28,13 @@
             <div class="card-body">
                 <div class="row">
                     <div class="col-2" style="min-width:110px;">
-                            <button type="button" class="btn btn-outline-primary btn-sm" style="width: 100%;" disabled>{{post.reply}} Answers</button>
-                            <button type="button" class="btn btn-outline-primary btn-sm" style="width: 100%;margin-top:2px;margin-bottom:2px;" disabled>9 Likes</button>
+                            <button type="button" class="btn btn-outline-primary btn-sm" style="width: 100%;margin-bottom:2px;" disabled>{{post.reply}} Answers</button>
+                            
                             <button type="button" class="btn btn-outline-primary btn-sm" style="width: 100%;" disabled>{{post.views}} Views</button>
                     </div>
                     <div class="col">
-                        <h5 class="card-title" ><a href="{{url_for('home.post', id=post.id)}}">{{post.title}}</a></h5>
-                        <p class="card-text" style="margin-bottom: 10px;">{{post.text[:40]}}...</p>
+                        <h5 class="card-title" ><a href="{{url_for('home.post', id=post.id)}}" style="color: #212529;">{{post.title}}</a></h5>
+                        
                         {% for tag in tags %}
                             {% if tag.post_id == post.id %}
                                 <a href="#" class="badge badge-success" style="font-size:10px;">{{tag.tag}}</a>
@@ -42,7 +42,7 @@
                         {% endfor %}
                         <div class="author" style="float:right;">
                                 <img title="profile image" class="rounded-circle img-responsive" src="{{post.user_in.avatar}}" height="30px">
-                                {{post.user_in.name}}
+                                <a style="color: #333" href="{{url_for('users.user', name=post.user_in.name, id=post.user_in.id )}}">{{post.user_in.name}}</a>
                         </div>
                     </div>
                 </div>
@@ -63,66 +63,4 @@
         </div>
     </div>
 </div>
-{% if current_user.is_authenticated == false %}
-<div class="modal" id="register" tabindex="-1" role="dialog">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Register</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form class="form-signin" action="/register" role="form" method="POST">
-                    {{register.csrf_token}}
-                    {{register.username}}
-                    <br>
-                    {{register.realname}}
-                    <br>
-                    {{register.github}}
-                    <br>
-                    {{register.email}}
-                    <br>
-                    {{register.password}}
-                    <br>
-                    {{register.confirm_password}}
-                    <br>
-                    {{register.submit}}
-                </form>
-            </div>
-            <div class="modal-footer">
-                Already have an account? <a style="color:#E95420;cursor: pointer;margin-left: 5px;" data-toggle="modal"
-                    data-dismiss="modal" data-target="#login"> Login here</a>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="modal" id="login" tabindex="-1" role="dialog">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Login</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form class="form-signin" action="/login" role="form" method="POST">
-                    {{register.csrf_token}}
-                    {{login.username}}
-                    <br>
-                    {{login.password}}
-                    <br>
-                    {{login.submit}}
-                </form>
-            </div>
-            <div class="modal-footer">
-                You don t have an account? <a style="color:#E95420;cursor: pointer;margin-left: 5px;"
-                    data-toggle="modal" data-dismiss="modal" data-target="#register"> Register here</a>
-            </div>
-        </div>
-    </div>
-</div>
-{% endif %}
 {% endblock %}

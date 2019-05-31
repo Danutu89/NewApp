@@ -1,0 +1,65 @@
+{% extends "index.html" %}
+{% block content %}
+
+<div class="row">
+    <div class="col" style="min-width:310px;">
+        <h4 style="margin-top: 1%">{{posts[0].title}}</h4>
+        <hr>
+
+        {{posts[0].text | safe}}
+
+        <br>
+        <div class="info" style="display: flex">
+            <div class="tags" style="float: left;
+            text-align: left;">
+                {% if tags %}
+                    Tags:
+                    {% for tag in tags %}
+                        <a href="#" class="badge badge-success" style="font-size:13px;">{{tag.tag}}</a>
+                    {% endfor %}
+                {% endif %}
+            </div>
+            <div class="author" style="
+            margin-right: 2%;
+            margin-top: 5%;
+            margin-inline-start: auto;
+            border-radius: 5px;
+            padding: 1%;
+            background-color: rgb(239, 240, 241);">
+                <img title="profile image" class="rounded-circle img-responsive" src="{{posts[0].user_in.avatar}}"
+                    height="30px">
+                <a style="color: #333"
+                    href="{{url_for('users.user', name=posts[0].user_in.name, id=posts[0].user_in.id )}}">{{posts[0].user_in.name}}</a>
+            </div>
+        </div>
+        <hr>
+    </div>
+    <div class="col-md-3" style="min-width:310px;width:100%;">
+        <h8 style="font-size: 12px;font-weight: 600;">Viewed: </h8>
+        <h8 style="font-size: 12px;color: #6c757d;font-weight: 400;">{{posts[0].views}} times</h8>
+        <br>
+        <h8 style="font-size: 12px;font-weight: 600;">Asked on: </h8>
+        <h8 style="font-size: 12px;color: #6c757d;font-weight: 400;">{{posts[0].posted_on}}</h8>
+        <hr style="margin-top: 1.5%;">
+        <div class="card">
+            <div class="card-header">
+                Featured
+            </div>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">Cras justo odio</li>
+                <li class="list-group-item">Dapibus ac facilisis in</li>
+                <li class="list-group-item">Vestibulum at eros</li>
+            </ul>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        titlepage();
+    });
+
+    function titlepage() {
+        document.title = '{{posts[0].title}}'
+    }
+</script>
+{% endblock %}

@@ -105,11 +105,11 @@ class ReplyModel(Base):
     post_id = db.Column(db.Integer, primary_key = False)
     user = db.Column(db.Integer, ForeignKey('users.id'))
 
-    def __init__(self,id,text,post_id,author):
+    def __init__(self,id,text,post_id,user):
         self.id = id
         self.text = text
         self.post_id = post_id
-        self.author = author
+        self.user = user
 
     def __repr__(self):
         return ('<id {}').format(self.id)
@@ -122,10 +122,10 @@ class LikeModel(Base):
     post_id = db.Column(db.Integer, primary_key = False)
     user = db.Column(db.Integer, ForeignKey('users.id'))
 
-    def __init__(self,id,post_id,author):
+    def __init__(self,id,post_id,user):
         self.id = id
         self.post_id = post_id
-        self.author = author
+        self.user = user
 
     def __repr__(self):
         return ('<id {}').format(self.id)

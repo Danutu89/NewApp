@@ -188,7 +188,8 @@ class NewQuestionForm(FlaskForm):
         render_kw = {
             "class":"form-control form-control-sm",
             "placeholder":"Title",
-            "style":"margin-bottom: 5px;"
+            "style":"margin-bottom: 5px;",
+            "required":"true"
         }
     )
     text = TextAreaField(
@@ -197,18 +198,41 @@ class NewQuestionForm(FlaskForm):
             "class":"form-control form-control-sm",
             "placeholder":"Text",
             "rows":5,
-            "style":"margin-bottom: 5px;"
+            "style":"margin-bottom: 5px;",
+            "id":"summernote",
+            "required":"true"
         }
     )
     tag = TextField(
         'NewQuestionForm_Tags',
         render_kw = {
             "class":"form-control form-control-sm",
-            "placeholder":"Tags"
+            "placeholder":"Tags",
+            "style":"margin-top: 5px;"
         }
     )
     submit = SubmitField(
         'Ask',
+        render_kw = {
+            "class":"btn btn-primary btn-sm",
+            "style":"float:right;"
+        }
+    )
+
+class ReplyForm(FlaskForm):
+    reply = TextAreaField(
+        'ReplyForm_Text',
+        render_kw = {
+            "class":"form-control form-control-sm",
+            "placeholder":"Text",
+            "rows":5,
+            "style":"margin-bottom: 5px;",
+            "id":"summernote",
+            "required":"true"
+        }
+    )
+    submit = SubmitField(
+        'Reply',
         render_kw = {
             "class":"btn btn-primary btn-sm",
             "style":"float:right;"

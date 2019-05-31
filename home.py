@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, abort, request, flash
 from jinja2 import TemplateNotFound
-from forms import RegisterForm, LoginForm, SearchForm, NewQuestionForm
+from forms import RegisterForm, LoginForm, SearchForm, NewQuestionForm, ReplyForm
 from flask_login import login_required, current_user
 
 
@@ -54,7 +54,6 @@ def home():
     posts = db.session.query(PostModel).order_by(PostModel.id.desc()).all()
     tags = db.session.query(TagModel).all()
     replyes = db.session.query(ReplyModel).all()
-    flash('gg')
 
     if current_user.is_authenticated:
         return render_template('home.html',search=search,posts=posts,tags=tags,replyes=replyes,new_question=new_question)
@@ -63,6 +62,16 @@ def home():
 
 @home_pages.route('/post/id=<int:id>')
 def post(id):
-    return 'f'
+    search = SearchForm(request.form)
+    reply = ReplyForm(request.form)
+    posts = db.session.query(PostModel).filter_by(id=id)
+    replyes = db.session.query(ReplyModel).filter_by(post_id=id)
+    tags = db.session.query(TagModel).filter_by(post_id=id)
+    if current_user.is_authenticated:
+        return render_template('post.html', reply=reply,posts=posts,replyes=replyes,tags=tags,search=search)
+    else:
+        login = LoginForm(request.form)
+        register = RegisterForm(request.form)
+        return render_template('post.html', reply=reply,posts=posts,replyes=replyes,search=search,login=login,tags=tags,register=register)
 
         
