@@ -1,6 +1,25 @@
 {% extends "index.html" %}
 {% block content %}
 
+
+<style>
+        .ql-syntax {
+            background-color: #23241f;
+            color: #f8f8f2;
+            overflow: visible;
+        }   
+        pre {
+            white-space: pre-wrap;
+            margin-bottom: 5px;
+            margin-top: 5px;
+            padding: 5px 10px;
+        }
+        pre {
+            background-color: #f0f0f0;
+            border-radius: 3px;
+        }
+    </style>
+
 <div class="row">
     <div class="col" style="min-width:310px;">
         <h4 style="margin-top: 1%">{{posts[0].title}}</h4>
@@ -20,7 +39,7 @@
                 {% endif %}
             </div>
             <div class="author" style="
-            margin-right: 2%;
+            
             margin-top: 5%;
             margin-inline-start: auto;
             border-radius: 5px;

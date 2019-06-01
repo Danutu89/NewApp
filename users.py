@@ -11,7 +11,7 @@ users_pages = Blueprint(
 )
 
 from app import db
-from models import UserModel,Gits,bcrypt
+from models import UserModel,Gits,bcrypt,PostModel,ReplyModel
 
 @users_pages.route("/login", methods=['GET','POST'])
 def login():
@@ -77,12 +77,21 @@ def register():
 def user(name,id):
     modify_profile = ModifyProfileForm(request.form)
     user = db.session.query(UserModel).filter_by(id=id).first()
+    post_count = db.session.query(PostModel).filter_by(user=id).count()
+    reply_count = db.session.query(ReplyModel).filter_by(user=id).count()
     response = requests.get(('https://api.github.com/users/{}/repos').format(user.github_name))
     login = response.json()  # obtain the payload as JSON object
     repos = []
+    lang = {}
     for gits in login:
-        repos.append(Gits(gits['name'],gits['svn_url'],gits['language'],gits['description']))
-    return render_template('user_page.html',user=user,repos=repos,modify_profile=modify_profile)
+        repos.append(Gits(gits['name'],gits['svn_url'],gits['description']))
+        resp = requests.get(('https://api.github.com/repos/{}/{}/languages').format(user.github_name,gits['name']))
+        respond = resp.json()
+        lan = []
+        for key in respond.keys():
+            lan.append(key)
+        lang[gits['name']]=lan
+    return render_template('user_page.html',user=user,repos=repos,modify_profile=modify_profile,lang=lang,post_count=post_count,reply_count=reply_count)
 
 
 @users_pages.route("/user/modify_profile/id=<int:idm>", methods=['GET','POST'])

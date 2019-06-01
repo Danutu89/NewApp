@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import BooleanField, StringField, PasswordField, SelectField, SubmitField, TextField, TextAreaField
+from wtforms import BooleanField, StringField, PasswordField, SelectField, SubmitField, TextField, TextAreaField, HiddenField
 from wtforms.validators import Length, Email, EqualTo 
 
 class RegisterForm(FlaskForm):
@@ -192,16 +192,8 @@ class NewQuestionForm(FlaskForm):
             "required":"true"
         }
     )
-    text = TextAreaField(
-        'NewQuestionForm_Text',
-        render_kw = {
-            "class":"form-control form-control-sm",
-            "placeholder":"Text",
-            "rows":5,
-            "style":"margin-bottom: 5px;",
-            "id":"summernote",
-            "required":"true"
-        }
+    text = HiddenField(
+        'NewQuestionForm_Text'
     )
     tag = TextField(
         'NewQuestionForm_Tags',
@@ -227,7 +219,7 @@ class ReplyForm(FlaskForm):
             "placeholder":"Text",
             "rows":5,
             "style":"margin-bottom: 5px;",
-            "id":"summernote",
+            "id":"editor",
             "required":"true"
         }
     )

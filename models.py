@@ -145,10 +145,9 @@ class TagModel(Base):
 
 class Gits:
 
-    def __init__(self,name,link,lang,desc):
+    def __init__(self,name,link,desc):
         self.name = name
         self.link = link
-        self.lang = lang
         self.desc = desc
 
 Base.metadata.create_all(db_engine, Base.metadata.tables.values(),checkfirst=True)

@@ -1,6 +1,6 @@
 {% extends "index.html" %}
 {% block content %}
-<hr>
+<br>
 <div class="container target">
     <div class="row">
         <div class="col-sm-10">
@@ -40,9 +40,9 @@
             <ul class="list-group">
                 <li class="list-group-item text-muted">Activity <i class="fa fa-dashboard fa-1x"></i>
                 </li>
-                <li class="list-group-item text-left"><strong class="">Likes:</strong> 13
+                <li class="list-group-item text-left"><strong class="">Replies:</strong> {{reply_count}}
                 </li>
-                <li class="list-group-item text-left"><strong class="">Posts:</strong> 37
+                <li class="list-group-item text-left"><strong class="">Posts:</strong> {{post_count}}
                 </li>
             </ul>
             <br>
@@ -72,8 +72,12 @@
                 <div class="card" style="width: 18rem;">
                     <div class="card-body">
                         <h5 class="card-title">{{gits.name}}</h5>
-                        <h6 class="card-subtitle mb-2 text-muted"><span class="badge badge-success">{{gits.lang}}</span>
-                        </h6>
+                        <div class="languages" style="display: flex">
+                            {% for item in lang[gits.name] %}
+                            <h6 class="card-subtitle mb-2 text-muted" style="margin-right: 1%;"><span class="badge badge-success">{{item}}</span>
+                            </h6>
+                            {% endfor %}
+                        </div>
                         <p class="card-text">{{gits.desc}}</p>
                         <a href="{{gits.link}}" class="card-link"><i class="fab fa-github"></i> GitHub</a>
                     </div>
@@ -81,7 +85,7 @@
             </div>
             {% endfor %}
         </div>
-       
+
         <div class="modal" id="modify_profile" tabindex="-1" role="dialog">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
@@ -92,7 +96,8 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <form class="form-signin" action="{{url_for('users.modify_profile',idm=current_user.id)}}" role="form" method="POST">
+                        <form class="form-signin" action="{{url_for('users.modify_profile',idm=current_user.id)}}"
+                            role="form" method="POST">
                             {{modify_profile.csrf_token}}
                             {{modify_profile.username(value=user.name)}}
                             <br>
@@ -110,7 +115,7 @@
                     <div class="modal-footer">
                         {{modify_profile.submit}}
                     </div>
-                </form>
+                    </form>
                 </div>
             </div>
         </div>
