@@ -77,7 +77,7 @@ def register():
 def user(name,id):
     search = SearchForm(request.form)
     register = RegisterForm(request.form)
-    login = LoginForm(request.form)
+    loginf = LoginForm(request.form)
     modify_profile = ModifyProfileForm(request.form)
     user = db.session.query(UserModel).filter_by(id=id).first()
     post_count = db.session.query(PostModel).filter_by(user=id).count()
@@ -94,7 +94,7 @@ def user(name,id):
         for key in respond.keys():
             lan.append(key)
         lang[gits['name']]=lan
-    return render_template('user_page.html',user=user,repos=repos,modify_profile=modify_profile,lang=lang,post_count=post_count,reply_count=reply_count,search=search,register=register,login=login)
+    return render_template('user_page.html',user=user,repos=repos,modify_profile=modify_profile,lang=lang,post_count=post_count,reply_count=reply_count,search=search,register=register,login=loginf)
 
 
 @users_pages.route("/user/modify_profile/id=<int:idm>", methods=['GET','POST'])
