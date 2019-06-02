@@ -43,13 +43,14 @@
       </ul>
       <ul class="navbar-nav mr-auto col-md-5 nav-fill" style="padding-right: 0">
       <li class="nav-item">
+        <form action="{{url_for('home.home')}}" method="SEARCH">
           <div class="input-group mb-0">
-              <input type="text" class="form-control form-control-sm" placeholder="Search" aria-label="Search" aria-describedby="button-addon2">
+              {{search.search}}
               <div class="input-group-append">
-                <button class="btn btn-outline-light btn-sm" type="button" id="button-addon2"><i class="fa fa-search"></i></button>
+                {{search.submit}}
               </div>
             </div>
-          
+          </form>
         </li>
       </ul>
       <ul class="navbar-nav">

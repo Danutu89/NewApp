@@ -12,14 +12,13 @@ home_pages = Blueprint(
 from app import db
 from models import PostModel, TagModel, ReplyModel, LikeModel
 
-
 @home_pages.route("/", methods=['GET','POST'])
 def home():
     login = LoginForm(request.form)
     register = RegisterForm(request.form)
     search = SearchForm(request.form)
     new_question = NewQuestionForm(request.form)
-
+    
     if request.method == 'POST':
         if new_question.validate_on_submit():
             
@@ -51,7 +50,13 @@ def home():
 
             flash('New question posted successfully', 'success')
 
+    
+
+   # if request.args.get('search'):
+   #     posts = db.session.query(PostModel).whoosh_search(request.args.get('search')).all()
+   # else:
     posts = db.session.query(PostModel).order_by(PostModel.id.desc()).all()
+
     tags = db.session.query(TagModel).all()
     replyes = db.session.query(ReplyModel).all()
 

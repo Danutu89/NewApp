@@ -4,8 +4,10 @@ from sqlalchemy import ForeignKey
 from sqlalchemy.orm import relationship
 from app import bcrypt
 from sqlalchemy.ext.declarative import declarative_base
+import flask_whooshalchemy as wh
 
 Base = declarative_base()
+
 
 class UserModel(Base):
 
@@ -74,6 +76,8 @@ class RoleModel(Base):
 class PostModel(Base):
 
     __tablename__ = 'posts'
+    __searchable__ = ['title', 'id']
+    __analyzer__ = wh.StemmingAnalyzer()
 
     id = db.Column(db.Integer, db.Sequence('posts_id_seq'), primary_key = True)
     title = db.Column(db.String(100), primary_key = False)
@@ -133,7 +137,7 @@ class LikeModel(Base):
 class TagModel(Base):
 
     __tablename__ = 'post_tags'
-
+ 
     id = db.Column(db.Integer, db.Sequence('post_tags_id_seq'), primary_key = True)
     tag = db.Column(db.String(50), primary_key = False)
     post_id = db.Column(db.Integer, primary_key = False)
@@ -151,3 +155,4 @@ class Gits:
         self.desc = desc
 
 Base.metadata.create_all(db_engine, Base.metadata.tables.values(),checkfirst=True)
+

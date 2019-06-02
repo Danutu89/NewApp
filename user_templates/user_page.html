@@ -5,9 +5,11 @@
     <div class="row">
         <div class="col-sm-10">
             <h1 style="margin-top:5%;">{{user.name}}</h1>
-            {% if current_user.id == user.id %}
-            <button type="button" class="btn btn-primary" data-toggle="modal" data-dismiss="modal"
-                data-target="#modify_profile">Edit Profile</button>
+            {% if current_user.is_authenticated %}
+                {% if current_user.id == user.id %}
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-dismiss="modal"
+                    data-target="#modify_profile">Edit Profile</button>
+                {% endif %}
             {% endif %}
             <!--<button type="button" class="btn btn-success">Book me!</button> <button type="button"
                 class="btn btn-info">Send me a message</button>-->
@@ -96,7 +98,7 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <form class="form-signin" action="{{url_for('users.modify_profile',idm=current_user.id)}}"
+                        <form class="form-signin" action="{{url_for('users.modify_profile',idm=user.id)}}"
                             role="form" method="POST">
                             {{modify_profile.csrf_token}}
                             {{modify_profile.username(value=user.name)}}
