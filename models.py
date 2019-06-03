@@ -77,7 +77,7 @@ class PostModel(Base):
 
     __tablename__ = 'posts'
     __searchable__ = ['title', 'id']
-    __analyzer__ = wh.StemmingAnalyzer()
+    #__analyzer__ = wh.StemmingAnalyzer()
 
     id = db.Column(db.Integer, db.Sequence('posts_id_seq'), primary_key = True)
     title = db.Column(db.String(100), primary_key = False)
