@@ -44,7 +44,7 @@
       <ul class="navbar-nav mr-auto col-md-5 nav-fill" style="padding-right: 0">
       <li class="nav-item">
         <form action="{{url_for('home.home')}}" method="SEARCH">
-          <div class="input-group mb-0">
+          <div class="input-group mb-0" hidden>
               {{search.search}}
               <div class="input-group-append">
                 {{search.submit}}
