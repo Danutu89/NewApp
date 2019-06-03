@@ -56,22 +56,26 @@ def register():
                     if check is not None:
                         flash('GitHub account taken', 'error')
                     else:
-                        new_user = UserModel(
-                            None,
-                            None,
-                            register.username.data,
-                            register.realname.data,
-                            register.github.data,
-                            register.email.data,
-                            register.password.data,
-                            None,
-                            None,
-                            None,
-                            None
-                        )
-                        db.session.add(new_user)
-                        db.session.commit()
-                        flash('Registration completed successfully, now you can login','success')
+                        git = requests.get(('https://api.github.com/users/{}').format(register.github.data))
+                        git_check = git.json()
+                        if git_check['login'] == egister.github.data:
+                            new_user = UserModel(
+                                None,
+                                None,
+                                register.username.data,
+                                register.realname.data,
+                                register.github.data,
+                                register.email.data,
+                                register.password.data,
+                                None,
+                                None,
+                                None,
+                                None
+                            )
+                            db.session.add(new_user)
+                            db.session.commit()
+                            flash('Registration completed successfully, now you can login','success')
+                        flash('This username doesn`t exist', 'error')
     return redirect(url_for('home.home'))
 
 @users_pages.route("/user/<string:name>/id=<int:id>")
