@@ -58,7 +58,7 @@ def register():
                     else:
                         git = requests.get(('https://api.github.com/users/{}').format(register.github.data))
                         git_check = git.json()
-                        if git_check['login'] == egister.github.data:
+                        if git_check['login'] :
                             new_user = UserModel(
                                 None,
                                 None,
