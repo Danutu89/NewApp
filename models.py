@@ -12,6 +12,7 @@ Base = declarative_base()
 class UserModel(Base):
 
     __tablename__ = 'users'
+    __bind_key__ = 'base'
 
     id = db.Column(db.Integer, db.Sequence('user_id_seq'), primary_key = True, index=True)
     join_date = db.Column(db.Date, primary_key = False, default = datetime.datetime.now)
@@ -60,6 +61,7 @@ class UserModel(Base):
 class RoleModel(Base):
 
     __tablename__ = 'roles'
+    __bind_key__ = 'base'
 
     id = db.Column(db.Integer, db.Sequence('role_id_seq'), primary_key = True)
     name = db.Column(db.String(30), primary_key = False)
@@ -77,6 +79,7 @@ class PostModel(Base):
 
     __tablename__ = 'posts'
     __searchable__ = ['title', 'id']
+    __bind_key__ = 'base'
     #__analyzer__ = wh.StemmingAnalyzer()
 
     id = db.Column(db.Integer, db.Sequence('posts_id_seq'), primary_key = True)
@@ -103,6 +106,7 @@ class PostModel(Base):
 class ReplyModel(Base):
 
     __tablename__ = 'replyes'
+    __bind_key__ = 'base'
 
     id = db.Column(db.Integer, db.Sequence('replyes_id_seq'), primary_key = True)
     text = db.Column(db.String(250), primary_key = False)
@@ -121,6 +125,7 @@ class ReplyModel(Base):
 class LikeModel(Base):
 
     __tablename__ = 'likes'
+    __bind_key__ = 'base'
 
     id = db.Column(db.Integer, db.Sequence('likes_id_seq'), primary_key = True)
     post_id = db.Column(db.Integer, primary_key = False)
@@ -137,6 +142,7 @@ class LikeModel(Base):
 class TagModel(Base):
 
     __tablename__ = 'post_tags'
+    __bind_key__ = 'base'
  
     id = db.Column(db.Integer, db.Sequence('post_tags_id_seq'), primary_key = True)
     tag = db.Column(db.String(50), primary_key = False)
