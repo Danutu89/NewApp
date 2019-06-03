@@ -1,6 +1,8 @@
 from flask_wtf import FlaskForm
-from wtforms import BooleanField, StringField, PasswordField, SelectField, SubmitField, TextField, TextAreaField, HiddenField
-from wtforms.validators import Length, Email, EqualTo 
+from wtforms import (BooleanField, HiddenField, PasswordField, SelectField,
+                     StringField, SubmitField, TextAreaField, TextField)
+from wtforms.validators import Email, EqualTo, Length
+
 
 class RegisterForm(FlaskForm):
 

@@ -1,17 +1,18 @@
-from flask import Blueprint, render_template, abort, request, redirect, url_for, flash, jsonify
-from jinja2 import TemplateNotFound
-from flask_login import login_user, login_required, logout_user
-from forms import RegisterForm,LoginForm,ModifyProfileForm,SearchForm
 import requests
+from flask import (Blueprint, abort, flash, jsonify, redirect, render_template,
+                   request, url_for)
+from flask_login import login_required, login_user, logout_user
+from jinja2 import TemplateNotFound
 
+from app import db
+from forms import LoginForm, ModifyProfileForm, RegisterForm, SearchForm
+from models import Gits, PostModel, ReplyModel, UserModel, bcrypt
 
 users_pages = Blueprint(
     'users',__name__,
     template_folder='user_templates'
 )
 
-from app import db
-from models import UserModel,Gits,bcrypt,PostModel,ReplyModel
 
 @users_pages.route("/login", methods=['GET','POST'])
 def login():

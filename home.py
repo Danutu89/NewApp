@@ -1,16 +1,17 @@
-from flask import Blueprint, render_template, abort, request, flash
+from flask import Blueprint, flash, render_template, request
+from flask_login import current_user
 from jinja2 import TemplateNotFound
-from forms import RegisterForm, LoginForm, SearchForm, NewQuestionForm, ReplyForm
-from flask_login import login_required, current_user
 
+from app import db
+from forms import (LoginForm, NewQuestionForm, RegisterForm, ReplyForm,
+                   SearchForm)
+from models import PostModel, ReplyModel, TagModel
 
 home_pages = Blueprint(
     'home',__name__,
     template_folder='home_templates'
 )
 
-from app import db
-from models import PostModel, TagModel, ReplyModel, LikeModel
 
 @home_pages.route("/", methods=['GET','POST'])
 def home():
@@ -50,10 +51,8 @@ def home():
 
             flash('New question posted successfully', 'success')
 
-    
-
    # if request.args.get('search'):
-   #     posts = db.session.query(PostModel).whoosh_search(request.args.get('search')).all()
+    #posts = db.session.query(PostModel).whoosh_search(request.args.get('search')).all()
    # else:
     posts = db.session.query(PostModel).order_by(PostModel.id.desc()).all()
 
@@ -78,5 +77,3 @@ def post(id):
         login = LoginForm(request.form)
         register = RegisterForm(request.form)
         return render_template('post.html', reply=reply,posts=posts,replyes=replyes,search=search,login=login,tags=tags,register=register)
-
-        

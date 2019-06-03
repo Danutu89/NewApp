@@ -1,10 +1,11 @@
-from app import db, db_engine
 import datetime
-from sqlalchemy import ForeignKey
-from sqlalchemy.orm import relationship
-from app import bcrypt
-from sqlalchemy.ext.declarative import declarative_base
+
 import flask_whooshalchemy as wh
+from sqlalchemy import ForeignKey
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import relationship
+
+from app import bcrypt, db, db_engine
 
 Base = declarative_base()
 
@@ -13,7 +14,7 @@ class UserModel(Base):
 
     __tablename__ = 'users'
 
-    id = db.Column(db.Integer, db.Sequence('user_id_seq'), primary_key = True)
+    id = db.Column(db.Integer, db.Sequence('user_id_seq'), primary_key = True, index=True)
     join_date = db.Column(db.Date, primary_key = False, default = datetime.datetime.now)
     name = db.Column(db.String(50), primary_key = False)
     real_name = db.Column(db.String(50), primary_key = False)
@@ -155,4 +156,3 @@ class Gits:
         self.desc = desc
 
 Base.metadata.create_all(db_engine, Base.metadata.tables.values(),checkfirst=True)
-
