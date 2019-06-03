@@ -5,7 +5,6 @@ from flask_login import LoginManager
 
 from sqlalchemy import create_engine
 
-import flask_whooshalchemy as wh
 
 
 app = Flask(__name__)
@@ -27,7 +26,7 @@ login_manager.login_view = "home.home"
 
 from models import UserModel, PostModel
 
-wh.whoosh_index(app,PostModel)
+#wh.whoosh_index(app,PostModel)
 
 @login_manager.user_loader
 def load_user(user_id):
