@@ -58,24 +58,26 @@ def register():
                     else:
                         git = requests.get(('https://api.github.com/users/{}').format(register.github.data))
                         git_check = git.json()
-                        if git_check['login'] :
-                            new_user = UserModel(
-                                None,
-                                None,
-                                register.username.data,
-                                register.realname.data,
-                                register.github.data,
-                                register.email.data,
-                                register.password.data,
-                                None,
-                                None,
-                                None,
-                                None
-                            )
-                            db.session.add(new_user)
-                            db.session.commit()
-                            flash('Registration completed successfully, now you can login','success')
-                        flash('This username doesn`t exist', 'error')
+                        try:
+                            if git_check['login'] == register.github.data:
+                                new_user = UserModel(
+                                    None,
+                                    None,
+                                    register.username.data,
+                                    register.realname.data,
+                                    register.github.data,
+                                    register.email.data,
+                                    register.password.data,
+                                    None,
+                                    None,
+                                    None,
+                                    None
+                                )
+                                db.session.add(new_user)
+                                db.session.commit()
+                                flash('Registration completed successfully, now you can login','success')
+                        except KeyError:
+                            flash('This username doesn`t exist', 'error')
     return redirect(url_for('home.home'))
 
 @users_pages.route("/user/<string:name>/id=<int:id>")
