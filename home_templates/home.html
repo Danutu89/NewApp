@@ -93,6 +93,19 @@
             {% endfor %}
             </ul>
         </div>
+        <br>
+        <div class="card">
+            <div class="card-header">
+                Popular Tags
+            </div>
+            <ul class="list-group list-group-flush">
+            {% for tag in most_tags %}
+                {% if tag.tag is not none %}
+                <li class="list-group-item">{{tag.tag}}</li>
+                {% endif %}
+            {% endfor %}
+            </ul>
+        </div>
     </div>
 </div>
 <script>

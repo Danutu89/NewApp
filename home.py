@@ -2,6 +2,8 @@ from flask import Blueprint, flash, render_template, request,redirect,url_for
 from flask_login import current_user
 from jinja2 import TemplateNotFound
 
+from sqlalchemy import func, desc
+
 from app import db
 from forms import (LoginForm, NewQuestionForm, RegisterForm, ReplyForm,
                    SearchForm)
@@ -11,6 +13,8 @@ home_pages = Blueprint(
     'home',__name__,
     template_folder='home_templates'
 )
+
+
 
 @home_pages.route("/", methods=['GET','POST'])
 def home():
@@ -58,13 +62,18 @@ def home():
 
     popular_posts = db.session.query(PostModel).order_by(PostModel.views.desc()).limit(5)
 
+    most_tags = db.session.query(TagModel.tag,
+    func.count(TagModel.id).label('qty')
+    ).group_by(TagModel.tag
+    ).order_by(desc('qty')).limit(5)
+    
     tags = db.session.query(TagModel).all()
     replyes = db.session.query(ReplyModel).all()
 
     if current_user.is_authenticated:
-        return render_template('home.html',search=search,posts=posts,tags=tags,replyes=replyes,new_question=new_question,popular_posts=popular_posts)
+        return render_template('home.html',search=search,posts=posts,tags=tags,replyes=replyes,new_question=new_question,popular_posts=popular_posts,most_tags=most_tags)
     else:
-        return render_template('home.html', login=login,register=register,search=search,posts=posts,tags=tags,replyes=replyes,popular_posts=popular_posts)
+        return render_template('home.html', login=login,register=register,search=search,posts=posts,tags=tags,replyes=replyes,popular_posts=popular_posts,most_tags=most_tags)
 
 @home_pages.route('/post/id=<int:id>')
 def post(id):
