@@ -5,10 +5,7 @@ from flask_login import LoginManager
 
 from sqlalchemy import create_engine
 
-
-
 app = Flask(__name__)
-
 
 app.secret_key = '\xce,CH\xc0\xd2K9\xe3\x87\xa0Z\x19\x8a\xcd\xf9\x91\x94\xddN\xff\xaf;r\xef'
 app.config['SQLALCHEMY_DATABASE_URI'] = "postgresql:///newapp"
