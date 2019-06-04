@@ -1,4 +1,4 @@
-from flask import Blueprint, flash, render_template, request
+from flask import Blueprint, flash, render_template, request,redirect,url_for
 from flask_login import current_user
 from jinja2 import TemplateNotFound
 
@@ -53,7 +53,8 @@ def home():
    # if request.args.get('search'):
     #posts = db.session.query(PostModel).whoosh_search(request.args.get('search')).all()
    # else:
-    posts = db.session.query(PostModel).order_by(PostModel.id.desc()).all()
+    post_page = request.args.get('page',1,type=int)
+    posts = db.session.query(PostModel).order_by(PostModel.id.desc()).paginate(page=post_page,per_page=9)
 
     tags = db.session.query(TagModel).all()
     replyes = db.session.query(ReplyModel).all()
@@ -71,8 +72,39 @@ def post(id):
     replyes = db.session.query(ReplyModel).filter_by(post_id=id)
     tags = db.session.query(TagModel).filter_by(post_id=id)
     if current_user.is_authenticated:
+        post = db.session.query(PostModel).filter_by(id=id).first()
+        post.views += 1
+        db.session.commit()
         return render_template('post.html', reply=reply,posts=posts,replyes=replyes,tags=tags,search=search)
     else:
         login = LoginForm(request.form)
         register = RegisterForm(request.form)
         return render_template('post.html', reply=reply,posts=posts,replyes=replyes,search=search,login=login,tags=tags,register=register)
+
+@home_pages.route('/post/reply/id=<int:id>', methods=['POST','GET'])
+def reply(id):
+
+    if request.method != 'POST':
+        return redirect(url_for('home.post',id=id))
+
+    reply = ReplyForm(request.form)
+
+    if reply.validate_on_submit() == False:
+        return redirect(url_for('home.post',id=id))
+
+    if current_user.is_authenticated == False:
+        flash('You need to log in to reply to this post', 'error')
+
+    new_reply = ReplyModel(
+        None,
+        reply.text.data,
+        id,
+        current_user.id
+    )
+    
+    db.session.add(new_reply)
+    db.session.commit()
+
+    flash('New reply added successfully','success')
+    return redirect(url_for('home.post',id=id))
+

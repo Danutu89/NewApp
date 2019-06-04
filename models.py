@@ -103,6 +103,9 @@ class PostModel(Base):
     def __repr__(self):
         return ('<title {}').format(self.title)
 
+    def replies(self):
+        return db.session.query(ReplyModel).filter_by(post_id=self.id).count()
+
 class ReplyModel(Base):
 
     __tablename__ = 'replyes'

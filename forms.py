@@ -214,19 +214,11 @@ class NewQuestionForm(FlaskForm):
     )
 
 class ReplyForm(FlaskForm):
-    reply = TextAreaField(
-        'ReplyForm_Text',
-        render_kw = {
-            "class":"form-control form-control-sm",
-            "placeholder":"Text",
-            "rows":5,
-            "style":"margin-bottom: 5px;",
-            "id":"editor",
-            "required":"true"
-        }
+    text = HiddenField(
+        'ReplyForm_Text'
     )
     submit = SubmitField(
-        'Reply',
+        'Post Reply',
         render_kw = {
             "class":"btn btn-primary btn-sm",
             "style":"float:right;"

@@ -2,56 +2,88 @@
 {% block content %}
 
 <div class="row">
-    <div class="col"style="min-width:310px;">
-            {% if current_user.is_authenticated %}
-                <div class="card" style="margin-bottom:10px;">
-                    <button onclick="Create_Question()" class="btn btn-light btn-sm" style="float:right;">New Question</button>
+    <div class="col" style="min-width:310px;">
+        {% if current_user.is_authenticated %}
+        <div class="card" style="margin-bottom:10px;">
+            <button onclick="Create_Question()" class="btn btn-light btn-sm" style="float:right;">New Question</button>
+        </div>
+        <form class="form-thread" id="create_question" role="form" method="post" action="/" style="display:none;">
+            <div class="card" style="margin-bottom:10px;">
+                <div class="card-body">
+                    {{new_question.csrf_token}}
+                    {{new_question.title}}
+                    {{new_question.text}}
+                    <div class="editor" id="editor"></div>
+                    {{new_question.tag}}
+                    <small class="form-text text-muted">
+                        Separate tags with commas.
+                    </small>
+                    {{new_question.submit}}
                 </div>
-                <form class="form-thread" id="create_question" role="form" method="post" action="/" style="display:none;">   
-                    <div class="card" style="margin-bottom:10px;">
-                        <div class="card-body">
-                            {{new_question.csrf_token}}
-                            {{new_question.title}}
-                            {{new_question.text}}
-                            <div class="editor" id="editor"></div>
-                            {{new_question.tag}}
-                            <small class="form-text text-muted">
-                                Separate tags with commas.
-                            </small>
-                            {{new_question.submit}}
-                        </div>
-                    </div>
-                </form>
-            {% endif %}
-        {% for post in posts %}
+            </div>
+        </form>
+        {% endif %}
+        {% for post in posts.items %}
         <div class="card" style="margin-bottom:10px;">
             <div class="card-body">
                 <div class="row">
                     <div class="col-2" style="min-width:110px;">
-                            <button type="button" class="btn btn-outline-primary btn-sm" style="width: 100%;margin-bottom:2px;" disabled>{{post.reply}} Answers</button>
-                            
-                            <button type="button" class="btn btn-outline-primary btn-sm" style="width: 100%;" disabled>{{post.views}} Views</button>
+                        <button type="button" class="btn btn-outline-primary btn-sm"
+                            style="width: 100%;margin-bottom:2px;" disabled>{{post.replies()}} Answers</button>
+
+                        <button type="button" class="btn btn-outline-primary btn-sm" style="width: 100%;"
+                            disabled>{{post.views}} Views</button>
                     </div>
                     <div class="col">
-                        <h5 class="card-title" ><a href="{{url_for('home.post', id=post.id)}}" style="color: #212529;">{{post.title}}</a></h5>
-                        
+                        <h5 class="card-title"><a href="{{url_for('home.post', id=post.id)}}"
+                                style="color: #212529;">{{post.title}}</a></h5>
+
                         {% for tag in tags %}
-                            {% if tag.post_id == post.id %}
-                                <a href="#" class="badge badge-success" style="font-size:10px;">{{tag.tag}}</a>
-                            {% endif %}
+                        {% if tag.post_id == post.id %}
+                        <a href="#" class="badge badge-success" style="font-size:10px;">{{tag.tag}}</a>
+                        {% endif %}
                         {% endfor %}
                         <div class="author" style="float:right;">
-                                <img title="profile image" class="rounded-circle img-responsive" src="{{post.user_in.avatar}}" height="30px">
-                                <a style="color: #333" href="{{url_for('users.user', name=post.user_in.name, id=post.user_in.id )}}">{{post.user_in.name}}</a>
+                            <img title="profile image" class="rounded-circle img-responsive"
+                                src="{{post.user_in.avatar}}" height="30px">
+                            <a style="color: #333"
+                                href="{{url_for('users.user', name=post.user_in.name, id=post.user_in.id )}}">{{post.user_in.name}}</a>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
         {% endfor %}
+        {% if posts.pages > 1 %}
+        <nav aria-label="Pagination">
+
+            <ul class="pagination">
+                {% if posts.has_prev %}
+                <li class="page-item">
+                    <a class="page-link" href="{{url_for('home.home',page=posts.page-1)}}" aria-disabled="true">Previous</a>
+                </li>
+                {% endif %}
+                {% for pages in posts.iter_pages(left_edge=1, right_edge=1, left_current=3, right_current=3) %}
+                {% if pages %}
+                {% if pages == posts.page %}
+                <li class="page-item disabled"><a class="page-link" >{{pages}} <span class="sr-only">(current)</span></a></li>
+                {% else %}
+                <li class="page-item"><a class="page-link" href="{{url_for('home.home', page=pages)}}">{{pages}}</a></li>
+                {% endif %}
+                {% else %}
+                {% endif %}
+                {% endfor %}
+                {% if posts.has_next %}
+                <li class="page-item">
+                    <a class="page-link" href="{{url_for('home.home',page=posts.page+1)}}" aria-disabled="true">Next</a>
+                </li>
+                {% endif %}
+            </ul>
+        </nav>
+        {% endif %}
     </div>
     <div class="col-md-3" style="min-width:310px;width:100%;">
-        <div class="card" >
+        <div class="card">
             <div class="card-header">
                 Featured
             </div>
@@ -64,15 +96,23 @@
     </div>
 </div>
 <script>
-
-    
     var toolbarOptions = [
         ['bold', 'italic', 'underline'],
         ['blockquote', 'code-block'],
-        [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
-        [{ 'color': [] }, { 'background': [] }],
-        [{ 'font': [] }],
-        [{ 'align': [] }],
+        [{
+            'header': [1, 2, 3, 4, 5, 6, false]
+        }],
+        [{
+            'color': []
+        }, {
+            'background': []
+        }],
+        [{
+            'font': []
+        }],
+        [{
+            'align': []
+        }],
     ];
 
     var quill = new Quill('#editor', {
@@ -82,10 +122,10 @@
         theme: 'snow'
     });
     var submit_entry = function () {
-      
-      // Get the contents of the text editor
-      var hidden_text_field = document.getElementById('text');
-      hidden_text_field.value = document.querySelector(".ql-editor").innerHTML
+
+        // Get the contents of the text editor
+        var hidden_text_field = document.getElementById('text');
+        hidden_text_field.value = document.querySelector(".ql-editor").innerHTML
     }
 
     // Attach the onclick function to the submit button Flask-WTF creates
