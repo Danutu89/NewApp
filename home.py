@@ -56,13 +56,15 @@ def home():
     post_page = request.args.get('page',1,type=int)
     posts = db.session.query(PostModel).order_by(PostModel.id.desc()).paginate(page=post_page,per_page=9)
 
+    popular_posts = db.session.query(PostModel).order_by(PostModel.views.desc()).limit(5)
+
     tags = db.session.query(TagModel).all()
     replyes = db.session.query(ReplyModel).all()
 
     if current_user.is_authenticated:
-        return render_template('home.html',search=search,posts=posts,tags=tags,replyes=replyes,new_question=new_question)
+        return render_template('home.html',search=search,posts=posts,tags=tags,replyes=replyes,new_question=new_question,popular_posts=popular_posts)
     else:
-        return render_template('home.html', login=login,register=register,search=search,posts=posts,tags=tags,replyes=replyes)
+        return render_template('home.html', login=login,register=register,search=search,posts=posts,tags=tags,replyes=replyes,popular_posts=popular_posts)
 
 @home_pages.route('/post/id=<int:id>')
 def post(id):
