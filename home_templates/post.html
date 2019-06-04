@@ -76,7 +76,7 @@
                 <hr>
             {% endfor %}
         </div>
-        
+        {% if current_user.is_authenticated %}
         <div class="post_reply">
         <form class="form-reply" id="reply" role="form" method="post" action="{{url_for('home.reply',id=posts[0].id)}}" >  
             <div class="editor" id="editor" style="margin-bottom:1%;"></div>
@@ -85,6 +85,7 @@
             {{reply.submit}}
             </form>
         </div>
+        {% endif %}
     </div>
     <div class="col-md-3" style="min-width:310px;width:100%;">
         <h8 style="font-size: 12px;font-weight: 600;">Viewed: </h8>
