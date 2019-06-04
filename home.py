@@ -73,15 +73,16 @@ def post(id):
     posts = db.session.query(PostModel).filter_by(id=id)
     replyes = db.session.query(ReplyModel).filter_by(post_id=id)
     tags = db.session.query(TagModel).filter_by(post_id=id)
+    popular_posts = db.session.query(PostModel).order_by(PostModel.views.desc()).limit(5)
     if current_user.is_authenticated:
         post = db.session.query(PostModel).filter_by(id=id).first()
         post.views += 1
         db.session.commit()
-        return render_template('post.html', reply=reply,posts=posts,replyes=replyes,tags=tags,search=search)
+        return render_template('post.html', reply=reply,posts=posts,replyes=replyes,tags=tags,search=search,popular_posts=popular_posts)
     else:
         login = LoginForm(request.form)
         register = RegisterForm(request.form)
-        return render_template('post.html', reply=reply,posts=posts,replyes=replyes,search=search,login=login,tags=tags,register=register)
+        return render_template('post.html', reply=reply,posts=posts,replyes=replyes,search=search,login=login,tags=tags,register=register,popular_posts=popular_posts)
 
 @home_pages.route('/post/reply/id=<int:id>', methods=['POST','GET'])
 def reply(id):

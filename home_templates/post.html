@@ -96,12 +96,12 @@
         <hr style="margin-top: 1.5%;">
         <div class="card">
             <div class="card-header">
-                Featured
+                Popular Posts
             </div>
             <ul class="list-group list-group-flush">
-                <li class="list-group-item">Cras justo odio</li>
-                <li class="list-group-item">Dapibus ac facilisis in</li>
-                <li class="list-group-item">Vestibulum at eros</li>
+            {% for post in popular_posts %}
+                <li class="list-group-item"><a href="{{url_for('home.post',id=post.id)}}">{{post.title}}</a><span class="badge badge-light" style="float:right;">{{post.views}}</span></li>
+            {% endfor %}
             </ul>
         </div>
     </div>
