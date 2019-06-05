@@ -40,7 +40,7 @@
 
                         {% for tag in tags %}
                         {% if tag.post_id == post.id %}
-                        <a href="#" class="badge badge-success" style="font-size:10px;">{{tag.tag}}</a>
+                        <a href="{{url_for('home.home',tag_finder=tag.tag)}}" class="badge badge-success" style="font-size:10px;">{{tag.tag}}</a>
                         {% endif %}
                         {% endfor %}
                         <div class="author" style="float:right;">
@@ -83,28 +83,25 @@
         {% endif %}
     </div>
     <div class="col-md-3" style="min-width:310px;width:100%;">
-        <div class="card">
-            <div class="card-header">
-                Popular Posts
-            </div>
-            <ul class="list-group list-group-flush">
+        <div class="pop_post" style="line-height: 1.9;">
+            <h4>Popular Posts</h4>
+            
             {% for post in popular_posts %}
-                <li class="list-group-item"><a href="{{url_for('home.post',id=post.id)}}">{{post.title}}</a><span class="badge badge-light" style="float:right;">{{post.views}}</span></li>
+                <a style="color:#07C" href="{{url_for('home.post',id=post.id)}}">{{post.title}}</a><span class="badge badge-light" style="padding-left:3%;padding-right:3%;float:right;font-size: 13px;font-weight: 500;">{{post.views}}</span>
+                <br>
             {% endfor %}
-            </ul>
+            
         </div>
-        <br>
-        <div class="card">
-            <div class="card-header">
-                Popular Tags
-            </div>
-            <ul class="list-group list-group-flush">
+        <hr>
+        <div class="pop_tags" style="line-height: 1.9;">
+            <h4>Popular Tags</h4>
             {% for tag in most_tags %}
                 {% if tag.tag is not none %}
-                <li class="list-group-item">{{tag.tag}}</li>
+                    <a href="{{url_for('home.home',tag_finder=tag.tag)}}"><span class="badge badge-light" style="font-size: 12px;">{{tag.tag}}</span></a>
+                    <br>
                 {% endif %}
             {% endfor %}
-            </ul>
+            
         </div>
     </div>
 </div>

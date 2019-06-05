@@ -94,15 +94,25 @@
         <h8 style="font-size: 12px;font-weight: 600;">Asked on: </h8>
         <h8 style="font-size: 12px;color: #6c757d;font-weight: 400;">{{posts[0].posted_on}}</h8>
         <hr style="margin-top: 1.5%;">
-        <div class="card">
-            <div class="card-header">
-                Popular Posts
-            </div>
-            <ul class="list-group list-group-flush">
+        <div class="pop_post" style="line-height: 1.9;">
+            <h4>Popular Posts</h4>
+            
             {% for post in popular_posts %}
-                <li class="list-group-item"><a href="{{url_for('home.post',id=post.id)}}">{{post.title}}</a><span class="badge badge-light" style="float:right;">{{post.views}}</span></li>
+                <a style="color:#07C" href="{{url_for('home.post',id=post.id)}}">{{post.title}}</a><span class="badge badge-light" style="padding-left:3%;padding-right:3%;float:right;font-size: 13px;font-weight: 500;">{{post.views}}</span>
+                <br>
             {% endfor %}
-            </ul>
+            
+        </div>
+        <hr>
+        <div class="pop_tags" style="line-height: 1.9;">
+            <h4>Popular Tags</h4>
+            {% for tag in most_tags %}
+                {% if tag.tag is not none %}
+                    <a href="{{url_for('home.home',tag_finder=tag.tag)}}"><span class="badge badge-light" style="font-size: 12px;">{{tag.tag}}</span></a>
+                    <br>
+                {% endif %}
+            {% endfor %}
+            
         </div>
     </div>
 </div>
