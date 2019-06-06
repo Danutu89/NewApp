@@ -3,7 +3,7 @@ from flask_login import current_user
 from jinja2 import TemplateNotFound
 from sqlalchemy import desc, func
 
-from app import db
+from app import db, ext
 from forms import (LoginForm, NewQuestionForm, RegisterForm, ReplyForm,
                    SearchForm)
 from models import PostModel, ReplyModel, TagModel
@@ -80,6 +80,12 @@ def home():
         return render_template('home.html',search=search,posts=posts,tags=tags,replyes=replyes,new_question=new_question,popular_posts=popular_posts,most_tags=most_tags)
     else:
         return render_template('home.html', login=login,register=register,search=search,posts=posts,tags=tags,replyes=replyes,popular_posts=popular_posts,most_tags=most_tags)
+
+
+@ext.register_generator
+def home():
+    # Not needed if you set SITEMAP_INCLUDE_RULES_WITHOUT_PARAMS=True
+    yield 'home.home', {}
 
 @home_pages.route('/post/id=<int:id>')
 def post(id):

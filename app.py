@@ -2,10 +2,13 @@ from flask import Flask, flash, redirect, render_template, request, url_for
 from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
 from flask_login import LoginManager
+from flask_sitemap import Sitemap
 
 from sqlalchemy import create_engine
 
 app = Flask(__name__)
+ext = Sitemap(app=app)
+
 
 app.secret_key = '\xce,CH\xc0\xd2K9\xe3\x87\xa0Z\x19\x8a\xcd\xf9\x91\x94\xddN\xff\xaf;r\xef'
 app.config['SQLALCHEMY_DATABASE_URI'] = "postgresql:///newapp"
@@ -38,6 +41,7 @@ from home import home_pages
 
 app.register_blueprint(users_pages)
 app.register_blueprint(home_pages)
+
 
 if __name__=="__main__":
     app.run(debug=False)
