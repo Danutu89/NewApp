@@ -4,8 +4,8 @@
 
 <style>
     .ql-syntax {
-        background-color: #23241f;
-        color: #f8f8f2;
+        background-color: #f0f0f0;
+        color: #212529;
         overflow: visible;
     }
 
@@ -24,8 +24,19 @@
 
 <div class="row">
     <div class="col" style="min-width:310px;">
+        
+        <div class="info" style="display:flex;">
         <h4 style="margin-top: 1%">{{posts[0].title}}</h4>
-        <hr>
+        <div class="date" style="margin-inline-start: auto;">
+        <h8 style="font-size: 12px;font-weight: 600;">Viewed: </h8>
+        <h8 style="font-size: 12px;color: #6c757d;font-weight: 400;">{{posts[0].views}} times</h8>
+        <br>
+        <h8 style="font-size: 12px;font-weight: 600;">Asked on: </h8>
+        <h8 style="font-size: 12px;color: #6c757d;font-weight: 400;">{{posts[0].posted_on}}</h8>
+        </div>
+        </div>
+
+        <hr style="margin-top:1%;">
 
         {{posts[0].text | safe}}
 
@@ -36,7 +47,7 @@
                 {% if tags %}
                 Tags:
                 {% for tag in tags %}
-                <a href="#" class="badge badge-success" style="font-size:13px;">{{tag.tag}}</a>
+                <a href="{{url_for('home.home',tag_finder=tag.tag)}}" class="badge badge-success" style="font-size:13px;">{{tag.tag}}</a>
                 {% endfor %}
                 {% endif %}
             </div>
@@ -88,12 +99,6 @@
         {% endif %}
     </div>
     <div class="col-md-3" style="min-width:310px;width:100%;">
-        <h8 style="font-size: 12px;font-weight: 600;">Viewed: </h8>
-        <h8 style="font-size: 12px;color: #6c757d;font-weight: 400;">{{posts[0].views}} times</h8>
-        <br>
-        <h8 style="font-size: 12px;font-weight: 600;">Asked on: </h8>
-        <h8 style="font-size: 12px;color: #6c757d;font-weight: 400;">{{posts[0].posted_on}}</h8>
-        <hr style="margin-top: 1.5%;">
         <div class="pop_post" style="line-height: 1.9;">
             <h4>Popular Posts</h4>
             

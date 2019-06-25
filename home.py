@@ -2,6 +2,7 @@ from flask import Blueprint, flash, redirect, render_template, request, url_for
 from flask_login import current_user
 from jinja2 import TemplateNotFound
 from sqlalchemy import desc, func
+from sqlalchemy_searchable import search
 
 from app import db, ext
 from forms import (LoginForm, NewQuestionForm, RegisterForm, ReplyForm,
@@ -19,7 +20,7 @@ home_pages = Blueprint(
 def home():
     login = LoginForm(request.form)
     register = RegisterForm(request.form)
-    search = SearchForm(request.form)
+    search_post = SearchForm(request.form)
     new_question = NewQuestionForm(request.form)
     
     if request.method == 'POST':
@@ -47,16 +48,18 @@ def home():
                     t,
                     index[0].id
                 )
-                print(t)
                 db.session.add(tag)
                 db.session.commit()
 
             flash('New question posted successfully', 'success')
 
-   # if request.args.get('search'):
+    #if request.args.get('search'):
     #posts = db.session.query(PostModel).whoosh_search(request.args.get('search')).all()
     post_page = request.args.get('page',1,type=int)
-    if request.args.get('tag_finder'):
+    if request.args.get('search'):
+        posts = PostModel.query.whoosh_search(request.args.get('search'), or_=True).paginate(page=post_page,per_page=9)
+        print(posts.items)
+    elif request.args.get('tag_finder'):
         tag_finder = request.args.get('tag_finder')
         tag_posts = db.session.query(TagModel).filter_by(tag=tag_finder).all()
         ids = []
@@ -77,9 +80,9 @@ def home():
     replyes = db.session.query(ReplyModel).all()
 
     if current_user.is_authenticated:
-        return render_template('home.html',search=search,posts=posts,tags=tags,replyes=replyes,new_question=new_question,popular_posts=popular_posts,most_tags=most_tags)
+        return render_template('home.html',search=search_post,posts=posts,tags=tags,replyes=replyes,new_question=new_question,popular_posts=popular_posts,most_tags=most_tags)
     else:
-        return render_template('home.html', login=login,register=register,search=search,posts=posts,tags=tags,replyes=replyes,popular_posts=popular_posts,most_tags=most_tags)
+        return render_template('home.html', login=login,register=register,search=search_post,posts=posts,tags=tags,replyes=replyes,popular_posts=popular_posts,most_tags=most_tags)
 
 
 @ext.register_generator
@@ -135,5 +138,3 @@ def reply(id):
 
     flash('New reply added successfully','success')
     return redirect(url_for('home.post',id=id))
-
-

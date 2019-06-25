@@ -1,7 +1,7 @@
 import requests
 from flask import (Blueprint, abort, flash, jsonify, redirect, render_template,
                    request, url_for)
-from flask_login import login_required, login_user, logout_user
+from flask_login import login_required, login_user, logout_user, current_user
 from jinja2 import TemplateNotFound
 
 from app import db
@@ -94,7 +94,7 @@ def register():
             )
             db.session.add(new_user)
             db.session.commit()
-            flash('Registration completed successfully, now you can login','success')
+            flash('Registration completed successfully, now you can login', 'success')
     except KeyError:
         flash('This username doesn`t exist', 'error')
 
@@ -110,7 +110,7 @@ def user(name,id):
     post_count = db.session.query(PostModel).filter_by(user=id).count()
     reply_count = db.session.query(ReplyModel).filter_by(user=id).count()
     response = requests.get(('https://api.github.com/users/{}/repos').format(user.github_name))
-    login = response.json()  # obtain the payload as JSON object
+    login = response.json()
     repos = []
     lang = {}
     for gits in login:
@@ -120,7 +120,7 @@ def user(name,id):
         lan = []
         for key in respond.keys():
             lan.append(key)
-        lang[gits['name']]=lan
+        lang[gits['name']] = lan
     return render_template('user_page.html',user=user,repos=repos,modify_profile=modify_profile,lang=lang,post_count=post_count,reply_count=reply_count,search=search,register=register,login=loginf)
 
 
@@ -147,7 +147,16 @@ def modify_profile(idm):
 
 @users_pages.route("/git")
 def get():
-    dany = 'Danutu89'
-    response = requests.get(('https://api.github.com/users/{}/repos').format(dany))
-    login = response.json()  # obtain the payload as JSON object
+    response = requests.get(('https://api.github.com/users/{}/repos').format(current_user.github_name))
+    login = response.json()
     return jsonify(login)
+
+@users_pages.route('/admin')
+@login_required
+def admin():
+    users = db.session.query(UserModel).all()
+    posts = db.session.query(PostModel).all()
+    search = SearchForm(request.form)
+    register = RegisterForm(request.form)
+    login = LoginForm(request.form)
+    return render_template('admin.html',users=users,posts=posts,search=search,register=register,login=login)

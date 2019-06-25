@@ -5,14 +5,15 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 
 from app import bcrypt, db, db_engine
+import flask_whooshalchemyplus
 
 Base = declarative_base()
 
 
-class UserModel(Base):
+class UserModel(db.Model):
 
     __tablename__ = 'users'
-    __bind_key__ = 'base'
+
 
     id = db.Column(db.Integer, db.Sequence('user_id_seq'), primary_key = True, index=True)
     join_date = db.Column(db.Date, primary_key = False, default = datetime.datetime.now)
@@ -58,10 +59,10 @@ class UserModel(Base):
     def __repr__(self):
         return ('<name {}').format(self.name)
 
-class RoleModel(Base):
+class RoleModel(db.Model):
 
     __tablename__ = 'roles'
-    __bind_key__ = 'base'
+
 
     id = db.Column(db.Integer, db.Sequence('role_id_seq'), primary_key = True)
     name = db.Column(db.String(30), primary_key = False)
@@ -75,12 +76,12 @@ class RoleModel(Base):
     def __repr__(self):
         return ('<name {}').format(self.name)
 
-class PostModel(Base):
+class PostModel(db.Model):
 
     __tablename__ = 'posts'
-    __searchable__ = ['title', 'id']
-    __bind_key__ = 'base'
-    #__analyzer__ = wh.StemmingAnalyzer()
+
+    __searchable__ = ['title']
+    __analyzer__ = flask_whooshalchemyplus.whoosh.analysis.SimpleAnalyzer()
 
     id = db.Column(db.Integer, db.Sequence('posts_id_seq'), primary_key = True)
     title = db.Column(db.String(100), primary_key = False)
@@ -89,7 +90,7 @@ class PostModel(Base):
     reply = db.Column(db.Integer, primary_key = False, default=0)
     user = db.Column(db.Integer, ForeignKey('users.id')) 
     posted_on = db.Column(db.Date, primary_key = False, default = datetime.datetime.now)
-
+    
 
     def __init__(self,id,title,text,views,reply,user,posted_on):
         self.id = id
@@ -101,16 +102,15 @@ class PostModel(Base):
         self.posted_on = posted_on
 
     def __repr__(self):
-        return ('<title {}').format(self.title)
+        return '{0}(title={1})'.format(self.__class__.__name__, self.title)
 
     def replies(self):
         return db.session.query(ReplyModel).filter_by(post_id=self.id).count()
 
-class ReplyModel(Base):
+class ReplyModel(db.Model):
 
     __tablename__ = 'replyes'
-    __bind_key__ = 'base'
-
+ 
     id = db.Column(db.Integer, db.Sequence('replyes_id_seq'), primary_key = True)
     text = db.Column(db.String(250), primary_key = False)
     post_id = db.Column(db.Integer, primary_key = False)
@@ -125,10 +125,10 @@ class ReplyModel(Base):
     def __repr__(self):
         return ('<id {}').format(self.id)
 
-class LikeModel(Base):
+class LikeModel(db.Model):
 
     __tablename__ = 'likes'
-    __bind_key__ = 'base'
+
 
     id = db.Column(db.Integer, db.Sequence('likes_id_seq'), primary_key = True)
     post_id = db.Column(db.Integer, primary_key = False)
@@ -142,10 +142,10 @@ class LikeModel(Base):
     def __repr__(self):
         return ('<id {}').format(self.id)
 
-class TagModel(Base):
+class TagModel(db.Model):
 
     __tablename__ = 'post_tags'
-    __bind_key__ = 'base'
+
  
     id = db.Column(db.Integer, db.Sequence('post_tags_id_seq'), primary_key = True)
     tag = db.Column(db.String(50), primary_key = False)
