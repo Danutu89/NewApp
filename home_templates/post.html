@@ -113,7 +113,7 @@
             <h4>Popular Tags</h4>
             {% for tag in most_tags %}
                 {% if tag.tag is not none %}
-                    <a href="{{url_for('home.home',tag_finder=tag.tag)}}"><span class="badge badge-light" style="font-size: 12px;">{{tag.tag}}</span></a>
+                    <a href="{{url_for('home.home',tag_finder=tag.tag)}}"><i class="fab fa-{{tag.tag}}"></i> <span class="badge badge-light" style="font-size: 12px;"> {{tag.tag}}</span></a>
                     <br>
                 {% endif %}
             {% endfor %}
