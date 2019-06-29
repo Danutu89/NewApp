@@ -2,11 +2,20 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
         <loc>https://www.newapp.nl</loc>
+        <priority>1.0</priority>
     </url>
     {% for post in posts %}
     <url>
         <loc>https://www.newapp.nl/post/id%3D{{post.id}}</loc>
         <lastmod>{{post.posted_on}}</lastmod>
+        <priority>0.80</priority>
+    </url>
+    {% endfor %}
+    {% for user in users %}
+    <url>
+        <loc>https://www.newapp.nl/user/{{user.name}}/id%3D{{user.id}}</loc>
+        <lastmod>{{user.join_date}}</lastmod>
+        <priority>0.80</priority>
     </url>
     {% endfor %}
 </urlset>
