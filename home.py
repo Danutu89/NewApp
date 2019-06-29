@@ -85,8 +85,8 @@ def home():
 
 
 
-@home_pages.route('/post/id=<int:id>')
-def post(id):
+@home_pages.route('/post/<string:title>/id=<int:id>')
+def post(title,id):
     search = SearchForm(request.form)
     reply = ReplyForm(request.form)
     posts = db.session.query(PostModel).filter_by(id=id)

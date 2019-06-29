@@ -6,7 +6,7 @@
     </url>
     {% for post in posts %}
     <url>
-        <loc>https://www.newapp.nl/post/id%3D{{post.id}}</loc>
+        <loc>https://www.newapp.nl/post/{{post.title}}/id%3D{{post.id}}</loc>
         <lastmod>{{post.posted_on}}</lastmod>
         <priority>0.80</priority>
     </url>

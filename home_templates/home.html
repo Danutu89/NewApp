@@ -35,7 +35,7 @@
                             disabled>{{post.views}} Views</button>
                     </div>
                     <div class="col">
-                        <h5 class="card-title"><a href="{{url_for('home.post', id=post.id)}}"
+                        <h5 class="card-title"><a href="{{url_for('home.post', id=post.id, title=post.title)}}"
                                 style="color: #212529;">{{post.title}}</a></h5>
 
                         {% for tag in tags %}
@@ -87,7 +87,7 @@
             <h4>Popular Posts</h4>
             
             {% for post in popular_posts %}
-                <a style="color:#07C" href="{{url_for('home.post',id=post.id)}}">{{post.title}}</a><span class="badge badge-light" style="padding-left:3%;padding-right:3%;float:right;font-size: 13px;font-weight: 500;">{{post.views}}</span>
+                <a style="color:#07C" href="{{url_for('home.post',id=post.id, title=post.title)}}">{{post.title}}</a><span class="badge badge-light" style="padding-left:3%;padding-right:3%;float:right;font-size: 13px;font-weight: 500;">{{post.views}}</span>
                 <br>
             {% endfor %}
             

@@ -103,7 +103,7 @@
             <h4>Popular Posts</h4>
             
             {% for post in popular_posts %}
-                <a style="color:#07C" href="{{url_for('home.post',id=post.id)}}">{{post.title}}</a><span class="badge badge-light" style="padding-left:3%;padding-right:3%;float:right;font-size: 13px;font-weight: 500;">{{post.views}}</span>
+                <a style="color:#07C" href="{{url_for('home.post',id=post.id, title=post.title)}}">{{post.title}}</a><span class="badge badge-light" style="padding-left:3%;padding-right:3%;float:right;font-size: 13px;font-weight: 500;">{{post.views}}</span>
                 <br>
             {% endfor %}
             
