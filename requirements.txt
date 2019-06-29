@@ -23,7 +23,6 @@ Jinja2==2.10.1
 lazy-object-proxy==1.4.1
 MarkupSafe==1.1.1
 mccabe==0.6.1
-pkg-resources==0.0.0
 psycopg2-binary==2.8.2
 pycodestyle==2.5.0
 pycparser==2.19
