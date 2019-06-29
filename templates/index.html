@@ -94,12 +94,18 @@
       {% endif %}
     </div>
   </nav>
-  <script>
-    document.addEventListener("DOMContentLoaded", function (event) {
-      $(function () {
-        $("[data-toggle=popover]").popover({
-          html: true,
-          content: `
+
+</header>
+
+<body>
+  <div class="container" id="cont" style="margin-top: 10px;">
+    {% if current_user.is_authenticated %}
+    <script>
+      document.addEventListener("DOMContentLoaded", function (event) {
+        $(function () {
+          $("[data-toggle=popover]").popover({
+            html: true,
+            content: `
             <div id="popover-content">
                         <a class="nav-link" href="{{url_for('users.user',name=current_user.name,id=current_user.id)}}"> <span class="fas fa-user"></span> Profile</a>
                         <a class="nav-link" href="/logout"> <span class="fas fa-sign-out-alt"></span> Logout</a>   
@@ -108,16 +114,10 @@
                         {% endif %} 
                     </div>
               `
+          });
         });
       });
-    });
-  </script>
-</header>
-
-<body>
-  <div class="container" id="cont" style="margin-top: 10px;">
-    {% if current_user.is_authenticated %}
-
+    </script>
 
     {% endif %}
     <script>
