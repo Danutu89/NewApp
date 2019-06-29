@@ -5,9 +5,11 @@ from flask_login import LoginManager
 from flask_sitemap import Sitemap
 import flask_whooshalchemyplus
 from sqlalchemy import create_engine
+from flask_marshmallow import Marshmallow
 
 app = Flask(__name__)
 ext = Sitemap(app=app)
+ma = Marshmallow(app)
 
 app.secret_key = '\xce,CH\xc0\xd2K9\xe3\x87\xa0Z\x19\x8a\xcd\xf9\x91\x94\xddN\xff\xaf;r\xef'
 app.config['SQLALCHEMY_DATABASE_URI'] = "postgresql:///newapp"
@@ -31,9 +33,11 @@ def load_user(user_id):
 
 from users import users_pages
 from home import home_pages
+from jsons import json_pages
 
 app.register_blueprint(users_pages)
 app.register_blueprint(home_pages)
+app.register_blueprint(json_pages)
 flask_whooshalchemyplus.whoosh_index(app,PostModel)
 if __name__=="__main__":
     app.run(debug=False)

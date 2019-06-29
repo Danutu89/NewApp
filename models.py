@@ -4,7 +4,7 @@ from sqlalchemy import ForeignKey
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 
-from app import bcrypt, db, db_engine
+from app import bcrypt, db, db_engine,ma
 import flask_whooshalchemyplus
 
 Base = declarative_base()
@@ -106,6 +106,12 @@ class PostModel(db.Model):
 
     def replies(self):
         return db.session.query(ReplyModel).filter_by(post_id=self.id).count()
+
+class PostSchema(ma.Schema):
+    class Meta:
+        fields = ('id','title','text','views','posted_on')
+    
+PostsSchema = PostSchema(many=True)
 
 class ReplyModel(db.Model):
 
