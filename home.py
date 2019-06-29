@@ -2,7 +2,6 @@ from flask import Blueprint, flash, redirect, render_template, request, url_for
 from flask_login import current_user
 from jinja2 import TemplateNotFound
 from sqlalchemy import desc, func
-from sqlalchemy_searchable import search
 
 from app import db, ext
 from forms import (LoginForm, NewQuestionForm, RegisterForm, ReplyForm,
