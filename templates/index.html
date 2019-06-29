@@ -94,14 +94,7 @@
       {% endif %}
     </div>
   </nav>
-
-</header>
-
-<body>
-  <div class="container" id="cont" style="margin-top: 10px;">
-    {% if current_user.is_authenticated %}
-
-    <script>
+  <script>
       $("[data-toggle=popover]").popover({
         html: true,
         content: `
@@ -115,6 +108,13 @@
               `
       });
     </script>
+</header>
+
+<body>
+  <div class="container" id="cont" style="margin-top: 10px;">
+    {% if current_user.is_authenticated %}
+
+    
     {% endif %}
     <script>
       $(document).ready(function () {
