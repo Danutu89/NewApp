@@ -1,4 +1,4 @@
-from flask import Blueprint, flash, redirect, render_template, request, url_for
+from flask import Blueprint, flash, redirect, render_template, request, url_for, make_response
 from flask_login import current_user
 from jinja2 import TemplateNotFound
 from sqlalchemy import desc, func
@@ -137,3 +137,14 @@ def reply(id):
 
     flash('New reply added successfully','success')
     return redirect(url_for('home.post',id=id))
+
+@home_pages.route("/sitemap")
+def sitemap():
+
+    posts = db.session.query(PostModel).all()
+
+    sitemap_xml = render_template('sitemap.xml',posts=posts)
+    response = make_response(sitemap_xml)
+    response.headers['Content-Type'] = "application/xml"
+
+    return response
