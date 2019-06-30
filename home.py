@@ -88,6 +88,7 @@ def home():
 def post(title,id):
     search = SearchForm(request.form)
     reply = ReplyForm(request.form)
+    reset = ResetPasswordForm(request.form)
     posts = db.session.query(PostModel).filter_by(id=id)
     replyes = db.session.query(ReplyModel).filter_by(post_id=id)
     tags = db.session.query(TagModel).filter_by(post_id=id)
