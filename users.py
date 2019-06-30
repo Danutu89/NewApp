@@ -315,7 +315,11 @@ def reset_password():
       background-color: #FF3665;
     }
     .button--blue {
-      background-color: #414EF9;
+        font-family: inherit;
+        text-decoration: none;
+        padding: 5px;
+        color: white;
+        background-color: #2C3E50;
     }
     /*Media Queries ------------------------------ */
     @media only screen and (max-width: 600px) {
