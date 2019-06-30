@@ -13,10 +13,6 @@ home_pages = Blueprint(
     template_folder='home_templates'
 )
 
-@home_pages.route('/css')
-def css():
-    return render_template('style.css')
-
 @home_pages.route("/", methods=['GET','POST'])
 def home():
     login = LoginForm(request.form)
