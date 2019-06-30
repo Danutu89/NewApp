@@ -224,3 +224,30 @@ class ReplyForm(FlaskForm):
             "style":"float:right;"
         }
     )
+
+class ResetPasswordForm(FlaskForm):
+    email = TextField(
+        'ResetPasswordForm_Email',
+        validators = [
+            Email(message=None)
+        ],
+        render_kw = {
+            "class":"form-control",
+            "placeholder":"Email",
+            "style":"margin-top: 5px;"
+        }
+    )
+    password = PasswordField(
+        'ResetPasswordForm_Password',
+        render_kw = {
+            "class":"form-control",
+            "required":"true",
+            "placeholder":"New Password"
+        }
+    )
+    submit = SubmitField(
+        'Request',
+        render_kw = {
+            "class":"btn btn-primary btn-sm",
+        }
+    )

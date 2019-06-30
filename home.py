@@ -5,7 +5,7 @@ from sqlalchemy import desc, func
 
 from app import db, ext
 from forms import (LoginForm, NewQuestionForm, RegisterForm, ReplyForm,
-                   SearchForm)
+                   SearchForm, ResetPasswordForm)
 from models import PostModel, ReplyModel, TagModel, UserModel
 
 home_pages = Blueprint(
@@ -13,7 +13,9 @@ home_pages = Blueprint(
     template_folder='home_templates'
 )
 
-
+@home_pages.route('/css')
+def css():
+    return render_template('style.css')
 
 @home_pages.route("/", methods=['GET','POST'])
 def home():
@@ -21,7 +23,8 @@ def home():
     register = RegisterForm(request.form)
     search_post = SearchForm(request.form)
     new_question = NewQuestionForm(request.form)
-    
+    reset = ResetPasswordForm(request.form)
+
     if request.method == 'POST':
         if new_question.validate_on_submit():
             
@@ -79,9 +82,9 @@ def home():
     replyes = db.session.query(ReplyModel).all()
 
     if current_user.is_authenticated:
-        return render_template('home.html',search=search_post,posts=posts,tags=tags,replyes=replyes,new_question=new_question,popular_posts=popular_posts,most_tags=most_tags)
+        return render_template('home.html', reset=reset,search=search_post,posts=posts,tags=tags,replyes=replyes,new_question=new_question,popular_posts=popular_posts,most_tags=most_tags)
     else:
-        return render_template('home.html', login=login,register=register,search=search_post,posts=posts,tags=tags,replyes=replyes,popular_posts=popular_posts,most_tags=most_tags)
+        return render_template('home.html', reset=reset,login=login,register=register,search=search_post,posts=posts,tags=tags,replyes=replyes,popular_posts=popular_posts,most_tags=most_tags)
 
 
 
@@ -101,11 +104,11 @@ def post(title,id):
         post = db.session.query(PostModel).filter_by(id=id).first()
         post.views += 1
         db.session.commit()
-        return render_template('post.html', reply=reply,posts=posts,replyes=replyes,tags=tags,search=search,popular_posts=popular_posts,most_tags=most_tags)
+        return render_template('post.html', reset=reset, reply=reply,posts=posts,replyes=replyes,tags=tags,search=search,popular_posts=popular_posts,most_tags=most_tags)
     else:
         login = LoginForm(request.form)
         register = RegisterForm(request.form)
-        return render_template('post.html', reply=reply,posts=posts,replyes=replyes,search=search,login=login,tags=tags,register=register,popular_posts=popular_posts,most_tags=most_tags)
+        return render_template('post.html', reset=reset, reply=reply,posts=posts,replyes=replyes,search=search,login=login,tags=tags,register=register,popular_posts=popular_posts,most_tags=most_tags)
 
 @home_pages.route('/post/reply/id=<int:id>', methods=['POST','GET'])
 def reply(id):

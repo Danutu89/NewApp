@@ -1,11 +1,14 @@
 import requests
 from flask import (Blueprint, abort, flash, jsonify, redirect, render_template,
                    request, url_for)
-from flask_login import login_required, login_user, logout_user, current_user
+from flask_login import current_user, login_required, login_user, logout_user
+from flask_mail import Message
 from jinja2 import TemplateNotFound
 
-from app import db
-from forms import LoginForm, ModifyProfileForm, RegisterForm, SearchForm
+from app import (BadSignature, BadTimeSignature, SignatureExpired, db, mail,
+                 serializer)
+from forms import (LoginForm, ModifyProfileForm, RegisterForm,
+                   ResetPasswordForm, SearchForm)
 from models import Gits, PostModel, ReplyModel, UserModel, bcrypt
 
 users_pages = Blueprint(
@@ -105,6 +108,7 @@ def user(name,id):
     search = SearchForm(request.form)
     register = RegisterForm(request.form)
     loginf = LoginForm(request.form)
+    reset = ResetPasswordForm(request.form)
     modify_profile = ModifyProfileForm(request.form)
     user = db.session.query(UserModel).filter_by(id=id).first()
     post_count = db.session.query(PostModel).filter_by(user=id).count()
@@ -121,7 +125,7 @@ def user(name,id):
         for key in respond.keys():
             lan.append(key)
         lang[gits['name']] = lan
-    return render_template('user_page.html',user=user,repos=repos,modify_profile=modify_profile,lang=lang,post_count=post_count,reply_count=reply_count,search=search,register=register,login=loginf)
+    return render_template('user_page.html',user=user,repos=repos,modify_profile=modify_profile,lang=lang,post_count=post_count,reply_count=reply_count,search=search,register=register,login=loginf, reset=reset)
 
 
 @users_pages.route("/user/modify_profile/id=<int:idm>", methods=['GET','POST'])
@@ -144,6 +148,128 @@ def modify_profile(idm):
     db.session.commit()
     flash('Fields updated successfully', 'success')
     return redirect(url_for('users.user',id=idm,name=modify_profile.username.data))
+
+@users_pages.route('/password/reset', methods = ['GET','POST'])
+def reset_password():
+    reset = ResetPasswordForm(request.form)
+
+    if current_user.is_authenticated:
+        return redirect(url_for('home.home'))
+
+    if reset.validate_on_submit() == False:
+        return redirect(url_for('home.home'))
+
+    users = db.session.query(UserModel).filter_by(email=reset.email.data).first()
+
+    if users is None:
+        flash('Invalid Email', 'error')
+        return redirect(url_for('home.home'))
+
+    token = serializer.dumps(reset.email.data,salt='email-confirm')
+
+    msg = Message('Confirm Password Reset', sender='dany89ytro@gmail.com', recipients=[reset.email.data])
+    link = url_for('users.confirm_password',email=reset.email.data ,token=token,passw=reset.password.data ,_external=True)
+    msg.html = '''<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://newapp.nl/css/style.css"></link>
+  <title>Verify your new email address</title>
+</head>
+<body>
+  <table class="email-wrapper" width="100%" cellpadding="0" cellspacing="0">
+    <tbody><tr>
+      <td align="center">
+        <table class="email-content" width="100%" cellpadding="0" cellspacing="0">
+          <!-- Logo -->
+          <tbody><tr>
+            <td class="email-masthead">
+              <a class="email-masthead_name">NewApp</a>
+            </td>
+          </tr>
+          <!-- Email Body -->
+          <tr>
+            <td class="email-body" width="100%">
+              <table class="email-body_inner" align="center" width="570" cellpadding="0" cellspacing="0">
+                <!-- Body content -->
+                <tbody><tr>
+                  <td class="content-cell">
+                    <h1>Password Reset Request</h1>
+                    <p>You recently requested that we change your password. Click the link to verify this is the right email.</p>
+                    <!-- Action -->
+                    <table class="body-action" align="center" width="100%" cellpadding="0" cellspacing="0">
+                      <tbody><tr>
+                        <td align="center">
+                          <div>
+                            <a href="{}" class="button button--blue">Change Password</a>
+                          </div>
+                        </td>
+                      </tr>
+                    </tbody></table>
+                    <p>If you didn't request a change to your password, please let us know at <a href="{}">{}</a>.</p>
+                    <p>Thanks,<br>The NewApp Team</p>
+                    <!-- Sub copy -->
+                    <table class="body-sub">
+                      <tbody><tr>
+                        <td>
+                          <p class="sub">If you’re having trouble clicking the button, copy and paste the URL below into your web browser.
+                          </p>
+                          <p class="sub"><a href="{}">{}</a></p>
+                        </td>
+                      </tr>
+                    </tbody></table>
+                  </td>
+                </tr>
+              </tbody></table>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <table class="email-footer" align="center" width="570" cellpadding="0" cellspacing="0">
+                <tbody><tr>
+                  <td class="content-cell">
+                    <p class="sub center">
+                      NewApp, Inc.
+                      <br></p>
+                  </td>
+                </tr>
+              </tbody></table>
+            </td>
+          </tr>
+        </tbody></table>
+      </td>
+    </tr>
+  </tbody></table>
+
+
+</body></html>'''.format(link,'dany89yt@yahoo.com','dany89yt@yahoo.com',link,link)
+    mail.send(msg)
+
+    flash('Check your email for the password reset request', 'success')
+    return redirect(url_for('home.home'))
+
+@users_pages.route('/password/confirm/<string:email>/<string:token>/<string:passw>', methods = ['GET'])
+def confirm_password(email,token,passw):
+    if current_user.is_authenticated:
+        return redirect(url_for('home.home'))
+
+    try:
+        email = serializer.loads(token,salt='email-confirm', max_age=20)
+    except SignatureExpired:
+        flash('Expired Token', 'error')
+        return redirect(url_for('home.home'))
+    except BadTimeSignature:
+        flash('Invalid Token', 'error')
+        return redirect(url_for('home.home'))
+    except BadSignature:
+        flash('Invalid Token', 'error')
+        return redirect(url_for('home.home'))
+
+    users = db.session.query(UserModel).filter_by(email=email).first()
+    users.password = bcrypt.generate_password_hash(passw).decode('utf-8')
+    db.session.commit()
+
+    flash('Pasword successfully changed', 'success')
+    return redirect(url_for('home.home'))
+
 
 @users_pages.route("/git")
 def get():

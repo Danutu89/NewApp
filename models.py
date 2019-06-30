@@ -59,6 +59,18 @@ class UserModel(db.Model):
     def __repr__(self):
         return ('<name {}').format(self.name)
 
+class UserSchema(ma.Schema):
+    class Meta:
+        fields = ('id','join_date','name','real_name','github_name','email')
+    
+UsersSchema = UserSchema(many=True)
+
+class OUserSchema(ma.Schema):
+    class Meta:
+        fields = ('id','join_date','name','real_name','github_name','email','genre','role','bio')
+    
+OUserSchema = OUserSchema()
+
 class RoleModel(db.Model):
 
     __tablename__ = 'roles'
@@ -112,6 +124,7 @@ class PostSchema(ma.Schema):
         fields = ('id','title','text','views','posted_on')
     
 PostsSchema = PostSchema(many=True)
+OPostSchema = PostSchema()
 
 class ReplyModel(db.Model):
 
@@ -130,6 +143,12 @@ class ReplyModel(db.Model):
 
     def __repr__(self):
         return ('<id {}').format(self.id)
+
+class ReplySchema(ma.Schema):
+    class Meta:
+        fields = ('id','text','post_id','user')
+    
+RepliesSchema = ReplySchema(many=True)
 
 class LikeModel(db.Model):
 

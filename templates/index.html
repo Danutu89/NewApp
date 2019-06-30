@@ -210,6 +210,8 @@
               {{login.username}}
               <br>
               {{login.password}}
+              <h8 style="font-size: 9px">Forgot Password?<a style="color:#18BC9C;cursor: pointer;margin-left: 2px;" data-toggle="modal"
+              data-dismiss="modal" data-target="#reset_password">Click here</a></h8>
               <br>
               {{login.submit}}
             </form>
@@ -217,6 +219,32 @@
           <div class="modal-footer">
             You don`t have an account? <a style="color:#18BC9C;cursor: pointer;margin-left: 5px;" data-toggle="modal"
               data-dismiss="modal" data-target="#register"> Register here</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal" id="reset_password" tabindex="-1" role="dialog">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Reset Password</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form class="form-signin" action="{{url_for('users.reset_password')}}" role="form" method="POST">
+              {{reset.csrf_token}}
+              {{reset.email}}
+              <br>
+              {{reset.password}}
+              <br>
+              {{reset.submit}}
+            </form>
+          </div>
+          <div class="modal-footer">
+            Already have an account? <a style="color:#18BC9C;cursor: pointer;margin-left: 5px;" data-toggle="modal"
+              data-dismiss="modal" data-target="#login"> Login here</a>
           </div>
         </div>
       </div>
