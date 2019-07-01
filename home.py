@@ -145,3 +145,21 @@ def sitemap():
     response.headers['Content-Type'] = "application/xml"
 
     return response
+
+@home_pages.route('/delete/post/<int:id>')
+def delete_post(id):
+    posts = db.session.query(PostModel).filter_by(id=id).first()
+
+    if current_user.is_authenticated == False:
+        return redirect(url_for('home.home'))
+
+    if current_user.id != posts.user_in.id:
+        return redirect(url_for('home.home'))
+
+    if posts.user == current_user.id:
+        db.session.query(PostModel).filter_by(id=id).delete()
+        db.session.query(ReplyModel).filter_by(post_id=id).delete()
+        db.session.query(TagModel).filter_by(post_id=id).delete()
+        db.session.commit()
+        flash('Post successfully deleted', 'success')
+    return redirect(url_for('home.home'))

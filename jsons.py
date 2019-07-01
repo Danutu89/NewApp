@@ -1,5 +1,5 @@
 from flask import Blueprint, jsonify, make_response
-
+import requests
 from app import db
 from models import (OPostSchema, OUserSchema, PostModel, PostsSchema,
                     RepliesSchema, ReplyModel, TagModel, UserModel,
@@ -50,13 +50,15 @@ def user(id):
     response.mimetype = 'application/json'
     return response
 
-@json_pages.route('/api/delete/post/<int:id>')
+@json_pages.route('/api/delete/post/<int:id>', methods=['DELETE'])
 def delete_post(id):
-    db.session.query(PostModel).filter_by(id=id).delete()
-    db.session.query(ReplyModel).filter_by(post_id=id).delete()
-    db.session.query(TagModel).filter_by(post_id=id).delete()
-    db.session.commit()
-    return jsonify({'operation': 'success'})
+    if requests.method == 'DELETE':
+        db.session.query(PostModel).filter_by(id=id).delete()
+        db.session.query(ReplyModel).filter_by(post_id=id).delete()
+        db.session.query(TagModel).filter_by(post_id=id).delete()
+        db.session.commit()
+        return jsonify({'operation': 'success'})
+    return jsonify({'operation': 'invalid_method'})
 
 @json_pages.route('/api/login/<string:name>/<string:password>')
 def login(name, password):

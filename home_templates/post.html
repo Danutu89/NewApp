@@ -28,11 +28,18 @@
         <div class="info" style="display:flex;">
         <h4 style="margin-top: 1%">{{posts[0].title}}</h4>
         <div class="date" style="margin-inline-start: auto;">
+        {% if current_user.is_authenticated %}
+        {% if current_user.id == posts[0].user_in.id %}
+        <a href="{{url_for('home.delete_post', id=posts[0].id)}}"><button type="button" class="btn btn-sm btn-danger">Delete</button></a>
+        {% endif %}
+        {% endif %}
+        <div>
         <h8 style="font-size: 12px;font-weight: 600;">Viewed: </h8>
         <h8 style="font-size: 12px;color: #6c757d;font-weight: 400;">{{posts[0].views}} times</h8>
         <br>
         <h8 style="font-size: 12px;font-weight: 600;">Asked on: </h8>
         <h8 style="font-size: 12px;color: #6c757d;font-weight: 400;">{{posts[0].posted_on}}</h8>
+        </div>
         </div>
         </div>
 
