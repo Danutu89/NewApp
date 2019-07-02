@@ -148,12 +148,15 @@
         }],
     ];
 
-    var quill = new Quill('#editor', {
-        modules: {
-            toolbar: toolbarOptions
-        },
-        theme: 'snow'
-    });
+   function LoadQuill(){
+        var quill = new Quill('#editor', {
+            modules: {
+                toolbar: toolbarOptions
+            },
+            theme: 'snow'
+        });
+    }
+    window.addEventListener("load", LoadQuill, false);
     var submit_entry = function () {
 
         // Get the contents of the text editor

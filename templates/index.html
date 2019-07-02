@@ -10,26 +10,101 @@
     x.appendChild(s);
   }
 </script>
+<script>
+  var cScriptLoader = (function () {
+    function cScriptLoader(files) {
+      var _this = this;
+      this.log = function (t) {
+        console.log("NewApp: " + t);
+      };
+      this.withNoCache = function (filename) {
+        if (filename.indexOf("?") === -1)
+          filename += "?no_cache=" + new Date().getTime();
+        else
+          filename += "&no_cache=" + new Date().getTime();
+        return filename;
+      };
+      this.loadStyle = function (filename) {
+        // HTMLLinkElement
+        var link = document.createElement("link");
+        link.rel = "stylesheet";
+        link.type = "text/css";
+        link.href = _this.withNoCache(filename);
+        _this.log('Loading style ' + filename);
+        link.onload = function () {
+          _this.log('Loaded style "' + filename + '".');
+        };
+        link.onerror = function () {
+          _this.log('Error loading style "' + filename + '".');
+        };
+        _this.m_head.appendChild(link);
+      };
+      this.loadScript = function (i) {
+        var script = document.createElement('script');
+        script.type = 'text/javascript';
+        script.src = _this.withNoCache(_this.m_js_files[i]);
+        var loadNextScript = function () {
+          if (i + 1 < _this.m_js_files.length) {
+            _this.loadScript(i + 1);
+          }
+        };
+        script.onload = function () {
+          _this.log('Loaded script "' + _this.m_js_files[i] + '".');
+          loadNextScript();
+        };
+        script.onerror = function () {
+          _this.log('Error loading script "' + _this.m_js_files[i] + '".');
+          loadNextScript();
+        };
+        _this.log('Loading script "' + _this.m_js_files[i] + '".');
+        _this.m_head.appendChild(script);
+      };
+      this.loadFiles = function () {
+        // this.log(this.m_css_files);
+        // this.log(this.m_js_files);
+        for (var i = 0; i < _this.m_css_files.length; ++i)
+          _this.loadStyle(_this.m_css_files[i]);
+        _this.loadScript(0);
+      };
+      this.m_js_files = [];
+      this.m_css_files = [];
+      this.m_head = document.getElementsByTagName("head")[0];
+      // this.m_head = document.head; // IE9+ only
+      function endsWith(str, suffix) {
+        if (str === null || suffix === null)
+          return false;
+        return str.indexOf(suffix, str.length - suffix.length) !== -1;
+      }
+      for (var i = 0; i < files.length; ++i) {
+        if (endsWith(files[i], ".css")) {
+          this.m_css_files.push(files[i]);
+        } else if (endsWith(files[i], ".js")) {
+          this.m_js_files.push(files[i]);
+        } else
+          this.log('Error unknown filetype "' + files[i] + '".');
+      }
+    }
+    return cScriptLoader;
+  })();
+</script>
 
 <head>
   <title>New App</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css"
-    integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
-  <script async src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-  <script async src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-  <script async src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-  <script async src="https://kit.fontawesome.com/c2bd3dfae5.js"></script>
-  <link rel="stylesheet" href="https://bootswatch.com/4/flatly/bootstrap.css">
-
-  <script src="//cdn.quilljs.com/1.3.6/quill.js"></script>
-  <script src="//cdn.quilljs.com/1.3.6/quill.min.js"></script>
-
-  <link href="//cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
-  <link href="//cdn.quilljs.com/1.3.6/quill.bubble.css" rel="stylesheet">
+  <script>
+    var ScriptLoader = new cScriptLoader([
+      "https://cdn.quilljs.com/1.3.6/quill.snow.css",
+      "https://use.fontawesome.com/releases/v5.8.2/css/all.css",
+      "https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css",
+      "https://bootswatch.com/4/flatly/bootstrap.css",
+      "https://code.jquery.com/jquery-3.3.1.slim.min.js",
+      "https://cdn.quilljs.com/1.3.6/quill.min.js",
+      "https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js",
+      "https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+    ]);
+    var loaded = ScriptLoader.loadFiles();
+  </script>
 
   <style>
     .popover-body {
@@ -78,10 +153,9 @@
         </li>
         {% else %}
         <li class="nav-item">
-          <a class="nav-link" data-toggle="popover" data-dismiss="popover" data-placement="bottom"
-            style="margin-bottom: 0" href="#"> <img style="margin-top: -1px;" title="profile image"
-              class="rounded-circle img-responsive" src="{{current_user.avatar}}" height="25px">
-            <h8>{{current_user.name}}</h8>
+          <a id="nav_img_{{current_user.id}}" class="nav-link" data-toggle="popover" data-dismiss="popover" data-placement="bottom"
+            style="margin-bottom: 0" href="#"> 
+            <h8 id="nav_name_{{current_user.id}}">{{current_user.name}}</h8>
           </a>
           </a>
         </li>
@@ -96,32 +170,47 @@
   <div class="container" id="cont" style="margin-top: 10px;">
     {% if current_user.is_authenticated %}
     <script>
-      document.addEventListener("DOMContentLoaded", function (event) {
-        $(function () {
-          $("[data-toggle=popover]").popover({
+      function isScriptLoaded(src) {
+        return document.querySelector('script[src="' + src + '"]') ? true : false;
+      }
+
+      function LoadPopUp() {
+
+
+        jQuery(document).ready(function ($) {
+
+          jQuery("[data-toggle=popover]").popover({
             html: true,
             content: `
-            <div id="popover-content">
-                        <a class="nav-link" href="{{url_for('users.user',name=current_user.name,id=current_user.id)}}"> <span class="fas fa-user"></span> Profile</a>
-                        <a class="nav-link" href="/logout"> <span class="fas fa-sign-out-alt"></span> Logout</a>   
-                        {% if current_user.role == 10 %}
-                          <a class="nav-link" href="/admin"> <span class="fas fa-user-shield"></span> Admin</a>
-                        {% endif %} 
-                    </div>
-              `
+                <div id="popover-content">
+                            <a class="nav-link" href="{{url_for('users.user',name=current_user.name,id=current_user.id)}}"> <span class="fas fa-user"></span> Profile</a>
+                            <a class="nav-link" href="/logout"> <span class="fas fa-sign-out-alt"></span> Logout</a>   
+                            {% if current_user.role == 10 %}
+                              <a class="nav-link" href="/admin"> <span class="fas fa-user-shield"></span> Admin</a>
+                            {% endif %} 
+                        </div>
+                  `
           });
         });
-      });
+
+
+      }
+      window.addEventListener("load", LoadPopUp, false);
     </script>
 
     {% endif %}
     <script>
-      $(document).ready(function () {
-        // show the alert
-        setTimeout(function () {
-          $(".alert").alert('close');
-        }, 2000);
-      });
+      function LoadAlerts() {
+        jQuery.noConflict();
+        jQuery(document).ready(function ($) {
+          // show the alert
+          setTimeout(function () {
+            jQuery(".alert").alert('close');
+          }, 2000);
+        });
+
+      }
+      window.addEventListener("load", LoadAlerts, false);
     </script>
     <script>
       function Create_Question() {
@@ -133,7 +222,28 @@
         }
       }
     </script>
+    <script>
 
+        window.addEventListener("load", function () {
+            var x = document.createElement("IMG");
+            x.setAttribute("class", "rounded-circle img-responsive");
+            x.setAttribute("src","{{current_user.avatar}}");
+            x.setAttribute("style", "margin-top: -5px;");
+            x.setAttribute("height", "30px");
+            x.setAttribute("title", "profile image");
+            var child = document.getElementById("nav_name_{{current_user.id}}");
+            document.getElementById("nav_img_{{current_user.id}}").insertBefore(x, child);
+        });
+
+</script>
+    <script>
+      function LoadImage(url) {
+        
+        return '<img title="profile image" class="rounded-circle img-responsive" src="'+url+'" height="30px">'
+        
+      }
+      window.addEventListener("load", LoadImage, false);
+    </script>
     {% for success in get_flashed_messages(category_filter=["success"]) %}
     <div class="alert alert-success alert-dismissible fade show" id="success-alert" role="alert">
       <i class="far fa-check-circle"></i>
@@ -202,8 +312,8 @@
               {{login.username}}
               <br>
               {{login.password}}
-              <h8 style="font-size: 9px">Forgot Password?<a style="color:#18BC9C;cursor: pointer;margin-left: 2px;" data-toggle="modal"
-              data-dismiss="modal" data-target="#reset_password">Click here</a></h8>
+              <h8 style="font-size: 9px">Forgot Password?<a style="color:#18BC9C;cursor: pointer;margin-left: 2px;"
+                  data-toggle="modal" data-dismiss="modal" data-target="#reset_password">Click here</a></h8>
               <br>
               {{login.submit}}
             </form>
