@@ -8,6 +8,7 @@ from sqlalchemy import create_engine
 from flask_marshmallow import Marshmallow
 from itsdangerous import URLSafeTimedSerializer, SignatureExpired, BadTimeSignature, BadSignature
 from flask_mail import Mail
+import os
 
 app = Flask(__name__)
 ext = Sitemap(app=app)
