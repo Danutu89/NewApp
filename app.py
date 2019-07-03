@@ -9,7 +9,7 @@ from flask_marshmallow import Marshmallow
 from itsdangerous import URLSafeTimedSerializer, SignatureExpired, BadTimeSignature, BadSignature
 from flask_mail import Mail
 
-app = Flask(__name__)
+app = Flask(__name__,root_path='favicon/')
 ext = Sitemap(app=app)
 ma = Marshmallow(app)
 serializer = URLSafeTimedSerializer('\xce,CH\xc0\xd2K9\xe3\x87\xa0Z\x19\x8a\xcd\xf9\x91\x94\xddN\xff\xaf;r\xef')
