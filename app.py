@@ -41,6 +41,12 @@ from models import UserModel, PostModel
 def load_user(user_id):
     return db.session.query(UserModel).filter(UserModel.id == int(user_id)).first()
 
+
+@app.route('/favicon.ico')
+def favicon():
+    return send_from_directory(os.path.join(app.root_path, 'static'),
+                               'favicon.ico', mimetype='image/vnd.microsoft.icon')
+
 from users import users_pages
 from home import home_pages
 from jsons import json_pages
