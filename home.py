@@ -1,4 +1,4 @@
-from flask import Blueprint, flash, redirect, render_template, request, url_for, make_response, send_from_directory
+from flask import Blueprint, flash, redirect, render_template, request, url_for, make_response
 from flask_login import current_user
 from jinja2 import TemplateNotFound
 from sqlalchemy import desc, func
