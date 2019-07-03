@@ -24,8 +24,6 @@ app.config['MAIL_USE_SSL'] = False
 app.config['MAIL_USE_TLS'] = True
 app.config['MAIL_USERNAME'] = 'dany89ytro@gmail.com'
 app.config['MAIL_PASSWORD'] = 'FCsteaua89'
-app.add_url_rule('/favicon.ico',
-                 redirect_to=url_for('static', filename='favicon.ico'))
 db = SQLAlchemy(app)
 mail = Mail(app)
 db_engine = create_engine('postgresql:///newapp')
