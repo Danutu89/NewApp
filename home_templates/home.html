@@ -151,19 +151,12 @@
     new_post_form.onsubmit = submit_entry;
 </script>
 <script>
-    function LoadImages(id, photo) {
-        window.addEventListener("load", function () {
-            var x = document.createElement("IMG");
-            x.setAttribute("class", "rounded-circle img-responsive");
-            x.setAttribute("src", photo);
-            x.setAttribute("height", "30px");
-            x.setAttribute("title", "profile image");
-            var child = document.getElementById("name_" + id);
-            document.getElementById("img_" + id).insertBefore(x, child);
-        });
-    } 
-    {% for post in posts.items %}
-    LoadImages("{{post.id}}", "{{post.user_in.avatar}}"); 
-    {% endfor %}
+    var posts = [{% for post in posts.items %}{{post.id}},{% endfor %}]
+    var posts_img = [{% for post in posts.items %}"{{post.user_in.avatar}}",{% endfor %}]
+    var i;
+    for (i = 0; i < posts.length; i++) { 
+        LoadImages(posts[i], posts_img[i]); 
+    }
+   
 </script>
 {% endblock %}

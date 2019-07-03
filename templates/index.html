@@ -29,7 +29,7 @@
         var link = document.createElement("link");
         link.rel = "stylesheet";
         link.type = "text/css";
-        link.href = _this.withNoCache(filename);
+        link.href = filename;
         _this.log('Loading style ' + filename);
         link.onload = function () {
           _this.log('Loaded style "' + filename + '".');
@@ -42,7 +42,7 @@
       this.loadScript = function (i) {
         var script = document.createElement('script');
         script.type = 'text/javascript';
-        script.src = _this.withNoCache(_this.m_js_files[i]);
+        script.src = (_this.m_js_files[i]);
         var loadNextScript = function () {
           if (i + 1 < _this.m_js_files.length) {
             _this.loadScript(i + 1);
@@ -153,8 +153,8 @@
         </li>
         {% else %}
         <li class="nav-item">
-          <a id="nav_img_{{current_user.id}}" class="nav-link" data-toggle="popover" data-dismiss="popover" data-placement="bottom"
-            style="margin-bottom: 0" href="#"> 
+          <a id="nav_img_{{current_user.id}}" class="nav-link" data-toggle="popover" data-dismiss="popover"
+            data-placement="bottom" style="margin-bottom: 0" href="#">
             <h8 id="nav_name_{{current_user.id}}">{{current_user.name}}</h8>
           </a>
           </a>
@@ -223,26 +223,42 @@
       }
     </script>
     <script>
-
-        window.addEventListener("load", function () {
-            var x = document.createElement("IMG");
-            x.setAttribute("class", "rounded-circle img-responsive");
-            x.setAttribute("src","{{current_user.avatar}}");
-            x.setAttribute("style", "margin-top: -5px;");
-            x.setAttribute("height", "30px");
-            x.setAttribute("title", "profile image");
-            var child = document.getElementById("nav_name_{{current_user.id}}");
-            document.getElementById("nav_img_{{current_user.id}}").insertBefore(x, child);
-        });
-
-</script>
+      window.addEventListener("load", function () {
+        var x = document.createElement("IMG");
+        x.setAttribute("class", "rounded-circle img-responsive");
+        x.setAttribute("src", "{{current_user.avatar}}");
+        x.setAttribute("style", "margin-top: -5px;margin-right: 5px;");
+        x.setAttribute("height", "30px");
+        x.setAttribute("title", "profile image");
+        var child = document.getElementById("nav_name_{{current_user.id}}");
+        document.getElementById("nav_img_{{current_user.id}}").insertBefore(x, child);
+      });
+    </script>
     <script>
-      function LoadImage(url) {
-        
-        return '<img title="profile image" class="rounded-circle img-responsive" src="'+url+'" height="30px">'
-        
+      function LoadImages(id, photo) {
+        window.addEventListener("load", function () {
+          var x = document.createElement("IMG");
+          x.setAttribute("class", "rounded-circle img-responsive");
+          x.setAttribute("style","margin-right: 5px;");
+          x.setAttribute("src", photo);
+          x.setAttribute("height", "30px");
+          x.setAttribute("title", "profile image");
+          var child = document.getElementById("name_" + id);
+          document.getElementById("img_" + id).insertBefore(x, child);
+        });
       }
-      window.addEventListener("load", LoadImage, false);
+      function LoadReplyImages(id, photo) {
+        window.addEventListener("load", function () {
+          var x = document.createElement("IMG");
+          x.setAttribute("class", "rounded-circle img-responsive");
+          x.setAttribute("style","margin-right: 5px;");
+          x.setAttribute("src", photo);
+          x.setAttribute("height", "30px");
+          x.setAttribute("title", "profile image");
+          var child = document.getElementById("reply_name_" + id);
+          document.getElementById("reply_img_" + id).insertBefore(x, child);
+        });
+      }
     </script>
     {% for success in get_flashed_messages(category_filter=["success"]) %}
     <div class="alert alert-success alert-dismissible fade show" id="success-alert" role="alert">

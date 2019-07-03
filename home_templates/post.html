@@ -58,16 +58,15 @@
                 {% endfor %}
                 {% endif %}
             </div>
-            <div class="author" style="
+            <div id="img_{{posts[0].id}}" class="author" style="
             
             margin-top: 5%;
             margin-inline-start: auto;
             border-radius: 5px;
             padding: 1%;
             background-color: rgb(239, 240, 241);">
-                <img title="profile image" class="rounded-circle img-responsive" src="{{posts[0].user_in.avatar}}"
-                    height="30px">
-                <a style="color: #333"
+                
+                <a id="name_{{posts[0].id}}"  style="color: #333"
                     href="{{url_for('users.user', name=posts[0].user_in.name, id=posts[0].user_in.id )}}">{{posts[0].user_in.name}}</a>
             </div>
         </div>
@@ -78,16 +77,15 @@
 
                 <br>
                 <div class="info" style="display: flex">
-                    <div class="author" style="
+                    <div id="reply_img_{{replies.user_in.id}}" class="author" style="
                 
                 margin-top: 5%;
                 margin-inline-start: auto;
                 border-radius: 5px;
                 padding: 1%;
                 background-color: rgb(239, 240, 241);">
-                        <img title="profile image" class="rounded-circle img-responsive" src="{{replies.user_in.avatar}}"
-                            height="30px">
-                        <a style="color: #333"
+                       
+                        <a id="reply_name_{{replies.user_in.id}}"  style="color: #333"
                             href="{{url_for('users.user', name=replies.user_in.name, id=replies.user_in.id )}}">{{replies.user_in.name}}</a>
                     </div>
                 </div>
@@ -96,7 +94,7 @@
         </div>
         {% if current_user.is_authenticated %}
         <div class="post_reply">
-        <form class="form-reply" id="reply" role="form" method="post" action="{{url_for('home.reply',id=posts[0].id)}}" >  
+        <form class="form-reply" id="reply" role="form" method="post" action="{{url_for('home.reply',id=posts[0].id,title=posts[0].title)}}" >  
             <div class="editor" id="editor" style="margin-bottom:1%;"></div>
             {{reply.csrf_token}}
             {{reply.text}}
@@ -176,5 +174,14 @@
     function titlepage() {
         document.title = '{{posts[0].title}}'
     }
+</script>
+<script>
+    var posts = [{% for replies in replyes %}{{replies.user_in.id}},{% endfor %}]
+    var posts_img = [{% for replies in replyes %}"{{replies.user_in.avatar}}",{% endfor %}]
+    var i;
+    for (i = 0; i < posts.length; i++) { 
+        LoadReplyImages(posts[i], posts_img[i]); 
+    }
+    LoadImages({{posts[0].id}},"{{posts[0].user_in.avatar}}");
 </script>
 {% endblock %}

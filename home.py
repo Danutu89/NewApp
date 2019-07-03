@@ -107,16 +107,16 @@ def post(title,id):
         register = RegisterForm(request.form)
         return render_template('post.html', reset=reset, reply=reply,posts=posts,replyes=replyes,search=search,login=login,tags=tags,register=register,popular_posts=popular_posts,most_tags=most_tags)
 
-@home_pages.route('/post/reply/id=<int:id>', methods=['POST','GET'])
-def reply(id):
+@home_pages.route('/post/reply/id=<int:id>/<string:title>', methods=['POST','GET'])
+def reply(id,title):
 
     if request.method != 'POST':
-        return redirect(url_for('home.post',id=id))
+        return redirect(url_for('home.post',id=id,title=title))
 
     reply = ReplyForm(request.form)
 
     if reply.validate_on_submit() == False:
-        return redirect(url_for('home.post',id=id))
+        return redirect(url_for('home.post',id=id,title=title))
 
     if current_user.is_authenticated == False:
         flash('You need to log in to reply to this post', 'error')
@@ -132,7 +132,7 @@ def reply(id):
     db.session.commit()
 
     flash('New reply added successfully','success')
-    return redirect(url_for('home.post',id=id))
+    return redirect(url_for('home.post',id=id,title=title))
 
 @home_pages.route("/sitemap")
 def sitemap():
