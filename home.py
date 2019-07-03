@@ -1,4 +1,4 @@
-from flask import Blueprint, flash, redirect, render_template, request, url_for, make_response
+from flask import Blueprint, flash, redirect, render_template, request, url_for, make_response, send_from_directory
 from flask_login import current_user
 from jinja2 import TemplateNotFound
 from sqlalchemy import desc, func
@@ -12,6 +12,11 @@ home_pages = Blueprint(
     'home',__name__,
     template_folder='home_templates'
 )
+
+@app.route('/favicon.ico')
+def favicon():
+    return send_from_directory(os.path.join(app.root_path, 'static'),
+                               'favicon.ico', mimetype='image/vnd.microsoft.icon')
 
 @home_pages.route("/", methods=['GET','POST'])
 def home():
