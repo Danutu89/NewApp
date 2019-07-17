@@ -3,10 +3,12 @@ from flask_login import current_user
 from jinja2 import TemplateNotFound
 from sqlalchemy import desc, func
 
-from app import db, ext
+from app import db
 from forms import (LoginForm, NewQuestionForm, RegisterForm, ReplyForm,
                    SearchForm, ResetPasswordForm)
 from models import PostModel, ReplyModel, TagModel, UserModel
+
+import datetime
 
 home_pages = Blueprint(
     'home',__name__,
@@ -32,6 +34,10 @@ def home():
                 None,
                 None,
                 current_user.id,
+                None,
+                True,
+                False,
+                None,
                 None
             )
 
@@ -56,8 +62,7 @@ def home():
     #posts = db.session.query(PostModel).whoosh_search(request.args.get('search')).all()
     post_page = request.args.get('page',1,type=int)
     if request.args.get('search'):
-        posts = PostModel.query.whoosh_search(request.args.get('search'), or_=True).paginate(page=post_page,per_page=9)
-        print(posts.items)
+        posts = PostModel.query.whoosh_search(request.args.get('search')).paginate(page=post_page,per_page=9)
     elif request.args.get('tag_finder'):
         tag_finder = request.args.get('tag_finder')
         tag_posts = db.session.query(TagModel).filter_by(tag=tag_finder).all()
@@ -122,6 +127,12 @@ def reply(id,title):
     if current_user.is_authenticated == False:
         flash('You need to log in to reply to this post', 'error')
 
+    posts = db.session.query(PostModel).filter_by(id=id).first()
+
+    if posts[0].closed:
+        flash('This post is closed you can`t reply', 'error')
+        return redirect(url_for('home.post',title=title,id=id))
+
     new_reply = ReplyModel(
         None,
         reply.text.data,
@@ -163,4 +174,19 @@ def delete_post(id):
         db.session.query(TagModel).filter_by(post_id=id).delete()
         db.session.commit()
         flash('Post successfully deleted', 'success')
+    return redirect(url_for('home.home'))
+
+@home_pages.route('/close/post/<int:id>')
+def close_post(id):
+    posts = db.session.query(PostModel).filter_by(id=id).first()
+
+    if current_user.is_authenticated == False:
+        return redirect(url_for('home.home'))
+
+    if current_user.role == 10:
+        posts.closed = True
+        posts.closed_on = datetime.datetime.now()
+        posts.closed_by = current_user.id
+        db.session.commit()
+        flash('Post successfully closed', 'success')
     return redirect(url_for('home.home'))

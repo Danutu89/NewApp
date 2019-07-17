@@ -24,6 +24,7 @@
         </form>
         {% endif %}
         {% for post in posts.items %}
+        {% if post.approved %}
         <div class="card" style="margin-bottom:10px;">
             <div class="card-body">
                 <div class="row">
@@ -52,6 +53,7 @@
                 </div>
             </div>
         </div>
+        {% endif %}
         {% endfor %}
         {% if posts.pages > 1 %}
         <nav aria-label="Pagination">
@@ -59,8 +61,16 @@
             <ul class="pagination">
                 {% if posts.has_prev %}
                 <li class="page-item">
+                    {% if request.args.get('search') %}
+                    <a class="page-link" href="{{url_for('home.home',page=posts.page-1, search=request.args.get('search'))}}"
+                        aria-disabled="true">Previous</a>
+                    {% elif request.args.get('tag_finder') %}
+                    <a class="page-link" href="{{url_for('home.home',page=posts.page-1, search=request.args.get('tag_finder'))}}"
+                        aria-disabled="true">Previous</a>
+                    {% else %}
                     <a class="page-link" href="{{url_for('home.home',page=posts.page-1)}}"
                         aria-disabled="true">Previous</a>
+                    {% endif %}
                 </li>
                 {% endif %}
                 {% for pages in posts.iter_pages(left_edge=1, right_edge=1, left_current=3, right_current=3) %}
@@ -69,7 +79,13 @@
                 <li class="page-item disabled"><a class="page-link">{{pages}} <span class="sr-only">(current)</span></a>
                 </li>
                 {% else %}
+                {% if request.args.get('search') %}
+                <li class="page-item"><a class="page-link" href="{{url_for('home.home', page=pages, search=request.args.get('search'))}}">{{pages}}</a>
+                {% elif request.args.get('tag_finder') %}
+                <li class="page-item"><a class="page-link" href="{{url_for('home.home', page=pages, search=request.args.get('tag_finder'))}}">{{pages}}</a>
+                {% else %}
                 <li class="page-item"><a class="page-link" href="{{url_for('home.home', page=pages)}}">{{pages}}</a>
+                {% endif %}
                 </li>
                 {% endif %}
                 {% else %}
@@ -77,7 +93,13 @@
                 {% endfor %}
                 {% if posts.has_next %}
                 <li class="page-item">
+                    {% if request.args.get('search') %}
+                    <a class="page-link" href="{{url_for('home.home',page=posts.page+1, search=request.args.get('search'))}}" aria-disabled="true">Next</a>
+                    {% elif request.args.get('tag_finder') %}
+                    <a class="page-link" href="{{url_for('home.home',page=posts.page+1, search=request.args.get('tag_finder'))}}" aria-disabled="true">Next</a>
+                    {% else %}
                     <a class="page-link" href="{{url_for('home.home',page=posts.page+1)}}" aria-disabled="true">Next</a>
+                    {% endif %}
                 </li>
                 {% endif %}
             </ul>
@@ -101,7 +123,7 @@
             <h4>Popular Tags</h4>
             {% for tag in most_tags %}
             {% if tag.tag is not none %}
-            <a href="{{url_for('home.home',tag_finder=tag.tag)}}"><i class="fab fa-{{tag.tag}}"></i> <span
+            <a style="text-decoration: none;" href="{{url_for('home.home',tag_finder=tag.tag)}}"><i class="fab fa-{{tag.tag}}"></i> <span
                     class="badge badge-light" style="font-size: 12px;"> {{tag.tag}}</span></a>
             <br>
             {% endif %}
@@ -140,13 +162,9 @@
     }
     window.addEventListener("load", LoadQuill, false);
     var submit_entry = function () {
-
-        // Get the contents of the text editor
         var hidden_text_field = document.getElementById('text');
         hidden_text_field.value = document.querySelector(".ql-editor").innerHTML
     }
-
-    // Attach the onclick function to the submit button Flask-WTF creates
     var new_post_form = document.getElementsByClassName('form-thread')[0];
     new_post_form.onsubmit = submit_entry;
 </script>

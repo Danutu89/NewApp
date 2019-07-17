@@ -1,0 +1,150 @@
+*** flask_whooshalchemy_original/flask_whooshalchemy.py	2018-12-04 11:10:17.474947690 +0100
+--- flask_whooshalchemy_enzo/flask_whooshalchemy.py	2018-12-04 15:18:42.591616140 +0100
+***************
+*** 9,22 ****
+      :copyright: (c) 2012 by Karl Gyllstrom
+      :license: BSD (see LICENSE.txt)
+  
+  '''
+  
+  from __future__ import with_statement
+  from __future__ import absolute_import
+  
+  
+! import flask.ext.sqlalchemy as flask_sqlalchemy
+! 
+  import sqlalchemy
+  
+  from whoosh.qparser import OrGroup
+--- 9,26 ----
+      :copyright: (c) 2012 by Karl Gyllstrom
+      :license: BSD (see LICENSE.txt)
+  
++     Oct 2018 - modified to implement correct results with paginate()
++ 
++     Oct 2018 - modified session management to avoid the following error:
++                > sqlalchemy.exc.InvalidRequestError: Object '***'
++                > is already attached to session '1' (this is '2')
+  '''
+  
+  from __future__ import with_statement
+  from __future__ import absolute_import
+  
+  
+! import flask_sqlalchemy
+  import sqlalchemy
+  
+  from whoosh.qparser import OrGroup
+***************
+*** 63,78 ****
+  
+              return super_iter
+  
+          # Iterate through the values and re-order by whoosh relevance.
+          ordered_by_whoosh_rank = []
+  
+!         for row in super_iter:
+              # Push items onto heap, where sort value is the rank provided by
+              # Whoosh
+  
+!             heapq.heappush(ordered_by_whoosh_rank,
+!                 (self._whoosh_rank[unicode(getattr(row,
+!                     self._primary_key_name))], row))
+  
+          def _inner():
+              while ordered_by_whoosh_rank:
+--- 67,91 ----
+  
+              return super_iter
+  
++         super_rows = list(super_iter)
++ 
+          # Iterate through the values and re-order by whoosh relevance.
+          ordered_by_whoosh_rank = []
+  
+!         for row in super_rows:
+              # Push items onto heap, where sort value is the rank provided by
+              # Whoosh
+  
+!             #heapq.heappush(ordered_by_whoosh_rank,
+!             #    (self._whoosh_rank[str(getattr(row,
+!             #        self._primary_key_name))], row))
+!             if hasattr(row, self._primary_key_name):
+!                 heapq.heappush(ordered_by_whoosh_rank,
+!                     (self._whoosh_rank[str(getattr(row,
+!                         self._primary_key_name))], row))
+!             else:
+!                 # PK column not found in result row
+!                 return iter(super_rows)
+  
+          def _inner():
+              while ordered_by_whoosh_rank:
+***************
+*** 100,107 ****
+  
+          '''
+              
+!         if not isinstance(query, unicode):
+!             query = unicode(query)
+  
+          results = self._whoosh_searcher(query, limit, fields, or_)
+  
+--- 113,120 ----
+  
+          '''
+              
+!         if not isinstance(query, str):
+!             query = str(query)
+  
+          results = self._whoosh_searcher(query, limit, fields, or_)
+  
+***************
+*** 236,242 ****
+              bytype.setdefault(change[0].__class__.__name__, []).append((update,
+                  change[0]))
+  
+!     for model, values in bytype.iteritems():
+          index = whoosh_index(app, values[0][1].__class__)
+          with index.writer() as writer:
+              primary_field = values[0][1].pure_whoosh.primary_key_name
+--- 249,255 ----
+              bytype.setdefault(change[0].__class__.__name__, []).append((update,
+                  change[0]))
+  
+!     for model, values in bytype.items():
+          index = whoosh_index(app, values[0][1].__class__)
+          with index.writer() as writer:
+              primary_field = values[0][1].pure_whoosh.primary_key_name
+***************
+*** 247,261 ****
+                      attrs = {}
+                      for key in searchable:
+                          try:
+!                             attrs[key] = unicode(getattr(v, key))
+                          except AttributeError:
+                              raise AttributeError('{0} does not have {1} field {2}'
+                                      .format(model, __searchable__, key))
+  
+!                     attrs[primary_field] = unicode(getattr(v, primary_field))
+                      writer.update_document(**attrs)
+                  else:
+!                     writer.delete_by_term(primary_field, unicode(getattr(v,
+                          primary_field)))
+  
+  
+--- 260,274 ----
+                      attrs = {}
+                      for key in searchable:
+                          try:
+!                             attrs[key] = str(getattr(v, key))
+                          except AttributeError:
+                              raise AttributeError('{0} does not have {1} field {2}'
+                                      .format(model, __searchable__, key))
+  
+!                     attrs[primary_field] = str(getattr(v, primary_field))
+                      writer.update_document(**attrs)
+                  else:
+!                     writer.delete_by_term(primary_field, str(getattr(v,
+                          primary_field)))
+  
+  

@@ -1,5 +1,19 @@
 {% extends "index.html" %}
 {% block content %}
+<style>
+    .card:hover{
+        box-shadow: 5px 5px 15px -10px rgba(0,0,0,0.75);
+        transition: box-shadow 0.2s ease-in-out;
+    }
+    .text-muted{
+        background-color: rgba(0, 0, 0, 0.03) !important;
+        color: #212529 !important;
+    }
+    .list-group:hover{
+        box-shadow: 5px 5px 15px -10px rgba(0,0,0,0.75);
+        transition: box-shadow 0.2s ease-in-out;
+    }
+</style>
 <br>
 <div class="container target">
     <div class="row">
@@ -53,7 +67,9 @@
                     Social Media
                 </div>
                 <div class="card-body">
+                    {% if user.github_name %}
                     <a href="https://github.com/{{user.github_name}}"><span class="fab fa-github fa-2x"></span></a>
+                    {% endif %}
                 </div>
             </div>
         </div>
@@ -69,6 +85,7 @@
                 </div>
             </div>
             <hr>
+            {% if user.github_name %}
             {% for gits in repos %}
             <div class="card-columns">
                 <div class="card" style="width: 18rem;">
@@ -86,6 +103,7 @@
                 </div>
             </div>
             {% endfor %}
+            {% endif %}
         </div>
 
         <div class="modal" id="modify_profile" tabindex="-1" role="dialog">
@@ -111,6 +129,10 @@
                             <br>
                             {{modify_profile.avatar(value=user.avatar)}}
                             <br>
+                            <div class="custom-file" style="margin-bottom: 4%;">
+                                {{modify_profile.avatarimg}}
+                                <label class="custom-file-label" for="customFile">Choose file</label>
+                            </div>
                             {{modify_profile.genre(value=user.genre)}}
                             <br>
                     </div>

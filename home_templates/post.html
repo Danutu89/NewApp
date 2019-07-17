@@ -31,6 +31,14 @@
         {% if current_user.is_authenticated %}
         {% if current_user.id == posts[0].user_in.id %}
         <a href="{{url_for('home.delete_post', id=posts[0].id)}}"><button type="button" class="btn btn-sm btn-danger">Delete</button></a>
+        {% if posts[0].closed == False %}
+        <a href="{{url_for('home.close_post', id=posts[0].id)}}"><button type="button" class="btn btn-sm btn-danger">Close</button></a>
+        {% endif %}
+        {% elif current_user.role == 10 %}
+        <a href="{{url_for('home.delete_post', id=posts[0].id)}}"><button type="button" class="btn btn-sm btn-danger">Delete</button></a>
+        {% if posts[0].closed == False %}
+        <a href="{{url_for('home.close_post', id=posts[0].id)}}"><button type="button" class="btn btn-sm btn-danger">Close</button></a>
+        {% endif %}
         {% endif %}
         {% endif %}
         <div>
@@ -93,6 +101,7 @@
             {% endfor %}
         </div>
         {% if current_user.is_authenticated %}
+        {% if posts[0].closed == False %}
         <div class="post_reply">
         <form class="form-reply" id="reply" role="form" method="post" action="{{url_for('home.reply',id=posts[0].id,title=posts[0].title)}}" >  
             <div class="editor" id="editor" style="margin-bottom:1%;"></div>
@@ -101,6 +110,16 @@
             {{reply.submit}}
             </form>
         </div>
+        {% else %}
+        <div class="card">
+            <div class="card-body">
+                <p>
+                    <i class="fas fa-lock"></i>
+                    Post closed by {{posts[0].closed_by_name()}} on {{posts[0].closed_on}}
+                </p>
+            </div>
+        </div>
+        {% endif %}
         {% endif %}
     </div>
     <div class="col-md-3" style="min-width:310px;width:100%;">
@@ -118,7 +137,7 @@
             <h4>Popular Tags</h4>
             {% for tag in most_tags %}
                 {% if tag.tag is not none %}
-                    <a href="{{url_for('home.home',tag_finder=tag.tag)}}"><i class="fab fa-{{tag.tag}}"></i> <span class="badge badge-light" style="font-size: 12px;"> {{tag.tag}}</span></a>
+                    <a style="text-decoration: none;" href="{{url_for('home.home',tag_finder=tag.tag)}}"><i class="fab fa-{{tag.tag}}"></i> <span class="badge badge-light" style="font-size: 12px;"> {{tag.tag}}</span></a>
                     <br>
                 {% endif %}
             {% endfor %}
@@ -156,18 +175,15 @@
     }
     window.addEventListener("load", LoadQuill, false);
     var submit_entry = function () {
-
-        // Get the contents of the text editor
         var hidden_text_field = document.getElementById('text');
         hidden_text_field.value = document.querySelector(".ql-editor").innerHTML
     }
 
-    // Attach the onclick function to the submit button Flask-WTF creates
     var new_post_form = document.getElementsByClassName('form-reply')[0];
     new_post_form.onsubmit = submit_entry;
 </script>
 <script>
-    $(document).ready(function () {
+    window.addEventListener("load", function () {
         titlepage();
     });
 
@@ -175,6 +191,13 @@
         document.title = '{{posts[0].title}}'
     }
 </script>
+<script>
+    window.addEventListener("load", function () {
+      document.querySelectorAll('pre').forEach((block) => {
+        hljs.highlightBlock(block);
+      });
+    });
+  </script>
 <script>
     var posts = [{% for replies in replyes %}{{replies.user_in.id}},{% endfor %}]
     var posts_img = [{% for replies in replyes %}"{{replies.user_in.avatar}}",{% endfor %}]

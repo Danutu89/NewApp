@@ -1,33 +1,46 @@
-from flask import Flask, flash, redirect, render_template, request, url_for,send_from_directory
+from flask import Flask, flash, redirect, render_template, request, url_for,send_from_directory, Blueprint
 from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
 from flask_login import LoginManager
-from flask_sitemap import Sitemap
-import flask_whooshalchemyplus
+import flask_whooshalchemy
 from sqlalchemy import create_engine
+from marshmallow import fields
 from flask_marshmallow import Marshmallow
 from itsdangerous import URLSafeTimedSerializer, SignatureExpired, BadTimeSignature, BadSignature
 from flask_mail import Mail
 import os
+from cryptography.fernet import Fernet
+
+
+key_c = #Key
+key_cr = #Key
+
+key_jwt = {
+  "kty": "oct",
+  "use": "enc",
+  "kid": "1",
+  "k": #Key
+  "alg": #Algorithm
+}
 
 app = Flask(__name__)
-ext = Sitemap(app=app)
 ma = Marshmallow(app)
-serializer = URLSafeTimedSerializer('\xce,CH\xc0\xd2K9\xe3\x87\xa0Z\x19\x8a\xcd\xf9\x91\x94\xddN\xff\xaf;r\xef')
+serializer = URLSafeTimedSerializer(key_c)
 
-app.secret_key = '\xce,CH\xc0\xd2K9\xe3\x87\xa0Z\x19\x8a\xcd\xf9\x91\x94\xddN\xff\xaf;r\xef'
-app.config['SQLALCHEMY_DATABASE_URI'] = "postgresql:///newapp"
+
+app.secret_key = key_c
+app.config['SQLALCHEMY_DATABASE_URI'] = #Database
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 app.config['WHOOSH_BASE'] = 'whoosh'
-app.config['MAIL_SERVER'] = 'smtp.gmail.com'
-app.config['MAIL_PORT'] = 587
-app.config['MAIL_USE_SSL'] = False
-app.config['MAIL_USE_TLS'] = True
-app.config['MAIL_USERNAME'] = 'dany89ytro@gmail.com'
-app.config['MAIL_PASSWORD'] = 'FCsteaua89'
+app.config['MAIL_SERVER'] = #Server
+app.config['MAIL_PORT'] = 465
+app.config['MAIL_USE_SSL'] = True
+app.config['MAIL_USERNAME'] = #Email
+app.config['MAIL_PASSWORD'] = #Pass
+app.config['JWT_ALGORITHM'] = #Algorithm
 db = SQLAlchemy(app)
 mail = Mail(app)
-db_engine = create_engine('postgresql:///newapp')
+db_engine = create_engine(#Database)
 db.configure_mappers()
 db.create_all()
 bcrypt = Bcrypt(app)
@@ -35,6 +48,8 @@ login_manager = LoginManager()
 login_manager.init_app(app)
 
 login_manager.login_view = "home.home"
+
+cipher_suite = Fernet(key_cr)
 
 from models import UserModel, PostModel
 
@@ -55,8 +70,19 @@ from jsons import json_pages
 app.register_blueprint(users_pages)
 app.register_blueprint(home_pages)
 app.register_blueprint(json_pages)
-flask_whooshalchemyplus.whoosh_index(app,PostModel)
+
+flask_whooshalchemy.whoosh_index(app,PostModel)
+
+def Launched():
+    print ('NewApp Launched successfully')
+    print ('Security keys')
+    print ('Session keys')
+    print (key_c)
+    print ('Cryptography key')
+    print (key_cr)
+
 if __name__=="__main__":
+    Launched()
     app.run(debug=False)
 
 

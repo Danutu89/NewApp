@@ -2,6 +2,7 @@ from flask_wtf import FlaskForm
 from wtforms import (BooleanField, HiddenField, PasswordField, SelectField,
                      StringField, SubmitField, TextAreaField, TextField)
 from wtforms.validators import Email, EqualTo, Length
+from flask_wtf.file import FileField, FileRequired, FileAllowed
 
 
 class RegisterForm(FlaskForm):
@@ -49,8 +50,7 @@ class RegisterForm(FlaskForm):
         ],
         render_kw = {
             "class":"form-control",
-            "required":"true",
-            "placeholder":"Github Name"
+            "placeholder":"Github Name (Optional)"
         }
     )
     password = PasswordField(
@@ -152,6 +152,15 @@ class ModifyProfileForm(FlaskForm):
             "class":"form-control",
             "placeholder":"Avatar Link"
         }
+    )
+    avatarimg = FileField(
+        'Profile Picture',
+        validators=[FileAllowed(['png','jpg','jpeg'])],
+        render_kw = {
+            "class":"custom-file-input",
+            "id":"customFile"
+        }
+        
     )
     genre = SelectField(
         choices=[('Male','Male'),('Female','Female')],

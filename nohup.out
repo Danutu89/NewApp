@@ -1,0 +1,1496 @@
+[2019-06-29 04:24:09 -0400] [9394] [INFO] Starting gunicorn 19.9.0
+[2019-06-29 04:24:09 -0400] [9394] [INFO] Listening at: http://127.0.0.1:8000 (9394)
+[2019-06-29 04:24:09 -0400] [9394] [INFO] Using worker: sync
+[2019-06-29 04:24:09 -0400] [9397] [INFO] Booting worker with pid: 9397
+[2019-06-29 04:24:09 -0400] [9397] [ERROR] Exception in worker process
+Traceback (most recent call last):
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/gunicorn/arbiter.py", line 583, in spawn_worker
+    worker.init_process()
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/gunicorn/workers/base.py", line 129, in init_process
+    self.load_wsgi()
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/gunicorn/workers/base.py", line 138, in load_wsgi
+    self.wsgi = self.app.wsgi()
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/gunicorn/app/base.py", line 67, in wsgi
+    self.callable = self.load()
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/gunicorn/app/wsgiapp.py", line 52, in load
+    return self.load_wsgiapp()
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/gunicorn/app/wsgiapp.py", line 41, in load_wsgiapp
+    return util.import_app(self.app_uri)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/gunicorn/util.py", line 350, in import_app
+    __import__(module)
+ModuleNotFoundError: No module named '0'
+[2019-06-29 04:24:09 -0400] [9397] [INFO] Worker exiting (pid: 9397)
+[2019-06-29 04:24:09 -0400] [9394] [INFO] Shutting down: Master
+[2019-06-29 04:24:09 -0400] [9394] [INFO] Reason: Worker failed to boot.
+[2019-06-29 07:26:10 -0400] [21218] [INFO] Starting gunicorn 19.9.0
+[2019-06-29 07:26:10 -0400] [21218] [INFO] Listening at: http://0.0.0.0:8000 (21218)
+[2019-06-29 07:26:10 -0400] [21218] [INFO] Using worker: sync
+[2019-06-29 07:26:10 -0400] [21221] [INFO] Booting worker with pid: 21221
+[2019-06-29 07:26:10 -0400] [21222] [INFO] Booting worker with pid: 21222
+[2019-06-29 07:26:10 -0400] [21223] [INFO] Booting worker with pid: 21223
+[2019-06-29 07:26:10 -0400] [21224] [INFO] Booting worker with pid: 21224
+[2019-06-29 07:26:10 -0400] [21225] [INFO] Booting worker with pid: 21225
+[2019-06-29 07:26:14 -0400] [21218] [INFO] Handling signal: hup
+[2019-06-29 07:26:14 -0400] [21218] [INFO] Hang up: Master
+[2019-06-29 07:26:14 -0400] [21241] [INFO] Booting worker with pid: 21241
+[2019-06-29 07:26:14 -0400] [21242] [INFO] Booting worker with pid: 21242
+[2019-06-29 07:26:14 -0400] [21243] [INFO] Booting worker with pid: 21243
+[2019-06-29 07:26:14 -0400] [21245] [INFO] Booting worker with pid: 21245
+[2019-06-29 07:26:14 -0400] [21244] [INFO] Booting worker with pid: 21244
+[2019-06-29 07:26:14 -0400] [21218] [INFO] Handling signal: hup
+[2019-06-29 07:26:14 -0400] [21218] [INFO] Hang up: Master
+[2019-06-29 07:26:15 -0400] [21246] [INFO] Booting worker with pid: 21246
+[2019-06-29 07:26:15 -0400] [21247] [INFO] Booting worker with pid: 21247
+[2019-06-29 07:26:15 -0400] [21248] [INFO] Booting worker with pid: 21248
+[2019-06-29 07:26:15 -0400] [21249] [INFO] Booting worker with pid: 21249
+[2019-06-29 07:26:15 -0400] [21250] [INFO] Booting worker with pid: 21250
+[2019-06-29 07:26:24 -0400] [21243] [INFO] Worker exiting (pid: 21243)
+[2019-06-29 07:26:24 -0400] [21242] [INFO] Worker exiting (pid: 21242)
+[2019-06-29 07:26:24 -0400] [21241] [INFO] Worker exiting (pid: 21241)
+[2019-06-29 07:26:24 -0400] [21244] [INFO] Worker exiting (pid: 21244)
+[2019-06-29 07:26:24 -0400] [21245] [INFO] Worker exiting (pid: 21245)
+[2019-06-29 07:35:05 -0400] [21218] [INFO] Handling signal: term
+[2019-06-29 07:35:05 -0400] [21246] [INFO] Worker exiting (pid: 21246)
+[2019-06-29 07:35:05 -0400] [21247] [INFO] Worker exiting (pid: 21247)
+[2019-06-29 07:35:05 -0400] [21248] [INFO] Worker exiting (pid: 21248)
+[2019-06-29 07:35:05 -0400] [21249] [INFO] Worker exiting (pid: 21249)
+[2019-06-29 07:35:05 -0400] [21250] [INFO] Worker exiting (pid: 21250)
+[2019-06-29 07:35:06 -0400] [21218] [INFO] Shutting down: Master
+[2019-06-29 09:25:36 -0400] [24113] [INFO] Starting gunicorn 19.9.0
+[2019-06-29 09:25:36 -0400] [24113] [INFO] Listening at: http://0.0.0.0:8000 (24113)
+[2019-06-29 09:25:36 -0400] [24113] [INFO] Using worker: sync
+[2019-06-29 09:25:36 -0400] [24116] [INFO] Booting worker with pid: 24116
+[2019-06-29 09:25:36 -0400] [24117] [INFO] Booting worker with pid: 24117
+[2019-06-29 09:25:36 -0400] [24119] [INFO] Booting worker with pid: 24119
+[2019-06-29 09:25:36 -0400] [24120] [INFO] Booting worker with pid: 24120
+[2019-06-29 09:25:36 -0400] [24121] [INFO] Booting worker with pid: 24121
+[2019-06-29 09:25:39 -0400] [24113] [INFO] Handling signal: hup
+[2019-06-29 09:25:39 -0400] [24113] [INFO] Hang up: Master
+[2019-06-29 09:25:39 -0400] [24128] [INFO] Booting worker with pid: 24128
+[2019-06-29 09:25:39 -0400] [24129] [INFO] Booting worker with pid: 24129
+[2019-06-29 09:25:39 -0400] [24130] [INFO] Booting worker with pid: 24130
+[2019-06-29 09:25:39 -0400] [24131] [INFO] Booting worker with pid: 24131
+[2019-06-29 09:25:39 -0400] [24132] [INFO] Booting worker with pid: 24132
+[2019-06-29 13:55:28 -0400] [24113] [INFO] Handling signal: term
+[2019-06-29 13:55:28 -0400] [24128] [INFO] Worker exiting (pid: 24128)
+[2019-06-29 13:55:28 -0400] [24129] [INFO] Worker exiting (pid: 24129)
+[2019-06-29 13:55:28 -0400] [24130] [INFO] Worker exiting (pid: 24130)
+[2019-06-29 13:55:28 -0400] [24131] [INFO] Worker exiting (pid: 24131)
+[2019-06-29 13:55:28 -0400] [24132] [INFO] Worker exiting (pid: 24132)
+[2019-06-29 13:55:28 -0400] [24113] [INFO] Shutting down: Master
+[2019-06-30 12:30:53 -0400] [14445] [INFO] Starting gunicorn 19.9.0
+[2019-06-30 12:30:53 -0400] [14445] [INFO] Listening at: http://0.0.0.0:8000 (14445)
+[2019-06-30 12:30:53 -0400] [14445] [INFO] Using worker: sync
+[2019-06-30 12:30:53 -0400] [14448] [INFO] Booting worker with pid: 14448
+[2019-06-30 12:30:53 -0400] [14449] [INFO] Booting worker with pid: 14449
+[2019-06-30 12:30:53 -0400] [14450] [INFO] Booting worker with pid: 14450
+[2019-06-30 12:30:53 -0400] [14451] [INFO] Booting worker with pid: 14451
+[2019-06-30 12:30:53 -0400] [14452] [INFO] Booting worker with pid: 14452
+[2019-06-30 12:30:56 -0400] [14445] [INFO] Handling signal: hup
+[2019-06-30 12:30:56 -0400] [14445] [INFO] Hang up: Master
+[2019-06-30 12:30:56 -0400] [14459] [INFO] Booting worker with pid: 14459
+[2019-06-30 12:30:56 -0400] [14460] [INFO] Booting worker with pid: 14460
+[2019-06-30 12:30:56 -0400] [14461] [INFO] Booting worker with pid: 14461
+[2019-06-30 12:30:57 -0400] [14462] [INFO] Booting worker with pid: 14462
+[2019-06-30 12:30:57 -0400] [14463] [INFO] Booting worker with pid: 14463
+[2019-07-01 01:45:17 -0400] [14445] [INFO] Handling signal: term
+[2019-07-01 01:45:17 -0400] [14460] [INFO] Worker exiting (pid: 14460)
+[2019-07-01 01:45:17 -0400] [14463] [INFO] Worker exiting (pid: 14463)
+[2019-07-01 01:45:17 -0400] [14461] [INFO] Worker exiting (pid: 14461)
+[2019-07-01 01:45:17 -0400] [14462] [INFO] Worker exiting (pid: 14462)
+[2019-07-01 01:45:17 -0400] [14459] [INFO] Worker exiting (pid: 14459)
+[2019-07-01 01:45:18 -0400] [14445] [INFO] Shutting down: Master
+[2019-07-02 00:30:12 -0400] [7435] [INFO] Starting gunicorn 19.9.0
+[2019-07-02 00:30:12 -0400] [7435] [INFO] Listening at: http://0.0.0.0:8000 (7435)
+[2019-07-02 00:30:12 -0400] [7435] [INFO] Using worker: sync
+[2019-07-02 00:30:12 -0400] [7438] [INFO] Booting worker with pid: 7438
+[2019-07-02 00:30:12 -0400] [7439] [INFO] Booting worker with pid: 7439
+[2019-07-02 00:30:12 -0400] [7440] [INFO] Booting worker with pid: 7440
+[2019-07-02 00:30:12 -0400] [7442] [INFO] Booting worker with pid: 7442
+[2019-07-02 00:30:13 -0400] [7443] [INFO] Booting worker with pid: 7443
+[2019-07-02 00:30:15 -0400] [7435] [INFO] Handling signal: hup
+[2019-07-02 00:30:15 -0400] [7435] [INFO] Hang up: Master
+[2019-07-02 00:30:15 -0400] [7448] [INFO] Booting worker with pid: 7448
+[2019-07-02 00:30:15 -0400] [7449] [INFO] Booting worker with pid: 7449
+[2019-07-02 00:30:15 -0400] [7450] [INFO] Booting worker with pid: 7450
+[2019-07-02 00:30:15 -0400] [7451] [INFO] Booting worker with pid: 7451
+[2019-07-02 00:30:15 -0400] [7452] [INFO] Booting worker with pid: 7452
+[2019-07-03 11:02:56 -0400] [7435] [INFO] Handling signal: term
+[2019-07-03 11:02:56 -0400] [7452] [INFO] Worker exiting (pid: 7452)
+[2019-07-03 11:02:56 -0400] [7451] [INFO] Worker exiting (pid: 7451)
+[2019-07-03 11:02:56 -0400] [7449] [INFO] Worker exiting (pid: 7449)
+[2019-07-03 11:02:56 -0400] [7450] [INFO] Worker exiting (pid: 7450)
+[2019-07-03 11:02:56 -0400] [7448] [INFO] Worker exiting (pid: 7448)
+[2019-07-03 11:02:57 -0400] [7435] [INFO] Shutting down: Master
+[2019-07-03 19:14:58 -0400] [6926] [INFO] Starting gunicorn 19.9.0
+[2019-07-03 19:14:58 -0400] [6926] [INFO] Listening at: http://0.0.0.0:8000 (6926)
+[2019-07-03 19:14:58 -0400] [6926] [INFO] Using worker: sync
+[2019-07-03 19:14:58 -0400] [6929] [INFO] Booting worker with pid: 6929
+[2019-07-03 19:14:58 -0400] [6930] [INFO] Booting worker with pid: 6930
+[2019-07-03 19:14:58 -0400] [6931] [INFO] Booting worker with pid: 6931
+[2019-07-03 19:14:58 -0400] [6932] [INFO] Booting worker with pid: 6932
+[2019-07-03 19:14:58 -0400] [6933] [INFO] Booting worker with pid: 6933
+[2019-07-03 19:15:12 -0400] [6926] [INFO] Handling signal: hup
+[2019-07-03 19:15:12 -0400] [6926] [INFO] Hang up: Master
+[2019-07-03 19:15:12 -0400] [6960] [INFO] Booting worker with pid: 6960
+[2019-07-03 19:15:12 -0400] [6961] [INFO] Booting worker with pid: 6961
+[2019-07-03 19:15:12 -0400] [6962] [INFO] Booting worker with pid: 6962
+[2019-07-03 19:15:12 -0400] [6964] [INFO] Booting worker with pid: 6964
+[2019-07-03 19:15:12 -0400] [6963] [INFO] Booting worker with pid: 6963
+[2019-07-03 19:15:12 -0400] [6926] [INFO] Handling signal: hup
+[2019-07-03 19:15:12 -0400] [6926] [INFO] Hang up: Master
+[2019-07-03 19:15:12 -0400] [6965] [INFO] Booting worker with pid: 6965
+[2019-07-03 19:15:12 -0400] [6966] [INFO] Booting worker with pid: 6966
+[2019-07-03 19:15:12 -0400] [6967] [INFO] Booting worker with pid: 6967
+[2019-07-03 19:15:12 -0400] [6968] [INFO] Booting worker with pid: 6968
+[2019-07-03 19:15:12 -0400] [6969] [INFO] Booting worker with pid: 6969
+[2019-07-03 19:15:26 -0400] [6963] [INFO] Worker exiting (pid: 6963)
+[2019-07-03 19:15:26 -0400] [6964] [INFO] Worker exiting (pid: 6964)
+[2019-07-03 19:15:26 -0400] [6962] [INFO] Worker exiting (pid: 6962)
+[2019-07-03 19:15:26 -0400] [6961] [INFO] Worker exiting (pid: 6961)
+[2019-07-03 19:15:26 -0400] [6960] [INFO] Worker exiting (pid: 6960)
+[2019-07-04 10:06:47 -0400] [6926] [INFO] Handling signal: term
+[2019-07-04 10:06:47 -0400] [6968] [INFO] Worker exiting (pid: 6968)
+[2019-07-04 10:06:47 -0400] [6965] [INFO] Worker exiting (pid: 6965)
+[2019-07-04 10:06:47 -0400] [6967] [INFO] Worker exiting (pid: 6967)
+[2019-07-04 10:06:47 -0400] [6969] [INFO] Worker exiting (pid: 6969)
+[2019-07-04 10:06:47 -0400] [6966] [INFO] Worker exiting (pid: 6966)
+[]
+[2019-07-04 10:06:48 -0400] [6926] [INFO] Shutting down: Master
+[2019-07-04 10:36:35 -0400] [18862] [INFO] Starting gunicorn 19.9.0
+[2019-07-04 10:36:35 -0400] [18862] [INFO] Listening at: http://0.0.0.0:8000 (18862)
+[2019-07-04 10:36:35 -0400] [18862] [INFO] Using worker: sync
+[2019-07-04 10:36:35 -0400] [18865] [INFO] Booting worker with pid: 18865
+[2019-07-04 10:36:35 -0400] [18866] [INFO] Booting worker with pid: 18866
+[2019-07-04 10:36:35 -0400] [18867] [INFO] Booting worker with pid: 18867
+[2019-07-04 10:36:35 -0400] [18868] [INFO] Booting worker with pid: 18868
+[2019-07-04 10:36:35 -0400] [18869] [INFO] Booting worker with pid: 18869
+[2019-07-04 13:53:43 -0400] [18862] [INFO] Handling signal: hup
+[2019-07-04 13:53:43 -0400] [18862] [INFO] Hang up: Master
+[2019-07-04 13:53:43 -0400] [20438] [INFO] Booting worker with pid: 20438
+[2019-07-04 13:53:43 -0400] [20439] [INFO] Booting worker with pid: 20439
+[2019-07-04 13:53:43 -0400] [20440] [INFO] Booting worker with pid: 20440
+[2019-07-04 13:53:43 -0400] [20441] [INFO] Booting worker with pid: 20441
+[2019-07-04 13:53:43 -0400] [18862] [INFO] Handling signal: hup
+[2019-07-04 13:53:43 -0400] [18862] [INFO] Hang up: Master
+[2019-07-04 13:53:43 -0400] [20442] [INFO] Booting worker with pid: 20442
+[2019-07-04 13:53:43 -0400] [20443] [INFO] Booting worker with pid: 20443
+[2019-07-04 13:53:43 -0400] [20444] [INFO] Booting worker with pid: 20444
+[2019-07-04 13:53:44 -0400] [20445] [INFO] Booting worker with pid: 20445
+[2019-07-04 13:53:44 -0400] [20446] [INFO] Booting worker with pid: 20446
+[2019-07-04 13:53:44 -0400] [20447] [INFO] Booting worker with pid: 20447
+[2019-07-04 13:53:55 -0400] [20438] [INFO] Worker exiting (pid: 20438)
+[2019-07-04 13:53:55 -0400] [20441] [INFO] Worker exiting (pid: 20441)
+[2019-07-04 13:53:55 -0400] [20439] [INFO] Worker exiting (pid: 20439)
+[2019-07-04 13:53:55 -0400] [20440] [INFO] Worker exiting (pid: 20440)
+[2019-07-04 13:53:56 -0400] [20442] [INFO] Worker exiting (pid: 20442)
+[2019-07-04 14:22:17 -0400] [18862] [INFO] Handling signal: term
+[2019-07-04 14:22:17 -0400] [20443] [INFO] Worker exiting (pid: 20443)
+[2019-07-04 14:22:17 -0400] [20444] [INFO] Worker exiting (pid: 20444)
+[2019-07-04 14:22:17 -0400] [20445] [INFO] Worker exiting (pid: 20445)
+[2019-07-04 14:22:17 -0400] [20446] [INFO] Worker exiting (pid: 20446)
+[2019-07-04 14:22:17 -0400] [20447] [INFO] Worker exiting (pid: 20447)
+[2019-07-04 14:22:18 -0400] [18862] [INFO] Shutting down: Master
+[2019-07-04 15:13:31 -0400] [22124] [INFO] Starting gunicorn 19.9.0
+[2019-07-04 15:13:31 -0400] [22124] [INFO] Listening at: http://0.0.0.0:8000 (22124)
+[2019-07-04 15:13:31 -0400] [22124] [INFO] Using worker: sync
+[2019-07-04 15:13:31 -0400] [22128] [INFO] Booting worker with pid: 22128
+[2019-07-04 15:13:31 -0400] [22127] [INFO] Booting worker with pid: 22127
+[2019-07-04 15:13:31 -0400] [22129] [INFO] Booting worker with pid: 22129
+[2019-07-04 15:13:31 -0400] [22130] [INFO] Booting worker with pid: 22130
+[2019-07-04 15:13:31 -0400] [22131] [INFO] Booting worker with pid: 22131
+[2019-07-04 15:13:34 -0400] [22124] [INFO] Handling signal: hup
+[2019-07-04 15:13:34 -0400] [22124] [INFO] Hang up: Master
+[2019-07-04 15:13:34 -0400] [22144] [INFO] Booting worker with pid: 22144
+[2019-07-04 15:13:34 -0400] [22145] [INFO] Booting worker with pid: 22145
+[2019-07-04 15:13:34 -0400] [22147] [INFO] Booting worker with pid: 22147
+[2019-07-04 15:13:34 -0400] [22146] [INFO] Booting worker with pid: 22146
+[2019-07-04 15:13:34 -0400] [22148] [INFO] Booting worker with pid: 22148
+[2019-07-04 18:05:19 -0400] [22124] [INFO] Handling signal: term
+[2019-07-04 18:05:19 -0400] [22144] [INFO] Worker exiting (pid: 22144)
+[2019-07-04 18:05:19 -0400] [22145] [INFO] Worker exiting (pid: 22145)
+[2019-07-04 18:05:19 -0400] [22146] [INFO] Worker exiting (pid: 22146)
+[2019-07-04 18:05:19 -0400] [22147] [INFO] Worker exiting (pid: 22147)
+[2019-07-04 18:05:19 -0400] [22148] [INFO] Worker exiting (pid: 22148)
+[2019-07-04 18:05:20 -0400] [22124] [INFO] Shutting down: Master
+[2019-07-04 18:05:27 -0400] [24449] [INFO] Starting gunicorn 19.9.0
+[2019-07-04 18:05:27 -0400] [24449] [INFO] Listening at: http://0.0.0.0:8000 (24449)
+[2019-07-04 18:05:27 -0400] [24449] [INFO] Using worker: sync
+[2019-07-04 18:05:27 -0400] [24452] [INFO] Booting worker with pid: 24452
+[2019-07-04 18:05:27 -0400] [24453] [INFO] Booting worker with pid: 24453
+[2019-07-04 18:05:27 -0400] [24454] [INFO] Booting worker with pid: 24454
+[2019-07-04 18:05:27 -0400] [24455] [INFO] Booting worker with pid: 24455
+[2019-07-04 18:05:27 -0400] [24456] [INFO] Booting worker with pid: 24456
+[2019-07-04 18:06:06 -0400] [24449] [INFO] Handling signal: hup
+[2019-07-04 18:06:06 -0400] [24449] [INFO] Hang up: Master
+[2019-07-04 18:06:06 -0400] [24485] [INFO] Booting worker with pid: 24485
+[2019-07-04 18:06:06 -0400] [24487] [INFO] Booting worker with pid: 24487
+[2019-07-04 18:06:06 -0400] [24486] [INFO] Booting worker with pid: 24486
+[2019-07-04 18:06:06 -0400] [24488] [INFO] Booting worker with pid: 24488
+[2019-07-04 18:06:06 -0400] [24489] [INFO] Booting worker with pid: 24489
+[2019-07-05 14:04:25 -0400] [24449] [INFO] Handling signal: term
+[2019-07-05 14:04:25 -0400] [24485] [INFO] Worker exiting (pid: 24485)
+[2019-07-05 14:04:25 -0400] [24486] [INFO] Worker exiting (pid: 24486)
+[2019-07-05 14:04:25 -0400] [24488] [INFO] Worker exiting (pid: 24488)
+[2019-07-05 14:04:25 -0400] [24487] [INFO] Worker exiting (pid: 24487)
+[2019-07-05 14:04:25 -0400] [24489] [INFO] Worker exiting (pid: 24489)
+[2019-07-05 14:04:26 -0400] [24449] [INFO] Shutting down: Master
+[2019-07-05 16:53:45 -0400] [12102] [INFO] Starting gunicorn 19.9.0
+[2019-07-05 16:53:45 -0400] [12102] [INFO] Listening at: http://0.0.0.0:8000 (12102)
+[2019-07-05 16:53:45 -0400] [12102] [INFO] Using worker: sync
+[2019-07-05 16:53:45 -0400] [12111] [INFO] Booting worker with pid: 12111
+[2019-07-05 16:53:46 -0400] [12112] [INFO] Booting worker with pid: 12112
+[2019-07-05 16:53:46 -0400] [12113] [INFO] Booting worker with pid: 12113
+[2019-07-05 16:53:46 -0400] [12114] [INFO] Booting worker with pid: 12114
+[2019-07-05 16:53:46 -0400] [12115] [INFO] Booting worker with pid: 12115
+[2019-07-05 16:53:46 -0400] [12116] [INFO] Booting worker with pid: 12116
+[2019-07-05 16:53:46 -0400] [12117] [INFO] Booting worker with pid: 12117
+[2019-07-05 16:53:47 -0400] [12118] [INFO] Booting worker with pid: 12118
+[2019-07-05 16:53:47 -0400] [12119] [INFO] Booting worker with pid: 12119
+[2019-07-05 16:53:47 -0400] [12102] [INFO] Handling signal: hup
+[2019-07-05 16:53:47 -0400] [12102] [INFO] Hang up: Master
+[2019-07-05 16:53:47 -0400] [12120] [INFO] Booting worker with pid: 12120
+[2019-07-05 16:53:47 -0400] [12121] [INFO] Booting worker with pid: 12121
+[2019-07-05 16:53:47 -0400] [12122] [INFO] Booting worker with pid: 12122
+[2019-07-05 16:53:47 -0400] [12116] [INFO] Worker exiting (pid: 12116)
+[2019-07-05 16:53:47 -0400] [12117] [INFO] Worker exiting (pid: 12117)
+[2019-07-05 16:53:47 -0400] [12118] [INFO] Worker exiting (pid: 12118)
+[2019-07-05 16:53:47 -0400] [12119] [INFO] Worker exiting (pid: 12119)
+[2019-07-05 16:53:47 -0400] [12123] [INFO] Booting worker with pid: 12123
+[2019-07-05 16:53:47 -0400] [12124] [INFO] Booting worker with pid: 12124
+[2019-07-05 23:56:32 -0400] [12102] [INFO] Handling signal: term
+[2019-07-05 23:56:32 -0400] [12120] [INFO] Worker exiting (pid: 12120)
+[2019-07-05 23:56:32 -0400] [12121] [INFO] Worker exiting (pid: 12121)
+[2019-07-05 23:56:32 -0400] [12122] [INFO] Worker exiting (pid: 12122)
+[2019-07-05 23:56:32 -0400] [12123] [INFO] Worker exiting (pid: 12123)
+[2019-07-05 23:56:32 -0400] [12124] [INFO] Worker exiting (pid: 12124)
+[2019-07-05 23:56:34 -0400] [12102] [INFO] Shutting down: Master
+[2019-07-06 17:39:40 -0400] [27838] [INFO] Starting gunicorn 19.9.0
+[2019-07-06 17:39:40 -0400] [27838] [INFO] Listening at: http://0.0.0.0:8000 (27838)
+[2019-07-06 17:39:40 -0400] [27838] [INFO] Using worker: sync
+[2019-07-06 17:39:40 -0400] [27845] [INFO] Booting worker with pid: 27845
+[2019-07-06 17:39:40 -0400] [27846] [INFO] Booting worker with pid: 27846
+[2019-07-06 17:39:40 -0400] [27848] [INFO] Booting worker with pid: 27848
+[2019-07-06 17:39:40 -0400] [27849] [INFO] Booting worker with pid: 27849
+[2019-07-06 17:39:40 -0400] [27850] [INFO] Booting worker with pid: 27850
+[2019-07-06 17:39:41 -0400] [27853] [INFO] Booting worker with pid: 27853
+[2019-07-06 17:39:41 -0400] [27838] [INFO] Handling signal: hup
+[2019-07-06 17:39:41 -0400] [27838] [INFO] Hang up: Master
+[2019-07-06 17:39:41 -0400] [27854] [INFO] Booting worker with pid: 27854
+[2019-07-06 17:39:41 -0400] [27855] [INFO] Booting worker with pid: 27855
+[2019-07-06 17:39:41 -0400] [27856] [INFO] Booting worker with pid: 27856
+[2019-07-06 17:39:41 -0400] [27853] [INFO] Worker exiting (pid: 27853)
+[2019-07-06 17:39:41 -0400] [27857] [INFO] Booting worker with pid: 27857
+[2019-07-06 17:39:41 -0400] [27858] [INFO] Booting worker with pid: 27858
+[2019-07-07 09:09:12 -0400] [27838] [INFO] Handling signal: term
+[2019-07-07 09:09:12 -0400] [27854] [INFO] Worker exiting (pid: 27854)
+[2019-07-07 09:09:12 -0400] [27855] [INFO] Worker exiting (pid: 27855)
+[2019-07-07 09:09:12 -0400] [27856] [INFO] Worker exiting (pid: 27856)
+[2019-07-07 09:09:12 -0400] [27857] [INFO] Worker exiting (pid: 27857)
+[2019-07-07 09:09:12 -0400] [27858] [INFO] Worker exiting (pid: 27858)
+[2019-07-07 09:09:13 -0400] [27838] [INFO] Shutting down: Master
+[2019-07-07 12:00:57 -0400] [8616] [INFO] Starting gunicorn 19.9.0
+[2019-07-07 12:00:57 -0400] [8616] [INFO] Listening at: http://0.0.0.0:8000 (8616)
+[2019-07-07 12:00:57 -0400] [8616] [INFO] Using worker: sync
+[2019-07-07 12:00:57 -0400] [8623] [INFO] Booting worker with pid: 8623
+[2019-07-07 12:00:57 -0400] [8624] [INFO] Booting worker with pid: 8624
+[2019-07-07 12:00:57 -0400] [8625] [INFO] Booting worker with pid: 8625
+[2019-07-07 12:00:57 -0400] [8626] [INFO] Booting worker with pid: 8626
+[2019-07-07 12:00:57 -0400] [8627] [INFO] Booting worker with pid: 8627
+[2019-07-07 15:00:58 -0400] [12324] [INFO] Booting worker with pid: 12324
+[2019-07-07 15:00:58 -0400] [12325] [INFO] Booting worker with pid: 12325
+[2019-07-07 15:00:58 -0400] [8616] [INFO] Handling signal: hup
+[2019-07-07 15:00:58 -0400] [8616] [INFO] Hang up: Master
+[2019-07-07 15:00:58 -0400] [12326] [INFO] Booting worker with pid: 12326
+[2019-07-07 15:00:58 -0400] [12327] [INFO] Booting worker with pid: 12327
+[2019-07-07 15:00:58 -0400] [12328] [INFO] Booting worker with pid: 12328
+[2019-07-07 15:00:58 -0400] [12324] [INFO] Worker exiting (pid: 12324)
+[2019-07-07 15:00:58 -0400] [12329] [INFO] Booting worker with pid: 12329
+[2019-07-07 15:00:58 -0400] [12325] [INFO] Worker exiting (pid: 12325)
+[2019-07-07 15:00:58 -0400] [12330] [INFO] Booting worker with pid: 12330
+[2019-07-08 02:21:22,527] ERROR in app: Exception on /post/Weee/id=1 [GET]
+Traceback (most recent call last):
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/app.py", line 2311, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/app.py", line 1834, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/app.py", line 1737, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/_compat.py", line 36, in reraise
+    raise value
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/app.py", line 1832, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/app.py", line 1818, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "/root/Flask/NewApp/home.py", line 103, in post
+    post.views += 1
+AttributeError: 'NoneType' object has no attribute 'views'
+[2019-07-08 21:29:09 -0400] [8616] [CRITICAL] WORKER TIMEOUT (pid:12330)
+[2019-07-08 21:29:09 -0400] [12330] [INFO] Worker exiting (pid: 12330)
+[2019-07-08 21:29:10 -0400] [28077] [INFO] Booting worker with pid: 28077
+[2019-07-09 03:10:57 -0400] [8616] [INFO] Handling signal: term
+[2019-07-09 03:10:57 -0400] [12326] [INFO] Worker exiting (pid: 12326)
+[2019-07-09 03:10:57 -0400] [12328] [INFO] Worker exiting (pid: 12328)
+[2019-07-09 03:10:57 -0400] [12329] [INFO] Worker exiting (pid: 12329)
+[2019-07-09 03:10:57 -0400] [28077] [INFO] Worker exiting (pid: 28077)
+[2019-07-09 03:10:57 -0400] [12327] [INFO] Worker exiting (pid: 12327)
+[2019-07-09 03:10:59 -0400] [8616] [INFO] Shutting down: Master
+[2019-07-09 03:59:22 -0400] [32543] [INFO] Starting gunicorn 19.9.0
+[2019-07-09 03:59:22 -0400] [32543] [INFO] Listening at: http://0.0.0.0:8000 (32543)
+[2019-07-09 03:59:22 -0400] [32543] [INFO] Using worker: sync
+[2019-07-09 03:59:22 -0400] [32550] [INFO] Booting worker with pid: 32550
+[2019-07-09 03:59:22 -0400] [32551] [INFO] Booting worker with pid: 32551
+[2019-07-09 03:59:22 -0400] [32552] [INFO] Booting worker with pid: 32552
+[2019-07-09 03:59:22 -0400] [32553] [INFO] Booting worker with pid: 32553
+[2019-07-09 03:59:22 -0400] [32554] [INFO] Booting worker with pid: 32554
+[2019-07-09 10:42:48 -0400] [3490] [INFO] Booting worker with pid: 3490
+[2019-07-09 10:42:48 -0400] [3491] [INFO] Booting worker with pid: 3491
+[2019-07-09 10:42:48 -0400] [32543] [INFO] Handling signal: hup
+[2019-07-09 10:42:48 -0400] [32543] [INFO] Hang up: Master
+[2019-07-09 10:42:48 -0400] [3492] [INFO] Booting worker with pid: 3492
+[2019-07-09 10:42:48 -0400] [3493] [INFO] Booting worker with pid: 3493
+[2019-07-09 10:42:48 -0400] [3494] [INFO] Booting worker with pid: 3494
+[2019-07-09 10:42:48 -0400] [3495] [INFO] Booting worker with pid: 3495
+[2019-07-09 10:42:48 -0400] [3490] [INFO] Worker exiting (pid: 3490)
+[2019-07-09 10:42:48 -0400] [3491] [INFO] Worker exiting (pid: 3491)
+[2019-07-09 10:42:48 -0400] [3496] [INFO] Booting worker with pid: 3496
+[2019-07-09 12:26:58 -0400] [3492] [INFO] Worker exiting (pid: 3492)
+[2019-07-09 12:26:58 -0400] [4766] [INFO] Booting worker with pid: 4766
+[2019-07-09 12:28:13 -0400] [3493] [INFO] Worker exiting (pid: 3493)
+[2019-07-09 12:28:13 -0400] [4785] [INFO] Booting worker with pid: 4785
+[2019-07-09 12:28:34 -0400] [32543] [INFO] Handling signal: term
+[2019-07-09 12:28:34 -0400] [3494] [INFO] Worker exiting (pid: 3494)
+[2019-07-09 12:28:34 -0400] [3495] [INFO] Worker exiting (pid: 3495)
+[2019-07-09 12:28:34 -0400] [3496] [INFO] Worker exiting (pid: 3496)
+[2019-07-09 12:28:34 -0400] [4766] [INFO] Worker exiting (pid: 4766)
+[2019-07-09 12:28:34 -0400] [4785] [INFO] Worker exiting (pid: 4785)
+[2019-07-09 12:28:35 -0400] [32543] [INFO] Shutting down: Master
+[2019-07-09 17:35:16 -0400] [8435] [INFO] Starting gunicorn 19.9.0
+[2019-07-09 17:35:16 -0400] [8435] [INFO] Listening at: http://0.0.0.0:8000 (8435)
+[2019-07-09 17:35:16 -0400] [8435] [INFO] Using worker: sync
+[2019-07-09 17:35:16 -0400] [8442] [INFO] Booting worker with pid: 8442
+[2019-07-09 17:35:16 -0400] [8443] [INFO] Booting worker with pid: 8443
+[2019-07-09 17:35:16 -0400] [8444] [INFO] Booting worker with pid: 8444
+[2019-07-09 17:35:17 -0400] [8445] [INFO] Booting worker with pid: 8445
+[2019-07-09 17:35:17 -0400] [8446] [INFO] Booting worker with pid: 8446
+[2019-07-09 17:35:17 -0400] [8435] [INFO] Handling signal: hup
+[2019-07-09 17:35:17 -0400] [8435] [INFO] Hang up: Master
+[2019-07-09 17:35:17 -0400] [8449] [INFO] Booting worker with pid: 8449
+[2019-07-09 17:35:17 -0400] [8450] [INFO] Booting worker with pid: 8450
+[2019-07-09 17:35:17 -0400] [8451] [INFO] Booting worker with pid: 8451
+[2019-07-09 17:35:17 -0400] [8452] [INFO] Booting worker with pid: 8452
+[2019-07-09 17:35:17 -0400] [8449] [INFO] Worker exiting (pid: 8449)
+[2019-07-09 17:35:17 -0400] [8453] [INFO] Booting worker with pid: 8453
+[2019-07-09 17:35:17 -0400] [8454] [INFO] Booting worker with pid: 8454
+[2019-07-10 02:22:04 -0400] [8435] [INFO] Handling signal: term
+[2019-07-10 02:22:04 -0400] [8450] [INFO] Worker exiting (pid: 8450)
+[2019-07-10 02:22:04 -0400] [8451] [INFO] Worker exiting (pid: 8451)
+/
+[2019-07-10 02:22:04 -0400] [8452] [INFO] Worker exiting (pid: 8452)
+[2019-07-10 02:22:04 -0400] [8453] [INFO] Worker exiting (pid: 8453)
+[2019-07-10 02:22:04 -0400] [8454] [INFO] Worker exiting (pid: 8454)
+[2019-07-10 02:22:06 -0400] [8435] [INFO] Shutting down: Master
+[2019-07-10 03:14:46 -0400] [22642] [INFO] Starting gunicorn 19.9.0
+[2019-07-10 03:14:46 -0400] [22642] [INFO] Listening at: http://0.0.0.0:8000 (22642)
+[2019-07-10 03:14:46 -0400] [22642] [INFO] Using worker: sync
+[2019-07-10 03:14:46 -0400] [22649] [INFO] Booting worker with pid: 22649
+[2019-07-10 03:14:47 -0400] [22650] [INFO] Booting worker with pid: 22650
+[2019-07-10 03:14:47 -0400] [22651] [INFO] Booting worker with pid: 22651
+[2019-07-10 03:14:47 -0400] [22652] [INFO] Booting worker with pid: 22652
+[2019-07-10 03:14:47 -0400] [22655] [INFO] Booting worker with pid: 22655
+[2019-07-10 03:14:48 -0400] [22663] [INFO] Booting worker with pid: 22663
+[2019-07-10 03:14:48 -0400] [22664] [INFO] Booting worker with pid: 22664
+[2019-07-10 03:14:48 -0400] [22665] [INFO] Booting worker with pid: 22665
+[2019-07-10 03:14:48 -0400] [22666] [INFO] Booting worker with pid: 22666
+[2019-07-10 03:14:48 -0400] [22667] [INFO] Booting worker with pid: 22667
+[2019-07-10 03:14:48 -0400] [22642] [INFO] Handling signal: hup
+[2019-07-10 03:14:48 -0400] [22642] [INFO] Hang up: Master
+[2019-07-10 03:14:48 -0400] [22668] [INFO] Booting worker with pid: 22668
+[2019-07-10 03:14:48 -0400] [22669] [INFO] Booting worker with pid: 22669
+[2019-07-10 03:14:48 -0400] [22663] [INFO] Worker exiting (pid: 22663)
+[2019-07-10 03:14:48 -0400] [22670] [INFO] Booting worker with pid: 22670
+[2019-07-10 03:14:48 -0400] [22664] [INFO] Worker exiting (pid: 22664)
+[2019-07-10 03:14:48 -0400] [22665] [INFO] Worker exiting (pid: 22665)
+[2019-07-10 03:14:48 -0400] [22666] [INFO] Worker exiting (pid: 22666)
+[2019-07-10 03:14:48 -0400] [22667] [INFO] Worker exiting (pid: 22667)
+[2019-07-10 03:14:48 -0400] [22671] [INFO] Booting worker with pid: 22671
+[2019-07-10 03:14:48 -0400] [22672] [INFO] Booting worker with pid: 22672
+[2019-07-10 14:41:09 -0400] [22642] [INFO] Handling signal: term
+[2019-07-10 14:41:09 -0400] [22668] [INFO] Worker exiting (pid: 22668)
+[2019-07-10 14:41:09 -0400] [22669] [INFO] Worker exiting (pid: 22669)
+[2019-07-10 14:41:09 -0400] [22670] [INFO] Worker exiting (pid: 22670)
+[2019-07-10 14:41:09 -0400] [22671] [INFO] Worker exiting (pid: 22671)
+[2019-07-10 14:41:09 -0400] [22672] [INFO] Worker exiting (pid: 22672)
+[2019-07-10 14:41:10 -0400] [22642] [INFO] Shutting down: Master
+[2019-07-10 17:26:55 -0400] [3265] [INFO] Starting gunicorn 19.9.0
+[2019-07-10 17:26:55 -0400] [3265] [INFO] Listening at: http://0.0.0.0:8000 (3265)
+[2019-07-10 17:26:55 -0400] [3265] [INFO] Using worker: sync
+[2019-07-10 17:26:55 -0400] [3272] [INFO] Booting worker with pid: 3272
+[2019-07-10 17:26:55 -0400] [3273] [INFO] Booting worker with pid: 3273
+[2019-07-10 17:26:55 -0400] [3274] [INFO] Booting worker with pid: 3274
+[2019-07-10 17:26:55 -0400] [3275] [INFO] Booting worker with pid: 3275
+[2019-07-10 17:26:55 -0400] [3276] [INFO] Booting worker with pid: 3276
+[2019-07-10 17:26:57 -0400] [3283] [INFO] Booting worker with pid: 3283
+[2019-07-10 17:26:57 -0400] [3284] [INFO] Booting worker with pid: 3284
+[2019-07-10 17:26:57 -0400] [3265] [INFO] Handling signal: hup
+[2019-07-10 17:26:57 -0400] [3265] [INFO] Hang up: Master
+[2019-07-10 17:26:57 -0400] [3285] [INFO] Booting worker with pid: 3285
+[2019-07-10 17:26:57 -0400] [3287] [INFO] Booting worker with pid: 3287
+[2019-07-10 17:26:57 -0400] [3286] [INFO] Booting worker with pid: 3286
+[2019-07-10 17:26:57 -0400] [3283] [INFO] Worker exiting (pid: 3283)
+[2019-07-10 17:26:57 -0400] [3284] [INFO] Worker exiting (pid: 3284)
+[2019-07-10 17:26:57 -0400] [3288] [INFO] Booting worker with pid: 3288
+[2019-07-10 17:26:57 -0400] [3289] [INFO] Booting worker with pid: 3289
+[2019-07-11 07:32:51,350] ERROR in app: Exception on /post/Weee/id=1 [GET]
+Traceback (most recent call last):
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/app.py", line 2311, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/app.py", line 1834, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/app.py", line 1737, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/_compat.py", line 36, in reraise
+    raise value
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/app.py", line 1832, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/app.py", line 1818, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "/root/Flask/NewApp/home.py", line 114, in post
+    return render_template('post.html', reset=reset, reply=reply,posts=posts,replyes=replyes,search=search,login=login,tags=tags,register=register,popular_posts=popular_posts,most_tags=most_tags)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/templating.py", line 135, in render_template
+    context, ctx.app)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/templating.py", line 117, in _render
+    rv = template.render(context)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/jinja2/asyncsupport.py", line 76, in render
+    return original_render(self, *args, **kwargs)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/jinja2/environment.py", line 1008, in render
+    return self.environment.handle_exception(exc_info, True)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/jinja2/environment.py", line 780, in handle_exception
+    reraise(exc_type, exc_value, tb)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/jinja2/_compat.py", line 37, in reraise
+    raise value.with_traceback(tb)
+  File "/root/Flask/NewApp/home_templates/post.html", line 1, in top-level template code
+    {% extends "index.html" %}
+  File "/root/Flask/NewApp/templates/index.html", line 279, in top-level template code
+    {% block content %}
+  File "/root/Flask/NewApp/home_templates/post.html", line 29, in block "content"
+    <h4 style="margin-top: 1%">{{posts[0].title}}</h4>
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/jinja2/environment.py", line 430, in getattr
+    return getattr(obj, attribute)
+jinja2.exceptions.UndefinedError: flask_sqlalchemy.BaseQuery object has no element 0
+[2019-07-11 08:13:04,696] ERROR in app: Exception on /post/Welcome To NewApp/id=2 [GET]
+Traceback (most recent call last):
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/app.py", line 2311, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/app.py", line 1834, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/app.py", line 1737, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/_compat.py", line 36, in reraise
+    raise value
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/app.py", line 1832, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/app.py", line 1818, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "/root/Flask/NewApp/home.py", line 114, in post
+    return render_template('post.html', reset=reset, reply=reply,posts=posts,replyes=replyes,search=search,login=login,tags=tags,register=register,popular_posts=popular_posts,most_tags=most_tags)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/templating.py", line 135, in render_template
+    context, ctx.app)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/templating.py", line 117, in _render
+    rv = template.render(context)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/jinja2/asyncsupport.py", line 76, in render
+    return original_render(self, *args, **kwargs)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/jinja2/environment.py", line 1008, in render
+    return self.environment.handle_exception(exc_info, True)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/jinja2/environment.py", line 780, in handle_exception
+    reraise(exc_type, exc_value, tb)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/jinja2/_compat.py", line 37, in reraise
+    raise value.with_traceback(tb)
+  File "/root/Flask/NewApp/home_templates/post.html", line 1, in top-level template code
+    {% extends "index.html" %}
+  File "/root/Flask/NewApp/templates/index.html", line 279, in top-level template code
+    {% block content %}
+  File "/root/Flask/NewApp/home_templates/post.html", line 29, in block "content"
+    <h4 style="margin-top: 1%">{{posts[0].title}}</h4>
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/jinja2/environment.py", line 430, in getattr
+    return getattr(obj, attribute)
+jinja2.exceptions.UndefinedError: flask_sqlalchemy.BaseQuery object has no element 0
+Exception during reset or similar
+Traceback (most recent call last):
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/sqlalchemy/engine/base.py", line 739, in _rollback_impl
+    self.engine.dialect.do_rollback(self.connection)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/sqlalchemy/engine/default.py", line 502, in do_rollback
+    dbapi_connection.rollback()
+psycopg2.DatabaseError: error with status PGRES_TUPLES_OK and no message from the libpq
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/sqlalchemy/pool/base.py", line 680, in _finalize_fairy
+    fairy._reset(pool)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/sqlalchemy/pool/base.py", line 865, in _reset
+    self._reset_agent.rollback()
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/sqlalchemy/engine/base.py", line 1705, in rollback
+    self._do_rollback()
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/sqlalchemy/engine/base.py", line 1743, in _do_rollback
+    self.connection._rollback_impl()
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/sqlalchemy/engine/base.py", line 741, in _rollback_impl
+    self._handle_dbapi_exception(e, None, None, None, None)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/sqlalchemy/engine/base.py", line 1466, in _handle_dbapi_exception
+    util.raise_from_cause(sqlalchemy_exception, exc_info)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/sqlalchemy/util/compat.py", line 383, in raise_from_cause
+    reraise(type(exception), exception, tb=exc_tb, cause=cause)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/sqlalchemy/util/compat.py", line 128, in reraise
+    raise value.with_traceback(tb)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/sqlalchemy/engine/base.py", line 739, in _rollback_impl
+    self.engine.dialect.do_rollback(self.connection)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/sqlalchemy/engine/default.py", line 502, in do_rollback
+    dbapi_connection.rollback()
+sqlalchemy.exc.DatabaseError: (psycopg2.DatabaseError) error with status PGRES_TUPLES_OK and no message from the libpq
+(Background on this error at: http://sqlalche.me/e/4xp6)
+[2019-07-11 10:25:00,118] ERROR in app: Exception on / [GET]
+Traceback (most recent call last):
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/sqlalchemy/engine/base.py", line 1244, in _execute_context
+    cursor, statement, parameters, context
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/sqlalchemy/engine/default.py", line 552, in do_execute
+    cursor.execute(statement, parameters)
+psycopg2.OperationalError: server closed the connection unexpectedly
+	This probably means the server terminated abnormally
+	before or while processing the request.
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/app.py", line 2311, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/app.py", line 1834, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/app.py", line 1737, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/_compat.py", line 36, in reraise
+    raise value
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/app.py", line 1832, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/app.py", line 1818, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "/root/Flask/NewApp/home.py", line 83, in home
+    tags = db.session.query(TagModel).all()
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/sqlalchemy/orm/query.py", line 3161, in all
+    return list(self)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/sqlalchemy/orm/query.py", line 3317, in __iter__
+    return self._execute_and_instances(context)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/sqlalchemy/orm/query.py", line 3342, in _execute_and_instances
+    result = conn.execute(querycontext.statement, self._params)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/sqlalchemy/engine/base.py", line 988, in execute
+    return meth(self, multiparams, params)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/sqlalchemy/sql/elements.py", line 287, in _execute_on_connection
+    return connection._execute_clauseelement(self, multiparams, params)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/sqlalchemy/engine/base.py", line 1107, in _execute_clauseelement
+    distilled_params,
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/sqlalchemy/engine/base.py", line 1248, in _execute_context
+    e, statement, parameters, cursor, context
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/sqlalchemy/engine/base.py", line 1466, in _handle_dbapi_exception
+    util.raise_from_cause(sqlalchemy_exception, exc_info)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/sqlalchemy/util/compat.py", line 383, in raise_from_cause
+    reraise(type(exception), exception, tb=exc_tb, cause=cause)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/sqlalchemy/util/compat.py", line 128, in reraise
+    raise value.with_traceback(tb)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/sqlalchemy/engine/base.py", line 1244, in _execute_context
+    cursor, statement, parameters, context
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/sqlalchemy/engine/default.py", line 552, in do_execute
+    cursor.execute(statement, parameters)
+sqlalchemy.exc.OperationalError: (psycopg2.OperationalError) server closed the connection unexpectedly
+	This probably means the server terminated abnormally
+	before or while processing the request.
+
+[SQL: SELECT post_tags.id AS post_tags_id, post_tags.tag AS post_tags_tag, post_tags.post_id AS post_tags_post_id 
+FROM post_tags]
+(Background on this error at: http://sqlalche.me/e/e3q8)
+[2019-07-11 10:34:09,180] ERROR in app: Exception on / [GET]
+Traceback (most recent call last):
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/sqlalchemy/engine/base.py", line 1244, in _execute_context
+    cursor, statement, parameters, context
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/sqlalchemy/engine/default.py", line 552, in do_execute
+    cursor.execute(statement, parameters)
+psycopg2.OperationalError: server closed the connection unexpectedly
+	This probably means the server terminated abnormally
+	before or while processing the request.
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/app.py", line 2311, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/app.py", line 1834, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/app.py", line 1737, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/_compat.py", line 36, in reraise
+    raise value
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/app.py", line 1832, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/app.py", line 1818, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "/root/Flask/NewApp/home.py", line 74, in home
+    posts = db.session.query(PostModel).order_by(PostModel.id.desc()).paginate(page=post_page,per_page=9)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask_sqlalchemy/__init__.py", line 496, in paginate
+    items = self.limit(per_page).offset((page - 1) * per_page).all()
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/sqlalchemy/orm/query.py", line 3161, in all
+    return list(self)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/sqlalchemy/orm/query.py", line 3317, in __iter__
+    return self._execute_and_instances(context)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/sqlalchemy/orm/query.py", line 3342, in _execute_and_instances
+    result = conn.execute(querycontext.statement, self._params)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/sqlalchemy/engine/base.py", line 988, in execute
+    return meth(self, multiparams, params)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/sqlalchemy/sql/elements.py", line 287, in _execute_on_connection
+    return connection._execute_clauseelement(self, multiparams, params)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/sqlalchemy/engine/base.py", line 1107, in _execute_clauseelement
+    distilled_params,
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/sqlalchemy/engine/base.py", line 1248, in _execute_context
+    e, statement, parameters, cursor, context
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/sqlalchemy/engine/base.py", line 1466, in _handle_dbapi_exception
+    util.raise_from_cause(sqlalchemy_exception, exc_info)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/sqlalchemy/util/compat.py", line 383, in raise_from_cause
+    reraise(type(exception), exception, tb=exc_tb, cause=cause)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/sqlalchemy/util/compat.py", line 128, in reraise
+    raise value.with_traceback(tb)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/sqlalchemy/engine/base.py", line 1244, in _execute_context
+    cursor, statement, parameters, context
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/sqlalchemy/engine/default.py", line 552, in do_execute
+    cursor.execute(statement, parameters)
+sqlalchemy.exc.OperationalError: (psycopg2.OperationalError) server closed the connection unexpectedly
+	This probably means the server terminated abnormally
+	before or while processing the request.
+
+[SQL: SELECT posts.id AS posts_id, posts.title AS posts_title, posts.text AS posts_text, posts.views AS posts_views, posts.reply AS posts_reply, posts."user" AS posts_user, posts.posted_on AS posts_posted_on, posts.approved AS posts_approved, posts.closed AS posts_closed, posts.closed_on AS posts_closed_on, posts.closed_by AS posts_closed_by 
+FROM posts ORDER BY posts.id DESC 
+ LIMIT %(param_1)s OFFSET %(param_2)s]
+[parameters: {'param_1': 9, 'param_2': 0}]
+(Background on this error at: http://sqlalche.me/e/e3q8)
+[2019-07-11 10:54:19,461] ERROR in app: Exception on /post/Weee/id=1 [GET]
+Traceback (most recent call last):
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/app.py", line 2311, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/app.py", line 1834, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/app.py", line 1737, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/_compat.py", line 36, in reraise
+    raise value
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/app.py", line 1832, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/app.py", line 1818, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "/root/Flask/NewApp/home.py", line 114, in post
+    return render_template('post.html', reset=reset, reply=reply,posts=posts,replyes=replyes,search=search,login=login,tags=tags,register=register,popular_posts=popular_posts,most_tags=most_tags)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/templating.py", line 135, in render_template
+    context, ctx.app)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/templating.py", line 117, in _render
+    rv = template.render(context)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/jinja2/asyncsupport.py", line 76, in render
+    return original_render(self, *args, **kwargs)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/jinja2/environment.py", line 1008, in render
+    return self.environment.handle_exception(exc_info, True)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/jinja2/environment.py", line 780, in handle_exception
+    reraise(exc_type, exc_value, tb)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/jinja2/_compat.py", line 37, in reraise
+    raise value.with_traceback(tb)
+  File "/root/Flask/NewApp/home_templates/post.html", line 1, in top-level template code
+    {% extends "index.html" %}
+  File "/root/Flask/NewApp/templates/index.html", line 279, in top-level template code
+    {% block content %}
+  File "/root/Flask/NewApp/home_templates/post.html", line 29, in block "content"
+    <h4 style="margin-top: 1%">{{posts[0].title}}</h4>
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/jinja2/environment.py", line 430, in getattr
+    return getattr(obj, attribute)
+jinja2.exceptions.UndefinedError: flask_sqlalchemy.BaseQuery object has no element 0
+[2019-07-11 11:32:54 -0400] [3265] [INFO] Handling signal: term
+[2019-07-11 11:32:54 -0400] [3285] [INFO] Worker exiting (pid: 3285)
+[2019-07-11 11:32:54 -0400] [3286] [INFO] Worker exiting (pid: 3286)
+[2019-07-11 11:32:54 -0400] [3287] [INFO] Worker exiting (pid: 3287)
+[2019-07-11 11:32:54 -0400] [3288] [INFO] Worker exiting (pid: 3288)
+[2019-07-11 11:32:54 -0400] [3289] [INFO] Worker exiting (pid: 3289)
+[2019-07-11 11:32:55 -0400] [3265] [INFO] Shutting down: Master
+[2019-07-13 18:21:04 -0400] [4630] [INFO] Starting gunicorn 19.9.0
+[2019-07-13 18:21:04 -0400] [4630] [INFO] Listening at: http://0.0.0.0:8000 (4630)
+[2019-07-13 18:21:04 -0400] [4630] [INFO] Using worker: sync
+[2019-07-13 18:21:04 -0400] [4637] [INFO] Booting worker with pid: 4637
+[2019-07-13 18:21:04 -0400] [4638] [INFO] Booting worker with pid: 4638
+[2019-07-13 18:21:04 -0400] [4639] [INFO] Booting worker with pid: 4639
+[2019-07-13 18:21:04 -0400] [4640] [INFO] Booting worker with pid: 4640
+[2019-07-13 18:21:04 -0400] [4641] [INFO] Booting worker with pid: 4641
+[2019-07-13 21:38:17 -0400] [6811] [INFO] Booting worker with pid: 6811
+[2019-07-13 21:38:17 -0400] [6812] [INFO] Booting worker with pid: 6812
+[2019-07-13 21:38:17 -0400] [4630] [INFO] Handling signal: hup
+[2019-07-13 21:38:17 -0400] [4630] [INFO] Hang up: Master
+[2019-07-13 21:38:18 -0400] [6814] [INFO] Booting worker with pid: 6814
+[2019-07-13 21:38:18 -0400] [6813] [INFO] Booting worker with pid: 6813
+[2019-07-13 21:38:18 -0400] [6815] [INFO] Booting worker with pid: 6815
+[2019-07-13 21:38:18 -0400] [6811] [INFO] Worker exiting (pid: 6811)
+[2019-07-13 21:38:18 -0400] [6812] [INFO] Worker exiting (pid: 6812)
+[2019-07-13 21:38:18 -0400] [6816] [INFO] Booting worker with pid: 6816
+[2019-07-13 21:38:18 -0400] [6817] [INFO] Booting worker with pid: 6817
+[2019-07-14 04:24:56 -0400] [4630] [INFO] Handling signal: term
+[2019-07-14 04:24:56 -0400] [6813] [INFO] Worker exiting (pid: 6813)
+[2019-07-14 04:24:56 -0400] [6814] [INFO] Worker exiting (pid: 6814)
+[2019-07-14 04:24:56 -0400] [6815] [INFO] Worker exiting (pid: 6815)
+[2019-07-14 04:24:56 -0400] [6816] [INFO] Worker exiting (pid: 6816)
+[2019-07-14 04:24:56 -0400] [6817] [INFO] Worker exiting (pid: 6817)
+[2019-07-14 04:24:57 -0400] [4630] [INFO] Shutting down: Master
+[2019-07-14 17:10:38 -0400] [21218] [INFO] Starting gunicorn 19.9.0
+[2019-07-14 17:10:38 -0400] [21218] [INFO] Listening at: http://0.0.0.0:8000 (21218)
+[2019-07-14 17:10:38 -0400] [21218] [INFO] Using worker: sync
+[2019-07-14 17:10:38 -0400] [21225] [INFO] Booting worker with pid: 21225
+[2019-07-14 17:10:38 -0400] [21226] [INFO] Booting worker with pid: 21226
+[2019-07-14 17:10:38 -0400] [21227] [INFO] Booting worker with pid: 21227
+[2019-07-14 17:10:38 -0400] [21228] [INFO] Booting worker with pid: 21228
+[2019-07-14 17:10:38 -0400] [21229] [INFO] Booting worker with pid: 21229
+[2019-07-14 17:10:40 -0400] [21237] [INFO] Booting worker with pid: 21237
+[2019-07-14 17:10:40 -0400] [21238] [INFO] Booting worker with pid: 21238
+[2019-07-14 17:10:40 -0400] [21239] [INFO] Booting worker with pid: 21239
+[2019-07-14 17:10:40 -0400] [21218] [INFO] Handling signal: hup
+[2019-07-14 17:10:40 -0400] [21218] [INFO] Hang up: Master
+[2019-07-14 17:10:40 -0400] [21240] [INFO] Booting worker with pid: 21240
+[2019-07-14 17:10:40 -0400] [21241] [INFO] Booting worker with pid: 21241
+[2019-07-14 17:10:40 -0400] [21242] [INFO] Booting worker with pid: 21242
+[2019-07-14 17:10:40 -0400] [21237] [INFO] Worker exiting (pid: 21237)
+[2019-07-14 17:10:40 -0400] [21238] [INFO] Worker exiting (pid: 21238)
+[2019-07-14 17:10:40 -0400] [21239] [INFO] Worker exiting (pid: 21239)
+[2019-07-14 17:10:40 -0400] [21244] [INFO] Booting worker with pid: 21244
+[2019-07-14 17:10:40 -0400] [21243] [INFO] Booting worker with pid: 21243
+[2019-07-15 05:42:07 -0400] [21218] [CRITICAL] WORKER TIMEOUT (pid:21242)
+[2019-07-15 05:42:08 -0400] [30029] [INFO] Booting worker with pid: 30029
+[2019-07-15 06:27:42 -0400] [21218] [CRITICAL] WORKER TIMEOUT (pid:30029)
+[2019-07-15 06:27:43 -0400] [30549] [INFO] Booting worker with pid: 30549
+[2019-07-15 06:35:45 -0400] [21218] [CRITICAL] WORKER TIMEOUT (pid:21243)
+[2019-07-15 06:35:46 -0400] [30598] [INFO] Booting worker with pid: 30598
+[2019-07-15 07:02:27 -0400] [21218] [INFO] Handling signal: term
+[2019-07-15 07:02:27 -0400] [21240] [INFO] Worker exiting (pid: 21240)
+[2019-07-15 07:02:27 -0400] [21241] [INFO] Worker exiting (pid: 21241)
+[2019-07-15 07:02:27 -0400] [21244] [INFO] Worker exiting (pid: 21244)
+[2019-07-15 07:02:27 -0400] [30549] [INFO] Worker exiting (pid: 30549)
+[2019-07-15 07:02:27 -0400] [30598] [INFO] Worker exiting (pid: 30598)
+[2019-07-15 07:02:28 -0400] [21218] [INFO] Shutting down: Master
+[2019-07-15 10:28:57 -0400] [9558] [INFO] Starting gunicorn 19.9.0
+[2019-07-15 10:28:57 -0400] [9558] [INFO] Listening at: http://0.0.0.0:8000 (9558)
+[2019-07-15 10:28:57 -0400] [9558] [INFO] Using worker: sync
+[2019-07-15 10:28:57 -0400] [9565] [INFO] Booting worker with pid: 9565
+[2019-07-15 10:28:57 -0400] [9566] [INFO] Booting worker with pid: 9566
+[2019-07-15 10:28:57 -0400] [9567] [INFO] Booting worker with pid: 9567
+[2019-07-15 10:28:58 -0400] [9568] [INFO] Booting worker with pid: 9568
+[2019-07-15 10:28:58 -0400] [9569] [INFO] Booting worker with pid: 9569
+[2019-07-15 13:44:52 -0400] [14261] [INFO] Booting worker with pid: 14261
+[2019-07-15 13:44:52 -0400] [14262] [INFO] Booting worker with pid: 14262
+[2019-07-15 13:44:52 -0400] [9558] [INFO] Handling signal: hup
+[2019-07-15 13:44:52 -0400] [9558] [INFO] Hang up: Master
+[2019-07-15 13:44:52 -0400] [14263] [INFO] Booting worker with pid: 14263
+[2019-07-15 13:44:52 -0400] [14264] [INFO] Booting worker with pid: 14264
+[2019-07-15 13:44:52 -0400] [14265] [INFO] Booting worker with pid: 14265
+[2019-07-15 13:44:52 -0400] [14261] [INFO] Worker exiting (pid: 14261)
+[2019-07-15 13:44:52 -0400] [14262] [INFO] Worker exiting (pid: 14262)
+[2019-07-15 13:44:52 -0400] [9558] [INFO] Handling signal: hup
+[2019-07-15 13:44:52 -0400] [9558] [INFO] Hang up: Master
+[2019-07-15 13:44:52 -0400] [14266] [INFO] Booting worker with pid: 14266
+[2019-07-15 13:44:52 -0400] [14267] [INFO] Booting worker with pid: 14267
+[2019-07-15 13:44:52 -0400] [14268] [INFO] Booting worker with pid: 14268
+[2019-07-15 13:44:52 -0400] [14269] [INFO] Booting worker with pid: 14269
+[2019-07-15 13:44:52 -0400] [14270] [INFO] Booting worker with pid: 14270
+[2019-07-15 13:44:52 -0400] [14264] [INFO] Worker exiting (pid: 14264)
+[2019-07-15 13:44:52 -0400] [14265] [INFO] Worker exiting (pid: 14265)
+[2019-07-15 13:44:52 -0400] [14266] [INFO] Worker exiting (pid: 14266)
+[2019-07-15 13:44:52 -0400] [14267] [INFO] Worker exiting (pid: 14267)
+[2019-07-15 13:44:52 -0400] [14271] [INFO] Booting worker with pid: 14271
+[2019-07-15 13:44:52 -0400] [14263] [INFO] Worker exiting (pid: 14263)
+[2019-07-15 13:44:52 -0400] [14272] [INFO] Booting worker with pid: 14272
+[2019-07-15 14:45:36 -0400] [9558] [INFO] Handling signal: term
+[2019-07-15 14:45:36 -0400] [14268] [INFO] Worker exiting (pid: 14268)
+[2019-07-15 14:45:36 -0400] [14269] [INFO] Worker exiting (pid: 14269)
+[2019-07-15 14:45:36 -0400] [14270] [INFO] Worker exiting (pid: 14270)
+[2019-07-15 14:45:36 -0400] [14271] [INFO] Worker exiting (pid: 14271)
+[2019-07-15 14:45:36 -0400] [14272] [INFO] Worker exiting (pid: 14272)
+[2019-07-15 14:45:37 -0400] [9558] [INFO] Shutting down: Master
+[2019-07-15 18:54:10 -0400] [21126] [INFO] Starting gunicorn 19.9.0
+[2019-07-15 18:54:10 -0400] [21126] [INFO] Listening at: http://0.0.0.0:8000 (21126)
+[2019-07-15 18:54:10 -0400] [21126] [INFO] Using worker: sync
+[2019-07-15 18:54:10 -0400] [21133] [INFO] Booting worker with pid: 21133
+[2019-07-15 18:54:10 -0400] [21134] [INFO] Booting worker with pid: 21134
+[2019-07-15 18:54:10 -0400] [21135] [INFO] Booting worker with pid: 21135
+[2019-07-15 18:54:10 -0400] [21136] [INFO] Booting worker with pid: 21136
+[2019-07-15 18:54:10 -0400] [21137] [INFO] Booting worker with pid: 21137
+[2019-07-15 18:54:12 -0400] [21147] [INFO] Booting worker with pid: 21147
+[2019-07-15 18:54:12 -0400] [21148] [INFO] Booting worker with pid: 21148
+[2019-07-15 18:54:12 -0400] [21126] [INFO] Handling signal: hup
+[2019-07-15 18:54:12 -0400] [21126] [INFO] Hang up: Master
+[2019-07-15 18:54:12 -0400] [21149] [INFO] Booting worker with pid: 21149
+[2019-07-15 18:54:12 -0400] [21150] [INFO] Booting worker with pid: 21150
+[2019-07-15 18:54:12 -0400] [21151] [INFO] Booting worker with pid: 21151
+[2019-07-15 18:54:12 -0400] [21152] [INFO] Booting worker with pid: 21152
+[2019-07-15 18:54:12 -0400] [21147] [INFO] Worker exiting (pid: 21147)
+[2019-07-15 18:54:12 -0400] [21148] [INFO] Worker exiting (pid: 21148)
+[2019-07-15 18:54:12 -0400] [21153] [INFO] Booting worker with pid: 21153
+[2019-07-16 04:21:43 -0400] [21126] [INFO] Handling signal: term
+[2019-07-16 04:21:43 -0400] [21149] [INFO] Worker exiting (pid: 21149)
+{'user': 'Danutu', 'password': 'FCsteaua89'}
+{'user': 'Danutu', 'password': 'FCsteaua89'}
+{'user': 'Danutu', 'password': 'FCsteaua89'}
+{'user': 'Danutu', 'password': 'FCsteauq89'}
+{'user': 'Danutu', 'password': 'FCsteaua89'}
+[2019-07-16 04:21:43 -0400] [21150] [INFO] Worker exiting (pid: 21150)
+{'user': 'Danutu', 'password': 'FCsteauq89'}
+{'user': 'Danutu', 'password': 'FCstequq89'}
+[2019-07-16 04:21:43 -0400] [21151] [INFO] Worker exiting (pid: 21151)
+{'user': 'dany89ytro@gmail.com', 'password': 'FCsteaua89'}
+{'user': 'Danutu', 'password': 'FCsteaua89'}
+{'user': 'Danutu', 'password': 'FCsteaua89'}
+{'user': 'Danutu', 'password': 'FCsteaua89'}
+{'user': 'Danutu', 'password': 'FCsteaua89'}
+[2019-07-16 04:21:43 -0400] [21152] [INFO] Worker exiting (pid: 21152)
+{'user': 'Danutu', 'password': 'FCsteauq89'}
+{'user': 'Danutu', 'password': 'FCsteaua89'}
+{'user': 'Danutu', 'password': 'FCstequa89'}
+{'user': 'Danutu', 'password': 'FCstequa89'}
+{'user': 'Danutu', 'password': 'FCstequa89'}
+{'user': 'Danutu', 'password': 'FCsteaua89'}
+[2019-07-16 04:21:43 -0400] [21153] [INFO] Worker exiting (pid: 21153)
+{'user': 'dany89ytro@gmail.com', 'password': 'FCsteaua89'}
+{'user': 'dany89yt@yahoo.com', 'password': 'FCsteaua89'}
+{'user': 'Danutu', 'password': 'FCsteaua89'}
+{'user': 'Danutu', 'password': 'FCsteaua89'}
+{'user': 'Danutu', 'password': 'FCsteaua89'}
+[2019-07-16 04:21:44 -0400] [21126] [INFO] Shutting down: Master
+[2019-07-17 08:50:55 -0400] [23677] [INFO] Starting gunicorn 19.9.0
+[2019-07-17 08:50:55 -0400] [23677] [INFO] Listening at: http://0.0.0.0:8000 (23677)
+[2019-07-17 08:50:55 -0400] [23677] [INFO] Using worker: sync
+[2019-07-17 08:50:55 -0400] [23685] [INFO] Booting worker with pid: 23685
+[2019-07-17 08:50:55 -0400] [23686] [INFO] Booting worker with pid: 23686
+[2019-07-17 08:50:55 -0400] [23687] [INFO] Booting worker with pid: 23687
+[2019-07-17 08:50:55 -0400] [23688] [INFO] Booting worker with pid: 23688
+[2019-07-17 08:50:55 -0400] [23689] [INFO] Booting worker with pid: 23689
+[2019-07-17 08:50:56 -0400] [23691] [INFO] Booting worker with pid: 23691
+[2019-07-17 08:50:56 -0400] [23692] [INFO] Booting worker with pid: 23692
+[2019-07-17 08:50:56 -0400] [23693] [INFO] Booting worker with pid: 23693
+[2019-07-17 08:50:56 -0400] [23694] [INFO] Booting worker with pid: 23694
+[2019-07-17 08:50:56 -0400] [23677] [INFO] Handling signal: hup
+[2019-07-17 08:50:56 -0400] [23677] [INFO] Hang up: Master
+[2019-07-17 08:50:56 -0400] [23695] [INFO] Booting worker with pid: 23695
+[2019-07-17 08:50:56 -0400] [23696] [INFO] Booting worker with pid: 23696
+[2019-07-17 08:50:56 -0400] [23697] [INFO] Booting worker with pid: 23697
+[2019-07-17 08:50:56 -0400] [23691] [INFO] Worker exiting (pid: 23691)
+[2019-07-17 08:50:56 -0400] [23692] [INFO] Worker exiting (pid: 23692)
+[2019-07-17 08:50:56 -0400] [23693] [INFO] Worker exiting (pid: 23693)
+[2019-07-17 08:50:56 -0400] [23694] [INFO] Worker exiting (pid: 23694)
+[2019-07-17 08:50:56 -0400] [23698] [INFO] Booting worker with pid: 23698
+[2019-07-17 08:50:56 -0400] [23699] [INFO] Booting worker with pid: 23699
+[2019-07-17 09:46:17,376] ERROR in app: Exception on / [GET]
+Traceback (most recent call last):
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/sqlalchemy/engine/result.py", line 726, in _getter
+    getter = self._metadata._getter
+AttributeError: 'NoneType' object has no attribute '_getter'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/app.py", line 2311, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/app.py", line 1834, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/app.py", line 1737, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/_compat.py", line 36, in reraise
+    raise value
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/app.py", line 1832, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/app.py", line 1818, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "/root/Flask/NewApp/home.py", line 89, in home
+    return render_template('home.html', reset=reset,login=login,register=register,search=search_post,posts=posts,tags=tags,replyes=replyes,popular_posts=popular_posts,most_tags=most_tags)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/templating.py", line 135, in render_template
+    context, ctx.app)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/templating.py", line 117, in _render
+    rv = template.render(context)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/jinja2/asyncsupport.py", line 76, in render
+    return original_render(self, *args, **kwargs)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/jinja2/environment.py", line 1008, in render
+    return self.environment.handle_exception(exc_info, True)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/jinja2/environment.py", line 780, in handle_exception
+    reraise(exc_type, exc_value, tb)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/jinja2/_compat.py", line 37, in reraise
+    raise value.with_traceback(tb)
+  File "/root/Flask/NewApp/home_templates/home.html", line 1, in top-level template code
+    {% extends "index.html" %}
+  File "/root/Flask/NewApp/templates/index.html", line 279, in top-level template code
+    {% block content %}
+  File "/root/Flask/NewApp/home_templates/home.html", line 33, in block "content"
+    style="width: 100%;margin-bottom:2px;" disabled>{{post.replies()}} Answers</button>
+  File "/root/Flask/NewApp/models.py", line 130, in replies
+    return db.session.query(ReplyModel).filter_by(post_id=self.id).count()
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/sqlalchemy/orm/query.py", line 3561, in count
+    return self.from_self(col).scalar()
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/sqlalchemy/orm/query.py", line 3305, in scalar
+    ret = self.one()
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/sqlalchemy/orm/query.py", line 3275, in one
+    ret = self.one_or_none()
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/sqlalchemy/orm/query.py", line 3244, in one_or_none
+    ret = list(self)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/sqlalchemy/orm/loading.py", line 105, in instances
+    util.raise_from_cause(err)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/sqlalchemy/util/compat.py", line 383, in raise_from_cause
+    reraise(type(exception), exception, tb=exc_tb, cause=cause)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/sqlalchemy/util/compat.py", line 129, in reraise
+    raise value
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/sqlalchemy/orm/loading.py", line 65, in instances
+    for query_entity in query._entities
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/sqlalchemy/orm/loading.py", line 65, in <listcomp>
+    for query_entity in query._entities
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/sqlalchemy/orm/query.py", line 4591, in row_processor
+    getter = result._getter(column)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/sqlalchemy/engine/result.py", line 728, in _getter
+    return self._non_result(None)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/sqlalchemy/engine/result.py", line 1170, in _non_result
+    "This result object does not return rows. "
+sqlalchemy.exc.ResourceClosedError: This result object does not return rows. It has been closed automatically.
+[2019-07-17 09:46:17,431] ERROR in app: Exception on / [GET]
+Traceback (most recent call last):
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/sqlalchemy/engine/result.py", line 726, in _getter
+    getter = self._metadata._getter
+AttributeError: 'NoneType' object has no attribute '_getter'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/app.py", line 2311, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/app.py", line 1834, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/app.py", line 1737, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/_compat.py", line 36, in reraise
+    raise value
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/app.py", line 1832, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/app.py", line 1818, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "/root/Flask/NewApp/home.py", line 83, in home
+    tags = db.session.query(TagModel).all()
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/sqlalchemy/orm/query.py", line 3161, in all
+    return list(self)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/sqlalchemy/orm/loading.py", line 105, in instances
+    util.raise_from_cause(err)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/sqlalchemy/util/compat.py", line 383, in raise_from_cause
+    reraise(type(exception), exception, tb=exc_tb, cause=cause)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/sqlalchemy/util/compat.py", line 129, in reraise
+    raise value
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/sqlalchemy/orm/loading.py", line 65, in instances
+    for query_entity in query._entities
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/sqlalchemy/orm/loading.py", line 65, in <listcomp>
+    for query_entity in query._entities
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/sqlalchemy/orm/query.py", line 4182, in row_processor
+    polymorphic_discriminator=self._polymorphic_discriminator,
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/sqlalchemy/orm/loading.py", line 405, in _instance_processor
+    getter = result._getter(col, False)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/sqlalchemy/engine/result.py", line 728, in _getter
+    return self._non_result(None)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/sqlalchemy/engine/result.py", line 1170, in _non_result
+    "This result object does not return rows. "
+sqlalchemy.exc.ResourceClosedError: This result object does not return rows. It has been closed automatically.
+[2019-07-17 09:46:17,401] ERROR in app: Exception on / [GET]
+Traceback (most recent call last):
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/sqlalchemy/engine/base.py", line 1244, in _execute_context
+    cursor, statement, parameters, context
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/sqlalchemy/engine/default.py", line 552, in do_execute
+    cursor.execute(statement, parameters)
+psycopg2.DatabaseError: error with status PGRES_TUPLES_OK and no message from the libpq
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/app.py", line 2311, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/app.py", line 1834, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/app.py", line 1737, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/_compat.py", line 36, in reraise
+    raise value
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/app.py", line 1832, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/app.py", line 1818, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "/root/Flask/NewApp/home.py", line 74, in home
+    posts = db.session.query(PostModel).order_by(PostModel.id.desc()).paginate(page=post_page,per_page=9)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask_sqlalchemy/__init__.py", line 496, in paginate
+    items = self.limit(per_page).offset((page - 1) * per_page).all()
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/sqlalchemy/orm/query.py", line 3161, in all
+    return list(self)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/sqlalchemy/orm/query.py", line 3317, in __iter__
+    return self._execute_and_instances(context)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/sqlalchemy/orm/query.py", line 3342, in _execute_and_instances
+    result = conn.execute(querycontext.statement, self._params)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/sqlalchemy/engine/base.py", line 988, in execute
+    return meth(self, multiparams, params)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/sqlalchemy/sql/elements.py", line 287, in _execute_on_connection
+    return connection._execute_clauseelement(self, multiparams, params)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/sqlalchemy/engine/base.py", line 1107, in _execute_clauseelement
+    distilled_params,
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/sqlalchemy/engine/base.py", line 1248, in _execute_context
+    e, statement, parameters, cursor, context
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/sqlalchemy/engine/base.py", line 1466, in _handle_dbapi_exception
+    util.raise_from_cause(sqlalchemy_exception, exc_info)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/sqlalchemy/util/compat.py", line 383, in raise_from_cause
+    reraise(type(exception), exception, tb=exc_tb, cause=cause)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/sqlalchemy/util/compat.py", line 128, in reraise
+    raise value.with_traceback(tb)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/sqlalchemy/engine/base.py", line 1244, in _execute_context
+    cursor, statement, parameters, context
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/sqlalchemy/engine/default.py", line 552, in do_execute
+    cursor.execute(statement, parameters)
+sqlalchemy.exc.DatabaseError: (psycopg2.DatabaseError) error with status PGRES_TUPLES_OK and no message from the libpq
+[SQL: SELECT posts.id AS posts_id, posts.title AS posts_title, posts.text AS posts_text, posts.views AS posts_views, posts.reply AS posts_reply, posts."user" AS posts_user, posts.posted_on AS posts_posted_on, posts.approved AS posts_approved, posts.closed AS posts_closed, posts.closed_on AS posts_closed_on, posts.closed_by AS posts_closed_by 
+FROM posts ORDER BY posts.id DESC 
+ LIMIT %(param_1)s OFFSET %(param_2)s]
+[parameters: {'param_1': 9, 'param_2': 0}]
+(Background on this error at: http://sqlalche.me/e/4xp6)
+[2019-07-17 09:46:17,662] ERROR in app: Exception on / [GET]
+Traceback (most recent call last):
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/sqlalchemy/engine/result.py", line 726, in _getter
+    getter = self._metadata._getter
+AttributeError: 'NoneType' object has no attribute '_getter'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/app.py", line 2311, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/app.py", line 1834, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/app.py", line 1737, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/_compat.py", line 36, in reraise
+    raise value
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/app.py", line 1832, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/app.py", line 1818, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "/root/Flask/NewApp/home.py", line 83, in home
+    tags = db.session.query(TagModel).all()
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/sqlalchemy/orm/query.py", line 3161, in all
+    return list(self)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/sqlalchemy/orm/loading.py", line 105, in instances
+    util.raise_from_cause(err)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/sqlalchemy/util/compat.py", line 383, in raise_from_cause
+    reraise(type(exception), exception, tb=exc_tb, cause=cause)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/sqlalchemy/util/compat.py", line 129, in reraise
+    raise value
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/sqlalchemy/orm/loading.py", line 65, in instances
+    for query_entity in query._entities
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/sqlalchemy/orm/loading.py", line 65, in <listcomp>
+    for query_entity in query._entities
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/sqlalchemy/orm/query.py", line 4182, in row_processor
+    polymorphic_discriminator=self._polymorphic_discriminator,
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/sqlalchemy/orm/loading.py", line 405, in _instance_processor
+    getter = result._getter(col, False)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/sqlalchemy/engine/result.py", line 728, in _getter
+    return self._non_result(None)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/sqlalchemy/engine/result.py", line 1170, in _non_result
+    "This result object does not return rows. "
+sqlalchemy.exc.ResourceClosedError: This result object does not return rows. It has been closed automatically.
+[2019-07-17 09:46:17,656] ERROR in app: Exception on / [GET]
+Traceback (most recent call last):
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/sqlalchemy/engine/base.py", line 1244, in _execute_context
+    cursor, statement, parameters, context
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/sqlalchemy/engine/default.py", line 552, in do_execute
+    cursor.execute(statement, parameters)
+psycopg2.DatabaseError: error with status PGRES_TUPLES_OK and no message from the libpq
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/app.py", line 2311, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/app.py", line 1834, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/app.py", line 1737, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/_compat.py", line 36, in reraise
+    raise value
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/app.py", line 1832, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/app.py", line 1818, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "/root/Flask/NewApp/home.py", line 74, in home
+    posts = db.session.query(PostModel).order_by(PostModel.id.desc()).paginate(page=post_page,per_page=9)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask_sqlalchemy/__init__.py", line 496, in paginate
+    items = self.limit(per_page).offset((page - 1) * per_page).all()
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/sqlalchemy/orm/query.py", line 3161, in all
+    return list(self)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/sqlalchemy/orm/query.py", line 3317, in __iter__
+    return self._execute_and_instances(context)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/sqlalchemy/orm/query.py", line 3342, in _execute_and_instances
+    result = conn.execute(querycontext.statement, self._params)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/sqlalchemy/engine/base.py", line 988, in execute
+    return meth(self, multiparams, params)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/sqlalchemy/sql/elements.py", line 287, in _execute_on_connection
+    return connection._execute_clauseelement(self, multiparams, params)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/sqlalchemy/engine/base.py", line 1107, in _execute_clauseelement
+    distilled_params,
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/sqlalchemy/engine/base.py", line 1248, in _execute_context
+    e, statement, parameters, cursor, context
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/sqlalchemy/engine/base.py", line 1466, in _handle_dbapi_exception
+    util.raise_from_cause(sqlalchemy_exception, exc_info)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/sqlalchemy/util/compat.py", line 383, in raise_from_cause
+    reraise(type(exception), exception, tb=exc_tb, cause=cause)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/sqlalchemy/util/compat.py", line 128, in reraise
+    raise value.with_traceback(tb)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/sqlalchemy/engine/base.py", line 1244, in _execute_context
+    cursor, statement, parameters, context
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/sqlalchemy/engine/default.py", line 552, in do_execute
+    cursor.execute(statement, parameters)
+sqlalchemy.exc.DatabaseError: (psycopg2.DatabaseError) error with status PGRES_TUPLES_OK and no message from the libpq
+[SQL: SELECT posts.id AS posts_id, posts.title AS posts_title, posts.text AS posts_text, posts.views AS posts_views, posts.reply AS posts_reply, posts."user" AS posts_user, posts.posted_on AS posts_posted_on, posts.approved AS posts_approved, posts.closed AS posts_closed, posts.closed_on AS posts_closed_on, posts.closed_by AS posts_closed_by 
+FROM posts ORDER BY posts.id DESC 
+ LIMIT %(param_1)s OFFSET %(param_2)s]
+[parameters: {'param_1': 9, 'param_2': 0}]
+(Background on this error at: http://sqlalche.me/e/4xp6)
+Exception during reset or similar
+Traceback (most recent call last):
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/sqlalchemy/engine/base.py", line 739, in _rollback_impl
+    self.engine.dialect.do_rollback(self.connection)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/sqlalchemy/engine/default.py", line 502, in do_rollback
+    dbapi_connection.rollback()
+psycopg2.DatabaseError: error with status PGRES_TUPLES_OK and no message from the libpq
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/sqlalchemy/pool/base.py", line 680, in _finalize_fairy
+    fairy._reset(pool)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/sqlalchemy/pool/base.py", line 865, in _reset
+    self._reset_agent.rollback()
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/sqlalchemy/engine/base.py", line 1705, in rollback
+    self._do_rollback()
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/sqlalchemy/engine/base.py", line 1743, in _do_rollback
+    self.connection._rollback_impl()
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/sqlalchemy/engine/base.py", line 741, in _rollback_impl
+    self._handle_dbapi_exception(e, None, None, None, None)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/sqlalchemy/engine/base.py", line 1466, in _handle_dbapi_exception
+    util.raise_from_cause(sqlalchemy_exception, exc_info)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/sqlalchemy/util/compat.py", line 383, in raise_from_cause
+    reraise(type(exception), exception, tb=exc_tb, cause=cause)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/sqlalchemy/util/compat.py", line 128, in reraise
+    raise value.with_traceback(tb)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/sqlalchemy/engine/base.py", line 739, in _rollback_impl
+    self.engine.dialect.do_rollback(self.connection)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/sqlalchemy/engine/default.py", line 502, in do_rollback
+    dbapi_connection.rollback()
+sqlalchemy.exc.DatabaseError: (psycopg2.DatabaseError) error with status PGRES_TUPLES_OK and no message from the libpq
+(Background on this error at: http://sqlalche.me/e/4xp6)
+[2019-07-17 09:46:17,699] ERROR in app: Exception on / [GET]
+Traceback (most recent call last):
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/sqlalchemy/engine/base.py", line 1244, in _execute_context
+    cursor, statement, parameters, context
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/sqlalchemy/engine/default.py", line 552, in do_execute
+    cursor.execute(statement, parameters)
+psycopg2.OperationalError: server closed the connection unexpectedly
+	This probably means the server terminated abnormally
+	before or while processing the request.
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/app.py", line 2311, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/app.py", line 1834, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/app.py", line 1737, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/_compat.py", line 36, in reraise
+    raise value
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/app.py", line 1832, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/app.py", line 1818, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "/root/Flask/NewApp/home.py", line 83, in home
+    tags = db.session.query(TagModel).all()
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/sqlalchemy/orm/query.py", line 3161, in all
+    return list(self)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/sqlalchemy/orm/query.py", line 3317, in __iter__
+    return self._execute_and_instances(context)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/sqlalchemy/orm/query.py", line 3342, in _execute_and_instances
+    result = conn.execute(querycontext.statement, self._params)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/sqlalchemy/engine/base.py", line 988, in execute
+    return meth(self, multiparams, params)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/sqlalchemy/sql/elements.py", line 287, in _execute_on_connection
+    return connection._execute_clauseelement(self, multiparams, params)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/sqlalchemy/engine/base.py", line 1107, in _execute_clauseelement
+    distilled_params,
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/sqlalchemy/engine/base.py", line 1248, in _execute_context
+    e, statement, parameters, cursor, context
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/sqlalchemy/engine/base.py", line 1466, in _handle_dbapi_exception
+    util.raise_from_cause(sqlalchemy_exception, exc_info)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/sqlalchemy/util/compat.py", line 383, in raise_from_cause
+    reraise(type(exception), exception, tb=exc_tb, cause=cause)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/sqlalchemy/util/compat.py", line 128, in reraise
+    raise value.with_traceback(tb)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/sqlalchemy/engine/base.py", line 1244, in _execute_context
+    cursor, statement, parameters, context
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/sqlalchemy/engine/default.py", line 552, in do_execute
+    cursor.execute(statement, parameters)
+sqlalchemy.exc.OperationalError: (psycopg2.OperationalError) server closed the connection unexpectedly
+	This probably means the server terminated abnormally
+	before or while processing the request.
+
+[SQL: SELECT post_tags.id AS post_tags_id, post_tags.tag AS post_tags_tag, post_tags.post_id AS post_tags_post_id 
+FROM post_tags]
+(Background on this error at: http://sqlalche.me/e/e3q8)
+[2019-07-17 09:46:17,711] ERROR in app: Exception on / [GET]
+Traceback (most recent call last):
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/sqlalchemy/engine/base.py", line 1244, in _execute_context
+    cursor, statement, parameters, context
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/sqlalchemy/engine/default.py", line 552, in do_execute
+    cursor.execute(statement, parameters)
+psycopg2.OperationalError: server closed the connection unexpectedly
+	This probably means the server terminated abnormally
+	before or while processing the request.
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/app.py", line 2311, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/app.py", line 1834, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/app.py", line 1737, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/_compat.py", line 36, in reraise
+    raise value
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/app.py", line 1832, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/app.py", line 1818, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "/root/Flask/NewApp/home.py", line 74, in home
+    posts = db.session.query(PostModel).order_by(PostModel.id.desc()).paginate(page=post_page,per_page=9)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask_sqlalchemy/__init__.py", line 496, in paginate
+    items = self.limit(per_page).offset((page - 1) * per_page).all()
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/sqlalchemy/orm/query.py", line 3161, in all
+    return list(self)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/sqlalchemy/orm/query.py", line 3317, in __iter__
+    return self._execute_and_instances(context)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/sqlalchemy/orm/query.py", line 3342, in _execute_and_instances
+    result = conn.execute(querycontext.statement, self._params)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/sqlalchemy/engine/base.py", line 988, in execute
+    return meth(self, multiparams, params)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/sqlalchemy/sql/elements.py", line 287, in _execute_on_connection
+    return connection._execute_clauseelement(self, multiparams, params)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/sqlalchemy/engine/base.py", line 1107, in _execute_clauseelement
+    distilled_params,
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/sqlalchemy/engine/base.py", line 1248, in _execute_context
+    e, statement, parameters, cursor, context
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/sqlalchemy/engine/base.py", line 1466, in _handle_dbapi_exception
+    util.raise_from_cause(sqlalchemy_exception, exc_info)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/sqlalchemy/util/compat.py", line 383, in raise_from_cause
+    reraise(type(exception), exception, tb=exc_tb, cause=cause)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/sqlalchemy/util/compat.py", line 128, in reraise
+    raise value.with_traceback(tb)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/sqlalchemy/engine/base.py", line 1244, in _execute_context
+    cursor, statement, parameters, context
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/sqlalchemy/engine/default.py", line 552, in do_execute
+    cursor.execute(statement, parameters)
+sqlalchemy.exc.OperationalError: (psycopg2.OperationalError) server closed the connection unexpectedly
+	This probably means the server terminated abnormally
+	before or while processing the request.
+
+[SQL: SELECT posts.id AS posts_id, posts.title AS posts_title, posts.text AS posts_text, posts.views AS posts_views, posts.reply AS posts_reply, posts."user" AS posts_user, posts.posted_on AS posts_posted_on, posts.approved AS posts_approved, posts.closed AS posts_closed, posts.closed_on AS posts_closed_on, posts.closed_by AS posts_closed_by 
+FROM posts ORDER BY posts.id DESC 
+ LIMIT %(param_1)s OFFSET %(param_2)s]
+[parameters: {'param_1': 9, 'param_2': 0}]
+(Background on this error at: http://sqlalche.me/e/e3q8)
+[2019-07-17 09:46:17,824] ERROR in app: Exception on / [GET]
+Traceback (most recent call last):
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/sqlalchemy/engine/base.py", line 1244, in _execute_context
+    cursor, statement, parameters, context
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/sqlalchemy/engine/default.py", line 552, in do_execute
+    cursor.execute(statement, parameters)
+psycopg2.OperationalError: server closed the connection unexpectedly
+	This probably means the server terminated abnormally
+	before or while processing the request.
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/app.py", line 2311, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/app.py", line 1834, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/app.py", line 1737, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/_compat.py", line 36, in reraise
+    raise value
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/app.py", line 1832, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/app.py", line 1818, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "/root/Flask/NewApp/home.py", line 89, in home
+    return render_template('home.html', reset=reset,login=login,register=register,search=search_post,posts=posts,tags=tags,replyes=replyes,popular_posts=popular_posts,most_tags=most_tags)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/templating.py", line 135, in render_template
+    context, ctx.app)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/templating.py", line 117, in _render
+    rv = template.render(context)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/jinja2/asyncsupport.py", line 76, in render
+    return original_render(self, *args, **kwargs)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/jinja2/environment.py", line 1008, in render
+    return self.environment.handle_exception(exc_info, True)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/jinja2/environment.py", line 780, in handle_exception
+    reraise(exc_type, exc_value, tb)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/jinja2/_compat.py", line 37, in reraise
+    raise value.with_traceback(tb)
+  File "/root/Flask/NewApp/home_templates/home.html", line 1, in top-level template code
+    {% extends "index.html" %}
+  File "/root/Flask/NewApp/templates/index.html", line 279, in top-level template code
+    {% block content %}
+  File "/root/Flask/NewApp/home_templates/home.html", line 33, in block "content"
+    style="width: 100%;margin-bottom:2px;" disabled>{{post.replies()}} Answers</button>
+  File "/root/Flask/NewApp/models.py", line 130, in replies
+    return db.session.query(ReplyModel).filter_by(post_id=self.id).count()
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/sqlalchemy/orm/query.py", line 3561, in count
+    return self.from_self(col).scalar()
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/sqlalchemy/orm/query.py", line 3305, in scalar
+    ret = self.one()
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/sqlalchemy/orm/query.py", line 3275, in one
+    ret = self.one_or_none()
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/sqlalchemy/orm/query.py", line 3244, in one_or_none
+    ret = list(self)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/sqlalchemy/orm/query.py", line 3317, in __iter__
+    return self._execute_and_instances(context)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/sqlalchemy/orm/query.py", line 3342, in _execute_and_instances
+    result = conn.execute(querycontext.statement, self._params)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/sqlalchemy/engine/base.py", line 988, in execute
+    return meth(self, multiparams, params)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/sqlalchemy/sql/elements.py", line 287, in _execute_on_connection
+    return connection._execute_clauseelement(self, multiparams, params)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/sqlalchemy/engine/base.py", line 1107, in _execute_clauseelement
+    distilled_params,
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/sqlalchemy/engine/base.py", line 1248, in _execute_context
+    e, statement, parameters, cursor, context
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/sqlalchemy/engine/base.py", line 1466, in _handle_dbapi_exception
+    util.raise_from_cause(sqlalchemy_exception, exc_info)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/sqlalchemy/util/compat.py", line 383, in raise_from_cause
+    reraise(type(exception), exception, tb=exc_tb, cause=cause)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/sqlalchemy/util/compat.py", line 128, in reraise
+    raise value.with_traceback(tb)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/sqlalchemy/engine/base.py", line 1244, in _execute_context
+    cursor, statement, parameters, context
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/sqlalchemy/engine/default.py", line 552, in do_execute
+    cursor.execute(statement, parameters)
+sqlalchemy.exc.OperationalError: (psycopg2.OperationalError) server closed the connection unexpectedly
+	This probably means the server terminated abnormally
+	before or while processing the request.
+
+[SQL: SELECT count(*) AS count_1 
+FROM (SELECT replyes.id AS replyes_id, replyes.text AS replyes_text, replyes.post_id AS replyes_post_id, replyes."user" AS replyes_user 
+FROM replyes 
+WHERE replyes.post_id = %(post_id_1)s) AS anon_1]
+[parameters: {'post_id_1': 6}]
+(Background on this error at: http://sqlalche.me/e/e3q8)
+[2019-07-17 09:46:17,858] ERROR in app: Exception on / [GET]
+Traceback (most recent call last):
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/sqlalchemy/engine/base.py", line 1244, in _execute_context
+    cursor, statement, parameters, context
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/sqlalchemy/engine/default.py", line 552, in do_execute
+    cursor.execute(statement, parameters)
+psycopg2.OperationalError: server closed the connection unexpectedly
+	This probably means the server terminated abnormally
+	before or while processing the request.
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/app.py", line 2311, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/app.py", line 1834, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/app.py", line 1737, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/_compat.py", line 36, in reraise
+    raise value
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/app.py", line 1832, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/app.py", line 1818, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "/root/Flask/NewApp/home.py", line 89, in home
+    return render_template('home.html', reset=reset,login=login,register=register,search=search_post,posts=posts,tags=tags,replyes=replyes,popular_posts=popular_posts,most_tags=most_tags)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/templating.py", line 135, in render_template
+    context, ctx.app)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/templating.py", line 117, in _render
+    rv = template.render(context)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/jinja2/asyncsupport.py", line 76, in render
+    return original_render(self, *args, **kwargs)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/jinja2/environment.py", line 1008, in render
+    return self.environment.handle_exception(exc_info, True)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/jinja2/environment.py", line 780, in handle_exception
+    reraise(exc_type, exc_value, tb)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/jinja2/_compat.py", line 37, in reraise
+    raise value.with_traceback(tb)
+  File "/root/Flask/NewApp/home_templates/home.html", line 1, in top-level template code
+    {% extends "index.html" %}
+  File "/root/Flask/NewApp/templates/index.html", line 279, in top-level template code
+    {% block content %}
+  File "/root/Flask/NewApp/home_templates/home.html", line 33, in block "content"
+    style="width: 100%;margin-bottom:2px;" disabled>{{post.replies()}} Answers</button>
+  File "/root/Flask/NewApp/models.py", line 130, in replies
+    return db.session.query(ReplyModel).filter_by(post_id=self.id).count()
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/sqlalchemy/orm/query.py", line 3561, in count
+    return self.from_self(col).scalar()
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/sqlalchemy/orm/query.py", line 3305, in scalar
+    ret = self.one()
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/sqlalchemy/orm/query.py", line 3275, in one
+    ret = self.one_or_none()
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/sqlalchemy/orm/query.py", line 3244, in one_or_none
+    ret = list(self)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/sqlalchemy/orm/query.py", line 3317, in __iter__
+    return self._execute_and_instances(context)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/sqlalchemy/orm/query.py", line 3342, in _execute_and_instances
+    result = conn.execute(querycontext.statement, self._params)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/sqlalchemy/engine/base.py", line 988, in execute
+    return meth(self, multiparams, params)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/sqlalchemy/sql/elements.py", line 287, in _execute_on_connection
+    return connection._execute_clauseelement(self, multiparams, params)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/sqlalchemy/engine/base.py", line 1107, in _execute_clauseelement
+    distilled_params,
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/sqlalchemy/engine/base.py", line 1248, in _execute_context
+    e, statement, parameters, cursor, context
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/sqlalchemy/engine/base.py", line 1466, in _handle_dbapi_exception
+    util.raise_from_cause(sqlalchemy_exception, exc_info)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/sqlalchemy/util/compat.py", line 383, in raise_from_cause
+    reraise(type(exception), exception, tb=exc_tb, cause=cause)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/sqlalchemy/util/compat.py", line 128, in reraise
+    raise value.with_traceback(tb)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/sqlalchemy/engine/base.py", line 1244, in _execute_context
+    cursor, statement, parameters, context
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/sqlalchemy/engine/default.py", line 552, in do_execute
+    cursor.execute(statement, parameters)
+sqlalchemy.exc.OperationalError: (psycopg2.OperationalError) server closed the connection unexpectedly
+	This probably means the server terminated abnormally
+	before or while processing the request.
+
+[SQL: SELECT count(*) AS count_1 
+FROM (SELECT replyes.id AS replyes_id, replyes.text AS replyes_text, replyes.post_id AS replyes_post_id, replyes."user" AS replyes_user 
+FROM replyes 
+WHERE replyes.post_id = %(post_id_1)s) AS anon_1]
+[parameters: {'post_id_1': 6}]
+(Background on this error at: http://sqlalche.me/e/e3q8)
+[2019-07-17 11:31:01 -0400] [23677] [INFO] Handling signal: term
+[2019-07-17 11:31:01 -0400] [23695] [INFO] Worker exiting (pid: 23695)
+[2019-07-17 11:31:01 -0400] [23696] [INFO] Worker exiting (pid: 23696)
+[2019-07-17 11:31:01 -0400] [23697] [INFO] Worker exiting (pid: 23697)
+[2019-07-17 11:31:01 -0400] [23698] [INFO] Worker exiting (pid: 23698)
+{'user': 'Danutu', 'password': 'FCsteaua89'}
+[2019-07-17 11:31:01 -0400] [23699] [INFO] Worker exiting (pid: 23699)
+Danutu
+[2019-07-17 11:31:02 -0400] [23677] [INFO] Shutting down: Master

@@ -4,8 +4,8 @@ from sqlalchemy import ForeignKey
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 
-from app import bcrypt, db, db_engine,ma
-import flask_whooshalchemyplus
+from app import bcrypt, db, db_engine,ma,fields
+import flask_whooshalchemy
 
 Base = declarative_base()
 
@@ -26,12 +26,13 @@ class UserModel(db.Model):
     genre = db.Column(db.String, primary_key = False, default = 'None')
     role = db.Column(db.Integer, ForeignKey('roles.id') ,default = 0)
     bio = db.Column(db.String(250), primary_key = False, default = 'Hey i`m new here')
+    activated = db.Column(db.Boolean, primary_key=False)
 
     posts = relationship("PostModel", backref="user_in")
     replyes = relationship("ReplyModel", backref="user_in")
     likes = relationship("LikeModel", backref="user_in")
 
-    def __init__(self,id,join_date,name,real_name,github_name,email,password,avatar,genre,role,bio):
+    def __init__(self,id,join_date,name,real_name,github_name,email,password,avatar,genre,role,bio,activated):
         self.id = id
         self.join_date = join_date
         self.name = name
@@ -43,6 +44,7 @@ class UserModel(db.Model):
         self.genre = genre
         self.role = role
         self.bio = bio
+        self.activated = activated
 
     def is_authenticated(self):
         return True
@@ -61,13 +63,13 @@ class UserModel(db.Model):
 
 class UserSchema(ma.Schema):
     class Meta:
-        fields = ('id','join_date','name','real_name','github_name','email')
+        fields = ('id','join_date','name','real_name','github_name','email','avatar')
     
 UsersSchema = UserSchema(many=True)
 
 class OUserSchema(ma.Schema):
     class Meta:
-        fields = ('id','join_date','name','real_name','github_name','email','genre','role','bio')
+        fields = ('id','join_date','name','real_name','github_name','email','genre','role','bio','avatar')
     
 OUserSchema = OUserSchema()
 
@@ -93,7 +95,6 @@ class PostModel(db.Model):
     __tablename__ = 'posts'
 
     __searchable__ = ['title']
-    __analyzer__ = flask_whooshalchemyplus.whoosh.analysis.SimpleAnalyzer()
 
     id = db.Column(db.Integer, db.Sequence('posts_id_seq'), primary_key = True)
     title = db.Column(db.String(100), primary_key = False)
@@ -102,9 +103,14 @@ class PostModel(db.Model):
     reply = db.Column(db.Integer, primary_key = False, default=0)
     user = db.Column(db.Integer, ForeignKey('users.id')) 
     posted_on = db.Column(db.Date, primary_key = False, default = datetime.datetime.now)
+    approved = db.Column(db.Boolean, primary_key = False)
+    closed = db.Column(db.Boolean, primary_key = False)
+    closed_on = db.Column(db.Date, primary_key = False)
+    closed_by = db.Column(db.Integer, primary_key = False)
     
+    author = db.relationship("UserModel", backref = "author")
 
-    def __init__(self,id,title,text,views,reply,user,posted_on):
+    def __init__(self,id,title,text,views,reply,user,posted_on,approved,closed,closed_on,closed_by):
         self.id = id
         self.title = title
         self.text = text
@@ -112,6 +118,10 @@ class PostModel(db.Model):
         self.reply = reply
         self.user = user
         self.posted_on = posted_on
+        self.approved = approved
+        self.closed = closed
+        self.closed_on = closed_on
+        self.closed_by = closed_by
 
     def __repr__(self):
         return '{0}(title={1})'.format(self.__class__.__name__, self.title)
@@ -119,9 +129,14 @@ class PostModel(db.Model):
     def replies(self):
         return db.session.query(ReplyModel).filter_by(post_id=self.id).count()
 
+    def closed_by_name(self):
+        users = UserModel.query.filter_by(id=self.closed_by).first()
+        return users.name
+
 class PostSchema(ma.Schema):
+    author = fields.Nested(UserSchema())
     class Meta:
-        fields = ('id','title','text','views','posted_on')
+        fields = ('id','title','text','views','posted_on','author')
     
 PostsSchema = PostSchema(many=True)
 OPostSchema = PostSchema()
