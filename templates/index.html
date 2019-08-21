@@ -1,143 +1,308 @@
 <!DOCTYPE html>
-<html>
-<script type="text/javascript">
-  function script(url) {
-    var s = document.createElement('script');
-    s.type = 'text/javascript';
-    s.async = true;
-    s.src = url;
-    var x = document.getElementsByTagName('head')[0];
-    x.appendChild(s);
-  }
-</script>
-<script>
-  var cScriptLoader = (function () {
-    function cScriptLoader(files) {
-      var _this = this;
-      this.log = function (t) {
-        console.log("NewApp: " + t);
-      };
-      this.withNoCache = function (filename) {
-        if (filename.indexOf("?") === -1)
-          filename += "?no_cache=" + new Date().getTime();
-        else
-          filename += "&no_cache=" + new Date().getTime();
-        return filename;
-      };
-      this.loadStyle = function (filename) {
-        // HTMLLinkElement
-        var link = document.createElement("link");
-        link.rel = "stylesheet";
-        link.type = "text/css";
-        link.href = filename;
-        _this.log('Loading style ' + filename);
-        link.onload = function () {
-          _this.log('Loaded style "' + filename + '".');
-        };
-        link.onerror = function () {
-          _this.log('Error loading style "' + filename + '".');
-        };
-        _this.m_head.appendChild(link);
-      };
-      this.loadScript = function (i) {
-        var script = document.createElement('script');
-        script.type = 'text/javascript';
-        script.src = (_this.m_js_files[i]);
-        var loadNextScript = function () {
-          if (i + 1 < _this.m_js_files.length) {
-            _this.loadScript(i + 1);
-          }
-        };
-        script.onload = function () {
-          _this.log('Loaded script "' + _this.m_js_files[i] + '".');
-          loadNextScript();
-        };
-        script.onerror = function () {
-          _this.log('Error loading script "' + _this.m_js_files[i] + '".');
-          loadNextScript();
-        };
-        _this.log('Loading script "' + _this.m_js_files[i] + '".');
-        _this.m_head.appendChild(script);
-      };
-      this.loadFiles = function () {
-        // this.log(this.m_css_files);
-        // this.log(this.m_js_files);
-        for (var i = 0; i < _this.m_css_files.length; ++i)
-          _this.loadStyle(_this.m_css_files[i]);
-        _this.loadScript(0);
-      };
-      this.m_js_files = [];
-      this.m_css_files = [];
-      this.m_head = document.getElementsByTagName("head")[0];
-      // this.m_head = document.head; // IE9+ only
-      function endsWith(str, suffix) {
-        if (str === null || suffix === null)
-          return false;
-        return str.indexOf(suffix, str.length - suffix.length) !== -1;
-      }
-      for (var i = 0; i < files.length; ++i) {
-        if (endsWith(files[i], ".css")) {
-          this.m_css_files.push(files[i]);
-        } else if (endsWith(files[i], ".js")) {
-          this.m_js_files.push(files[i]);
-        } else
-          this.log('Error unknown filetype "' + files[i] + '".');
-      }
-    }
-    return cScriptLoader;
-  })();
-</script>
+<html {% if location %}lang="{{location.lang}}"{% endif %}>
 
 <head>
-  <title>New App</title>
+  {% if request.url_rule.endpoint == 'home.home' %}<title>New App - Where Developers Learn, Share, & Code</title>{% endif %}
+  {% if request.url_rule.endpoint == 'users.user' %}<title>New App - {{user.name}}</title>{% endif %}
+  {% if request.url_rule.endpoint == 'home.post' %}<title>{{posts.title}}</title>{% endif %}
   <meta charset="utf-8">
+  <meta name="msvalidate.01" content="FA1B41824E0AF3D2CC7B0F86730E5C45" />
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <link rel='icon' href="{{url_for('favicon')}}" type='image/x-icon' />
-  <script>
-    var ScriptLoader = new cScriptLoader([
-      "https://cdn.quilljs.com/1.3.6/quill.snow.css",
-      "https://use.fontawesome.com/releases/v5.8.2/css/all.css",
-      "https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css",
-      "https://bootswatch.com/4/flatly/bootstrap.css",
-      "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.8/styles/default.min.css",
-      "https://code.jquery.com/jquery-3.3.1.slim.min.js",
-      "https://cdn.quilljs.com/1.3.6/quill.min.js",
-      "https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js",
-      "https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js",
-      "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.8/highlight.min.js"
-    ]);
-    var loaded = ScriptLoader.loadFiles();
-  </script>
+  <meta name="keywords" content="software development,engineering,python,javascript,java">
 
+  <meta name="theme-color" content="rgb(34, 34, 34)" />
+  <meta name="application-name" content="NewApp">
+  <meta name="apple-mobile-web-app-title" content="NewApp">
+
+
+  {% if request.url_rule.endpoint == 'home.home' %}<meta name="description" content="The newest community for developers to learn, share​ ​their programming ​knowledge, and build their careers.">{% endif %}
+  {% if request.url_rule.endpoint == 'users.user' %}<meta name="description" content="{{user.bio}}">{% endif %}
+  {% if request.url_rule.endpoint == 'home.post' %}<meta name="description" content="{{posts.text[41:100]}}">{% endif %}
+
+  <link rel="canonical" href="https://newapp.nl/">
+  <link rel="manifest" href="https://newapp.nl/{{url_for('static', filename='manifest.json')}}">
+  <link rel="alternate" type="application/rss+xml" title="NewApp RSS Feed" href="https://newapp.nl/feed">
+
+  {% if location %}<meta http-equiv="content-language" content="{{location.lang}}">{% endif %}
+  <link rel="search" type="application/opensearchdescription+xml" title="NewApp" href="https://newapp.nl/opensearch">
+  {% if request.url_rule.endpoint == 'home.home' %}
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://newapp.nl/">
+  <meta property="og:site_name" content="New App">
+  <meta property="og:description" content="The newest community for developers to learn, share​ ​their programming ​knowledge, and build their careers.">
+  {% elif request.url_rule.endpoint == 'users.user' %}
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="{{request.path}}">
+  <meta property="og:site_name" content="{{user.name}}">
+  <meta property="og:image" itemprop="image primaryImageOfPage" content="https://newapp.nl{{user.avatar}}">
+  <meta property="og:description" content="{{user.bio}}">
+  {% elif request.url_rule.endpoint == 'home.post' %}
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="{{request.path}}">
+  <meta property="og:site_name" content="{{posts.title}}">
+  <meta property="og:description" content="{{posts.text[41:100]}}">
+  {% endif %}
+
+  <meta name="environment" content="production">
+  
+  <link rel='icon' href="{{url_for('static', filename='favicon.png')}}" type='image/x-icon' />
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/tagsinput.css') }}"/>
+  <script src="{{ url_for('static', filename='js/loadscripts.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/serviceworker.js') }}"></script>
+  <link rel="stylesheet" href="{{ url_for('static', filename='flags/flag-icon.min.css') }}" type="text/css" />
+  <script id="Cookiebot" src="https://consent.cookiebot.com/uc.js" data-cbid="708e3502-b7d1-49de-82cd-2953e455efb0"
+    type="text/javascript" async></script>
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-145440871-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-145440871-1');
+  {% if current_user.is_authenticated %}
+  gtag('set', {'user_id': '{{current_user.id}}'});
+  {% endif %} 
+</script>
+  {% if request.path == url_for('home.home') %}
+  <script>
+    (adsbygoogle = window.adsbygoogle || []).push({
+      google_ad_client: "ca-pub-8464409235663505",
+      enable_page_level_ads: true
+    });
+  </script>
+  
+  <script type="application/ld+json"> 
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "url": "https://newapp.nl/",
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": "https://newapp.nl/?search={search}",
+        "query-input": "required name=search"
+      }
+    }
+  </script> 
+  {% endif %}
+  <script>
+    var loaded = LoadScripts.loadFiles();
+  </script>
+  <script src="{{ url_for('static', filename='js/newapp.js') }}"></script>
   <style>
+    img {
+      image-rendering: optimizeQuality;
+      
+     }
     .popover-body {
       padding-left: 0;
       padding-right: 0;
-    }
-
-    .post_reply {
-      height: 20%;
-    }
-
-    .form-reply {
-      height: 100%;
     }
 
     pre.ql-syntax {
       background-color: #f0f0f0 !important;
       color: #212529 !important;
     }
+
     .ql-container {
       border-radius: 0px 0px 5px 5px;
     }
+
     .ql-toolbar {
       border-radius: 5px 5px 0px 0px;
     }
+
+    .field-icon {
+      float: right;
+      margin-top: -25px;
+      position: relative;
+      z-index: 2;
+      padding-right: 30px;
+    }
+
+    .btn-primary {
+      background-color: rgb(34, 34, 34);
+    }
+
+    .btn-primary:hover {
+      background-color: rgb(46, 46, 46);
+      transition: background-color 0.2s ease-in-out;
+    }
+
+    .dropdown-item:active {
+      background-color: rgb(46, 46, 46) !important;
+    }
+
+    .dropdown-item:hover {
+      background-color: rgb(34, 34, 34) !important;
+    }
+
+    .navbar-brand {
+      text-transform: uppercase;
+      font-family: 'Montserrat', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    }
+
+    #dot-loc {
+      border-radius: 100%;
+      background-color: #18BC9C;
+      vertical-align: baseline;
+      height: 8px;
+      width: 8px;
+      display: inline-block;
+      margin-bottom: 1px;
+    }
+
+    .dot_online {
+      border-radius: 100%;
+      background-color: #00c413;
+      height: 5px;
+      width: 5px;
+      display: block;
+      margin-top: 4px;
+      margin-right: 1px;
+    }
+
+    .dot_offline {
+      border-radius: 100%;
+      background-color: #cc1616;
+      height: 5px;
+      width: 5px;
+      display: block;
+      margin-top: 4px;
+      margin-right: 1px;
+    }
+
+    @media (min-width: 700px) { 
+      footer {
+        bottom: 0;
+      }
+     }
+     
+     {% if request.path == url_for('home.home') %}
+     .newapp-input-tag {
+        margin-top: 1%;
+      }
+     {% elif request.url_rule.endpoint == 'users.user' %}
+     .emp-profile {
+        padding: 3%;
+        margin-top: 3%;
+        margin-bottom: 3%;
+        border-radius: 0.5rem;
+        background: #fff;
+      }
+
+      .profile-img {
+          text-align: center;
+      }
+
+      .profile-img img {
+          width: 70%;
+          height: 100%;
+      }
+
+      .profile-img .file {
+          position: relative;
+          overflow: hidden;
+          margin-top: -20%;
+          width: 70%;
+          border: none;
+          border-radius: 0;
+          font-size: 15px;
+          background: #212529b8;
+      }
+
+      .profile-img .file input {
+          position: absolute;
+          opacity: 0;
+          right: 0;
+          top: 0;
+      }
+
+      .profile-head h5 {
+          color: #333;
+      }
+
+      .profile-head h6 {
+          color: #0062cc;
+      }
+
+      .profile-edit-btn {
+          border: none;
+          border-radius: 1.5rem;
+          width: 70%;
+          padding: 2%;
+          font-weight: 600;
+          color: #6c757d;
+          cursor: pointer;
+      }
+
+      .proile-rating {
+          font-size: 12px;
+          color: #818182;
+          margin-top: 5%;
+      }
+
+      .proile-rating span {
+          color: #495057;
+          font-size: 15px;
+          font-weight: 600;
+      }
+
+      .profile-head .nav-tabs {
+          margin-bottom: 5%;
+      }
+
+      .profile-head .nav-tabs .nav-link {
+          font-weight: 600;
+          border: none;
+      }
+
+      .profile-head .nav-tabs .nav-link.active {
+          border: none;
+          border-bottom: 2px solid #18BC9C;
+      }
+
+      .profile-work {
+          padding: 14%;
+          margin-top: -15%;
+      }
+
+      .profile-work p {
+          font-size: 12px;
+          color: #818182;
+          font-weight: 600;
+          margin-top: 10%;
+      }
+
+      .profile-work a {
+          text-decoration: none;
+          color: #495057;
+          font-weight: 600;
+          font-size: 14px;
+      }
+
+      .profile-work ul {
+          list-style: none;
+      }
+
+      .profile-tab label {
+          font-weight: 600;
+      }
+
+      .profile-tab p {
+          font-weight: 600;
+          color: #0062cc;
+      }
+      #genre {
+        margin-bottom: 4%;
+      }
+     {% endif %}
   </style>
 </head>
 <header>
-  <nav class="navbar navbar-expand-lg navbar-dark bg-primary" style="padding: .3rem 1rem !important;">
-    <a class="navbar-brand" href="{{url_for('home.home')}}">New App</a>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-primary"
+    style="padding: .3rem 1rem !important;background-color:rgb(34, 34, 34) !important" role="navigation">
+    <a class="navbar-brand" href="{{url_for('home.home')}}"><span style="color:#18BC9C;">New</span>App<span style="color:#18BC9C;font-size: 55%;font-weight: 600;"> Beta</span></a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
       aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
@@ -148,7 +313,7 @@
       </ul>
       <ul class="navbar-nav mr-auto col-md-5 nav-fill" style="padding-right: 0">
         <li class="nav-item">
-          <form class="form-inline active-cyan-4" method="GET">
+          <form class="form-inline active-cyan-4" method="GET" action="https://newapp.nl/">
             <div class="input-group" style="width:100%;">
               <input class="form-control form-control-sm" type="search" name="search" placeholder="Search"
                 aria-label="Search">
@@ -178,8 +343,8 @@
             <a class="dropdown-item" href="{{url_for('users.user',name=current_user.name,id=current_user.id)}}"><span
                 class="fas fa-user"></span> Profile</a>
             <a class="dropdown-item" href="/logout"><span class="fas fa-sign-out-alt"></span> Logout</a>
-            {% if current_user.role == 10 %}
-              <a class="dropdown-item" href="/admin"><span class="fas fa-user-shield"></span> Admin</a>
+            {% if current_user.roleinfo.admin_panel_permission %}
+            <a class="dropdown-item" href="{{url_for('admin.main')}}"><span class="fas fa-user-shield"></span> Admin</a>
             {% endif %}
           </div>
 
@@ -195,72 +360,18 @@
 </header>
 
 <body>
-  <div class="container" id="cont" style="margin-top: 10px;">
+  <div class="container" id="cont" style="margin-top: 10px;margin-bottom:5%;" role="main">
+
 
     <script>
-      function LoadAlerts() {
-        jQuery.noConflict();
-        jQuery(document).ready(function ($) {
-          // show the alert
-          setTimeout(function () {
-            jQuery(".alert").alert('close');
-          }, 2000);
-        });
-
-      }
+      {% if current_user.is_authenticated %}
+      window.addEventListener("load", LoadImage_NavBar({{current_user.id}}, "{{current_user.avatar}}"), false); 
+      {% endif %}
       window.addEventListener("load", LoadAlerts, false);
     </script>
-    <script>
-      function Create_Question() {
-        var x = document.getElementById("create_question");
-        if (x.style.display === "block") {
-          x.style.display = "none";
-        } else {
-          x.style.display = "block";
-        }
-      }
-    </script>
-    {% if current_user.is_authenticated %}
-    <script>
-      window.addEventListener("load", function () {
-        var x = document.createElement("IMG");
-        x.setAttribute("class", "rounded-circle img-responsive");
-        x.setAttribute("src", "{{current_user.avatar}}");
-        x.setAttribute("style", "margin-top: -5px;margin-right: 5px;");
-        x.setAttribute("height", "30px");
-        x.setAttribute("title", "profile image");
-        var child = document.getElementById("nav_name_{{current_user.id}}");
-        document.getElementById("nav_img_{{current_user.id}}").insertBefore(x, child);
-      });
-    </script>
-    {% endif %}
-    <script>
-      function LoadImages(id, photo) {
-        window.addEventListener("load", function () {
-          var x = document.createElement("IMG");
-          x.setAttribute("class", "rounded-circle img-responsive");
-          x.setAttribute("style", "margin-right: 5px;");
-          x.setAttribute("src", photo);
-          x.setAttribute("height", "30px");
-          x.setAttribute("title", "profile image");
-          var child = document.getElementById("name_" + id);
-          document.getElementById("img_" + id).insertBefore(x, child);
-        });
-      }
+    <script>registerSW();</script>
 
-      function LoadReplyImages(id, photo) {
-        window.addEventListener("load", function () {
-          var x = document.createElement("IMG");
-          x.setAttribute("class", "rounded-circle img-responsive");
-          x.setAttribute("style", "margin-right: 5px;");
-          x.setAttribute("src", photo);
-          x.setAttribute("height", "30px");
-          x.setAttribute("title", "profile image");
-          var child = document.getElementById("reply_name_" + id);
-          document.getElementById("reply_img_" + id).insertBefore(x, child);
-        });
-      }
-    </script>
+
     {% for success in get_flashed_messages(category_filter=["success"]) %}
     <div class="alert alert-success alert-dismissible fade show" id="success-alert" role="alert">
       <i class="far fa-check-circle"></i>
@@ -296,8 +407,6 @@
               <br>
               {{register.realname}}
               <br>
-              {{register.github}}
-              <br>
               {{register.email}}
               <br>
               {{register.password}}
@@ -329,6 +438,7 @@
               {{login.username}}
               <br>
               {{login.password}}
+              <span onclick="ShowPassword()" id="show-pass" class="fa fa-fw fa-eye field-icon"></span>
               <h8 style="font-size: 9px">Forgot Password?<a style="color:#18BC9C;cursor: pointer;margin-left: 2px;"
                   data-toggle="modal" data-dismiss="modal" data-target="#reset_password">Click here</a></h8>
               <br>
@@ -357,6 +467,7 @@
               {{reset.email}}
               <br>
               {{reset.password}}
+              <span onclick="ShowPasswordReset()" id="show-pass-reset" class="fa fa-fw fa-eye field-icon"></span>
               <br>
               {{reset.submit}}
             </form>
@@ -370,6 +481,28 @@
     </div>
     {% endif %}
   </div>
+
 </body>
+<!--
+<footer class="stickyfooter" id="sticky-footer"
+  style="background-color: rgb(34, 34, 34) !important;
+  width: 100%;
+  padding-bottom: 1% !important;
+  overflow-x: hidden;
+  padding-top: 1% !important;
+  position: absolute;
+  display: block;"
+  class="py-4 bg-dark text-white-50">
+  <div class="row">
+    <div class="col-5" style="margin-left: 4%;font-size: 85%;color: dimgray;">
+      {% if location %}<span id="dot-loc"></span> {{location.country}}{% if location.city %},
+      {{location.city}}{% endif %}{% endif %}
+    </div>
+    <div class="col-4" style="align-content: center;display: flex;">
+      <small style="vertical-align: top;color: dimgray;">Copyright &copy; <span
+          style="color:#18BC9C;font-size: 100%;">New</span>App</small>
+    </div>
+  </div>
+</footer>-->
 
 </html>

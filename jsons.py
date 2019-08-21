@@ -1,19 +1,17 @@
-from flask import Blueprint, jsonify, make_response, abort, request
-import requests
-from app import db, app, key_jwt
-from models import (OPostSchema, OUserSchema, PostModel, PostsSchema,
-                    RepliesSchema, ReplyModel, TagModel, UserModel,
-                    UsersSchema, bcrypt)
-
-from users import login_user
-
-import datetime
-
+import json
 from functools import wraps
 
-import json
-
 import jwt
+import requests
+from flask import (Blueprint, abort, jsonify, make_response, render_template,
+                   request, url_for)
+
+from app import app, db, key_jwt, time
+from models import (OPostSchema, OUserSchema, PostModel, PostsSchema,
+                    RepliesSchema, ReplyModel, TagModel, UserModel,
+                    UsersSchema, SessionsSchema, Analyze_Session, bcrypt)
+from users import (BadSignature, BadTimeSignature, Message, SignatureExpired,
+                   cipher_suite, login_user, mail, serializer)
 
 json_pages = Blueprint(
     'jsons',__name__,
@@ -29,7 +27,7 @@ def token_required(f):
             return jsonify({"message": "Token is missing!"})
         try:
             data = jwt.decode(token['token'],
-            key_jwt['k'],algorithms=['HS256'])
+            key_jwt['k'],algorithms=key_jwt['alg'])
             print (data['user'])
         except Exception as e:
             print(str(e))
@@ -38,10 +36,10 @@ def token_required(f):
         return f(*args, **kwargs)
     return decorated
 
-@json_pages.route('/api/posts', methods=['POST'])
-@token_required
+@json_pages.route('/api/posts')
+
 def posts():
-    
+
     posts = db.session.query(PostModel).all()
     result = PostsSchema.dump(posts)
     response = make_response(jsonify(result.data),200)
@@ -82,13 +80,12 @@ def user(id):
 
 @json_pages.route('/api/delete/post/<int:id>', methods=['DELETE'])
 def delete_post(id):
-    if requests.method == 'DELETE':
-        db.session.query(PostModel).filter_by(id=id).delete()
-        db.session.query(ReplyModel).filter_by(post_id=id).delete()
-        db.session.query(TagModel).filter_by(post_id=id).delete()
-        db.session.commit()
-        return jsonify({'operation': 'success'})
-    return jsonify({'operation': 'invalid_method'})
+    db.session.query(PostModel).filter_by(id=id).delete()
+    db.session.query(ReplyModel).filter_by(post_id=id).delete()
+    db.session.query(TagModel).filter_by(post_id=id).delete()
+    db.session.commit()
+    return jsonify({'operation': 'success'})
+
 
 @json_pages.route('/api/login/<string:name>/<string:password>')
 def login(name, password):
@@ -106,9 +103,6 @@ def login(name, password):
 
 @json_pages.route("/api/login", methods=['POST'])
 def login_app():
-    if request.method != 'POST':
-        return redirect(url_for('home.home'))
-
     if not request.json:
         abort(404)
 
@@ -130,16 +124,12 @@ def login_app():
       return jsonify({"login": "Account not activated"})
 
     else:
-        payload = {'user': data['user'], 'user_id': user.id,'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=30)}
-        token = jwt.encode(payload,key_jwt['k']).decode('utf-8')
+        payload = {'user': data['user'], 'user_id': user.id,'exp': time.datetime.utcnow() + time.timedelta(minutes=30)}
+        token = jwt.encode(payload,key_jwt['k'],algorithm=key_jwt['alg']).decode('utf-8')
         return jsonify({"login": 'success', 'token': token})
 
-@json_pages.route('/api/register',  methods=['POST'])
+@json_pages.route('/app/register',  methods=['POST'])
 def register_app():
-
-    if request.method != 'POST':
-        abord(404)
-
     data = request.json
 
     check = db.session.query(UserModel).filter_by(name=data['username']).first()
@@ -188,3 +178,108 @@ def register_app():
     db.session.add(new_user)
     db.session.commit()
     return jsonify({'register': 'success'})
+
+@json_pages.route('/app/user', methods=['POST'])
+
+def user_app():
+    data = request.json
+    users = db.session.query(UserModel).filter_by(id=data['id']).first()
+    result = OUserSchema.dump(users)
+    response = make_response(jsonify(result.data),200)
+    response.mimetype = 'application/json'
+    return response
+
+@json_pages.route('/app/post/', methods=['POST'])
+
+def post_app():
+    data = request.json
+    posts = db.session.query(PostModel).filter_by(id=data['post_id']).first()
+    result = OPostSchema.dump(posts)
+    response = make_response(jsonify(result.data),200)
+    response.mimetype = 'application/json'
+    return response
+
+@json_pages.route('/app/posts', methods=['POST'])
+
+def posts_app():
+    posts = db.session.query(PostModel).all()
+    result = PostsSchema.dump(posts)
+    response = make_response(jsonify(result.data),200)
+    response.mimetype = 'application/json'
+    return response
+
+@json_pages.route('/app/replies')
+
+def replies_app():
+    data = request.json
+    reply = db.session.query(ReplyModel).filter_by(post_id=data['post_id']).all()
+    result = RepliesSchema.dump(reply)
+    response = make_response(jsonify(result.data),200)
+    response.mimetype = 'application/json'
+    return response
+
+@json_pages.route('/app/post/post', methods=['POST'])
+
+def post_post_app():
+    data = request.json
+
+    new_post = PostModel(
+            None,
+            data['title'],
+            data['text'],
+            None,
+            None,
+            data['author_id'],
+            None,
+            True,
+            False,
+            None,
+            None
+        )
+
+    db.session.add(new_post)
+    db.session.commit()
+
+    index = db.session.query(PostModel).order_by(PostModel.id.desc())
+    tags = []
+    tags = data['tags'].split(", ")
+    for t in tags:
+        tag = TagModel(
+            None,
+            t,
+            index[0].id
+        )
+    db.session.add(tag)
+    db.session.commit()
+
+    return jsonify({'post': 'success'})
+
+@json_pages.route('/app/post/reply', methods=['POST'])
+
+def post_reply_app():
+    data = request.json
+
+    posts = db.session.query(PostModel).filter_by(id=data['post_id']).first()
+
+    if posts[0].closed:
+        return jsonify({'post': 'The post is closed'})
+
+    new_reply = ReplyModel(
+        None,
+        data['text'],
+        data['post_id'],
+        data['author_id']
+    )
+    
+    db.session.add(new_reply)
+    db.session.commit()
+
+    return jsonify({'post': 'success'})
+
+@json_pages.route('/api/analytics/sessions')
+def analyze_sessions():
+    sessions = db.session.query(Analyze_Session).all()
+    result = SessionsSchema.dump(sessions)
+    response = make_response(jsonify(result.data),200)
+    response.mimetype = 'application/json'
+    return response

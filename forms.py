@@ -1,8 +1,9 @@
 from flask_wtf import FlaskForm
 from wtforms import (BooleanField, HiddenField, PasswordField, SelectField,
-                     StringField, SubmitField, TextAreaField, TextField)
+                     StringField, SubmitField, TextAreaField, TextField, DateField)
 from wtforms.validators import Email, EqualTo, Length
 from flask_wtf.file import FileField, FileRequired, FileAllowed
+
 
 
 class RegisterForm(FlaskForm):
@@ -96,7 +97,8 @@ class LoginForm(FlaskForm):
         render_kw = {
             "class":"form-control",
             "required":"true",
-            "placeholder":"Password"
+            "placeholder":"Password",
+            "id": "password_login"
         }
     )
     submit = SubmitField(
@@ -159,6 +161,7 @@ class ModifyProfileForm(FlaskForm):
         render_kw = {
             "class":"custom-file-input",
             "id":"customFile"
+            
         }
         
     )
@@ -167,6 +170,22 @@ class ModifyProfileForm(FlaskForm):
         render_kw = {
             "class":"custom-select custom-select-sm"
         }
+    )
+    profession = TextField(
+        'Profession_ModifyProfile',
+        validators = [
+            Length(min=5,max=15)
+        ],
+        render_kw = {
+            "class":"form-control",
+            "placeholder":"Profession"
+        }
+    )
+    birthday = HiddenField(
+        'Birthday_ModifyProfile'
+    )
+    int_tags = HiddenField(
+        'Tags_ModifyProfile'
     )
     submit = SubmitField(
         'Modify Profile',
@@ -206,13 +225,8 @@ class NewQuestionForm(FlaskForm):
     text = HiddenField(
         'NewQuestionForm_Text'
     )
-    tag = TextField(
-        'NewQuestionForm_Tags',
-        render_kw = {
-            "class":"form-control form-control-sm",
-            "placeholder":"Tags",
-            "style":"margin-top: 5px;"
-        }
+    tag = HiddenField(
+        'NewQuestionForm_Tags'
     )
     submit = SubmitField(
         'Ask',
@@ -251,7 +265,8 @@ class ResetPasswordForm(FlaskForm):
         render_kw = {
             "class":"form-control",
             "required":"true",
-            "placeholder":"New Password"
+            "placeholder":"New Password",
+            "id": "password_reset"
         }
     )
     submit = SubmitField(

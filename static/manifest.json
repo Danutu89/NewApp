@@ -1,0 +1,15 @@
+{
+    "name": "NewApp",
+    "short_name": "NewApp",
+    "description": "The newest community for developers to learn, share their programming knowledge, and build their careers.",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#000000",
+    "theme_color": "#000000",
+    "homepage_url": "https://newapp.nl/",
+    "icons": [{
+      "src": "https://newapp.nl/static/logo.jpg",
+      "sizes": "1200x1200",
+      "type": "image/png"
+    }]
+  }

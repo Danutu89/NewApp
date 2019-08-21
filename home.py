@@ -1,32 +1,44 @@
-from flask import Blueprint, flash, redirect, render_template, request, url_for, make_response
+import datetime
+
+from flask import (Blueprint, flash, make_response, redirect, render_template,
+                   request, url_for, session)
 from flask_login import current_user
 from jinja2 import TemplateNotFound
-from sqlalchemy import desc, func
+from sqlalchemy import desc, func, or_
 
-from app import db
+from app import db, translate
 from forms import (LoginForm, NewQuestionForm, RegisterForm, ReplyForm,
-                   SearchForm, ResetPasswordForm)
-from models import PostModel, ReplyModel, TagModel, UserModel
+                   ResetPasswordForm, SearchForm)
+from models import PostModel, ReplyModel, TagModel, UserModel, Analyze_Session
 
-import datetime
+from analyze import parseVisitator, sessionID, GetSessionId
+from celery_worker import cleanup_sessions, verify_post
 
 home_pages = Blueprint(
     'home',__name__,
     template_folder='home_templates'
 )
 
+@home_pages.before_request
+def views():
+    data = ['NewApp', GetSessionId(), str(datetime.datetime.now().replace(microsecond=0))]
+    parseVisitator(data)
 
 @home_pages.route("/", methods=['GET','POST'])
 def home():
+    cleanup_sessions.delay()
     login = LoginForm(request.form)
     register = RegisterForm(request.form)
     search_post = SearchForm(request.form)
     new_question = NewQuestionForm(request.form)
     reset = ResetPasswordForm(request.form)
 
+    location = db.session.query(Analyze_Session).filter_by(session=session['user']).first()
+
     if request.method == 'POST':
         if new_question.validate_on_submit():
             
+            lang = translate.getLanguageForText(new_question.text.data)
             new_post = PostModel(
                 None,
                 new_question.title.data,
@@ -38,7 +50,8 @@ def home():
                 True,
                 False,
                 None,
-                None
+                None,
+                str(lang.iso_tag).lower()
             )
 
             db.session.add(new_post)
@@ -46,7 +59,9 @@ def home():
 
             index = db.session.query(PostModel).order_by(PostModel.id.desc())
             tags = []
-            tags = new_question.tag.data.split(", ")
+            tag_p = new_question.tag.data.lower()
+            tag = tag_p.replace(" ", "")
+            tags = tag.split(",")
             for t in tags:
                 tag = TagModel(
                     None,
@@ -55,23 +70,40 @@ def home():
                 )
                 db.session.add(tag)
                 db.session.commit()
-
+            verify_post.delay(index[0].id)
+            #print(index[0].id)
             flash('New question posted successfully', 'success')
-
-    #if request.args.get('search'):
-    #posts = db.session.query(PostModel).whoosh_search(request.args.get('search')).all()
+            
     post_page = request.args.get('page',1,type=int)
     if request.args.get('search'):
-        posts = PostModel.query.whoosh_search(request.args.get('search')).paginate(page=post_page,per_page=9)
+        if current_user.is_authenticated:
+            posts = PostModel.query.whoosh_search(request.args.get('search')).filter(or_(PostModel.lang.like(current_user.lang),PostModel.lang.like('en'))).order_by(PostModel.id.desc()).paginate(page=post_page,per_page=9)
+        else:
+            get_lang = db.session.query(Analyze_Session).filter_by(session=session['user']).first()
+            posts = PostModel.query.whoosh_search(request.args.get('search')).filter(or_(PostModel.lang.like(get_lang.lang),PostModel.lang.like('en'))).order_by(PostModel.id.desc()).paginate(page=post_page,per_page=9)
     elif request.args.get('tag_finder'):
         tag_finder = request.args.get('tag_finder')
         tag_posts = db.session.query(TagModel).filter_by(tag=tag_finder).all()
         ids = []
         for tag in tag_posts:
             ids.append(tag.post_id)
-        posts = db.session.query(PostModel).filter(PostModel.id.in_(ids)).order_by(PostModel.id.desc()).paginate(page=post_page,per_page=9)
+        if current_user.is_authenticated:
+            posts = PostModel.query.filter(PostModel.id.in_(ids)).order_by(PostModel.id.desc()).filter(or_(PostModel.lang.like(current_user.lang),PostModel.lang.like('en'))).paginate(page=post_page,per_page=9)
+        else:
+            get_lang = db.session.query(Analyze_Session).filter_by(session=session['user']).first()
+            posts = PostModel.query.filter(PostModel.id.in_(ids)).order_by(PostModel.id.desc()).filter(or_(PostModel.lang.like(get_lang.lang),PostModel.lang.like('en'))).paginate(page=post_page,per_page=9)
+        #posts = db.session.query(PostModel).paginate(page=post_page,per_page=9)
     else:
-        posts = db.session.query(PostModel).order_by(PostModel.id.desc()).paginate(page=post_page,per_page=9)
+        if current_user.is_authenticated:
+            tg = db.session.query(TagModel).filter(TagModel.tag.in_(current_user.int_tags)).all()
+            tgi = []
+            for t in tg:
+                tgi.append(t.post_id)
+            posts = PostModel.query.filter(or_(PostModel.lang.like(current_user.lang),PostModel.lang.like('en'))).filter(PostModel.id.in_(tgi)).order_by(PostModel.id.desc()).paginate(page=post_page,per_page=9)
+        else:
+            get_lang = db.session.query(Analyze_Session).filter_by(session=session['user']).first()
+            posts = PostModel.query.filter(or_(PostModel.lang.like(get_lang.lang),PostModel.lang.like('en'))).order_by(PostModel.id.desc()).paginate(page=post_page,per_page=9)
+        #posts = db.session.query(PostModel).order_by(PostModel.id.desc()).paginate(page=post_page,per_page=9)
 
     popular_posts = db.session.query(PostModel).order_by(PostModel.views.desc()).limit(9)
 
@@ -79,14 +111,14 @@ def home():
     func.count(TagModel.id).label('qty')
     ).group_by(TagModel.tag
     ).order_by(desc('qty')).limit(9)
-    
+    tagi = db.session.query(TagModel.tag,func.count(TagModel.id).label('qty')).group_by(TagModel.tag).order_by(desc('qty'))
     tags = db.session.query(TagModel).all()
     replyes = db.session.query(ReplyModel).all()
 
     if current_user.is_authenticated:
-        return render_template('home.html', reset=reset,search=search_post,posts=posts,tags=tags,replyes=replyes,new_question=new_question,popular_posts=popular_posts,most_tags=most_tags)
+        return render_template('home.html',tagi=tagi ,reset=reset,search=search_post,posts=posts,tags=tags,replyes=replyes,new_question=new_question,popular_posts=popular_posts,most_tags=most_tags,location=location)
     else:
-        return render_template('home.html', reset=reset,login=login,register=register,search=search_post,posts=posts,tags=tags,replyes=replyes,popular_posts=popular_posts,most_tags=most_tags)
+        return render_template('home.html', reset=reset,login=login,register=register,search=search_post,posts=posts,tags=tags,replyes=replyes,popular_posts=popular_posts,most_tags=most_tags,location=location)
 
 
 
@@ -95,7 +127,7 @@ def post(title,id):
     search = SearchForm(request.form)
     reply = ReplyForm(request.form)
     reset = ResetPasswordForm(request.form)
-    posts = db.session.query(PostModel).filter_by(id=id)
+    posts = db.session.query(PostModel).filter_by(id=id).first_or_404()
     replyes = db.session.query(ReplyModel).filter_by(post_id=id)
     tags = db.session.query(TagModel).filter_by(post_id=id)
     popular_posts = db.session.query(PostModel).order_by(PostModel.views.desc()).limit(9)
@@ -103,15 +135,21 @@ def post(title,id):
     func.count(TagModel.id).label('qty')
     ).group_by(TagModel.tag
     ).order_by(desc('qty')).limit(9)
+
+    data = [('Post_{}').format(posts.id), GetSessionId(), str(datetime.datetime.now().replace(microsecond=0))]
+    parseVisitator(data)
+
+    location = db.session.query(Analyze_Session).filter_by(session=session['user']).first()
+
     if current_user.is_authenticated:
-        post = db.session.query(PostModel).filter_by(id=id).first()
+        post = db.session.query(PostModel).filter_by(id=id).first_or_404()
         post.views += 1
         db.session.commit()
-        return render_template('post.html', reset=reset, reply=reply,posts=posts,replyes=replyes,tags=tags,search=search,popular_posts=popular_posts,most_tags=most_tags)
+        return render_template('post.html', reset=reset, reply=reply,posts=posts,replyes=replyes,tags=tags,search=search,popular_posts=popular_posts,most_tags=most_tags,location=location)
     else:
         login = LoginForm(request.form)
         register = RegisterForm(request.form)
-        return render_template('post.html', reset=reset, reply=reply,posts=posts,replyes=replyes,search=search,login=login,tags=tags,register=register,popular_posts=popular_posts,most_tags=most_tags)
+        return render_template('post.html', reset=reset, reply=reply,posts=posts,replyes=replyes,search=search,login=login,tags=tags,register=register,popular_posts=popular_posts,most_tags=most_tags,location=location)
 
 @home_pages.route('/post/reply/id=<int:id>/<string:title>', methods=['POST','GET'])
 def reply(id,title):
@@ -158,6 +196,14 @@ def sitemap():
 
     return response
 
+@home_pages.route('/opensearch')
+def opensearch():
+    opensearch_xml = render_template('opensearch.xml')
+    response = make_response(opensearch_xml)
+    response.headers['Content-Type'] = "application/xml"
+
+    return response
+
 @home_pages.route('/delete/post/<int:id>')
 def delete_post(id):
     posts = db.session.query(PostModel).filter_by(id=id).first()
@@ -167,13 +213,14 @@ def delete_post(id):
 
     if current_user.id != posts.user_in.id:
         return redirect(url_for('home.home'))
+    if current_user.roleinfo.delete_post_permission == False:
+        return redirect(url_for('home.home'))
 
-    if posts.user == current_user.id:
-        db.session.query(PostModel).filter_by(id=id).delete()
-        db.session.query(ReplyModel).filter_by(post_id=id).delete()
-        db.session.query(TagModel).filter_by(post_id=id).delete()
-        db.session.commit()
-        flash('Post successfully deleted', 'success')
+    db.session.query(PostModel).filter_by(id=id).delete()
+    db.session.query(ReplyModel).filter_by(post_id=id).delete()
+    db.session.query(TagModel).filter_by(post_id=id).delete()
+    db.session.commit()
+    flash('Post successfully deleted', 'success')
     return redirect(url_for('home.home'))
 
 @home_pages.route('/close/post/<int:id>')
@@ -183,10 +230,23 @@ def close_post(id):
     if current_user.is_authenticated == False:
         return redirect(url_for('home.home'))
 
-    if current_user.role == 10:
+    if current_user.roleinfo.close_post_permission:
         posts.closed = True
         posts.closed_on = datetime.datetime.now()
         posts.closed_by = current_user.id
         db.session.commit()
         flash('Post successfully closed', 'success')
     return redirect(url_for('home.home'))
+
+@home_pages.route('/feed')
+def rss_feed():
+    tags = db.session.query(TagModel).filter_by(tag='tutorial').all()
+    ids = []
+    for t in tags:
+        ids.append(i.post_id)
+    posts = db.session.query(PostModel).filter(PostModel.id.in_(ids)).filter_by(lang='en').order_by(PostModel.id.desc()).limit(5)
+    newsfeed_rss = render_template('newsfeed.xml', posts=posts)
+    response = make_response(newsfeed_rss)
+    response.headers['Content-Type'] = "application/xml"
+
+    return response

@@ -3,6 +3,7 @@ import datetime
 from sqlalchemy import ForeignKey
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
+import sqlalchemy as sq
 
 from app import bcrypt, db, db_engine,ma,fields
 import flask_whooshalchemy
@@ -26,13 +27,23 @@ class UserModel(db.Model):
     genre = db.Column(db.String, primary_key = False, default = 'None')
     role = db.Column(db.Integer, ForeignKey('roles.id') ,default = 0)
     bio = db.Column(db.String(250), primary_key = False, default = 'Hey i`m new here')
-    activated = db.Column(db.Boolean, primary_key=False)
+    activated = db.Column(db.Boolean, primary_key = False)
+    is_online = db.Column(db.Boolean, primary_key = False)
+    ip_address = db.Column(db.String, primary_key = False)
+    browser = db.Column(db.String, primary_key = False)
+    country_name = db.Column(db.String, primary_key = False)
+    country_flag = db.Column(db.String, primary_key = False)
+    lang = db.Column(db.String, primary_key = False, default = 'eng')
+    int_tags = db.Column(sq.ARRAY(db.String), primary_key = False)
+    birthday = db.Column(db.Date, primary_key = False)
+    profession = db.Column(db.String, primary_key = False)
 
     posts = relationship("PostModel", backref="user_in")
     replyes = relationship("ReplyModel", backref="user_in")
     likes = relationship("LikeModel", backref="user_in")
 
-    def __init__(self,id,join_date,name,real_name,github_name,email,password,avatar,genre,role,bio,activated):
+    def __init__(self,id,join_date,name,real_name,github_name,email,password,avatar,genre,role,bio,activated,is_online,
+                    ip_address,browser,country_name,country_flag,lang,int_tags,birthday,profession):
         self.id = id
         self.join_date = join_date
         self.name = name
@@ -45,6 +56,15 @@ class UserModel(db.Model):
         self.role = role
         self.bio = bio
         self.activated = activated
+        self.is_online = is_online
+        self.ip_address = ip_address
+        self.browser = browser
+        self.country_name = country_name
+        self.country_flag = country_flag
+        self.lang = lang
+        self.int_tags = int_tags
+        self.birthday = birthday
+        self.profession = profession
 
     def is_authenticated(self):
         return True
@@ -80,12 +100,32 @@ class RoleModel(db.Model):
 
     id = db.Column(db.Integer, db.Sequence('role_id_seq'), primary_key = True)
     name = db.Column(db.String(30), primary_key = False)
+    post_permission = db.Column(db.Boolean, primary_key = False, default = True)
+    delete_post_permission = db.Column(db.Boolean, primary_key = False, default = False)
+    delete_reply_permission = db.Column(db.Boolean, primary_key = False, default = False)
+    edit_post_permission = db.Column(db.Boolean, primary_key = False, default = False)
+    edit_reply_permission = db.Column(db.Boolean, primary_key = False, default = False)
+    close_post_permission = db.Column(db.Boolean, primary_key = False, default = False)
+    delete_user_permission = db.Column(db.Boolean, primary_key = False, default = False)
+    modify_user_permission = db.Column(db.Boolean, primary_key = False, default = False)
+    admin_panel_permission = db.Column(db.Boolean, primary_key = False, default = False)
+
 
     user = relationship("UserModel", backref="roleinfo")
 
-    def __init__(self,id,name):
+    def __init__(self,id,name,post_permission,delete_post_permission,delete_reply_permission,edit_post_permission,edit_reply_permission,
+                close_post_permission,delete_user_permission,modify_user_permission,admin_panel_permission):
         self.id = id
         self.name = name
+        self.post_permission = post_permission
+        self.delete_post_permission = delete_post_permission
+        self.delete_reply_permission = delete_reply_permission
+        self.edit_post_permission = edit_post_permission
+        self.edit_reply_permission = edit_reply_permission
+        self.close_post_permission = close_post_permission
+        self.delete_user_permission = delete_user_permission
+        self.modify_user_permission = modify_user_permission
+        self.admin_panel_permission = admin_panel_permission
 
     def __repr__(self):
         return ('<name {}').format(self.name)
@@ -95,6 +135,8 @@ class PostModel(db.Model):
     __tablename__ = 'posts'
 
     __searchable__ = ['title']
+
+    __analizer__ = flask_whooshalchemy.whoosh.analysis.NgramAnalyzer(minsize=2,maxsize=4)
 
     id = db.Column(db.Integer, db.Sequence('posts_id_seq'), primary_key = True)
     title = db.Column(db.String(100), primary_key = False)
@@ -107,10 +149,11 @@ class PostModel(db.Model):
     closed = db.Column(db.Boolean, primary_key = False)
     closed_on = db.Column(db.Date, primary_key = False)
     closed_by = db.Column(db.Integer, primary_key = False)
+    lang = db.Column(db.String, primary_key = False, default = 'eng')
     
     author = db.relationship("UserModel", backref = "author")
 
-    def __init__(self,id,title,text,views,reply,user,posted_on,approved,closed,closed_on,closed_by):
+    def __init__(self,id,title,text,views,reply,user,posted_on,approved,closed,closed_on,closed_by,lang):
         self.id = id
         self.title = title
         self.text = text
@@ -122,6 +165,7 @@ class PostModel(db.Model):
         self.closed = closed
         self.closed_on = closed_on
         self.closed_by = closed_by
+        self.lang = lang
 
     def __repr__(self):
         return '{0}(title={1})'.format(self.__class__.__name__, self.title)
@@ -132,6 +176,9 @@ class PostModel(db.Model):
     def closed_by_name(self):
         users = UserModel.query.filter_by(id=self.closed_by).first()
         return users.name
+
+    def unique_views(self):
+        return db.session.query(Analyze_Pages).filter_by(name=('Post_{}').format(self.id)).count()
 
 class PostSchema(ma.Schema):
     author = fields.Nested(UserSchema())
@@ -196,7 +243,74 @@ class TagModel(db.Model):
         self.tag = tag
         self.post_id = post_id
 
+class Analyze_Session(Base):
 
+    __tablename__ = 'analyze_session'
+
+    id = db.Column(db.Integer, primary_key = True)
+    ip = db.Column(db.String, primary_key = False)
+    continent = db.Column(db.String, primary_key = False)
+    country = db.Column(db.String, primary_key = False)
+    city = db.Column(db.String, primary_key = False)
+    os = db.Column(db.String, primary_key = False, default="Unknown")
+    browser = db.Column(db.String, primary_key = False)
+    session = db.Column(db.String, primary_key = False)
+    created_at = db.Column(db.Date, primary_key = False)
+    bot = db.Column(db.Boolean, primary_key = False, default=False)
+    lang = db.Column(db.String, primary_key = False, default = 'eng')
+
+    def __init__(self,id,ip,continent,country,city,os,browser,session,created_at,bot,lang):
+        self.id = id
+        self.ip = ip
+        self.continent = continent
+        self.country = country
+        self.city = city
+        self.os = os
+        self.browser = browser
+        self.session = session
+        self.created_at = created_at
+        self.bot = bot
+        self.lang = lang
+
+class Analyze_Sessions_Schema(ma.Schema):
+    class Meta:
+        fields = ('id','ip','continent','country','city','os','browser','session','created_at','bot')
+    
+SessionsSchema = Analyze_Sessions_Schema(many=True)
+
+class Analyze_Pages(Base):
+
+    __tablename__ = 'analyze_pages'
+
+    id = db.Column(db.Integer, primary_key = True)
+    name = db.Column(db.String, primary_key = False)
+    session = db.Column(db.String, primary_key = False)
+    first_visited = db.Column(db.Date, primary_key = False)
+    visits = db.Column(db.Integer,default = 1)
+
+    def __init__(self,id,name,session,first_visited,visits):
+        self.id = id
+        self.name = name
+        self.session = session
+        self.first_visited = first_visited
+        self.visits = visits
+
+    @staticmethod
+    def total_views():
+        return db.session.query(Analyze_Session).count()
+
+    @staticmethod
+    def total_users():
+        return db.session.query(UserModel).count()
+
+    @staticmethod
+    def count_posts():
+        return db.session.query(PostModel).count()
+
+    @staticmethod
+    def count_replies():
+        return db.session.query(ReplyModel).count()
+    
 class Gits:
 
     def __init__(self,name,link,desc):

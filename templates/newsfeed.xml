@@ -1,0 +1,29 @@
+<rss version="2.0">
+    <channel>
+        <title>NewApp</title>
+        <author>NewApp</author>
+        <description>
+            The newest community for developers to learn, share​ ​their programming ​knowledge, and build their careers.
+        </description>
+        <link>https://newapp.nl</link>
+        <language>en</language>
+        {% for post in posts %}
+        <item>
+            <title>
+                {{post.title}}
+            </title>
+            <author>{{post.user_in.name}}</author>
+            <pubDate>{{post.posted_on}}</pubDate>
+            <link>
+            https://newapp.nl{{url_for('home.post',id=post.id,title=post.title)}}
+            </link>
+            <guid>
+                https://newapp.nl{{url_for('home.post',id=post.id,title=post.title)}}
+            </guid>
+            <description>
+                {{post.text | safe}}
+            </description>
+        </item>
+        {% endfor %}
+    </channel>
+</rss>
