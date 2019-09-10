@@ -1,7 +1,6 @@
 {% extends "index.html" %}
 {% block content %}
 
-
 <style>
     .ql-syntax {
         background-color: #f0f0f0;
@@ -20,136 +19,189 @@
         background-color: #f0f0f0;
         border-radius: 3px;
     }
+
+    .ql-container {
+        height: 9rem !important;
+    }
+
+    .s-dl__wip dt {
+        font-weight: bold
+    }
+
+    .str,
+    .lit,
+    .tag {
+        color: #7D2727
+    }
+
+    .kwd,
+    .dec {
+        color: #101094
+    }
+
+    .com {
+        color: #858C93
+    }
+
+    .typ {
+        color: #2B91AF
+    }
+
+    .pun,
+    .pln {
+        color: #303336
+    }
+
+    .atn {
+        color: #E64320
+    }
+
+    .atv {
+        color: #0F74BD
+    }
+
+    .prettyprint {
+        display: block;
+        color: #393318;
+    }
+
+    @media print {
+
+        .kwd,
+        .typ,
+        .tag {
+            font-weight: bold
+        }
+
+        .str,
+        .atv {
+            color: #060
+        }
+
+        .kwd {
+            color: #006
+        }
+
+        .typ,
+        .atn {
+            color: #404
+        }
+
+        .lit {
+            color: #044
+        }
+
+        .pun {
+            color: #440
+        }
+
+        .pln {
+            color: #0C0D0E
+        }
+
+        .tag {
+            color: #006
+        }
+
+        .com {
+            color: #600;
+            font-style: italic
+        }
+    }
 </style>
 
-<div class="row">
-    <div class="col" style="min-width:310px;">
-        
+<div class="article">
+    <div class="post">
         <div class="info" style="display:flex;">
-        <h4 style="margin-top: 1%">{{posts.title}}</h4>
-        <div class="date" style="margin-inline-start: auto;">
-        {% if current_user.is_authenticated %}
-        {% if current_user.id == posts.user_in.id %}
-        <a href="{{url_for('home.delete_post', id=posts.id)}}"><button type="button" class="btn btn-sm btn-danger">Delete</button></a>
-        {% if posts.closed == False %}
-        <a href="{{url_for('home.close_post', id=posts.id)}}"><button type="button" class="btn btn-sm btn-danger">Close</button></a>
-        {% endif %}
-        {% elif current_user.roleinfo.delete_post_permission == 10 %}
-        <a href="{{url_for('home.delete_post', id=posts.id)}}"><button type="button" class="btn btn-sm btn-danger">Delete</button></a>
-        {% if current_user.roleinfo.close_post_permission %}
-        {% if posts.closed == False %}
-        <a href="{{url_for('home.close_post', id=posts.id)}}"><button type="button" class="btn btn-sm btn-danger">Close</button></a>
-        {% endif %}
-        {% endif %}
-        {% endif %}
-        {% endif %}
-        <div>
-        <h8 style="font-size: 12px;font-weight: 600;">Viewed: </h8>
-        <h8 style="font-size: 12px;color: #6c757d;font-weight: 400;">{{posts.unique_views()}} times</h8>
-        <br>
-        <h8 style="font-size: 12px;font-weight: 600;">Asked on: </h8>
-        <h8 style="font-size: 12px;color: #6c757d;font-weight: 400;">{{posts.posted_on}}</h8>
+            <h1 style="margin-top: 1%;font-weight: 400;">{{posts.title}}</h1>
         </div>
+        <div class="post-author">
+            <img style="border-radius:50px;margin-right: 5px;" height="40px" width="40px"
+                src="{{posts.user_in.avatar}}">
+            <div class="author-info">
+                <span class="author-name">{{posts.user_in.name}}</span>
+                <div class="post-tags">
+                    {% if tags[0].tag %}
+                    {% for tag in tags %}
+                    <a href="{{url_for('home.home',tag_finder=tag.tag)}}" class="badge badge-success"
+                        style="font-size:13px;">
+                        <tag>{{tag.tag}}</tag>
+                    </a>
+                    {% endfor %}
+                    {% endif %}
+                </div>
+            </div>
         </div>
-        </div>
-
-        <hr style="margin-top:1%;">
-
         {{posts.text | safe}}
 
-        <br>
-        <div class="info" style="display: flex">
-            <div class="tags" style="float: left;
-            text-align: left;">
-                {% if tags[0].tag %}
-                Tags:
-                {% for tag in tags %}
-                <a href="{{url_for('home.home',tag_finder=tag.tag)}}" class="badge badge-success" style="font-size:13px;">{{tag.tag}}</a>
-                {% endfor %}
-                {% endif %}
-            </div>
-            <div id="img_{{posts.id}}" class="author" style="
-            
-            margin-top: 5%;
-            margin-inline-start: auto;
-            border-radius: 5px;
-            padding: 1%;
-            background-color: rgb(239, 240, 241);
-            display: flex;">
-                <div id="name_{{posts.id}}" style="margin-top:-4%;">
-                    <a id="name"  style="color: #333"
-                        href="{{url_for('users.user', name=posts.user_in.name, id=posts.user_in.id )}}">{{posts.user_in.name}}</a>
-                        <div class="info_author" style="display: flex;">
-                        {% if posts.user_in.is_online %}
-                        <span class="dot_online"> </span>
-                        <p style="font-size: 60%;opacity: 0.6;margin-bottom: 0;">
-                        Online
-                        
-                        </p>
-                        {% else %}
-                        <span class="dot_offline"> </span>
-                        <p style="font-size: 60%;opacity: 0.6;margin-bottom: 0;">
-                        Offline
-                        </p>
-                        {% endif %}
-                    </div>  
-                </div>
-            </div>
-        </div>
-        <hr>
-        <div class="reply">
-            {% for replies in replyes %}
-                {{replies.text | safe}}
-
-                <br>
-                <div class="info" style="display: flex">
-                    <div id="reply_img_{{replies.user_in.id}}" class="author" style="
-                
-                margin-top: 5%;
-                margin-inline-start: auto;
-                border-radius: 5px;
-                padding: 1%;
-                background-color: rgb(239, 240, 241);
-                display: flex;">
-                       <div id="reply_name_{{replies.user_in.id}}" style="margin-top:-4%;">
-                        <a id="reply_name"  style="color: #333"
-                            href="{{url_for('users.user', name=replies.user_in.name, id=replies.user_in.id )}}">{{replies.user_in.name}}</a>
-                        <p style="font-size: 60%;opacity: 0.6;margin-bottom: 0;">
-                            {% if replies.user_in.is_online %}
-                            Online
-                            {% else %}
-                            Offline
-                            {% endif %}
-                        </p>
-                        </div>
-                    </div>
-                </div>
-                <hr>
-            {% endfor %}
-        </div>
         {% if current_user.is_authenticated %}
+        <div class="user-actions">
+            <span onclick="Like_Post({{posts.id}})" style="cursor: pointer;"><i id="heart"
+                    class="{% if posts.id in current_user.liked_posts %}fas{% else %}far{% endif %} fa-heart"></i>
+                Like</span>
+            <span style="cursor: pointer;"><i class="fas fa-share-alt"></i> Share</span>
+        </div>
+        <div class="user-actions-info">
+            <span><span id="hearts">{{posts.likes}}</span> Likes</span>
+        </div>
         {% if posts.closed == False %}
-        <div class="post_reply">
-        <form class="form-reply" id="reply" role="form" method="post" action="{{url_for('home.reply',id=posts.id,title=posts.title)}}" >  
-            <div class="editor" id="editor" style="margin-bottom:1%;"></div>
-            {{reply.csrf_token}}
-            {{reply.text}}
-            {{reply.submit}}
+        <div class="post-reply" style="margin-top:3%;">
+            <form class="form-reply" id="reply" role="form" method="post"
+                action="{{url_for('home.reply',id=posts.id,title=posts.title)}}">
+                <div class="editor" id="editor" style="margin-bottom:1%;"></div>
+                {{reply.csrf_token}}
+                {{reply.text}}
+                <button class="reply-button" type="submit">Post Reply</button>
             </form>
         </div>
         {% else %}
         <div class="card">
             <div class="card-body">
-                <p>
-                    <i class="fas fa-lock"></i>
-                    Post closed by {{posts.closed_by_name()}} on {{posts.closed_on}}
-                </p>
+                <p><i class="fas fa-lock"></i>Post closed by {{posts.closed_by_name()}} on {{posts.closed_on}}</p>
             </div>
         </div>
         {% endif %}
         {% endif %}
     </div>
-    {% include 'sidebar.html' %}
+    {% for replies in replyes %}
+    <div class="reply">
+
+        {{replies.text | safe}}
+
+        <br>
+        <div class="info" style="display: flex">
+            <div id="reply_img_{{replies.user_in.id}}" class="author" style="
+                
+
+                margin-inline-start: auto;
+                border-radius: 5px;
+                padding: 1%;
+                background-color: rgb(239, 240, 241);
+                display: flex;">
+                <img style="border-radius:20px;margin-right: 5px;" height="30px" width="30px"
+                    src="{{replies.user_in.avatar}}">
+                <div id="reply_name_{{replies.user_in.id}}" style="margin-top:-4%;">
+
+                    <a id="reply_name" style="color: #333"
+                        href="{{url_for('users.user', name=replies.user_in.name, id=replies.user_in.id )}}">{{replies.user_in.name}}</a>
+                    <p style="font-size: 60%;opacity: 0.6;margin-bottom: 0;">
+                        {% if replies.user_in.is_online %}
+                        Online
+                        {% else %}
+                        Offline
+                        {% endif %}
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+
+    <br>
+    <p style="margin-top: 4%; font-size:initial">Not the answer you're looking for? Browse other questions tagged
+        {% if tags[0].tag %}{% for tag in tags %}<a href="{{url_for('home.home',tag_finder=tag.tag)}}"
+            class="badge badge-success" style="font-size:13px;margin-left:3px;"> {{tag.tag}} </a>{% endfor %}{% endif %}
+        or <a href="{{url_for('home.home')}}"> ask your own question</a>.</p>
 </div>
 <script>
     var toolbarOptions = [
@@ -180,28 +232,31 @@
         });
     }
     window.addEventListener("load", LoadQuill, false);
-    var submit_entry = function () {
-        var hidden_text_field = document.getElementById('text');
-        hidden_text_field.value = document.querySelector(".ql-editor").innerHTML
-    }
+    window.addEventListener("load",function(){
+    jQuery(document).ready(function() {
+        jQuery(".form-reply").submit(function() { 
+            var hidden_text_field = document.getElementById('text');
+            hidden_text_field.value = document.querySelector(".ql-editor").innerHTML;
+            console.log( document.querySelector(".ql-editor").innerHTML);
+        });
+    }); 
+    });
 
-    var new_post_form = document.getElementsByClassName('form-reply');
-    new_post_form.onsubmit = submit_entry;
 </script>
 <script>
-    window.addEventListener("load", function () {
+    /*window.addEventListener("load", function () {
       document.querySelectorAll('pre').forEach((block) => {
         hljs.highlightBlock(block);
       });
-    });
+    });*/
   </script>
 <script>
-    var posts = [{% for replies in replyes %}{{replies.user_in.id}},{% endfor %}]
+    /*var posts = [{% for replies in replyes %}{{replies.user_in.id}},{% endfor %}]
     var posts_img = [{% for replies in replyes %}"{{replies.user_in.avatar}}",{% endfor %}]
     var i;
     for (i = 0; i < posts.length; i++) { 
         LoadReplyImages(posts[i], posts_img[i]); 
     }
-    LoadImages({{posts.id}},"{{posts.user_in.avatar}}");
+    LoadImages({{posts.id}},"{{posts.user_in.avatar}}");*/
 </script>
 {% endblock %}

@@ -4,12 +4,12 @@
     "description": "The newest community for developers to learn, share their programming knowledge, and build their careers.",
     "start_url": "/",
     "display": "standalone",
-    "background_color": "#000000",
+    "background_color": "#25527B",
     "theme_color": "#000000",
     "homepage_url": "https://newapp.nl/",
     "icons": [{
-      "src": "https://newapp.nl/static/logo.jpg",
-      "sizes": "1200x1200",
+      "src": "https://newapp.nl/static/favicon.png",
+      "sizes": "600x600",
       "type": "image/png"
     }]
   }

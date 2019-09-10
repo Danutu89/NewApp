@@ -14,7 +14,6 @@ class RegisterForm(FlaskForm):
             Length(min=5,max=15)
         ],
         render_kw = {
-            "class":"form-control",
             "required":"true",
             "placeholder":"Username"
         }
@@ -26,7 +25,6 @@ class RegisterForm(FlaskForm):
             Length(min=6,max=30)
         ],
         render_kw = {
-            "class":"form-control",
             "required":"true",
             "placeholder":"Email"
         }
@@ -38,7 +36,6 @@ class RegisterForm(FlaskForm):
             Length(min=6,max=30)
         ],
         render_kw = {
-            "class":"form-control",
             "required":"true",
             "placeholder":"Real Name"
         }
@@ -50,7 +47,6 @@ class RegisterForm(FlaskForm):
             Length(min=6,max=30)
         ],
         render_kw = {
-            "class":"form-control",
             "placeholder":"Github Name (Optional)"
         }
     )
@@ -60,7 +56,6 @@ class RegisterForm(FlaskForm):
             Length(min=6,max=25)
         ],
         render_kw = {
-            "class":"form-control",
             "required":"true",
             "placeholder":"Password"
         }
@@ -71,7 +66,6 @@ class RegisterForm(FlaskForm):
             EqualTo('Password', message='Passwords must match')
         ],
         render_kw = {
-            "class":"form-control",
             "required":"true",
             "placeholder":"Confirm Password"
         }
@@ -79,7 +73,7 @@ class RegisterForm(FlaskForm):
     submit = SubmitField(
         'Register',
         render_kw = {
-            "class":"btn btn-primary",
+            "class":"modal-button",
         }
     )
 
@@ -87,7 +81,6 @@ class LoginForm(FlaskForm):
     username = TextField(
         'Username_Login',
         render_kw = {
-            "class":"form-control",
             "required":"true",
             "placeholder":"Username/Email"
         }
@@ -95,7 +88,6 @@ class LoginForm(FlaskForm):
     password = PasswordField(
         'Password_Login',
         render_kw = {
-            "class":"form-control",
             "required":"true",
             "placeholder":"Password",
             "id": "password_login"
@@ -104,7 +96,7 @@ class LoginForm(FlaskForm):
     submit = SubmitField(
         'Login',
         render_kw = {
-            "class":"btn btn-primary"
+            "class":"modal-button"
         }
     )
 
@@ -116,7 +108,6 @@ class ModifyProfileForm(FlaskForm):
             Length(min=5,max=15)
         ],
         render_kw = {
-            "class":"form-control",
             "placeholder":"Username"
         }
     )
@@ -127,7 +118,6 @@ class ModifyProfileForm(FlaskForm):
             Length(min=6,max=30)
         ],
         render_kw = {
-            "class":"form-control",
             "placeholder":"Email"
         }
     )
@@ -137,21 +127,18 @@ class ModifyProfileForm(FlaskForm):
             Length(min=6,max=30)
         ],
         render_kw = {
-            "class":"form-control",
             "placeholder":"Real Name"
         }
     )
     bio = TextField(
         'Bio_ModifyProfile',
         render_kw = {
-            "class":"form-control",
             "placeholder":"Bio"
         }
     )
     avatar = TextField(
         'Avatar_ModifyProfile',
         render_kw = {
-            "class":"form-control",
             "placeholder":"Avatar Link"
         }
     )
@@ -177,7 +164,6 @@ class ModifyProfileForm(FlaskForm):
             Length(min=5,max=15)
         ],
         render_kw = {
-            "class":"form-control",
             "placeholder":"Profession"
         }
     )
@@ -190,7 +176,7 @@ class ModifyProfileForm(FlaskForm):
     submit = SubmitField(
         'Modify Profile',
         render_kw = {
-            "class":"btn btn-primary",
+            "class":"modal-button",
         }
     )
 
@@ -216,16 +202,14 @@ class NewQuestionForm(FlaskForm):
     title = TextField(
         'NewQuestionForm_Title',
         render_kw = {
-            "class":"form-control form-control-sm",
             "placeholder":"Title",
-            "style":"margin-bottom: 5px;",
             "required":"true"
         }
     )
     text = HiddenField(
         'NewQuestionForm_Text'
     )
-    tag = HiddenField(
+    tag = TextField(
         'NewQuestionForm_Tags'
     )
     submit = SubmitField(
@@ -243,8 +227,7 @@ class ReplyForm(FlaskForm):
     submit = SubmitField(
         'Post Reply',
         render_kw = {
-            "class":"btn btn-primary btn-sm",
-            "style":"float:right;"
+            "class":"reply-button"
         }
     )
 
@@ -255,7 +238,6 @@ class ResetPasswordForm(FlaskForm):
             Email(message=None)
         ],
         render_kw = {
-            "class":"form-control",
             "placeholder":"Email",
             "style":"margin-top: 5px;"
         }
@@ -263,7 +245,6 @@ class ResetPasswordForm(FlaskForm):
     password = PasswordField(
         'ResetPasswordForm_Password',
         render_kw = {
-            "class":"form-control",
             "required":"true",
             "placeholder":"New Password",
             "id": "password_reset"

@@ -1,0 +1,104 @@
+{% if current_user.is_authenticated == false %}
+<modal id="register-modal">
+    <div class="modal">
+        <a href="#" class="close-modal" style='font-size: 0.7rem'>Close</a>
+        <div class="modal-header">
+            <img style="vertical-align: middle;" src="{{url_for('static', filename='logo.svg')}}" width="70" height="70"
+                alt="">
+            <br>
+            <span><span style="color:#18BC9C;">New</span>App - Register</span>
+        </div>
+        <form role="form" method="post" action="{{url_for('users.register')}}">
+            <div class="modal-content">
+                {{register.csrf_token}}
+                {{register.username}}
+                {{register.realname}}
+                {{register.email}}
+                {{register.password}}
+                {{register.confirm_password}}
+            </div>
+            <div class="modal-footer">
+                <span style="font-size: 0.6rem;">Already have an account?<a href="#login-modal"> Login here</a></span>
+                <button type="submit" class="modal-button">Register</button>
+            </div>
+        </form>
+    </div>
+</modal>
+<modal id="login-modal">
+    <div class="modal">
+        <a href="#" class="close-modal" style='font-size: 0.7rem'>Close</a>
+        <div class="modal-header">
+            <img style="vertical-align: middle;" src="{{url_for('static', filename='logo.svg')}}" width="70" height="70"
+                alt="">
+            <br>
+            <span><span style="color:#18BC9C;">New</span>App - Login</span>
+        </div>
+        <form role="form" method="post" action="{{url_for('users.login', url=request.path)}}">
+            <div class="modal-content">
+                {{register.csrf_token}}
+                {{login.username}}
+                {{login.password}}
+                <span style="font-size: 0.6rem">Forgot password? <a href="#reset-password-modal">Click Here</a></span>
+            </div>
+            <div class="modal-footer">
+                <span style="font-size: 0.6rem;">You don`t have an account? <a href="#register-modal">Register
+                        here</a></span>
+                <button type="submit" class="modal-button">Login</button>
+            </div>
+        </form>
+    </div>
+</modal>
+<modal id="reset-password-modal">
+    <div class="modal">
+        <a href="#" class="close-modal" style='font-size: 0.7rem'>Close</a>
+        <div class="modal-header">
+            <img style="vertical-align: middle;" src="{{url_for('static', filename='logo.svg')}}" width="70" height="70"
+                alt="">
+            <br>
+            <span><span style="color:#18BC9C;">New</span>App - Login</span>
+        </div>
+        <form role="form" method="post" action="{{url_for('users.reset_password')}}">
+            <div class="modal-content">
+                {{reset.csrf_token}}
+                {{reset.email}}
+                {{login.password}}
+            </div>
+            <div class="modal-footer">
+                <span style="font-size: 0.6rem;">Already have an account?<a href="#login-modal"> Login here</a></span>
+                <button type="submit" class="modal-button">Reset</button>
+            </div>
+        </form>
+    </div>
+</modal>
+{% else %}
+{% if request.url_rule.endpoint == 'home.home' %}
+<style>
+    .ql-snow.ql-toolbar button:hover {
+        color: #18BC9C !important;
+    }
+</style>
+<modal id="new-post">
+    <div class="modal" style="width: 600px;">
+      <a href="#" class="close-modal" style='font-size: 0.7rem'>Close</a>
+      <div class="modal-header">
+          <span><span style="color:#18BC9C;">New</span>Post</span>
+      </div>
+      <form role="form" class="form-thread" method="post" action="{{url_for('home.home')}}">
+          <div class="modal-content">
+            {{new_question.csrf_token}}
+            {{new_question.title}}
+            {{new_question.text}}
+            <div class="editor" id="editor" style="margin-bottom: 4%;"></div>
+            {{new_question.tag}}
+            <small class="form-text text-muted">
+                Separate tags with commas.
+            </small>
+          </div>
+          <div class="modal-footer">
+              <button type="submit" class="modal-button">Post</button>
+          </div>
+      </form>
+    </div>
+  </modal>
+  {% endif %}
+  {% endif %}

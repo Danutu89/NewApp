@@ -13772,3 +13772,914 @@ worker: Warm shutdown (MainProcess)
                 .> celery           exchange=celery(direct) key=celery
                 
 
+[2019-08-21 17:50:58 -0400] [3540] [INFO] Starting gunicorn 19.9.0
+[2019-08-21 17:50:58 -0400] [3540] [INFO] Listening at: http://0.0.0.0:8000 (3540)
+[2019-08-21 17:50:58 -0400] [3540] [INFO] Using worker: eventlet
+[2019-08-21 17:50:58 -0400] [3544] [INFO] Booting worker with pid: 3544
+[2019-08-21 17:50:59,448] INFO in app: NewApp Launched successfully
+[2019-08-21 17:50:59,449] INFO in app: Security keys
+[2019-08-21 17:50:59,451] INFO in app: Session keys
+[2019-08-21 17:50:59,452] INFO in app: Î,CHÀÒK9ã ZÍùÝNÿ¯;rï
+[2019-08-21 17:50:59,452] INFO in app: Cryptography key
+[2019-08-21 17:50:59,452] INFO in app: b'vgF_Yo8-IutJs-AcwWPnuNBgRSgncuVo1yfc9uqSiiU='
+[2019-08-21 17:50:59,453] INFO in app: JWT Key
+[2019-08-21 17:50:59,453] INFO in app: mRo48tU4ebP6jIshqaoNf2HAnesrCGHm
+[2019-08-21 17:50:59,453] INFO in app: JWT Algorithm
+[2019-08-21 17:50:59,453] INFO in app: HS256
+[2019-08-21 17:51:21,511] INFO in app: NewApp Launched successfully
+[2019-08-21 17:51:21,513] INFO in app: Security keys
+[2019-08-21 17:51:21,515] INFO in app: Session keys
+[2019-08-21 17:51:21,515] INFO in app: Î,CHÀÒK9ã ZÍùÝNÿ¯;rï
+[2019-08-21 17:51:21,515] INFO in app: Cryptography key
+[2019-08-21 17:51:21,515] INFO in app: b'vgF_Yo8-IutJs-AcwWPnuNBgRSgncuVo1yfc9uqSiiU='
+[2019-08-21 17:51:21,516] INFO in app: JWT Key
+[2019-08-21 17:51:21,516] INFO in app: mRo48tU4ebP6jIshqaoNf2HAnesrCGHm
+[2019-08-21 17:51:21,516] INFO in app: JWT Algorithm
+[2019-08-21 17:51:21,516] INFO in app: HS256
+[2019-08-21 18:03:27 -0400] [3540] [INFO] Handling signal: int
+[2019-08-21 18:03:28 -0400] [3544] [INFO] Worker exiting (pid: 3544)
+[2019-08-21 18:03:28 -0400] [3540] [INFO] Shutting down: Master
+[2019-08-21 18:03:31 -0400] [3621] [INFO] Starting gunicorn 19.9.0
+[2019-08-21 18:03:31 -0400] [3621] [INFO] Listening at: http://0.0.0.0:8000 (3621)
+[2019-08-21 18:03:31 -0400] [3621] [INFO] Using worker: eventlet
+[2019-08-21 18:03:31 -0400] [3632] [INFO] Booting worker with pid: 3632
+[2019-08-21 18:03:33,645] INFO in app: NewApp Launched successfully
+[2019-08-21 18:03:33,647] INFO in app: Security keys
+[2019-08-21 18:03:33,649] INFO in app: Session keys
+[2019-08-21 18:03:33,649] INFO in app: Î,CHÀÒK9ã ZÍùÝNÿ¯;rï
+[2019-08-21 18:03:33,649] INFO in app: Cryptography key
+[2019-08-21 18:03:33,649] INFO in app: b'vgF_Yo8-IutJs-AcwWPnuNBgRSgncuVo1yfc9uqSiiU='
+[2019-08-21 18:03:33,650] INFO in app: JWT Key
+[2019-08-21 18:03:33,652] INFO in app: mRo48tU4ebP6jIshqaoNf2HAnesrCGHm
+[2019-08-21 18:03:33,652] INFO in app: JWT Algorithm
+[2019-08-21 18:03:33,653] INFO in app: HS256
+[2019-08-21 18:03:47 -0400] [3621] [INFO] Handling signal: int
+[2019-08-21 18:03:48 -0400] [3632] [INFO] Worker exiting (pid: 3632)
+[2019-08-21 18:03:49 -0400] [3621] [INFO] Shutting down: Master
+[2019-08-21 18:03:50 -0400] [3649] [INFO] Starting gunicorn 19.9.0
+[2019-08-21 18:03:50 -0400] [3649] [INFO] Listening at: http://0.0.0.0:8000 (3649)
+[2019-08-21 18:03:50 -0400] [3649] [INFO] Using worker: eventlet
+[2019-08-21 18:03:50 -0400] [3653] [INFO] Booting worker with pid: 3653
+[2019-08-21 18:03:51,120] INFO in app: NewApp Launched successfully
+[2019-08-21 18:03:51,123] INFO in app: Security keys
+[2019-08-21 18:03:51,124] INFO in app: Session keys
+[2019-08-21 18:03:51,124] INFO in app: Î,CHÀÒK9ã ZÍùÝNÿ¯;rï
+[2019-08-21 18:03:51,124] INFO in app: Cryptography key
+[2019-08-21 18:03:51,124] INFO in app: b'vgF_Yo8-IutJs-AcwWPnuNBgRSgncuVo1yfc9uqSiiU='
+[2019-08-21 18:03:51,125] INFO in app: JWT Key
+[2019-08-21 18:03:51,125] INFO in app: mRo48tU4ebP6jIshqaoNf2HAnesrCGHm
+[2019-08-21 18:03:51,125] INFO in app: JWT Algorithm
+[2019-08-21 18:03:51,125] INFO in app: HS256
+[2019-08-21 18:05:44 -0400] [3649] [INFO] Handling signal: int
+[2019-08-21 18:05:44 -0400] [3653] [INFO] Worker exiting (pid: 3653)
+[2019-08-21 18:05:44 -0400] [3649] [INFO] Shutting down: Master
+[2019-08-21 18:05:45 -0400] [3687] [INFO] Starting gunicorn 19.9.0
+[2019-08-21 18:05:45 -0400] [3687] [INFO] Listening at: http://0.0.0.0:8000 (3687)
+[2019-08-21 18:05:45 -0400] [3687] [INFO] Using worker: eventlet
+[2019-08-21 18:05:45 -0400] [3694] [INFO] Booting worker with pid: 3694
+[2019-08-21 18:05:46,899] INFO in app: NewApp Launched successfully
+[2019-08-21 18:05:46,901] INFO in app: Security keys
+[2019-08-21 18:05:46,903] INFO in app: Session keys
+[2019-08-21 18:05:46,903] INFO in app: Î,CHÀÒK9ã ZÍùÝNÿ¯;rï
+[2019-08-21 18:05:46,903] INFO in app: Cryptography key
+[2019-08-21 18:05:46,903] INFO in app: b'vgF_Yo8-IutJs-AcwWPnuNBgRSgncuVo1yfc9uqSiiU='
+[2019-08-21 18:05:46,904] INFO in app: JWT Key
+[2019-08-21 18:05:46,904] INFO in app: mRo48tU4ebP6jIshqaoNf2HAnesrCGHm
+[2019-08-21 18:05:46,904] INFO in app: JWT Algorithm
+[2019-08-21 18:05:46,904] INFO in app: HS256
+[2019-08-21 18:05:56 -0400] [3687] [INFO] Handling signal: int
+[2019-08-21 18:05:57 -0400] [3694] [INFO] Worker exiting (pid: 3694)
+[2019-08-21 18:05:57 -0400] [3687] [INFO] Shutting down: Master
+[2019-08-21 18:05:58 -0400] [3708] [INFO] Starting gunicorn 19.9.0
+[2019-08-21 18:05:58 -0400] [3708] [INFO] Listening at: http://0.0.0.0:8000 (3708)
+[2019-08-21 18:05:58 -0400] [3708] [INFO] Using worker: eventlet
+[2019-08-21 18:05:58 -0400] [3712] [INFO] Booting worker with pid: 3712
+[2019-08-21 18:05:59,297] INFO in app: NewApp Launched successfully
+[2019-08-21 18:05:59,299] INFO in app: Security keys
+[2019-08-21 18:05:59,301] INFO in app: Session keys
+[2019-08-21 18:05:59,301] INFO in app: Î,CHÀÒK9ã ZÍùÝNÿ¯;rï
+[2019-08-21 18:05:59,301] INFO in app: Cryptography key
+[2019-08-21 18:05:59,303] INFO in app: b'vgF_Yo8-IutJs-AcwWPnuNBgRSgncuVo1yfc9uqSiiU='
+[2019-08-21 18:05:59,303] INFO in app: JWT Key
+[2019-08-21 18:05:59,303] INFO in app: mRo48tU4ebP6jIshqaoNf2HAnesrCGHm
+[2019-08-21 18:05:59,303] INFO in app: JWT Algorithm
+[2019-08-21 18:05:59,303] INFO in app: HS256
+[2019-08-21 18:06:10 -0400] [3708] [INFO] Handling signal: int
+[2019-08-21 18:06:11 -0400] [3712] [INFO] Worker exiting (pid: 3712)
+[2019-08-21 18:06:11 -0400] [3708] [INFO] Shutting down: Master
+[2019-08-21 18:06:12 -0400] [3737] [INFO] Starting gunicorn 19.9.0
+[2019-08-21 18:06:12 -0400] [3737] [INFO] Listening at: http://0.0.0.0:8000 (3737)
+[2019-08-21 18:06:12 -0400] [3737] [INFO] Using worker: eventlet
+[2019-08-21 18:06:12 -0400] [3741] [INFO] Booting worker with pid: 3741
+[2019-08-21 18:06:13,763] INFO in app: NewApp Launched successfully
+[2019-08-21 18:06:13,764] INFO in app: Security keys
+[2019-08-21 18:06:13,766] INFO in app: Session keys
+[2019-08-21 18:06:13,768] INFO in app: Î,CHÀÒK9ã ZÍùÝNÿ¯;rï
+[2019-08-21 18:06:13,768] INFO in app: Cryptography key
+[2019-08-21 18:06:13,768] INFO in app: b'vgF_Yo8-IutJs-AcwWPnuNBgRSgncuVo1yfc9uqSiiU='
+[2019-08-21 18:06:13,768] INFO in app: JWT Key
+[2019-08-21 18:06:13,768] INFO in app: mRo48tU4ebP6jIshqaoNf2HAnesrCGHm
+[2019-08-21 18:06:13,768] INFO in app: JWT Algorithm
+[2019-08-21 18:06:13,769] INFO in app: HS256
+[2019-08-21 18:06:32 -0400] [3737] [INFO] Handling signal: int
+[2019-08-21 18:06:32 -0400] [3741] [INFO] Worker exiting (pid: 3741)
+[2019-08-21 18:06:33 -0400] [3737] [INFO] Shutting down: Master
+[2019-08-21 18:06:36 -0400] [3758] [INFO] Starting gunicorn 19.9.0
+[2019-08-21 18:06:36 -0400] [3758] [INFO] Listening at: http://0.0.0.0:8000 (3758)
+[2019-08-21 18:06:36 -0400] [3758] [INFO] Using worker: eventlet
+[2019-08-21 18:06:36 -0400] [3768] [INFO] Booting worker with pid: 3768
+[2019-08-21 18:06:37,949] INFO in app: NewApp Launched successfully
+[2019-08-21 18:06:37,952] INFO in app: Security keys
+[2019-08-21 18:06:37,954] INFO in app: Session keys
+[2019-08-21 18:06:37,955] INFO in app: Î,CHÀÒK9ã ZÍùÝNÿ¯;rï
+[2019-08-21 18:06:37,955] INFO in app: Cryptography key
+[2019-08-21 18:06:37,955] INFO in app: b'vgF_Yo8-IutJs-AcwWPnuNBgRSgncuVo1yfc9uqSiiU='
+[2019-08-21 18:06:37,956] INFO in app: JWT Key
+[2019-08-21 18:06:37,956] INFO in app: mRo48tU4ebP6jIshqaoNf2HAnesrCGHm
+[2019-08-21 18:06:37,956] INFO in app: JWT Algorithm
+[2019-08-21 18:06:37,956] INFO in app: HS256
+[2019-08-21 18:07:20 -0400] [3758] [INFO] Handling signal: int
+[2019-08-21 18:07:21 -0400] [3768] [INFO] Worker exiting (pid: 3768)
+[2019-08-21 18:07:21 -0400] [3758] [INFO] Shutting down: Master
+[2019-08-21 18:07:23 -0400] [3792] [INFO] Starting gunicorn 19.9.0
+[2019-08-21 18:07:23 -0400] [3792] [INFO] Listening at: http://0.0.0.0:8000 (3792)
+[2019-08-21 18:07:23 -0400] [3792] [INFO] Using worker: eventlet
+[2019-08-21 18:07:23 -0400] [3796] [INFO] Booting worker with pid: 3796
+[2019-08-21 18:07:24,504] INFO in app: NewApp Launched successfully
+[2019-08-21 18:07:24,507] INFO in app: Security keys
+[2019-08-21 18:07:24,508] INFO in app: Session keys
+[2019-08-21 18:07:24,508] INFO in app: Î,CHÀÒK9ã ZÍùÝNÿ¯;rï
+[2019-08-21 18:07:24,508] INFO in app: Cryptography key
+[2019-08-21 18:07:24,509] INFO in app: b'vgF_Yo8-IutJs-AcwWPnuNBgRSgncuVo1yfc9uqSiiU='
+[2019-08-21 18:07:24,509] INFO in app: JWT Key
+[2019-08-21 18:07:24,509] INFO in app: mRo48tU4ebP6jIshqaoNf2HAnesrCGHm
+[2019-08-21 18:07:24,509] INFO in app: JWT Algorithm
+[2019-08-21 18:07:24,509] INFO in app: HS256
+[2019-08-21 18:07:29 -0400] [3792] [INFO] Handling signal: hup
+[2019-08-21 18:07:29 -0400] [3792] [INFO] Hang up: Master
+[2019-08-21 18:07:29 -0400] [3813] [INFO] Booting worker with pid: 3813
+[2019-08-21 18:07:31,001] INFO in app: NewApp Launched successfully
+[2019-08-21 18:07:31,001] INFO in app: Security keys
+[2019-08-21 18:07:31,002] INFO in app: Session keys
+[2019-08-21 18:07:31,002] INFO in app: Î,CHÀÒK9ã ZÍùÝNÿ¯;rï
+[2019-08-21 18:07:31,002] INFO in app: Cryptography key
+[2019-08-21 18:07:31,002] INFO in app: b'vgF_Yo8-IutJs-AcwWPnuNBgRSgncuVo1yfc9uqSiiU='
+[2019-08-21 18:07:31,002] INFO in app: JWT Key
+[2019-08-21 18:07:31,002] INFO in app: mRo48tU4ebP6jIshqaoNf2HAnesrCGHm
+[2019-08-21 18:07:31,002] INFO in app: JWT Algorithm
+[2019-08-21 18:07:31,002] INFO in app: HS256
+[2019-08-21 19:52:38,067] INFO in app: NewApp Launched successfully
+[2019-08-21 19:52:38,068] INFO in app: Security keys
+[2019-08-21 19:52:38,068] INFO in app: Session keys
+[2019-08-21 19:52:38,068] INFO in app: Î,CHÀÒK9ã ZÍùÝNÿ¯;rï
+[2019-08-21 19:52:38,068] INFO in app: Cryptography key
+[2019-08-21 19:52:38,068] INFO in app: b'vgF_Yo8-IutJs-AcwWPnuNBgRSgncuVo1yfc9uqSiiU='
+[2019-08-21 19:52:38,068] INFO in app: JWT Key
+[2019-08-21 19:52:38,068] INFO in app: mRo48tU4ebP6jIshqaoNf2HAnesrCGHm
+[2019-08-21 19:52:38,069] INFO in app: JWT Algorithm
+[2019-08-21 19:52:38,069] INFO in app: HS256
+[2019-08-22 14:03:12,874] ERROR in app: Exception on /user/Danutu/id=5 [GET]
+Traceback (most recent call last):
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/app.py", line 2311, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/app.py", line 1834, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask_cors/extension.py", line 161, in wrapped_function
+    return cors_after_request(app.make_response(f(*args, **kwargs)))
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/app.py", line 1737, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/_compat.py", line 36, in reraise
+    raise value
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/app.py", line 1832, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/app.py", line 1818, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "/root/Flask/NewApp/users.py", line 228, in user
+    response = requests.get(('https://api.github.com/users/{}/repos?client_id=2b17d8aee65d2c4d23a2&client_secret=b40fa945fb8081884f6de54abe4a02ef0607a8c6').format(user.github_name))
+AttributeError: 'NoneType' object has no attribute 'github_name'
+[2019-08-22 14:03:15,155] ERROR in app: Exception on /user/Danutu/id=5 [GET]
+Traceback (most recent call last):
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/app.py", line 2311, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/app.py", line 1834, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask_cors/extension.py", line 161, in wrapped_function
+    return cors_after_request(app.make_response(f(*args, **kwargs)))
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/app.py", line 1737, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/_compat.py", line 36, in reraise
+    raise value
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/app.py", line 1832, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/app.py", line 1818, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "/root/Flask/NewApp/users.py", line 228, in user
+    response = requests.get(('https://api.github.com/users/{}/repos?client_id=2b17d8aee65d2c4d23a2&client_secret=b40fa945fb8081884f6de54abe4a02ef0607a8c6').format(user.github_name))
+AttributeError: 'NoneType' object has no attribute 'github_name'
+[2019-08-22 14:03:21,111] ERROR in app: Exception on /user/Danutu/id=5 [GET]
+Traceback (most recent call last):
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/app.py", line 2311, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/app.py", line 1834, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask_cors/extension.py", line 161, in wrapped_function
+    return cors_after_request(app.make_response(f(*args, **kwargs)))
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/app.py", line 1737, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/_compat.py", line 36, in reraise
+    raise value
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/app.py", line 1832, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/app.py", line 1818, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "/root/Flask/NewApp/users.py", line 228, in user
+    response = requests.get(('https://api.github.com/users/{}/repos?client_id=2b17d8aee65d2c4d23a2&client_secret=b40fa945fb8081884f6de54abe4a02ef0607a8c6').format(user.github_name))
+AttributeError: 'NoneType' object has no attribute 'github_name'
+[2019-08-23 05:58:03 -0400] [3792] [INFO] Handling signal: term
+[2019-08-23 05:58:11 -0400] [3813] [INFO] Worker exiting (pid: 3813)
+Not supported country None
+'languages'
+Not supported country None
+'languages'
+Not supported country None
+'languages'
+[2019-08-23 05:58:12 -0400] [3792] [INFO] Shutting down: Master
+[2019-08-24 21:40:10 -0400] [20377] [INFO] Starting gunicorn 19.9.0
+[2019-08-24 21:40:10 -0400] [20377] [INFO] Listening at: http://0.0.0.0:8000 (20377)
+[2019-08-24 21:40:10 -0400] [20377] [INFO] Using worker: eventlet
+[2019-08-24 21:40:10 -0400] [20381] [INFO] Booting worker with pid: 20381
+[2019-08-24 21:40:11,512] INFO in app: NewApp Launched successfully
+[2019-08-24 21:40:11,514] INFO in app: Security keys
+[2019-08-24 21:40:11,516] INFO in app: Session keys
+[2019-08-24 21:40:11,516] INFO in app: Î,CHÀÒK9ã ZÍùÝNÿ¯;rï
+[2019-08-24 21:40:11,516] INFO in app: Cryptography key
+[2019-08-24 21:40:11,516] INFO in app: b'vgF_Yo8-IutJs-AcwWPnuNBgRSgncuVo1yfc9uqSiiU='
+[2019-08-24 21:40:11,517] INFO in app: JWT Key
+[2019-08-24 21:40:11,517] INFO in app: mRo48tU4ebP6jIshqaoNf2HAnesrCGHm
+[2019-08-24 21:40:11,517] INFO in app: JWT Algorithm
+[2019-08-24 21:40:11,517] INFO in app: HS256
+[2019-08-25 00:55:49 -0400] [20377] [INFO] Handling signal: hup
+[2019-08-25 00:55:49 -0400] [20377] [INFO] Hang up: Master
+[2019-08-25 00:55:49 -0400] [20377] [INFO] Handling signal: hup
+[2019-08-25 00:55:49 -0400] [20377] [INFO] Hang up: Master
+[2019-08-25 00:55:49 -0400] [22721] [INFO] Booting worker with pid: 22721
+[2019-08-25 00:55:49 -0400] [22722] [INFO] Booting worker with pid: 22722
+[2019-08-25 00:55:52,664] INFO in app: NewApp Launched successfully
+[2019-08-25 00:55:52,669] INFO in app: Security keys
+[2019-08-25 00:55:52,670] INFO in app: Session keys
+[2019-08-25 00:55:52,670] INFO in app: Î,CHÀÒK9ã ZÍùÝNÿ¯;rï
+[2019-08-25 00:55:52,670] INFO in app: Cryptography key
+[2019-08-25 00:55:52,670] INFO in app: b'vgF_Yo8-IutJs-AcwWPnuNBgRSgncuVo1yfc9uqSiiU='
+[2019-08-25 00:55:52,670] INFO in app: JWT Key
+[2019-08-25 00:55:52,670] INFO in app: mRo48tU4ebP6jIshqaoNf2HAnesrCGHm
+[2019-08-25 00:55:52,670] INFO in app: JWT Algorithm
+[2019-08-25 00:55:52,671] INFO in app: HS256
+[2019-08-25 00:55:52,684] INFO in app: NewApp Launched successfully
+[2019-08-25 00:55:52,686] INFO in app: Security keys
+[2019-08-25 00:55:52,688] INFO in app: Session keys
+[2019-08-25 00:55:52,689] INFO in app: Î,CHÀÒK9ã ZÍùÝNÿ¯;rï
+[2019-08-25 00:55:52,689] INFO in app: Cryptography key
+[2019-08-25 00:55:52,689] INFO in app: b'vgF_Yo8-IutJs-AcwWPnuNBgRSgncuVo1yfc9uqSiiU='
+[2019-08-25 00:55:52,689] INFO in app: JWT Key
+[2019-08-25 00:55:52,689] INFO in app: mRo48tU4ebP6jIshqaoNf2HAnesrCGHm
+[2019-08-25 00:55:52,689] INFO in app: JWT Algorithm
+[2019-08-25 00:55:52,689] INFO in app: HS256
+[2019-08-25 00:55:52 -0400] [22721] [INFO] Worker exiting (pid: 22721)
+[2019-08-25 06:05:08 -0400] [20377] [INFO] Handling signal: term
+[2019-08-25 06:05:13 -0400] [27021] [INFO] Starting gunicorn 19.9.0
+[2019-08-25 06:05:13 -0400] [27021] [INFO] Listening at: http://0.0.0.0:8000 (27021)
+[2019-08-25 06:05:13 -0400] [27021] [INFO] Using worker: eventlet
+[2019-08-25 06:05:13 -0400] [27025] [INFO] Booting worker with pid: 27025
+[2019-08-25 06:05:15,416] INFO in app: NewApp Launched successfully
+[2019-08-25 06:05:15,419] INFO in app: Security keys
+[2019-08-25 06:05:15,419] INFO in app: Session keys
+[2019-08-25 06:05:15,419] INFO in app: Î,CHÀÒK9ã ZÍùÝNÿ¯;rï
+[2019-08-25 06:05:15,419] INFO in app: Cryptography key
+[2019-08-25 06:05:15,420] INFO in app: b'vgF_Yo8-IutJs-AcwWPnuNBgRSgncuVo1yfc9uqSiiU='
+[2019-08-25 06:05:15,420] INFO in app: JWT Key
+[2019-08-25 06:05:15,420] INFO in app: mRo48tU4ebP6jIshqaoNf2HAnesrCGHm
+[2019-08-25 06:05:15,420] INFO in app: JWT Algorithm
+[2019-08-25 06:05:15,420] INFO in app: HS256
+[2019-08-25 06:05:26 -0400] [22722] [INFO] Worker exiting (pid: 22722)
+[2019-08-25 06:05:26 -0400] [20377] [INFO] Shutting down: Master
+[2019-08-25 06:34:04 -0400] [27021] [INFO] Handling signal: int
+[2019-08-25 06:34:05 -0400] [27025] [INFO] Worker exiting (pid: 27025)
+[2019-08-25 06:34:05 -0400] [27021] [INFO] Shutting down: Master
+[2019-08-25 19:20:38 -0400] [6899] [INFO] Starting gunicorn 19.9.0
+[2019-08-25 19:20:38 -0400] [6899] [INFO] Listening at: http://0.0.0.0:8000 (6899)
+[2019-08-25 19:20:38 -0400] [6899] [INFO] Using worker: eventlet
+[2019-08-25 19:20:38 -0400] [6903] [INFO] Booting worker with pid: 6903
+[2019-08-25 19:20:39,112] INFO in app: NewApp Launched successfully
+[2019-08-25 19:20:39,115] INFO in app: Security keys
+[2019-08-25 19:20:39,117] INFO in app: Session keys
+[2019-08-25 19:20:39,117] INFO in app: Î,CHÀÒK9ã ZÍùÝNÿ¯;rï
+[2019-08-25 19:20:39,117] INFO in app: Cryptography key
+[2019-08-25 19:20:39,117] INFO in app: b'vgF_Yo8-IutJs-AcwWPnuNBgRSgncuVo1yfc9uqSiiU='
+[2019-08-25 19:20:39,117] INFO in app: JWT Key
+[2019-08-25 19:20:39,118] INFO in app: mRo48tU4ebP6jIshqaoNf2HAnesrCGHm
+[2019-08-25 19:20:39,118] INFO in app: JWT Algorithm
+[2019-08-25 19:20:39,118] INFO in app: HS256
+[2019-08-25 19:20:42 -0400] [6899] [INFO] Handling signal: hup
+[2019-08-25 19:20:42 -0400] [6899] [INFO] Hang up: Master
+[2019-08-25 19:20:42 -0400] [6913] [INFO] Booting worker with pid: 6913
+[2019-08-25 19:20:43,592] INFO in app: NewApp Launched successfully
+[2019-08-25 19:20:43,592] INFO in app: Security keys
+[2019-08-25 19:20:43,593] INFO in app: Session keys
+[2019-08-25 19:20:43,593] INFO in app: Î,CHÀÒK9ã ZÍùÝNÿ¯;rï
+[2019-08-25 19:20:43,593] INFO in app: Cryptography key
+[2019-08-25 19:20:43,593] INFO in app: b'vgF_Yo8-IutJs-AcwWPnuNBgRSgncuVo1yfc9uqSiiU='
+[2019-08-25 19:20:43,593] INFO in app: JWT Key
+[2019-08-25 19:20:43,593] INFO in app: mRo48tU4ebP6jIshqaoNf2HAnesrCGHm
+[2019-08-25 19:20:43,593] INFO in app: JWT Algorithm
+[2019-08-25 19:20:43,594] INFO in app: HS256
+[2019-08-26 08:44:44 -0400] [6899] [INFO] Handling signal: term
+[2019-08-26 08:44:48 -0400] [11273] [INFO] Starting gunicorn 19.9.0
+[2019-08-26 08:44:48 -0400] [11273] [INFO] Listening at: http://0.0.0.0:8000 (11273)
+[2019-08-26 08:44:48 -0400] [11273] [INFO] Using worker: eventlet
+[2019-08-26 08:44:48 -0400] [11277] [INFO] Booting worker with pid: 11277
+[2019-08-26 08:44:49 -0400] [11273] [INFO] Handling signal: int
+[2019-08-26 08:44:50,452] INFO in app: NewApp Launched successfully
+[2019-08-26 08:44:50,454] INFO in app: Security keys
+[2019-08-26 08:44:50,456] INFO in app: Session keys
+[2019-08-26 08:44:50,456] INFO in app: Î,CHÀÒK9ã ZÍùÝNÿ¯;rï
+[2019-08-26 08:44:50,457] INFO in app: Cryptography key
+[2019-08-26 08:44:50,457] INFO in app: b'vgF_Yo8-IutJs-AcwWPnuNBgRSgncuVo1yfc9uqSiiU='
+[2019-08-26 08:44:50,457] INFO in app: JWT Key
+[2019-08-26 08:44:50,457] INFO in app: mRo48tU4ebP6jIshqaoNf2HAnesrCGHm
+[2019-08-26 08:44:50,457] INFO in app: JWT Algorithm
+[2019-08-26 08:44:50,457] INFO in app: HS256
+[2019-08-26 08:44:50 -0400] [11277] [INFO] Worker exiting (pid: 11277)
+[2019-08-26 08:44:50 -0400] [11273] [INFO] Shutting down: Master
+[2019-08-26 08:44:57 -0400] [6913] [INFO] Worker exiting (pid: 6913)
+[2019-08-26 08:44:57 -0400] [6899] [INFO] Shutting down: Master
+[2019-08-26 20:08:44 -0400] [19400] [INFO] Starting gunicorn 19.9.0
+[2019-08-26 20:08:44 -0400] [19400] [INFO] Listening at: http://0.0.0.0:8000 (19400)
+[2019-08-26 20:08:44 -0400] [19400] [INFO] Using worker: eventlet
+[2019-08-26 20:08:44 -0400] [19404] [INFO] Booting worker with pid: 19404
+[2019-08-26 20:08:46,021] INFO in app: NewApp Launched successfully
+[2019-08-26 20:08:46,026] INFO in app: Security keys
+[2019-08-26 20:08:46,026] INFO in app: Session keys
+[2019-08-26 20:08:46,026] INFO in app: Î,CHÀÒK9ã ZÍùÝNÿ¯;rï
+[2019-08-26 20:08:46,027] INFO in app: Cryptography key
+[2019-08-26 20:08:46,027] INFO in app: b'vgF_Yo8-IutJs-AcwWPnuNBgRSgncuVo1yfc9uqSiiU='
+[2019-08-26 20:08:46,027] INFO in app: JWT Key
+[2019-08-26 20:08:46,029] INFO in app: mRo48tU4ebP6jIshqaoNf2HAnesrCGHm
+[2019-08-26 20:08:46,029] INFO in app: JWT Algorithm
+[2019-08-26 20:08:46,029] INFO in app: HS256
+[2019-08-26 23:24:36 -0400] [19400] [INFO] Handling signal: hup
+[2019-08-26 23:24:36 -0400] [19400] [INFO] Hang up: Master
+[2019-08-26 23:24:36 -0400] [19400] [INFO] Handling signal: hup
+[2019-08-26 23:24:36 -0400] [19400] [INFO] Hang up: Master
+[2019-08-26 23:24:36 -0400] [20286] [INFO] Booting worker with pid: 20286
+[2019-08-26 23:24:36 -0400] [20287] [INFO] Booting worker with pid: 20287
+[2019-08-26 23:24:38,835] INFO in app: NewApp Launched successfully
+[2019-08-26 23:24:38,839] INFO in app: Security keys
+[2019-08-26 23:24:38,841] INFO in app: Session keys
+[2019-08-26 23:24:38,841] INFO in app: Î,CHÀÒK9ã ZÍùÝNÿ¯;rï
+[2019-08-26 23:24:38,841] INFO in app: Cryptography key
+[2019-08-26 23:24:38,841] INFO in app: b'vgF_Yo8-IutJs-AcwWPnuNBgRSgncuVo1yfc9uqSiiU='
+[2019-08-26 23:24:38,841] INFO in app: JWT Key
+[2019-08-26 23:24:38,841] INFO in app: mRo48tU4ebP6jIshqaoNf2HAnesrCGHm
+[2019-08-26 23:24:38,842] INFO in app: JWT Algorithm
+[2019-08-26 23:24:38,844] INFO in app: HS256
+[2019-08-26 23:24:38,845] INFO in app: NewApp Launched successfully
+[2019-08-26 23:24:38,845] INFO in app: Security keys
+[2019-08-26 23:24:38,845] INFO in app: Session keys
+[2019-08-26 23:24:38,846] INFO in app: Î,CHÀÒK9ã ZÍùÝNÿ¯;rï
+[2019-08-26 23:24:38,846] INFO in app: Cryptography key
+[2019-08-26 23:24:38,846] INFO in app: b'vgF_Yo8-IutJs-AcwWPnuNBgRSgncuVo1yfc9uqSiiU='
+[2019-08-26 23:24:38,846] INFO in app: JWT Key
+[2019-08-26 23:24:38,846] INFO in app: mRo48tU4ebP6jIshqaoNf2HAnesrCGHm
+[2019-08-26 23:24:38,846] INFO in app: JWT Algorithm
+[2019-08-26 23:24:38,846] INFO in app: HS256
+[2019-08-26 23:24:38 -0400] [20286] [INFO] Worker exiting (pid: 20286)
+[2019-08-27 02:24:23,049] ERROR in app: Exception on /user/Ciprian/id=3 [GET]
+Traceback (most recent call last):
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/app.py", line 2311, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/app.py", line 1834, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask_cors/extension.py", line 161, in wrapped_function
+    return cors_after_request(app.make_response(f(*args, **kwargs)))
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/app.py", line 1737, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/_compat.py", line 36, in reraise
+    raise value
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/app.py", line 1832, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/app.py", line 1818, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "/root/Flask/NewApp/users.py", line 241, in user
+    return render_template('user_page.html',tagp=tagp,tags=tags,posts=posts,user=user,repos=repos,modify_profile=modify_profile,lang=lang,post_count=post_count,reply_count=reply_count,search=search,register=register,login=loginf, reset=reset,location=location)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/templating.py", line 135, in render_template
+    context, ctx.app)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/templating.py", line 117, in _render
+    rv = template.render(context)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/jinja2/asyncsupport.py", line 76, in render
+    return original_render(self, *args, **kwargs)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/jinja2/environment.py", line 1008, in render
+    return self.environment.handle_exception(exc_info, True)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/jinja2/environment.py", line 780, in handle_exception
+    reraise(exc_type, exc_value, tb)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/jinja2/_compat.py", line 37, in reraise
+    raise value.with_traceback(tb)
+  File "/root/Flask/NewApp/user_templates/user_page.html", line 1, in top-level template code
+    {% extends "index.html" %}
+  File "/root/Flask/NewApp/templates/index.html", line 1086, in top-level template code
+    {% block content %}
+  File "/root/Flask/NewApp/user_templates/user_page.html", line 14, in block "content"
+    {% for tag in user.int_tags %}
+TypeError: 'NoneType' object is not iterable
+[2019-08-27 02:25:23,519] ERROR in app: Exception on /user/Ciprian/id=3 [GET]
+Traceback (most recent call last):
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/app.py", line 2311, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/app.py", line 1834, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask_cors/extension.py", line 161, in wrapped_function
+    return cors_after_request(app.make_response(f(*args, **kwargs)))
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/app.py", line 1737, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/_compat.py", line 36, in reraise
+    raise value
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/app.py", line 1832, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/app.py", line 1818, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "/root/Flask/NewApp/users.py", line 241, in user
+    return render_template('user_page.html',tagp=tagp,tags=tags,posts=posts,user=user,repos=repos,modify_profile=modify_profile,lang=lang,post_count=post_count,reply_count=reply_count,search=search,register=register,login=loginf, reset=reset,location=location)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/templating.py", line 135, in render_template
+    context, ctx.app)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/templating.py", line 117, in _render
+    rv = template.render(context)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/jinja2/asyncsupport.py", line 76, in render
+    return original_render(self, *args, **kwargs)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/jinja2/environment.py", line 1008, in render
+    return self.environment.handle_exception(exc_info, True)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/jinja2/environment.py", line 780, in handle_exception
+    reraise(exc_type, exc_value, tb)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/jinja2/_compat.py", line 37, in reraise
+    raise value.with_traceback(tb)
+  File "/root/Flask/NewApp/user_templates/user_page.html", line 1, in top-level template code
+    {% extends "index.html" %}
+  File "/root/Flask/NewApp/templates/index.html", line 1086, in top-level template code
+    {% block content %}
+  File "/root/Flask/NewApp/user_templates/user_page.html", line 14, in block "content"
+    {% for tag in user.int_tags %}
+TypeError: 'NoneType' object is not iterable
+[2019-08-27 02:26:23,962] ERROR in app: Exception on /user/Ciprian/id=3 [GET]
+Traceback (most recent call last):
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/app.py", line 2311, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/app.py", line 1834, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask_cors/extension.py", line 161, in wrapped_function
+    return cors_after_request(app.make_response(f(*args, **kwargs)))
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/app.py", line 1737, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/_compat.py", line 36, in reraise
+    raise value
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/app.py", line 1832, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/app.py", line 1818, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "/root/Flask/NewApp/users.py", line 241, in user
+    return render_template('user_page.html',tagp=tagp,tags=tags,posts=posts,user=user,repos=repos,modify_profile=modify_profile,lang=lang,post_count=post_count,reply_count=reply_count,search=search,register=register,login=loginf, reset=reset,location=location)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/templating.py", line 135, in render_template
+    context, ctx.app)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/templating.py", line 117, in _render
+    rv = template.render(context)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/jinja2/asyncsupport.py", line 76, in render
+    return original_render(self, *args, **kwargs)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/jinja2/environment.py", line 1008, in render
+    return self.environment.handle_exception(exc_info, True)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/jinja2/environment.py", line 780, in handle_exception
+    reraise(exc_type, exc_value, tb)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/jinja2/_compat.py", line 37, in reraise
+    raise value.with_traceback(tb)
+  File "/root/Flask/NewApp/user_templates/user_page.html", line 1, in top-level template code
+    {% extends "index.html" %}
+  File "/root/Flask/NewApp/templates/index.html", line 1086, in top-level template code
+    {% block content %}
+  File "/root/Flask/NewApp/user_templates/user_page.html", line 14, in block "content"
+    {% for tag in user.int_tags %}
+TypeError: 'NoneType' object is not iterable
+[2019-08-27 02:27:24,366] ERROR in app: Exception on /user/Ciprian/id=3 [GET]
+Traceback (most recent call last):
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/app.py", line 2311, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/app.py", line 1834, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask_cors/extension.py", line 161, in wrapped_function
+    return cors_after_request(app.make_response(f(*args, **kwargs)))
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/app.py", line 1737, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/_compat.py", line 36, in reraise
+    raise value
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/app.py", line 1832, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/app.py", line 1818, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "/root/Flask/NewApp/users.py", line 241, in user
+    return render_template('user_page.html',tagp=tagp,tags=tags,posts=posts,user=user,repos=repos,modify_profile=modify_profile,lang=lang,post_count=post_count,reply_count=reply_count,search=search,register=register,login=loginf, reset=reset,location=location)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/templating.py", line 135, in render_template
+    context, ctx.app)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/templating.py", line 117, in _render
+    rv = template.render(context)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/jinja2/asyncsupport.py", line 76, in render
+    return original_render(self, *args, **kwargs)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/jinja2/environment.py", line 1008, in render
+    return self.environment.handle_exception(exc_info, True)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/jinja2/environment.py", line 780, in handle_exception
+    reraise(exc_type, exc_value, tb)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/jinja2/_compat.py", line 37, in reraise
+    raise value.with_traceback(tb)
+  File "/root/Flask/NewApp/user_templates/user_page.html", line 1, in top-level template code
+    {% extends "index.html" %}
+  File "/root/Flask/NewApp/templates/index.html", line 1086, in top-level template code
+    {% block content %}
+  File "/root/Flask/NewApp/user_templates/user_page.html", line 14, in block "content"
+    {% for tag in user.int_tags %}
+TypeError: 'NoneType' object is not iterable
+[2019-08-27 09:11:21 -0400] [19400] [INFO] Handling signal: term
+[2019-08-27 09:11:27 -0400] [30693] [INFO] Starting gunicorn 19.9.0
+[2019-08-27 09:11:27 -0400] [30693] [INFO] Listening at: http://0.0.0.0:8000 (30693)
+[2019-08-27 09:11:27 -0400] [30693] [INFO] Using worker: eventlet
+[2019-08-27 09:11:27 -0400] [30697] [INFO] Booting worker with pid: 30697
+[2019-08-27 09:11:28,566] INFO in app: NewApp Launched successfully
+[2019-08-27 09:11:28,568] INFO in app: Security keys
+[2019-08-27 09:11:28,571] INFO in app: Session keys
+[2019-08-27 09:11:28,571] INFO in app: Î,CHÀÒK9ã ZÍùÝNÿ¯;rï
+[2019-08-27 09:11:28,571] INFO in app: Cryptography key
+[2019-08-27 09:11:28,571] INFO in app: b'vgF_Yo8-IutJs-AcwWPnuNBgRSgncuVo1yfc9uqSiiU='
+[2019-08-27 09:11:28,571] INFO in app: JWT Key
+[2019-08-27 09:11:28,571] INFO in app: mRo48tU4ebP6jIshqaoNf2HAnesrCGHm
+[2019-08-27 09:11:28,572] INFO in app: JWT Algorithm
+[2019-08-27 09:11:28,572] INFO in app: HS256
+[2019-08-27 09:11:32 -0400] [30693] [INFO] Handling signal: int
+[2019-08-27 09:11:32 -0400] [30697] [INFO] Worker exiting (pid: 30697)
+[2019-08-27 09:11:32 -0400] [30693] [INFO] Shutting down: Master
+[2019-08-27 09:11:38 -0400] [20287] [INFO] Worker exiting (pid: 20287)
+[2019-08-27 09:11:38 -0400] [19400] [INFO] Shutting down: Master
+[2019-08-29 16:12:55,305] INFO in app: NewApp Launched successfully
+[2019-08-29 16:12:55,310] INFO in app: Security keys
+[2019-08-29 16:12:55,310] INFO in app: Session keys
+[2019-08-29 16:12:55,311] INFO in app: Î,CHÀÒK9ã ZÍùÝNÿ¯;rï
+[2019-08-29 16:12:55,311] INFO in app: Cryptography key
+[2019-08-29 16:12:55,311] INFO in app: b'vgF_Yo8-IutJs-AcwWPnuNBgRSgncuVo1yfc9uqSiiU='
+[2019-08-29 16:12:55,311] INFO in app: JWT Key
+[2019-08-29 16:12:55,311] INFO in app: mRo48tU4ebP6jIshqaoNf2HAnesrCGHm
+[2019-08-29 16:12:55,311] INFO in app: JWT Algorithm
+[2019-08-29 16:12:55,311] INFO in app: HS256
+/root/Flask/NewApp/env/lib/python3.6/site-packages/celery/platforms.py:801: RuntimeWarning: You're running the worker with superuser privileges: this is
+absolutely not recommended!
+
+Please specify a different user using the --uid option.
+
+User information: uid=0 euid=0 gid=1002 egid=1002
+
+  uid=uid, euid=euid, gid=gid, egid=egid,
+
+Restarting celery worker (/root/Flask/NewApp/env/bin/celery worker -A app.celery -E)
+[2019-08-29 16:12:56,351: ERROR/MainProcess] Process 'ForkPoolWorker-1' pid:20449 exited with 'exitcode 70'
+[2019-08-29 16:13:02,185] INFO in app: NewApp Launched successfully
+[2019-08-29 16:13:02,192] INFO in app: Security keys
+[2019-08-29 16:13:02,192] INFO in app: Session keys
+[2019-08-29 16:13:02,192] INFO in app: Î,CHÀÒK9ã ZÍùÝNÿ¯;rï
+[2019-08-29 16:13:02,192] INFO in app: Cryptography key
+[2019-08-29 16:13:02,192] INFO in app: b'vgF_Yo8-IutJs-AcwWPnuNBgRSgncuVo1yfc9uqSiiU='
+[2019-08-29 16:13:02,193] INFO in app: JWT Key
+[2019-08-29 16:13:02,193] INFO in app: mRo48tU4ebP6jIshqaoNf2HAnesrCGHm
+[2019-08-29 16:13:02,193] INFO in app: JWT Algorithm
+[2019-08-29 16:13:02,193] INFO in app: HS256
+[2019-08-29 19:13:24,928] INFO in app: NewApp Launched successfully
+[2019-08-29 19:13:24,929] INFO in app: Security keys
+[2019-08-29 19:13:24,930] INFO in app: Session keys
+[2019-08-29 19:13:24,930] INFO in app: Î,CHÀÒK9ã ZÍùÝNÿ¯;rï
+[2019-08-29 19:13:24,930] INFO in app: Cryptography key
+[2019-08-29 19:13:24,930] INFO in app: b'vgF_Yo8-IutJs-AcwWPnuNBgRSgncuVo1yfc9uqSiiU='
+[2019-08-29 19:13:24,930] INFO in app: JWT Key
+[2019-08-29 19:13:24,930] INFO in app: mRo48tU4ebP6jIshqaoNf2HAnesrCGHm
+[2019-08-29 19:13:24,930] INFO in app: JWT Algorithm
+[2019-08-29 19:13:24,931] INFO in app: HS256
+[2019-08-29 19:19:56,109] INFO in app: NewApp Launched successfully
+[2019-08-29 19:19:56,143] INFO in app: Security keys
+[2019-08-29 19:19:56,145] INFO in app: Session keys
+[2019-08-29 19:19:56,146] INFO in app: Î,CHÀÒK9ã ZÍùÝNÿ¯;rï
+[2019-08-29 19:19:56,146] INFO in app: Cryptography key
+[2019-08-29 19:19:56,146] INFO in app: b'vgF_Yo8-IutJs-AcwWPnuNBgRSgncuVo1yfc9uqSiiU='
+[2019-08-29 19:19:56,146] INFO in app: JWT Key
+[2019-08-29 19:19:56,146] INFO in app: mRo48tU4ebP6jIshqaoNf2HAnesrCGHm
+[2019-08-29 19:19:56,147] INFO in app: JWT Algorithm
+[2019-08-29 19:19:56,147] INFO in app: HS256
+/root/Flask/NewApp/env/lib/python3.6/site-packages/celery/platforms.py:801: RuntimeWarning: You're running the worker with superuser privileges: this is
+absolutely not recommended!
+
+Please specify a different user using the --uid option.
+
+User information: uid=0 euid=0 gid=1002 egid=1002
+
+  uid=uid, euid=euid, gid=gid, egid=egid,
+[2019-08-29 19:19:57,244: ERROR/MainProcess] consumer: Cannot connect to redis://localhost:6379/0: Error 111 connecting to localhost:6379. ECONNREFUSED..
+Trying again in 2.00 seconds...
+
+[2019-08-29 19:19:59,254: ERROR/MainProcess] consumer: Cannot connect to redis://localhost:6379/0: Error 111 connecting to localhost:6379. ECONNREFUSED..
+Trying again in 4.00 seconds...
+
+[2019-08-29 19:20:03,263: ERROR/MainProcess] consumer: Cannot connect to redis://localhost:6379/0: Error 111 connecting to localhost:6379. ECONNREFUSED..
+Trying again in 6.00 seconds...
+
+
+Restarting celery worker (/root/Flask/NewApp/env/bin/celery worker -A app.celery -E)
+[2019-08-29 19:20:10,880: ERROR/MainProcess] Process 'ForkPoolWorker-1' pid:3299 exited with 'exitcode 70'
+[2019-08-29 19:20:21,033] INFO in app: NewApp Launched successfully
+[2019-08-29 19:20:21,036] INFO in app: Security keys
+[2019-08-29 19:20:21,038] INFO in app: Session keys
+[2019-08-29 19:20:21,038] INFO in app: Î,CHÀÒK9ã ZÍùÝNÿ¯;rï
+[2019-08-29 19:20:21,038] INFO in app: Cryptography key
+[2019-08-29 19:20:21,038] INFO in app: b'vgF_Yo8-IutJs-AcwWPnuNBgRSgncuVo1yfc9uqSiiU='
+[2019-08-29 19:20:21,038] INFO in app: JWT Key
+[2019-08-29 19:20:21,038] INFO in app: mRo48tU4ebP6jIshqaoNf2HAnesrCGHm
+[2019-08-29 19:20:21,038] INFO in app: JWT Algorithm
+[2019-08-29 19:20:21,038] INFO in app: HS256
+[2019-08-29 20:20:31 -0400] [6571] [INFO] Starting gunicorn 19.9.0
+[2019-08-29 20:20:31 -0400] [6571] [INFO] Listening at: http://0.0.0.0:8000 (6571)
+[2019-08-29 20:20:31 -0400] [6571] [INFO] Using worker: eventlet
+[2019-08-29 20:20:31 -0400] [6576] [INFO] Booting worker with pid: 6576
+[2019-08-29 20:20:32,297] INFO in app: NewApp Launched successfully
+[2019-08-29 20:20:32,299] INFO in app: Security keys
+[2019-08-29 20:20:32,301] INFO in app: Session keys
+[2019-08-29 20:20:32,301] INFO in app: Î,CHÀÒK9ã ZÍùÝNÿ¯;rï
+[2019-08-29 20:20:32,301] INFO in app: Cryptography key
+[2019-08-29 20:20:32,301] INFO in app: b'vgF_Yo8-IutJs-AcwWPnuNBgRSgncuVo1yfc9uqSiiU='
+[2019-08-29 20:20:32,301] INFO in app: JWT Key
+[2019-08-29 20:20:32,301] INFO in app: mRo48tU4ebP6jIshqaoNf2HAnesrCGHm
+[2019-08-29 20:20:32,301] INFO in app: JWT Algorithm
+[2019-08-29 20:20:32,301] INFO in app: HS256
+[2019-09-01 01:28:27,636] ERROR in app: Exception on /user/Danutu/id=5 [GET]
+Traceback (most recent call last):
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/app.py", line 2311, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/app.py", line 1834, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask_cors/extension.py", line 161, in wrapped_function
+    return cors_after_request(app.make_response(f(*args, **kwargs)))
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/app.py", line 1737, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/_compat.py", line 36, in reraise
+    raise value
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/app.py", line 1832, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/app.py", line 1818, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "/root/Flask/NewApp/users.py", line 228, in user
+    response = requests.get(('https://api.github.com/users/{}/repos?client_id=2b17d8aee65d2c4d23a2&client_secret=b40fa945fb8081884f6de54abe4a02ef0607a8c6').format(user.github_name))
+AttributeError: 'NoneType' object has no attribute 'github_name'
+[2019-09-04 11:53:22 -0400] [6571] [INFO] Handling signal: term
+[2019-09-04 11:53:22 -0400] [6576] [INFO] Worker exiting (pid: 6576)
+Not supported country None
+'languages'
+[2019-09-04 11:53:24 -0400] [6571] [INFO] Shutting down: Master
+[2019-09-04 12:18:52 -0400] [27653] [INFO] Starting gunicorn 19.9.0
+[2019-09-04 12:18:52 -0400] [27653] [INFO] Listening at: http://0.0.0.0:8000 (27653)
+[2019-09-04 12:18:52 -0400] [27653] [INFO] Using worker: eventlet
+[2019-09-04 12:18:52 -0400] [27657] [INFO] Booting worker with pid: 27657
+[2019-09-04 12:18:53,828] INFO in app: NewApp Launched successfully
+[2019-09-04 12:18:53,832] INFO in app: Security keys
+[2019-09-04 12:18:53,832] INFO in app: Session keys
+[2019-09-04 12:18:53,833] INFO in app: Î,CHÀÒK9ã ZÍùÝNÿ¯;rï
+[2019-09-04 12:18:53,833] INFO in app: Cryptography key
+[2019-09-04 12:18:53,833] INFO in app: b'vgF_Yo8-IutJs-AcwWPnuNBgRSgncuVo1yfc9uqSiiU='
+[2019-09-04 12:18:53,833] INFO in app: JWT Key
+[2019-09-04 12:18:53,833] INFO in app: mRo48tU4ebP6jIshqaoNf2HAnesrCGHm
+[2019-09-04 12:18:53,833] INFO in app: JWT Algorithm
+[2019-09-04 12:18:53,833] INFO in app: HS256
+[2019-09-04 12:18:57 -0400] [27653] [INFO] Handling signal: hup
+[2019-09-04 12:18:57 -0400] [27653] [INFO] Hang up: Master
+[2019-09-04 12:18:57 -0400] [27715] [INFO] Booting worker with pid: 27715
+[2019-09-04 12:18:58,502] INFO in app: NewApp Launched successfully
+[2019-09-04 12:18:58,502] INFO in app: Security keys
+[2019-09-04 12:18:58,502] INFO in app: Session keys
+[2019-09-04 12:18:58,502] INFO in app: Î,CHÀÒK9ã ZÍùÝNÿ¯;rï
+[2019-09-04 12:18:58,502] INFO in app: Cryptography key
+[2019-09-04 12:18:58,502] INFO in app: b'vgF_Yo8-IutJs-AcwWPnuNBgRSgncuVo1yfc9uqSiiU='
+[2019-09-04 12:18:58,502] INFO in app: JWT Key
+[2019-09-04 12:18:58,502] INFO in app: mRo48tU4ebP6jIshqaoNf2HAnesrCGHm
+[2019-09-04 12:18:58,503] INFO in app: JWT Algorithm
+[2019-09-04 12:18:58,503] INFO in app: HS256
+[2019-09-05 07:36:38 -0400] [27653] [INFO] Handling signal: term
+[2019-09-05 07:36:54 -0400] [27715] [INFO] Worker exiting (pid: 27715)
+[2019-09-05 07:36:54 -0400] [27653] [INFO] Shutting down: Master
+[2019-09-08 19:44:41 -0400] [20433] [INFO] Starting gunicorn 19.9.0
+[2019-09-08 19:44:41 -0400] [20433] [INFO] Listening at: http://0.0.0.0:8000 (20433)
+[2019-09-08 19:44:41 -0400] [20433] [INFO] Using worker: eventlet
+[2019-09-08 19:44:41 -0400] [20445] [INFO] Booting worker with pid: 20445
+[2019-09-08 19:44:43,141] INFO in app: NewApp Launched successfully
+[2019-09-08 19:44:43,147] INFO in app: Security keys
+[2019-09-08 19:44:43,153] INFO in app: Session keys
+[2019-09-08 19:44:43,154] INFO in app: Î,CHÀÒK9ã ZÍùÝNÿ¯;rï
+[2019-09-08 19:44:43,154] INFO in app: Cryptography key
+[2019-09-08 19:44:43,154] INFO in app: b'vgF_Yo8-IutJs-AcwWPnuNBgRSgncuVo1yfc9uqSiiU='
+[2019-09-08 19:44:43,154] INFO in app: JWT Key
+[2019-09-08 19:44:43,154] INFO in app: mRo48tU4ebP6jIshqaoNf2HAnesrCGHm
+[2019-09-08 19:44:43,154] INFO in app: JWT Algorithm
+[2019-09-08 19:44:43,154] INFO in app: HS256
+[2019-09-08 19:44:44 -0400] [20433] [INFO] Handling signal: hup
+[2019-09-08 19:44:44 -0400] [20433] [INFO] Hang up: Master
+[2019-09-08 19:44:44 -0400] [20498] [INFO] Booting worker with pid: 20498
+[2019-09-08 19:44:45,754] INFO in app: NewApp Launched successfully
+[2019-09-08 19:44:45,759] INFO in app: Security keys
+[2019-09-08 19:44:45,761] INFO in app: Session keys
+[2019-09-08 19:44:45,762] INFO in app: Î,CHÀÒK9ã ZÍùÝNÿ¯;rï
+[2019-09-08 19:44:45,762] INFO in app: Cryptography key
+[2019-09-08 19:44:45,762] INFO in app: b'vgF_Yo8-IutJs-AcwWPnuNBgRSgncuVo1yfc9uqSiiU='
+[2019-09-08 19:44:45,762] INFO in app: JWT Key
+[2019-09-08 19:44:45,762] INFO in app: mRo48tU4ebP6jIshqaoNf2HAnesrCGHm
+[2019-09-08 19:44:45,762] INFO in app: JWT Algorithm
+[2019-09-08 19:44:45,762] INFO in app: HS256
+[2019-09-08 22:13:53,485] ERROR in app: Exception on /user/Ciprian/id=3 [GET]
+Traceback (most recent call last):
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/app.py", line 2311, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/app.py", line 1834, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask_cors/extension.py", line 161, in wrapped_function
+    return cors_after_request(app.make_response(f(*args, **kwargs)))
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/app.py", line 1737, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/_compat.py", line 36, in reraise
+    raise value
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/app.py", line 1832, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/app.py", line 1818, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "/root/Flask/NewApp/users.py", line 248, in user
+    return render_template('user_page.html',tagp=tagp,tags=tags,posts=posts,user=user,repos=repos,modify_profile=modify_profile,lang=lang,post_count=post_count,reply_count=reply_count,search=search,register=register,login=loginf, reset=reset,location=location)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/templating.py", line 135, in render_template
+    context, ctx.app)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/templating.py", line 117, in _render
+    rv = template.render(context)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/jinja2/asyncsupport.py", line 76, in render
+    return original_render(self, *args, **kwargs)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/jinja2/environment.py", line 1008, in render
+    return self.environment.handle_exception(exc_info, True)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/jinja2/environment.py", line 780, in handle_exception
+    reraise(exc_type, exc_value, tb)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/jinja2/_compat.py", line 37, in reraise
+    raise value.with_traceback(tb)
+  File "/root/Flask/NewApp/user_templates/user_page.html", line 1, in top-level template code
+    {% extends "index.html" %}
+  File "/root/Flask/NewApp/templates/index.html", line 1336, in top-level template code
+    {% block content %}
+  File "/root/Flask/NewApp/user_templates/user_page.html", line 32, in block "content"
+    <p><i class="fas fa-rss"></i> Followed by {{user.get_followers()}} people</p>
+  File "/root/Flask/NewApp/models.py", line 96, in get_followers
+    return len(user.followed)
+TypeError: object of type 'NoneType' has no len()
+[2019-09-09 02:41:42,820] ERROR in app: Exception on /user/Danutu/id=5 [GET]
+Traceback (most recent call last):
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/app.py", line 2311, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/app.py", line 1834, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask_cors/extension.py", line 161, in wrapped_function
+    return cors_after_request(app.make_response(f(*args, **kwargs)))
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/app.py", line 1737, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/_compat.py", line 36, in reraise
+    raise value
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/app.py", line 1832, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/app.py", line 1818, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "/root/Flask/NewApp/users.py", line 235, in user
+    response = requests.get(('https://api.github.com/users/{}/repos?client_id=2b17d8aee65d2c4d23a2&client_secret=b40fa945fb8081884f6de54abe4a02ef0607a8c6').format(user.github_name))
+AttributeError: 'NoneType' object has no attribute 'github_name'
+[2019-09-09 08:39:52 -0400] [22652] [INFO] Starting gunicorn 19.9.0
+[2019-09-09 08:39:52 -0400] [22652] [INFO] Listening at: http://0.0.0.0:8000 (22652)
+[2019-09-09 08:39:52 -0400] [22652] [INFO] Using worker: eventlet
+[2019-09-09 08:39:52 -0400] [22656] [INFO] Booting worker with pid: 22656
+[2019-09-09 08:39:53,874] INFO in app: NewApp Launched successfully
+[2019-09-09 08:39:53,881] INFO in app: Security keys
+[2019-09-09 08:39:53,884] INFO in app: Session keys
+[2019-09-09 08:39:53,884] INFO in app: Î,CHÀÒK9ã ZÍùÝNÿ¯;rï
+[2019-09-09 08:39:53,885] INFO in app: Cryptography key
+[2019-09-09 08:39:53,885] INFO in app: b'vgF_Yo8-IutJs-AcwWPnuNBgRSgncuVo1yfc9uqSiiU='
+[2019-09-09 08:39:53,885] INFO in app: JWT Key
+[2019-09-09 08:39:53,885] INFO in app: mRo48tU4ebP6jIshqaoNf2HAnesrCGHm
+[2019-09-09 08:39:53,885] INFO in app: JWT Algorithm
+[2019-09-09 08:39:53,886] INFO in app: HS256
+[2019-09-09 08:41:24 -0400] [22652] [INFO] Handling signal: int
+[2019-09-09 08:41:25 -0400] [22656] [INFO] Worker exiting (pid: 22656)
+[2019-09-09 08:41:25 -0400] [22652] [INFO] Shutting down: Master
+[2019-09-09 08:41:58 -0400] [24182] [INFO] Starting gunicorn 19.9.0
+[2019-09-09 08:41:58 -0400] [24182] [INFO] Listening at: http://0.0.0.0:8000 (24182)
+[2019-09-09 08:41:58 -0400] [24182] [INFO] Using worker: eventlet
+[2019-09-09 08:41:58 -0400] [24189] [INFO] Booting worker with pid: 24189
+[2019-09-09 08:41:59,616] INFO in app: NewApp Launched successfully
+[2019-09-09 08:41:59,619] INFO in app: Security keys
+[2019-09-09 08:41:59,621] INFO in app: Session keys
+[2019-09-09 08:41:59,621] INFO in app: Î,CHÀÒK9ã ZÍùÝNÿ¯;rï
+[2019-09-09 08:41:59,621] INFO in app: Cryptography key
+[2019-09-09 08:41:59,621] INFO in app: b'vgF_Yo8-IutJs-AcwWPnuNBgRSgncuVo1yfc9uqSiiU='
+[2019-09-09 08:41:59,621] INFO in app: JWT Key
+[2019-09-09 08:41:59,621] INFO in app: mRo48tU4ebP6jIshqaoNf2HAnesrCGHm
+[2019-09-09 08:41:59,622] INFO in app: JWT Algorithm
+[2019-09-09 08:41:59,622] INFO in app: HS256
+[2019-09-09 08:42:49 -0400] [24182] [INFO] Handling signal: int
+[2019-09-09 08:42:49 -0400] [24189] [INFO] Worker exiting (pid: 24189)
+[2019-09-09 08:42:49 -0400] [24182] [INFO] Shutting down: Master
+[2019-09-09 08:43:01 -0400] [24940] [INFO] Starting gunicorn 19.9.0
+[2019-09-09 08:43:01 -0400] [24940] [INFO] Listening at: http://0.0.0.0:8000 (24940)
+[2019-09-09 08:43:01 -0400] [24940] [INFO] Using worker: eventlet
+[2019-09-09 08:43:01 -0400] [24944] [INFO] Booting worker with pid: 24944
+[2019-09-09 08:43:02,951] INFO in app: NewApp Launched successfully
+[2019-09-09 08:43:02,954] INFO in app: Security keys
+[2019-09-09 08:43:02,956] INFO in app: Session keys
+[2019-09-09 08:43:02,956] INFO in app: Î,CHÀÒK9ã ZÍùÝNÿ¯;rï
+[2019-09-09 08:43:02,956] INFO in app: Cryptography key
+[2019-09-09 08:43:02,956] INFO in app: b'vgF_Yo8-IutJs-AcwWPnuNBgRSgncuVo1yfc9uqSiiU='
+[2019-09-09 08:43:02,956] INFO in app: JWT Key
+[2019-09-09 08:43:02,956] INFO in app: mRo48tU4ebP6jIshqaoNf2HAnesrCGHm
+[2019-09-09 08:43:02,957] INFO in app: JWT Algorithm
+[2019-09-09 08:43:02,957] INFO in app: HS256
+[2019-09-09 08:43:55 -0400] [24940] [INFO] Handling signal: int
+[2019-09-09 08:43:56 -0400] [24944] [INFO] Worker exiting (pid: 24944)
+[2019-09-09 08:43:56 -0400] [24940] [INFO] Shutting down: Master
+[2019-09-09 08:44:07 -0400] [25761] [INFO] Starting gunicorn 19.9.0
+[2019-09-09 08:44:07 -0400] [25761] [INFO] Listening at: http://0.0.0.0:8000 (25761)
+[2019-09-09 08:44:07 -0400] [25761] [INFO] Using worker: eventlet
+[2019-09-09 08:44:07 -0400] [25773] [INFO] Booting worker with pid: 25773
+[2019-09-09 08:44:09,091] INFO in app: NewApp Launched successfully
+[2019-09-09 08:44:09,093] INFO in app: Security keys
+[2019-09-09 08:44:09,095] INFO in app: Session keys
+[2019-09-09 08:44:09,095] INFO in app: Î,CHÀÒK9ã ZÍùÝNÿ¯;rï
+[2019-09-09 08:44:09,095] INFO in app: Cryptography key
+[2019-09-09 08:44:09,095] INFO in app: b'vgF_Yo8-IutJs-AcwWPnuNBgRSgncuVo1yfc9uqSiiU='
+[2019-09-09 08:44:09,095] INFO in app: JWT Key
+[2019-09-09 08:44:09,095] INFO in app: mRo48tU4ebP6jIshqaoNf2HAnesrCGHm
+[2019-09-09 08:44:09,096] INFO in app: JWT Algorithm
+[2019-09-09 08:44:09,096] INFO in app: HS256
+[2019-09-09 08:48:19 -0400] [25761] [INFO] Handling signal: int
+[2019-09-09 08:48:19 -0400] [25773] [INFO] Worker exiting (pid: 25773)
+[2019-09-09 08:48:19 -0400] [25761] [INFO] Shutting down: Master
+[2019-09-09 08:48:21 -0400] [29185] [INFO] Starting gunicorn 19.9.0
+[2019-09-09 08:48:21 -0400] [29185] [INFO] Listening at: http://0.0.0.0:8000 (29185)
+[2019-09-09 08:48:21 -0400] [29185] [INFO] Using worker: eventlet
+[2019-09-09 08:48:21 -0400] [29189] [INFO] Booting worker with pid: 29189
+[2019-09-09 08:48:22,889] INFO in app: NewApp Launched successfully
+[2019-09-09 08:48:22,891] INFO in app: Security keys
+[2019-09-09 08:48:22,893] INFO in app: Session keys
+[2019-09-09 08:48:22,893] INFO in app: Î,CHÀÒK9ã ZÍùÝNÿ¯;rï
+[2019-09-09 08:48:22,893] INFO in app: Cryptography key
+[2019-09-09 08:48:22,893] INFO in app: b'vgF_Yo8-IutJs-AcwWPnuNBgRSgncuVo1yfc9uqSiiU='
+[2019-09-09 08:48:22,893] INFO in app: JWT Key
+[2019-09-09 08:48:22,894] INFO in app: mRo48tU4ebP6jIshqaoNf2HAnesrCGHm
+[2019-09-09 08:48:22,894] INFO in app: JWT Algorithm
+[2019-09-09 08:48:22,894] INFO in app: HS256
+[2019-09-09 08:49:53 -0400] [29185] [INFO] Handling signal: hup
+[2019-09-09 08:49:53 -0400] [29185] [INFO] Hang up: Master
+[2019-09-09 08:49:53 -0400] [30300] [INFO] Booting worker with pid: 30300
+[2019-09-09 08:49:54,581] INFO in app: NewApp Launched successfully
+[2019-09-09 08:49:54,581] INFO in app: Security keys
+[2019-09-09 08:49:54,581] INFO in app: Session keys
+[2019-09-09 08:49:54,581] INFO in app: Î,CHÀÒK9ã ZÍùÝNÿ¯;rï
+[2019-09-09 08:49:54,581] INFO in app: Cryptography key
+[2019-09-09 08:49:54,582] INFO in app: b'vgF_Yo8-IutJs-AcwWPnuNBgRSgncuVo1yfc9uqSiiU='
+[2019-09-09 08:49:54,582] INFO in app: JWT Key
+[2019-09-09 08:49:54,582] INFO in app: mRo48tU4ebP6jIshqaoNf2HAnesrCGHm
+[2019-09-09 08:49:54,582] INFO in app: JWT Algorithm
+[2019-09-09 08:49:54,582] INFO in app: HS256
+[2019-09-09 12:06:11 -0400] [29185] [INFO] Handling signal: term
+[2019-09-09 12:06:12 -0400] [30300] [INFO] Worker exiting (pid: 30300)
+[2019-09-09 12:06:12 -0400] [29185] [INFO] Shutting down: Master
+[2019-09-09 18:51:13 -0400] [9356] [INFO] Starting gunicorn 19.9.0
+[2019-09-09 18:51:13 -0400] [9356] [INFO] Listening at: http://0.0.0.0:8000 (9356)
+[2019-09-09 18:51:13 -0400] [9356] [INFO] Using worker: eventlet
+[2019-09-09 18:51:13 -0400] [9360] [INFO] Booting worker with pid: 9360
+[2019-09-09 18:51:14,711] INFO in app: NewApp Launched successfully
+[2019-09-09 18:51:14,720] INFO in app: Security keys
+[2019-09-09 18:51:14,722] INFO in app: Session keys
+[2019-09-09 18:51:14,722] INFO in app: Î,CHÀÒK9ã ZÍùÝNÿ¯;rï
+[2019-09-09 18:51:14,722] INFO in app: Cryptography key
+[2019-09-09 18:51:14,722] INFO in app: b'vgF_Yo8-IutJs-AcwWPnuNBgRSgncuVo1yfc9uqSiiU='
+[2019-09-09 18:51:14,723] INFO in app: JWT Key
+[2019-09-09 18:51:14,723] INFO in app: mRo48tU4ebP6jIshqaoNf2HAnesrCGHm
+[2019-09-09 18:51:14,723] INFO in app: JWT Algorithm
+[2019-09-09 18:51:14,723] INFO in app: HS256
+[2019-09-09 18:51:18 -0400] [9356] [INFO] Handling signal: hup
+[2019-09-09 18:51:18 -0400] [9356] [INFO] Hang up: Master
+[2019-09-09 18:51:18 -0400] [9434] [INFO] Booting worker with pid: 9434
+[2019-09-09 18:51:19,556] INFO in app: NewApp Launched successfully
+[2019-09-09 18:51:19,559] INFO in app: Security keys
+[2019-09-09 18:51:19,561] INFO in app: Session keys
+[2019-09-09 18:51:19,561] INFO in app: Î,CHÀÒK9ã ZÍùÝNÿ¯;rï
+[2019-09-09 18:51:19,561] INFO in app: Cryptography key
+[2019-09-09 18:51:19,562] INFO in app: b'vgF_Yo8-IutJs-AcwWPnuNBgRSgncuVo1yfc9uqSiiU='
+[2019-09-09 18:51:19,562] INFO in app: JWT Key
+[2019-09-09 18:51:19,562] INFO in app: mRo48tU4ebP6jIshqaoNf2HAnesrCGHm
+[2019-09-09 18:51:19,562] INFO in app: JWT Algorithm
+[2019-09-09 18:51:19,562] INFO in app: HS256
+[2019-09-10 06:10:40 -0400] [9356] [INFO] Handling signal: term
+[2019-09-10 06:10:55 -0400] [9434] [INFO] Worker exiting (pid: 9434)
+[2019-09-10 06:10:55 -0400] [9356] [INFO] Shutting down: Master

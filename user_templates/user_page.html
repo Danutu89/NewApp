@@ -1,222 +1,105 @@
 {% extends "index.html" %}
 {% block content %}
-<br>
-<div class="container target">
-    <div class="container emp-profile">
-
-        <div class="row">
-            <div class="col-md-4">
-                <div class="profile-img" id="profile-img-{{user.id}}">
-                    
+<profile class="profile-page">
+    <div class="profile-cover">
+      
+    </div>
+    <div class="profile-main">
+      <div class="sidebar-info">
+        <div class="profile-image">
+          <div><img src="{{user.avatar}}" alt=""></div>
+          
+          <div class="user-name">
+            <h1>{{user.real_name}}</h1>
+            <h4>@{{user.name}}</h4>
+          </div>
+        </div>
+        <div class="profile-actions">
+          {% if current_user.is_authenticated %}
+          {% if current_user.id != user.id %}
+          <button class="follow-user" onclick="Follow_User({{user.id}})" id="follow-user-{{user.id}}">{% if user.id in current_user.follow %}&#x2713 Following{% else %}Follow{% endif %}</button>
+          {% endif %}
+          {% endif %}
+        </div>
+        <div class="widgets">
+          <div class="profile-presentation">
+            <div class="header"><i class="fa fa-globe"></i> Presentation</div>
+            <div class="bio">{{user.bio}}</div>
+            <div class="info">
+              <p><i class="fas fa-briefcase"></i> Profession {{user.profession}}</p>
+              <p><i class="fas fa-home"></i> From {{user.country_name}}<span class="flag-icon flag-icon-{{user.country_flag}}"></span></p>
+              <p><i class="fas fa-clock"></i> Joined on {{user.join_date}}</p>
+              <p><i class="fas fa-rss"></i> Followed by {{user.get_followers()}} people</p>
+            </div>
+          </div>
+          <div class="interesed-tags">
+            <div class="header"><i class="fas fa-tags"></i> Interesed Tags</div>
+            <div class="tags">
+              {% for tag in user.int_tags %}
+                    <a style="text-decoration: none;" title="{{tag}}" href="{{url_for('home.home',tag_finder=tag)}}"><span
+                        class="badge badge-light" style="font-size: 12px;"> {{ tag[0]|upper}}{{tag[1:] }}</span></a>
+                        <br>
+                    {% endfor %}
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="sidebar-main">
+        <div class="user-posts">
+                {% for post in posts %}
+                {% if post.approved %}
+            <div class="article-card">
+            
+                <div class="article-main">
+                  <div class="article-author-image"><img class="profile_image"
+                    src="{{post.user_in.avatar}}" height="50px" width="50px" title="profile image">
                 </div>
-                <div class="profile-work">
-                        <p>Interested Tags</p>
-                        {% for tag in user.int_tags %}
-                        <a style="text-decoration: none;" title="{{tag}}" href="{{url_for('home.home',tag_finder=tag)}}"><span
-                            class="badge badge-light" style="font-size: 12px;"> {{ tag[0]|upper}}{{tag[1:] }}</span></a>
-                            <br>
+                <div class="article-info">
+                  <div class="article-title"><a href="{{url_for('home.post', id=post.id, title=post.title)}}">{{post.title}}</a></div>
+                  <div class="article-author">Author: <a href="{{url_for('users.user', name=post.user_in.name, id=post.user_in.id )}}">Danutu</a></div>
+                  <div class="article-tags">
+                        <span>Tags: </span>
+                        {% for tag in tags %}
+                        {% if tag.post_id == post.id %}
+                        <a href="{{url_for('home.home',tag_finder=tag.tag)}}"><tag class="article-tag">{{tag.tag}}</tag></a>
+                        {% endif %}
                         {% endfor %}
                     </div>
-            </div>
-            <div class="col-md-6">
-                <div class="profile-head">
-                    <h5>
-                        {{user.name}}
-                    </h5>
-                    <h6>
-                        {{user.profession}}
-                    </h6>
-                    <p class="proile-rating">{{user.bio}}</p>
-                    <ul class="nav nav-tabs" id="myTab" role="tablist">
-                        <li class="nav-item">
-                            <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab"
-                                aria-controls="home" aria-selected="true">About</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab"
-                                aria-controls="profile" aria-selected="false">Timeline</a>
-                        </li>
-                        {% if current_user.is_authenticated %}
-                        {% if current_user.id == user.id %}
-                        <li class="nav-item">
-                            <a class="nav-link" id="modify-tab" data-toggle="tab" href="#modify" role="tab"
-                                aria-controls="modify" aria-selected="false">Settings</a>
-                        </li>
-                        {% endif %}
-                        {% endif %}
-                    </ul>
                 </div>
-                <div class="row">
-            
-                        
-                            <div class="tab-content profile-tab" style="width: 100%;" id="myTabContent">
-                                <div class="tab-pane fade show active"  id="home" role="tabpanel" aria-labelledby="home-tab">
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <label>User Id</label>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <p>{{user.id}}</p>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <label>Name</label>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <p>{{user.real_name}}</p>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <label>Email</label>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <p>{{user.email}}</p>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <label>Country</label>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <p>{{user.country_name}} <span class="flag-icon flag-icon-{{user.country_flag}}"></span>
-                                            </p>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <label>Profession</label>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <p>{{user.profession}}</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            
-                                <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-                                    {% for post in posts %}
-                                    {% if post.approved %}
-                                    <div class="card" style="margin-bottom:10px;">
-                                        <div class="card-body">
-                                            <div class="row">
-                                                <div class="col-2" style="min-width:110px;">
-                                                    <button type="button" class="btn btn-outline-primary btn-sm"
-                                                        style="width: 100%;margin-bottom:2px;" disabled>{{post.replies()}}
-                                                        Answers</button>
-            
-                                                    <button type="button" class="btn btn-outline-primary btn-sm"
-                                                        style="width: 100%;" disabled>{{post.unique_views()}} Views</button>
-                                                </div>
-                                                <div class="col">
-                                                    <h1 class="card-title" style="font-size: 1.171875rem;"><a
-                                                            href="{{url_for('home.post', id=post.id, title=post.title)}}"
-                                                            style="color: #212529;" title="{{post.title}}">{{post.title}}</a>
-                                                    </h1>
-            
-                                                    {% for tag in tags %}
-                                                    {% if tag.post_id == post.id %}
-                                                    <a href="{{url_for('home.home',tag_finder=tag.tag)}}"
-                                                        class="badge badge-success" style="font-size:10px;">{{tag.tag}}</a>
-                                                    {% endif %}
-                                                    {% endfor %}
-            
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    {% endif %}
-                                    {% endfor %}
-                                </div>
-                                {% if current_user.is_authenticated %}
-                                {% if current_user.id == user.id %}
-                                <div class="tab-pane fade" id="modify" role="tabpanel" aria-labelledby="modify-tab">
-                                        <form id="modify-profile-form" class="form-modify-profile" action="{{url_for('users.modify_profile',idm=user.id)}}" role="form"
-                                        enctype='multipart/form-data' method="POST">
-                                    {{modify_profile.csrf_token}}
-                                    {{modify_profile.username(value=user.name)}}
-                                    <br>
-                                    {{modify_profile.email(value=user.email)}}
-                                    <br>
-                                    {{modify_profile.realname(value=user.real_name)}}
-                                    <br>
-                                    {{modify_profile.bio(value=user.bio)}}
-                                    <br>
-                                    {{modify_profile.profession(value=user.profession)}}
-                                    <br>
-                                    <div id="tags">
-                                    <input type="text" name="tags-newapp" value='{% for tag in user.int_tags %}{{tag}},{% endfor %}' id="input_tags"></input>
-                                    </div>
-                                    {{modify_profile.int_tags}}
-                                    <br>
-                                    <div class="dates">
-                                            <div class="start_date input-group mb-4" style="margin-bottom: 0 !important">
-                                              <input class="form-control start_date" type="text" placeholder="Birthday" id="startdate_datepicker" name="birthday" value={{user.birthday}}>
-                                              <div class="input-group-append">
-                                                <span class="fa fa-calendar input-group-text start_date_calendar" aria-hidden="true "></span>
-                                              </div>
-                                          
-                                            </div>
-                                            <script>
-                                                window.addEventListener("load", function () {
-                                                jQuery(document).ready(function(){
-                                                    jQuery("#startdate_datepicker").datepicker();
-                                                });
-                                                
-                                                });
-                                            </script>
-                                        </div>
-                                        {{modify_profile.birthday}}
-                                    <br>
-                                    
-                                    <div class="custom-file" style="margin-bottom: 4%;">
-                                        {{modify_profile.avatarimg}}
-                                        <label class="custom-file-label" id="customName" for="customFile">Choose file</label>
-                                    </div>
-                                    {{modify_profile.genre(value=user.genre)}}
-                                    <br>
-                                    {{modify_profile.submit}}
-                                    </form>
-                                </div>
-                                {% endif %}
-                                {% endif %}
-                            </div>
-                        
-                    </div>
                 </div>
+                <div class="article-footbar">
+                  <div class="article-date">Published on {{post.posted_on}}</div>
+                
+                </div>
+              
             </div>
-            
-        
+            {% endif %}
+              {% endfor %}
+        </div>
+      </div>
+      <div class="sidebar-right">
+        <div class="widgets">
+          <div class="user-follows">
+            <div class="header">{{user.name}} Follows</div>
+            <div class="users">
+              <div class="user-followed" id="user-1">
+                  <div class="user-img"><img src="https://newapp.nl/static/profile_pics/user_2.jpg" alt=""></div>
+                  <div class="user-info">
+                    <span>Daniel Ionut</span>
+                    <br>
+                    <span>@Danutu</span>
+                  </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-</div>
+  </profile>
 
-
-<script>
-    LoadProfileImage({{user.id}}, "{{user.avatar}}");
-</script>
 <script>
     window.addEventListener("load", function () {
         jQuery(document).ready(function() {
-            jQuery(".form-modify-profile").submit(function() { 
-                var hidden_text_field = document.getElementById('int_tags');
-                hidden_text_field.value = jQuery("#input_tags").val();
-            }); 
- 
-
-            
-            var states = [{% for tag in tagp %}'{{tag.tag}}',{% endfor %}]
-            jQuery('#input_tags').tagsinput({
-                    typeaheadjs:({
-                    hint: true,
-                    highlight: true,
-                    minLength: 1
-                },{
-                    name: 'states',
-                    source: substringMatcher(states)
-                })
-            });
-
-            
                 jQuery("#customFile").change(function () {
                     var fileInput = document.getElementById('customFile');
                     var filename = document.getElementById('customName');

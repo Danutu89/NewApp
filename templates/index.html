@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html {% if location %}lang="{{location.lang}}"{% endif %}>
-
+<html {% if location %}lang="{{location.lang}}" {% endif %}>
 <head>
   {% if request.url_rule.endpoint == 'home.home' %}<title>New App - Where Developers Learn, Share, & Code</title>{% endif %}
-  {% if request.url_rule.endpoint == 'users.user' %}<title>New App - {{user.name}}</title>{% endif %}
-  {% if request.url_rule.endpoint == 'home.post' %}<title>{{posts.title}}</title>{% endif %}
+  {% if request.url_rule.endpoint == 'users.user' %}<title>{{user.name}} - NewApp</title>{% endif %}
+  {% if request.url_rule.endpoint == 'home.post' %}<title>{{posts.title}} - NewApp</title>{% endif %}
   <meta charset="utf-8">
   <meta name="msvalidate.01" content="FA1B41824E0AF3D2CC7B0F86730E5C45" />
+  <link rel='icon' href="https://newapp.nl/static/favicon_web.png" type='image/x-icon' />
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta name="keywords" content="software development,engineering,python,javascript,java">
 
@@ -15,21 +15,28 @@
   <meta name="apple-mobile-web-app-title" content="NewApp">
 
 
-  {% if request.url_rule.endpoint == 'home.home' %}<meta name="description" content="The newest community for developers to learn, share​ ​their programming ​knowledge, and build their careers.">{% endif %}
-  {% if request.url_rule.endpoint == 'users.user' %}<meta name="description" content="{{user.bio}}">{% endif %}
-  {% if request.url_rule.endpoint == 'home.post' %}<meta name="description" content="{{posts.text[41:100]}}">{% endif %}
+  {% if request.url_rule.endpoint == 'home.home' %}
+  <meta name="description"
+    content="The newest community for developers to learn, share​ ​their programming ​knowledge, and build their careers.">
+  {% endif %}
+  {% if request.url_rule.endpoint == 'users.user' %}
+  <meta name="description" content="{{user.bio}}">{% endif %}
+  {% if request.url_rule.endpoint == 'home.post' %}
+  <meta name="description" content="{{posts.text[41:100]}}">{% endif %}
 
   <link rel="canonical" href="https://newapp.nl/">
   <link rel="manifest" href="https://newapp.nl/{{url_for('static', filename='manifest.json')}}">
   <link rel="alternate" type="application/rss+xml" title="NewApp RSS Feed" href="https://newapp.nl/feed">
 
-  {% if location %}<meta http-equiv="content-language" content="{{location.lang}}">{% endif %}
+  {% if location %}
+  <meta http-equiv="content-language" content="{{location.lang}}">{% endif %}
   <link rel="search" type="application/opensearchdescription+xml" title="NewApp" href="https://newapp.nl/opensearch">
   {% if request.url_rule.endpoint == 'home.home' %}
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://newapp.nl/">
   <meta property="og:site_name" content="New App">
-  <meta property="og:description" content="The newest community for developers to learn, share​ ​their programming ​knowledge, and build their careers.">
+  <meta property="og:description"
+    content="The newest community for developers to learn, share​ ​their programming ​knowledge, and build their careers.">
   {% elif request.url_rule.endpoint == 'users.user' %}
   <meta property="og:type" content="website">
   <meta property="og:url" content="{{request.path}}">
@@ -44,64 +51,51 @@
   {% endif %}
 
   <meta name="environment" content="production">
-  
-  <link rel='icon' href="{{url_for('static', filename='favicon.png')}}" type='image/x-icon' />
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/tagsinput.css') }}"/>
-  <script src="{{ url_for('static', filename='js/loadscripts.js') }}"></script>
-  <script src="{{ url_for('static', filename='js/serviceworker.js') }}"></script>
-  <link rel="stylesheet" href="{{ url_for('static', filename='flags/flag-icon.min.css') }}" type="text/css" />
-  <script id="Cookiebot" src="https://consent.cookiebot.com/uc.js" data-cbid="708e3502-b7d1-49de-82cd-2953e455efb0"
-    type="text/javascript" async></script>
+  <script async src="https://newappcdn.b-cdn.net/newapp.js"></script>
+  <script async src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+  <script async src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"></script>
+  <!-- <script async src="https://www.googletagmanager.com/gtag/js?id=UA-145440871-1"></script>
 
-<script async src="https://www.googletagmanager.com/gtag/js?id=UA-145440871-1"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'UA-145440871-1');
-  {% if current_user.is_authenticated %}
-  gtag('set', {'user_id': '{{current_user.id}}'});
-  {% endif %} 
-</script>
-  {% if request.path == url_for('home.home') %}
   <script>
-    (adsbygoogle = window.adsbygoogle || []).push({
-      google_ad_client: "ca-pub-8464409235663505",
-      enable_page_level_ads: true
-    });
-  </script>
-  
-  <script type="application/ld+json"> 
-    {
-      "@context": "https://schema.org",
-      "@type": "WebSite",
-      "url": "https://newapp.nl/",
-      "potentialAction": {
-        "@type": "SearchAction",
-        "target": "https://newapp.nl/?search={search}",
-        "query-input": "required name=search"
-      }
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+      dataLayer.push(arguments);
     }
-  </script> 
-  {% endif %}
-  <script>
-    var loaded = LoadScripts.loadFiles();
-  </script>
-  <script src="{{ url_for('static', filename='js/newapp.js') }}"></script>
+    gtag('js', new Date());
+
+    gtag('config', 'UA-145440871-1', {
+      'optimize_id': 'GTM-KKCQ2T7'
+    });
+    {% if current_user.is_authenticated %}
+    gtag('set', {'user_id': '{{current_user.id}}'});
+    {% endif %} 
+  </script> -->
+
+
+
+  <!-- <script>
+      var loaded = LoadScripts.loadFiles();
+    </script> -->
   <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: "Lato", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+      background-color: #f3f3f3;
+
+    }
+
     img {
       image-rendering: optimizeQuality;
-      
-     }
-    .popover-body {
-      padding-left: 0;
-      padding-right: 0;
+
     }
 
     pre.ql-syntax {
       background-color: #f0f0f0 !important;
       color: #212529 !important;
+      overflow: auto;
+      white-space: pre;
     }
 
     .ql-container {
@@ -120,28 +114,6 @@
       padding-right: 30px;
     }
 
-    .btn-primary {
-      background-color: rgb(34, 34, 34);
-    }
-
-    .btn-primary:hover {
-      background-color: rgb(46, 46, 46);
-      transition: background-color 0.2s ease-in-out;
-    }
-
-    .dropdown-item:active {
-      background-color: rgb(46, 46, 46) !important;
-    }
-
-    .dropdown-item:hover {
-      background-color: rgb(34, 34, 34) !important;
-    }
-
-    .navbar-brand {
-      text-transform: uppercase;
-      font-family: 'Montserrat', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-    }
-
     #dot-loc {
       border-radius: 100%;
       background-color: #18BC9C;
@@ -158,7 +130,7 @@
       height: 5px;
       width: 5px;
       display: block;
-      margin-top: 4px;
+      margin-top: 6px;
       margin-right: 1px;
     }
 
@@ -168,341 +140,1211 @@
       height: 5px;
       width: 5px;
       display: block;
-      margin-top: 4px;
+      margin-top: 6px;
       margin-right: 1px;
     }
 
-    @media (min-width: 700px) { 
-      footer {
-        bottom: 0;
+    ::-webkit-scrollbar {
+      width: 5px;
+      height: 5px;
+    }
+
+    /* Track */
+    ::-webkit-scrollbar-track {
+      background: white;
+    }
+
+    /* Handle */
+    ::-webkit-scrollbar-thumb {
+      background: #888;
+      border-radius: 4px;
+    }
+
+    /* Handle on hover */
+    ::-webkit-scrollbar-thumb:hover {
+      background: #555;
+    }
+
+    .newapp-navbar {
+      background-color: rgb(34, 34, 34);
+      height: 30px;
+      margin: 0;
+      padding: 0.4rem 0.5rem;
+      font-size: 0.9375rem;
+      display: flex;
+      color: white;
+    }
+
+    .newapp-navbar a {
+      text-decoration: none;
+      color: initial;
+    }
+
+    .navbar-item {
+      color: white;
+    }
+
+    .navbar-items {
+      max-width: 100%;
+      width: 1250px;
+      display: flex;
+      margin: auto;
+    }
+
+    .navbar-center {
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .navbar-search {
+      left: calc(50px + 5vw);
+      width: calc(55vw - 63px);
+      position: absolute;
+      right: 0;
+      left: 0;
+      z-index: 1;
+      top: 8px;
+      margin: auto;
+      height: 30px;
+    }
+
+    @media screen and (min-width: 560px) {
+      .navbar-search {
+        width: calc(46vw - 52px);
       }
-     }
-     
-     {% if request.path == url_for('home.home') %}
-     .newapp-input-tag {
-        margin-top: 1%;
+    }
+
+    @media screen and (min-width: 450px) {
+      .navbar-search {
+        width: calc(61vw - 75px);
       }
-     {% elif request.url_rule.endpoint == 'users.user' %}
-     .emp-profile {
-        padding: 3%;
-        margin-top: 3%;
-        margin-bottom: 3%;
-        border-radius: 0.5rem;
-        background: #fff;
+    }
+
+    @media screen and (min-width: 1120px) {
+      .navbar-search {
+        width: calc(100% - 760px);
+      }
+    }
+
+    @media screen and (min-width: 950px) {
+      .navbar-search {
+        width: 400px;
+      }
+    }
+
+    .navbar-logo {
+      text-decoration: none;
+      color: white !important;
+    }
+
+    .newapp-title {
+      vertical-align: middle;
+    }
+
+    .newapp-dropdown {
+      position: relative;
+      display: inline-block;
+    }
+
+    .newapp-dropdown-content {
+      display: none;
+      position: absolute;
+      background-color:rgb(34, 34, 34);;
+      min-width: 10rem;
+      box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+      padding: 0.8rem 0.5rem;
+      border-radius: 4px;
+      color: white;
+      z-index: 99;
+      margin-inline-start: -8.9rem;
+    }
+
+    .newapp-dropdown:hover .newapp-dropdown-content {
+      display: block;
+    }
+
+    .newapp-dropdown-content .dropdown-item {
+      margin-top: 0.2rem;
+      margin-bottom: 0.2rem;
+      padding: 0.3rem;
+      border-radius: 4px;
+      margin-left: 0;
+      margin-right: 0;
+    }
+
+    hr {
+      border-style: solid;
+      color: #18BC9C;
+    }
+
+    .newapp-navbar .profile_image {
+      border-radius: 20px;
+
+    }
+
+    .newapp-navbar .navbar-item button.navbar-button {
+      cursor: pointer;
+      border: 2px solid rgba(255, 255, 255, 1);
+      background-color: #18BC9C;
+      border-radius: 4px;
+      color: white;
+      font-weight: 600;
+      padding: 0.2rem 0.5rem 0.2rem 0.5rem;
+      margin: 0.14rem;
+      box-shadow: 2px 2px;
+      margin-top: 0.1rem;
+    }
+
+    .newapp-navbar .navbar-item button.navbar-button:active {
+      box-shadow: 1px 1px;
+      margin-top: 0.22rem;
+      margin-left: 0.16rem;
+      margin-bottom: 0;
+      margin-right: 0.10rem;
+    }
+
+    .newapp-navbar .navbar-item button.navbar-button:focus {
+      outline: none;
+    }
+
+    .newapp-navbar input[type=text] {
+      vertical-align: -webkit-baseline-middle;
+      border: none;
+      background-color: rgb(60, 60, 60);
+      border-radius: 2px;
+      padding: 0.4rem 0.4rem 0.4rem 0.4rem;
+      color: white;
+      width: 100%;
+    }
+
+    .newapp-navbar input[type=text]:focus {
+      outline: none;
+    }
+
+    .newapp-dropdown .dropdown-item:hover {
+      background-color: #313131;
+    }
+
+    content {
+      margin: auto;
+      position: relative;
+      min-height: 440px;
+      max-width: 1250px;
+      display: block;
+      margin-top: 10px;
+      padding: 0.4rem;
+    }
+
+    content .sidebar {
+      float: left;
+      width: 280px;
+      margin: auto;
+      text-align: left;
+      font-size: 0.92em;
+      line-height: 1.35em;
+      margin-left: 0.786vw;
+      min-height: 5px;
+      position: relative;
+      z-index: 5;
+      display: none;
+    }
+
+    wrapper #wrapper-left {
+      z-index: 1000;
+      position: fixed;
+      top: 0;
+      height: 100%;
+      margin-left: -280px;
+      background: rgb(34, 34, 34);
+      -webkit-transition: all 0.5s ease;
+      -moz-transition: all 0.5s ease;
+      -o-transition: all 0.5s ease;
+      transition: all 0.5s ease;
+    }
+
+    #wrapper-left.toggled wrapper #wrapper-left {
+      width: 280px;
+    }
+
+    #wrapper-left.toggled {
+      padding-left: 280px;
+    }
+
+    wrapper #wrapper-right {
+      z-index: 1000;
+      position: fixed;
+      top: 0;
+      height: 100%;
+      margin-left: 100%;
+      background: rgb(34, 34, 34);
+      -webkit-transition: all 0.5s ease;
+      -moz-transition: all 0.5s ease;
+      -o-transition: all 0.5s ease;
+      transition: all 0.5s ease;
+    }
+
+    #wrapper-right.toggled wrapper #wrapper-right {
+      width: 280px;
+    }
+
+    #wrapper-right.toggled {
+      margin-left: calc(100% - 250px);
+    }
+
+    content .articles,
+    content .article {
+      text-align: left;
+      margin: auto;
+      width: 100%;
+      position: relative;
+      -webkit-tap-highlight-color: transparent;
+      max-width: 750px;
+      padding-bottom: 30px;
+    }
+
+    content .article .post {
+      background-color: white;
+      border-radius: 5px;
+      border: 1px solid #d6d6d6;
+      padding: 0.5rem;
+      margin-bottom: 0.2rem;
+      box-shadow: 5px 5px 11px 0px rgba(0, 0, 0, 0.2);
+    }
+
+    content .article .reply {
+      background-color: white;
+      border-radius: 5px;
+      border: 1px solid #d6d6d6;
+      padding: 0.5rem;
+      margin-bottom: 0.2rem;
+      box-shadow: 5px 5px 11px 0px rgba(0, 0, 0, 0.2);
+    }
+
+    content .article .post .post-reply .form-reply button.reply-button {
+      border: 1px solid rgba(0, 0, 0, 0.125);
+      background-color: #18BC9C;
+      border-radius: 4px;
+      color: white;
+      font-weight: 600;
+      padding: 0.5rem;
+    }
+
+    content .article .post .post-reply .form-reply button.reply-button:hover {
+      background-color: #1cc7a6;
+    }
+
+    content .article .post .post-reply .form-reply button.reply-button:active {
+      background-color: #14947b;
+    }
+
+    content .article .post .post-author {
+      margin-bottom: 0.4rem;
+      display: flex;
+    }
+
+    content .article .post .post-author .author-info .post-tags a tag {
+      border-radius: 4px;
+      background-color: #18BC9C;
+      padding: 0.056rem 0.3rem;
+      font-size: 10px;
+      color: white;
+      font-weight: 700;
+    }
+
+    @media screen and (min-width: 1120px) {
+
+      content .articles,
+      content .article {
+        width: 100%;
+        margin-left: 2.3%;
+        margin-right: 15px;
+        max-width: calc(100% - 380px);
+        float: left;
+      }
+    }
+
+    @media screen and (min-width: 1240px) {
+
+      content .articles,
+      content .article {
+        width: 100%;
+        margin-left: 2.3%;
+        margin-right: 15px;
+
+        float: left;
+      }
+    }
+
+    @media screen and (min-width: 950px) {
+
+      content .articles,
+      <i class="far fa-bell"></i>content .article {
+        width: 100%;
+        margin-left: 2.3%;
+        margin-right: 15px;
+        max-width: calc(100% - 380px);
+        float: left;
       }
 
-      .profile-img {
-          text-align: center;
+      content .sidebar {
+        display: block;
       }
 
-      .profile-img img {
-          width: 70%;
-          height: 100%;
+    }
+
+    @media screen and (max-width: 450px) {
+      content {
+        margin-top: 12% !important;
+      }
+    }
+
+    @media screen and (max-width: 950px) {
+      .newapp-navbar {
+        position: fixed;
+        margin-top: 0;
+        z-index: 99;
+        width: 100vw;
+        top: 0;
+        left: -10px;
       }
 
-      .profile-img .file {
-          position: relative;
-          overflow: hidden;
-          margin-top: -20%;
-          width: 70%;
-          border: none;
-          border-radius: 0;
-          font-size: 15px;
-          background: #212529b8;
+      content {
+        margin-top: 9%;
       }
 
-      .profile-img .file input {
-          position: absolute;
-          opacity: 0;
-          right: 0;
-          top: 0;
+      .navbar-items {
+        justify-content: space-between;
       }
 
-      .profile-head h5 {
-          color: #333;
+    }
+
+    @media screen and (min-width: 1120px) {
+      content .articles {
+        max-width: calc(100% - 640px);
+      }
+    }
+
+    content .sidebar .widget-post,
+    wrapper .sidebar .widget-post {
+      background-color: #f3f3f3;
+      border-radius: 5px;
+      border: 1px solid #d6d6d6;
+      padding: 0.5rem;
+      margin-bottom: 0.2rem;
+    }
+
+    content .sidebar .widget .widget-list .widget-item button.widget-button,
+    wrapper .sidebar .widget .widget-list .widget-item button.widget-button {
+      border: 1px solid rgba(0, 0, 0, 0.125);
+      background-color: #18BC9C;
+      border-radius: 4px;
+      color: white;
+      font-weight: 600;
+      padding: 0.5rem;
+      margin: 0.2rem;
+    }
+
+    content .sidebar .widget .widget-list .widget-item form,
+    wrapper .sidebar .widget .widget-list .widget-item {
+      margin: 0;
+    }
+
+    content .sidebar .widget .widget-list .widget-item#widget-tags button.widget-button,
+    wrapper .sidebar .widget .widget-list .widget-item#widget-tags button.widget-button {
+      cursor: pointer;
+      border: 2px solid rgb(104, 104, 104);
+      background-color: #18BC9C;
+      border-radius: 4px;
+      color: white;
+      font-weight: 600;
+      padding: 0.1rem 0.5rem 0.1rem 0.5rem;
+      box-shadow: 2px 2px rgb(104, 104, 104);
+      margin-bottom: 0.3rem;
+      display: none;
+    }
+
+    content .sidebar .widget .widget-list .widget-item#widget-tags:hover button.widget-button,
+    wrapper .sidebar .widget .widget-list .widget-item#widget-tags:hover button.widget-button {
+      display: block;
+    }
+
+    content .sidebar .widget .widget-list .widget-item#widget-tags:hover,
+    wrapper .sidebar .widget .widget-list .widget-item#widget-tags:hover {
+      background-color: #f3f3f3;
+    }
+
+    content .sidebar .widget .widget-list .widget-item button.widget-button:hover,
+    wrapper .sidebar .widget-post .widget-list .widget-item button.widget-button:hover {
+      background-color: #1cc7a6;
+    }
+
+    content .sidebar .widget .widget-list .widget-item#widget-tags button.widget-button:focus,
+    wrapper .sidebar .widget .widget-list .widget-item#widget-tags button.widget-button:focus {
+      outline: none;
+    }
+
+    content .sidebar .widget .widget-list .widget-item#widget-tags button.widget-button:active,
+    wrapper .sidebar .widget .widget-list .widget-item#widget-tags button.widget-button:active {
+      outline: none;
+      box-shadow: 1px 1px;
+      margin-top: 0.3rem;
+      margin-left: 0.16rem;
+      margin-bottom: 0.2rem;
+      margin-right: 0.07rem;
+    }
+
+    content .sidebar .widget .widget-list .widget-item button.widget-button:active,
+    wrapper .sidebar .widget .widget-list .widget-item button.widget-button:active {
+      background-color: #14947b;
+
+    }
+
+    content .sidebar .widget-post .post-header,
+    wrapper .sidebar .widget-post .post-header {
+      display: flex;
+    }
+
+    content .sidebar .user-card,
+    wrapper .sidebar .user-card {
+      display: flex;
+      background-color: white;
+      padding: 0.5rem;
+      align-items: center;
+      border-radius: 4px;
+      box-shadow: 5px 5px 11px 0px rgba(0, 0, 0, 0.2);
+      border: 1px solid rgba(0, 0, 0, 0.125);
+      margin-bottom: 5%;
+    }
+
+    content .sidebar .user-info,
+    wrapper .sidebar .user-info {
+      margin-left: 4%;
+      width: 100%;
+    }
+
+    content .sidebar .user-info span.user-tag,
+    wrapper .sidebar .user-info span.user-tag {
+      font-size: 0.7rem;
+    }
+
+    content .sidebar .profile_image,
+    wrapper .sidebar .profile_image {
+      border-radius: 50px;
+    }
+
+    content .sidebar .user-image,
+    wrapper .sidebar .user-image {
+      margin-bottom: -5px;
+    }
+
+    content .article-card {
+      border-radius: 4px;
+      box-shadow: 5px 5px 11px 0px rgba(0, 0, 0, 0.2);
+      border: 1px solid rgba(0, 0, 0, 0.125);
+      margin-bottom: 0.6rem;
+
+      background-color: white;
+    }
+
+    content .article-thumbnail img {
+      width: 100%;
+    }
+
+    content .article-main {
+      display: flex;
+      margin-bottom: 0.6rem;
+      padding: 0.7rem;
+    }
+
+    content .article-card .article-info {
+      margin-left: 3%;
+    }
+
+    content .article-card .article-info .article-title {
+      font-size: 1.5rem
+    }
+
+    content .article-card .article-info .article-title a {
+      color: #212529;
+    }
+
+    content .article-card .article-info .article-title a:hover {
+      color: #14947b;
+    }
+
+    content .article-card .article-info .article-author a {
+      color: grey;
+    }
+
+    content .article-card .article-info .article-author a:hover {
+      color: #14947b;
+    }
+
+    content .article-card .article-info .article-author {
+      font-size: 0.8rem;
+      color: grey;
+    }
+
+    content .article-card .article-author-image img {
+      border-radius: 50px;
+    }
+
+    content .article-card .article-info .article-tags span {
+      color: grey;
+      font-size: 0.7rem;
+    }
+
+    content .article-card .article-info tag.article-tag {
+      border-radius: 4px;
+      background-color: #18BC9C;
+      padding: 0.056rem 0.3rem;
+      font-size: 10px;
+      color: white;
+      font-weight: 700;
+    }
+
+    content a {
+      text-decoration: none;
+      text-decoration-line: none;
+      color: initial;
+      width: 100%;
+    }
+
+    content .article-card .article-footbar {
+      display: flex;
+      padding: 0.7rem;
+    }
+
+    content .article-card .article-footbar .article-date {
+      font-size: 0.6rem;
+      color: grey;
+      margin-top: 1%;
+    }
+
+    content .article-card .article-footbar .article-save button.article-save {
+      border: 1px solid rgba(0, 0, 0, 0.125);
+      background-color: #18BC9C;
+      border-radius: 4px;
+      color: white;
+      font-weight: 600;
+
+    }
+
+    content .article-card .article-footbar .article-save button.article-save:focus {
+      outline: none;
+    }
+
+    content .article-card .article-footbar .article-save button.article-save:hover {
+      background-color: #1cc7a6;
+    }
+
+    content .article-card .article-footbar .article-save button.article-save:active {
+      background-color: #14947b;
+    }
+
+    content .article-card .article-footbar .article-save {
+      margin-inline-start: auto;
+    }
+
+    content .sidebar .widget,
+    wrapper .sidebar .widget {
+      background-color: white;
+      align-items: center;
+      border-radius: 4px;
+      box-shadow: 5px 5px 11px 0px rgba(0, 0, 0, 0.2);
+      border: 1px solid rgba(0, 0, 0, 0.125);
+      margin-bottom: 5%;
+    }
+
+    content .sidebar .widget .widget-header,
+    wrapper .sidebar .widget .widget-header {
+      padding: 0.5rem;
+      width: 100%;
+      font-size: 1rem;
+      display: flex;
+    }
+
+    content .sidebar .widget .widget-header button.minimize-widget,
+    wrapper .sidebar .widget .widget-header button.minimize-widget {
+      border: 1px solid #dbdbdb;
+      font-size: 1.2em;
+      border-radius: 3px;
+      background: transparent;
+      padding: 0px 5px 1px;
+      line-height: 0.6em;
+      position: absolute;
+      right: 8px;
+      cursor: pointer;
+    }
+
+    content .sidebar .widget .widget-header button.minimize-widget:focus,
+    wrapper .sidebar .widget .widget-header button.minimize-widget:focus {
+      outline: none;
+    }
+
+    content .sidebar .widget .widget-list,
+    wrapper .sidebar .widget .widget-list {
+      display: block;
+    }
+
+    content .sidebar .widget .widget-list .widget-item,
+    wrapper .sidebar .widget .widget-list .widget-item {
+      border-top: 1px solid rgba(0, 0, 0, 0.125);
+    }
+
+    content .sidebar .widget .widget-list .widget-item .text,
+    wrapper .sidebar .widget .widget-list .widget-item .text {
+      padding: 0.5rem;
+    }
+
+    content .sidebar .widget .widget-list .widget-item tag.widget-tag,
+    wrapper .sidebar .widget .widget-list .widget-item tag.widget-tag {
+      border-radius: 4px;
+      background-color: #18BC9C;
+      padding: 0.04rem 0.2rem;
+      font-size: 0.8rem;
+      color: white;
+      font-weight: 700;
+    }
+
+
+    content profile {
+      display: block;
+    }
+
+    content profile.profile-page {
+
+      border-radius: 5px;
+      border: 1px solid #d6d6d6;
+
+      margin-bottom: 0.2rem;
+
+    }
+
+    content profile .profile-cover {
+      background-color: #14947b;
+      height: 300px;
+      display: block;
+
+    }
+
+    content profile .profile-main .sidebar-info {
+      max-width: 300px;
+    }
+
+    content profile .profile-main .sidebar-info .profile-image {
+      margin-top: -7rem;
+      text-align: center;
+      margin-left: 3rem;
+      display: flex;
+      width: 400px;
+    }
+
+    content profile .profile-main .sidebar-info .profile-image img {
+      border: 3px solid white;
+      height: 200px;
+      border-radius: 200px;
+
+    }
+
+    content profile .profile-main .sidebar-main {
+      width: 600px;
+      margin-top: 0.1rem;
+      margin-left: 0.5rem;
+      margin-right: 0.4rem;
+    }
+
+    content profile .profile-main {
+      display: flex;
+    }
+
+    content profile .profile-main .sidebar-info .profile-actions {
+      text-align: center;
+    }
+
+    content profile .profile-main .sidebar-info .profile-image .user-name {
+      margin-left: 0.5rem;
+      color: white;
+      margin-top: 3rem;
+    }
+
+    content profile .profile-main .sidebar-info .profile-image .user-name h1 {
+      margin: 0;
+      padding: 0;
+    }
+
+    content profile .profile-main .sidebar-info .profile-image .user-name h4 {
+      margin: 0;
+      padding: 0;
+      text-align: left;
+    }
+
+    content profile .profile-main .sidebar-info .profile-actions {
+      margin-top: 1rem;
+    }
+
+    content profile .profile-main .sidebar-info .profile-actions button.follow-user {
+      width: 70%;
+      border: 1px solid rgba(0, 0, 0, 0.125);
+      background-color: rgb(0, 157, 230);
+      border-radius: 4px;
+      color: white;
+      font-weight: 600;
+      padding: 0.5rem 0 0.5rem 0;
+    }
+
+    content profile .profile-main .sidebar-info .widgets .profile-presentation {
+      border: 1px solid #d6d6d6;
+      border-radius: 5px;
+      width: 70%;
+      background-color: #ffffff;
+      text-align: left;
+      padding: 0.8rem;
+      margin-bottom: 0.7rem;
+    }
+
+    content profile .profile-main .sidebar-info .widgets .profile-presentation .header {
+      margin-bottom: 0.4rem;
+      margin-top: 0.4rem;
+    }
+
+    content profile .profile-main .sidebar-info .widgets .profile-presentation .bio {
+      text-align: center;
+      border-top: 1px solid #ebedf0;
+      padding: 0.6rem;
+    }
+
+    content profile .profile-main .sidebar-info .widgets .profile-presentation .info {
+      border-top: 1px solid #ebedf0;
+    }
+
+    content profile .profile-main .sidebar-info .widgets .profile-presentation .info p {
+      margin-bottom: 0.8rem;
+    }
+
+    content profile .profile-main .sidebar-info .widgets {
+      text-align: -webkit-center;
+      margin-top: 0.8rem;
+    }
+
+    content profile .profile-main .sidebar-info .widgets .interesed-tags {
+      border: 1px solid #d6d6d6;
+      border-radius: 5px;
+      width: 70%;
+      background-color: #ffffff;
+      text-align: left;
+      padding: 0.8rem;
+    }
+
+    content profile .profile-main .sidebar-info .widgets .interesed-tags .header {
+      margin-bottom: 0.4rem;
+      margin-top: 0.4rem;
+
+    }
+
+    content profile .profile-main .sidebar-info .widgets .interesed-tags .tags {
+      border-top: 1px solid #ebedf0;
+    }
+
+    content profile .profile-main .sidebar-main .user-posts .article-card {
+      box-shadow: none;
+    }
+
+    content profile .profile-main .sidebar-main .user-posts .article-card .article-main .article-info {
+      text-align: left;
+    }
+
+    content profile .profile-main .sidebar-main {
+      margin-top: 1rem;
+    }
+
+    content profile .profile-main .sidebar-right {
+      margin-top: 1rem;
+      width: 350px;
+      display: block;
+    }
+
+    content profile .profile-main .sidebar-right .widgets {
+      text-align: -webkit-center;
+    }
+
+    content profile .profile-main .sidebar-right .widgets .user-follows {
+      border: 1px solid #d6d6d6;
+      border-radius: 5px;
+      width: 70%;
+      background-color: #ffffff;
+      text-align: left;
+      padding: 0.8rem;
+    }
+
+    content profile .profile-main .sidebar-right .widgets .user-follows .users {
+      border-top: 1px solid #ebedf0;
+    }
+
+    content profile .profile-main .sidebar-right .widgets .users .user-followed {
+      display: flex;
+    }
+
+    content profile .profile-main .sidebar-right .widgets .user-follows .user-img img {
+      height: 50px;
+      width: 50px;
+      border-radius: 50px;
+    }
+
+    content profile .profile-main .sidebar-right .widgets .user-follows .user-img {
+      width: 50px;
+    }
+
+    content profile .profile-main .sidebar-right .widgets .user-follows .user-info {
+      margin-left: 0.3rem;
+      margin-top: 0.3rem;
+    }
+
+    content profile .profile-main .sidebar-right .widgets .user-follows .user-followed {
+
+      padding: 0.6rem;
+    }
+
+    content profile .profile-main .sidebar-right .widgets .user-follows .header {
+      padding: 0.4rem;
+    }
+
+    @media screen and (max-width: 1260px) {
+      content profile .profile-main .sidebar-right {
+        display: none;
+      }
+    }
+
+    @media screen and (max-width: 500px) {
+      content profile .profile-main {
+        display: block;
       }
 
-      .profile-head h6 {
-          color: #0062cc;
+      content profile .profile-main .sidebar-info {
+        max-width: 100%;
       }
 
-      .profile-edit-btn {
-          border: none;
-          border-radius: 1.5rem;
-          width: 70%;
-          padding: 2%;
-          font-weight: 600;
-          color: #6c757d;
-          cursor: pointer;
+      content profile .profile-main .sidebar-info .widgets .profile-presentation {
+        width: 90%;
       }
 
-      .proile-rating {
-          font-size: 12px;
-          color: #818182;
-          margin-top: 5%;
+      content profile .profile-main .sidebar-info .widgets .interesed-tags {
+        width: 90%;
       }
 
-      .proile-rating span {
-          color: #495057;
-          font-size: 15px;
-          font-weight: 600;
+      content profile .profile-main .sidebar-main {
+        text-align: center;
+        min-width: 90%;
       }
 
-      .profile-head .nav-tabs {
-          margin-bottom: 5%;
+      content profile .profile-main .sidebar-info .profile-image {
+        margin-left: 0;
+        display: block;
+        width: auto;
       }
 
-      .profile-head .nav-tabs .nav-link {
-          font-weight: 600;
-          border: none;
+      content profile .profile-main .sidebar-info .profile-image .user-name {
+        margin: 0;
+        margin-top: 1rem;
+        color: #212529;
       }
 
-      .profile-head .nav-tabs .nav-link.active {
-          border: none;
-          border-bottom: 2px solid #18BC9C;
+      content profile .profile-main .sidebar-info .profile-image .user-name h1 {
+        margin: 0;
       }
 
-      .profile-work {
-          padding: 14%;
-          margin-top: -15%;
+      content profile .profile-main .sidebar-info .profile-image .user-name h4 {
+        margin: 0;
+        text-align: center;
       }
 
-      .profile-work p {
-          font-size: 12px;
-          color: #818182;
-          font-weight: 600;
-          margin-top: 10%;
+      content profile .profile-main .sidebar-main {
+        width: auto;
+      }
+    }
+
+
+
+    modal {
+      position: fixed;
+      background-color: rgba(1, 1, 1, 0.25);
+      top: 0;
+      bottom: 0;
+      right: 0;
+      left: 0;
+      z-index: 100;
+      visibility: hidden;
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.3s;
+    }
+
+    modal:target {
+      visibility: visible;
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    modal>.modal {
+      width: 300px;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      top: 30%;
+      border-radius: 5px;
+      -webkit-transform: translate(-50%, -50%);
+      transform: translate(-50%, -50%);
+      padding: 1em;
+      background: #ffffff;
+    }
+
+    modal .close-modal {
+      color: #aaa;
+      line-height: 50px;
+      font-size: 80%;
+      position: absolute;
+      right: 0;
+      text-align: center;
+      top: 0;
+      width: 70px;
+      text-decoration: none;
+    }
+
+    modal .modal .modal-header {
+      font-size: 1.3rem;
+      text-align: center;
+    }
+
+    modal .modal .modal-content {
+      margin: 0.9rem 1.5rem 0.9rem 1.5rem;
+    }
+
+    modal .modal .modal-content span a {
+      text-decoration: none;
+      color: #18BC9C;
+    }
+
+    modal .modal .modal-footer span a {
+      text-decoration: none;
+      color: #18BC9C;
+    }
+
+    modal .modal .modal-footer button {
+      border: 1px solid rgba(0, 0, 0, 0.125);
+      background-color: #18BC9C;
+      border-radius: 4px;
+      padding: 0.2rem 0.4rem 0.2rem 0.4rem;
+      color: white;
+      font-weight: 600;
+      float: right;
+    }
+
+    modal .modal .modal-footer button:hover {
+      background-color: #1cc7a6;
+    }
+
+    modal .modal .modal-footer button:active {
+      background-color: #14947b;
+    }
+
+    modal .modal .modal-footer button:focus {
+      outline: none;
+
+    }
+
+    alert-box[type=success] {
+      border: 1px solid #14947b;
+
+      box-shadow: 5px 5px 11px 0px rgba(0, 0, 0, 0.2);
+      background-color: #1cc7a6;
+      color: white;
+      border-radius: 4px;
+      margin: 5px;
+      margin-bottom: 0.5rem;
+      padding: 0.5rem 0rem;
+      display: block;
+    }
+
+    alert-box[type=error] {
+      border: 1px solid #ff364b;
+      box-shadow: 5px 5px 11px 0px rgba(0, 0, 0, 0.2);
+
+      background-color: #ff7d89;
+      color: white;
+      border-radius: 4px;
+      margin: 5px;
+      margin-bottom: 0.5rem;
+      padding: 0.5rem 0rem;
+      display: block;
+    }
+
+    alert-box .alert-message {
+      padding-left: 0.5rem
+    }
+
+    alert-box .alert-close {
+      float: right;
+      padding-right: 0.5rem;
+      cursor: pointer;
+    }
+
+    input[type=text] {
+      border: none;
+      background-color: #d6d6d6;
+      border-radius: 2px;
+      padding: 0.4rem 0rem 0.4rem 0.4rem;
+      color: #212529;
+      width: calc(100% - 0.4rem);
+      margin-bottom: 4%;
+    }
+
+    input[type=password] {
+      border: none;
+      background-color: #d6d6d6;
+      border-radius: 2px;
+      padding: 0.4rem 0rem 0.4rem 0.4rem;
+      color: #212529;
+      width: calc(100% - 0.4rem);
+      margin-bottom: 4%;
+    }
+
+    input[type=text]:focus {
+      outline: none;
+    }
+
+    input[type=password]:focus {
+      outline: none;
+    }
+
+    content .article .post .user-actions-info {
+      font-size: 0.7rem;
+      color: grey;
+    }
+
+    content .article .post .user-actions span i.fas#heart {
+      color: #ed4956;
+    }
+
+    @keyframes fade {
+      0% {
+        color: transparent;
       }
 
-      .profile-work a {
-          text-decoration: none;
-          color: #495057;
-          font-weight: 600;
-          font-size: 14px;
+      50% {
+        color: #e23b3b;
       }
 
-      .profile-work ul {
-          list-style: none;
+      100% {
+        color: transparent;
+      }
+    }
+
+    @keyframes size {
+      0% {
+        padding: 10px 12px 8px;
       }
 
-      .profile-tab label {
-          font-weight: 600;
+      50% {
+        padding: 14px 16px 12px;
+        margin-top: -4px;
       }
 
-      .profile-tab p {
-          font-weight: 600;
-          color: #0062cc;
+      100% {
+        padding: 10px 12px 8px;
       }
-      #genre {
-        margin-bottom: 4%;
-      }
-     {% endif %}
+    }
   </style>
 </head>
 <header>
-  <nav class="navbar navbar-expand-lg navbar-dark bg-primary"
-    style="padding: .3rem 1rem !important;background-color:rgb(34, 34, 34) !important" role="navigation">
-    <a class="navbar-brand" href="{{url_for('home.home')}}"><span style="color:#18BC9C;">New</span>App<span style="color:#18BC9C;font-size: 55%;font-weight: 600;"> Beta</span></a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-      aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav mr-auto">
-      </ul>
-      <ul class="navbar-nav mr-auto col-md-5 nav-fill" style="padding-right: 0">
-        <li class="nav-item">
-          <form class="form-inline active-cyan-4" method="GET" action="https://newapp.nl/">
-            <div class="input-group" style="width:100%;">
-              <input class="form-control form-control-sm" type="search" name="search" placeholder="Search"
-                aria-label="Search">
-              <div class="input-group-append">
-                <button class="btn btn-secondary btn-sm" type="submit">
-                  <i class="fa fa-search"></i>
-                </button>
-              </div>
+  <nav class="newapp-navbar">
+    <div class="navbar-items">
+      <div class="navbar-item">
+        <a href="/" class="navbar-logo"><img style="vertical-align: middle;" src="https://newapp.nl/static/logo.svg"
+            width="30" height="30" alt=""><span class="newapp-title"><span style="color:#18BC9C;">New</span><span
+              style="color:white;">App</span><span style="color:#18BC9C;font-size: 55%;font-weight: 600;">
+              Beta</span></span></a>
+      </div>
+      <div class="navbar-item navbar-center navbar-search">
+        <form action="/" method="GET">
+          <input type="text" name="search" placeholder="Search">
+        </form>
+      </div>
+      {% if current_user.is_authenticated == false %}
+      <div class="navbar-item" style="margin-inline-start: auto;">
+        <a href="#login-modal" style="color: white;vertical-align: sub;cursor: pointer;"><span
+            style="vertical-align: inherit;"><span class="fas fa-sign-in-alt"></span> Login</span></a>
+      </div>
+      {% else %}
+      <div class="navbar-item" style="margin-inline-start: auto;">
+        <div class="newapp-dropdown">
+            <img src="{{current_user.avatar}}" height="30px" width="30px" style="border-radius: 30px;" alt="">
+          <div class="newapp-dropdown-content">
+            {{current_user.name}}
+            <hr>
+            <div class="dropdown-item">
+              <a href="{{url_for('users.user', id=current_user.id, name=current_user.name)}}" style="color: white;"><i class="fas fa-user"></i> Profile</a>
             </div>
-          </form>
-        </li>
-      </ul>
-      <ul class="navbar-nav">
-        {% if current_user.is_authenticated == false %}
-        <li class="nav-item">
-          <a class="nav-link" style="cursor:pointer" data-toggle="modal" data-target="#login"><span
-              class="fas fa-sign-in-alt"></span> Login</a>
-        </li>
-        {% else %}
-        <li class="nav-item dropdown">
-
-          <a id="nav_img_{{current_user.id}}" class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink"
-            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <h8 id="nav_name_{{current_user.id}}">{{current_user.name}}</h8>
-          </a>
-          <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-            <a class="dropdown-item" href="{{url_for('users.user',name=current_user.name,id=current_user.id)}}"><span
-                class="fas fa-user"></span> Profile</a>
-            <a class="dropdown-item" href="/logout"><span class="fas fa-sign-out-alt"></span> Logout</a>
             {% if current_user.roleinfo.admin_panel_permission %}
-            <a class="dropdown-item" href="{{url_for('admin.main')}}"><span class="fas fa-user-shield"></span> Admin</a>
+            <div class="dropdown-item">
+              <a href="{{url_for('admin.main')}}" style="color: white;"><i class="fas fa-user-shield"></i>
+                Admin</a>
+            </div>
             {% endif %}
+            <div class="dropdown-item">
+              <a href="{{url_for('users.logout')}}" style="color: white;"><i class="fas fa-sign-out-alt"></i> Logout</a>
+            </div>
           </div>
-
-
-          </a>
-          </a>
-        </li>
-      </ul>
+        </div>
+      </div>
       {% endif %}
+
     </div>
   </nav>
-
 </header>
+<content>
+  {% include 'sidebar_left.html' %}
+  {% block content %}
+  {% endblock %}
+  {% include 'sidebar_right.html' %}
+</content>
+{% include 'modals.html' %}
 
-<body>
-  <div class="container" id="cont" style="margin-top: 10px;margin-bottom:5%;" role="main">
+<script>
+  var loadCss = function(cssPath){
+    var cssLink = document.createElement('link');
+    cssLink.rel = 'stylesheet';
+    cssLink.href = cssPath;
+    var head = document.getElementsByTagName('head')[0];
+    head.appendChild(cssLink);
+  };
+  var loadJs = function(cssPath){
+    var cssLink = document.createElement('script');
+    cssLink.src = cssPath;
+    var head = document.getElementsByTagName('head')[0];
+    head.appendChild(cssLink);
+  };
+  document.onreadystatechange = function () {
+    if (document.readyState === "complete") {
+      loadCss("https://newappcdn.b-cdn.net/all.css");
+      loadCss("https://newappcdn.b-cdn.net/styles.css");
+      loadJs("https://www.googletagmanager.com/gtag/js?id=UA-145440871-1");
+      setTimeout(init_NewApp,1000);
+      window.dataLayer = window.dataLayer || [];
 
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag('js', new Date());
 
-    <script>
+      gtag('config', 'UA-145440871-1', {
+        'optimize_id': 'GTM-KKCQ2T7'
+      });
       {% if current_user.is_authenticated %}
-      window.addEventListener("load", LoadImage_NavBar({{current_user.id}}, "{{current_user.avatar}}"), false); 
-      {% endif %}
-      window.addEventListener("load", LoadAlerts, false);
-    </script>
-    <script>registerSW();</script>
-
-
-    {% for success in get_flashed_messages(category_filter=["success"]) %}
-    <div class="alert alert-success alert-dismissible fade show" id="success-alert" role="alert">
-      <i class="far fa-check-circle"></i>
-      <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-      <strong>Success!</strong> {{success}}
-    </div>
-    {% endfor %}
-    {% for error in get_flashed_messages(category_filter=["error"]) %}
-    <div class="alert alert-danger alert-dismissible fade show" id="success-alert" role="alert">
-      <i class="far fa-check-circle"></i>
-      <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-      <strong>Error!</strong> {{error}}
-    </div>
-    {% endfor %}
-
-    {% block content %}
-    {% endblock %}
-
-    {% if current_user.is_authenticated == false %}
-    <div class="modal" id="register" tabindex="-1" role="dialog">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title">Register</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            <form class="form-signin" action="/register" role="form" method="POST">
-              {{register.csrf_token}}
-              {{register.username}}
-              <br>
-              {{register.realname}}
-              <br>
-              {{register.email}}
-              <br>
-              {{register.password}}
-              <br>
-              {{register.confirm_password}}
-              <br>
-              {{register.submit}}
-            </form>
-          </div>
-          <div class="modal-footer">
-            Already have an account? <a style="color:#18BC9C;cursor: pointer;margin-left: 5px;" data-toggle="modal"
-              data-dismiss="modal" data-target="#login"> Login here</a>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="modal" id="login" tabindex="-1" role="dialog">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title">Login</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            <form class="form-signin" action="/login?url={{request.path}}" role="form" method="POST">
-              {{register.csrf_token}}
-              {{login.username}}
-              <br>
-              {{login.password}}
-              <span onclick="ShowPassword()" id="show-pass" class="fa fa-fw fa-eye field-icon"></span>
-              <h8 style="font-size: 9px">Forgot Password?<a style="color:#18BC9C;cursor: pointer;margin-left: 2px;"
-                  data-toggle="modal" data-dismiss="modal" data-target="#reset_password">Click here</a></h8>
-              <br>
-              {{login.submit}}
-            </form>
-          </div>
-          <div class="modal-footer">
-            You don`t have an account? <a style="color:#18BC9C;cursor: pointer;margin-left: 5px;" data-toggle="modal"
-              data-dismiss="modal" data-target="#register"> Register here</a>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="modal" id="reset_password" tabindex="-1" role="dialog">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title">Reset Password</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            <form class="form-signin" action="{{url_for('users.reset_password')}}" role="form" method="POST">
-              {{reset.csrf_token}}
-              {{reset.email}}
-              <br>
-              {{reset.password}}
-              <span onclick="ShowPasswordReset()" id="show-pass-reset" class="fa fa-fw fa-eye field-icon"></span>
-              <br>
-              {{reset.submit}}
-            </form>
-          </div>
-          <div class="modal-footer">
-            Already have an account? <a style="color:#18BC9C;cursor: pointer;margin-left: 5px;" data-toggle="modal"
-              data-dismiss="modal" data-target="#login"> Login here</a>
-          </div>
-        </div>
-      </div>
-    </div>
-    {% endif %}
-  </div>
-
+      gtag('set', {'user_id': '{{current_user.id}}'});
+      {% endif %} 
+      };
+  }
+</script>
 </body>
-<!--
-<footer class="stickyfooter" id="sticky-footer"
-  style="background-color: rgb(34, 34, 34) !important;
-  width: 100%;
-  padding-bottom: 1% !important;
-  overflow-x: hidden;
-  padding-top: 1% !important;
-  position: absolute;
-  display: block;"
-  class="py-4 bg-dark text-white-50">
-  <div class="row">
-    <div class="col-5" style="margin-left: 4%;font-size: 85%;color: dimgray;">
-      {% if location %}<span id="dot-loc"></span> {{location.country}}{% if location.city %},
-      {{location.city}}{% endif %}{% endif %}
-    </div>
-    <div class="col-4" style="align-content: center;display: flex;">
-      <small style="vertical-align: top;color: dimgray;">Copyright &copy; <span
-          style="color:#18BC9C;font-size: 100%;">New</span>App</small>
-    </div>
-  </div>
-</footer>-->
 
 </html>

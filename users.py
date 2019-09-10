@@ -172,6 +172,7 @@ def register():
             None,
             None,
             None,
+            None,
             False,
             userIP,
             userInfo['browser']['name'],
@@ -181,7 +182,10 @@ def register():
             None,
             None,
             None,
-            None
+            None,
+            None,
+            None,
+            None,
         )
     db.session.add(new_user)
     db.session.commit()
@@ -206,6 +210,9 @@ def confirm_register(email,token):
 
   users = db.session.query(UserModel).filter_by(email=email).first()
   users.activated = True
+  own = db.session.query(USerModel).filter_by(name='Danutu').first()
+  x = own.followed
+  own.followed = x.append(users.id)
   db.session.commit()
 
   flash('Register successfully', 'success')

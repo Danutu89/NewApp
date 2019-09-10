@@ -1,113 +1,50 @@
 {% extends "index.html" %}
 {% block content %}
-<div class="row">
-    <div class="col" style="min-width:310px;">
-        {% if current_user.is_authenticated %}
-        <div class="card" style="margin-bottom:10px;">
-            <button onclick="Create_Question()" class="btn btn-light btn-sm" style="float:right;">New Question</button>
-        </div>
-        <form class="form-thread" id="create_question" role="form" method="post" action="/" style="display:none;">
-            <div class="card" style="margin-bottom:10px;">
-                <div class="card-body">
-                    {{new_question.csrf_token}}
-                    {{new_question.title}}
-                    {{new_question.text}}
-                    <div class="editor" id="editor"></div>
-                    <input type="text" name="tags-newapp" id="input_tags"></input>
-                    {{new_question.tag}}
-                    <small class="form-text text-muted">
-                        Separate tags with commas.
-                    </small>
-                    {{new_question.submit}}
+<style>
+
+</style>
+        <div class="articles">
+            {% for post in posts %}
+            {% if post.approved %}
+            <div class="article-card">
+                {% if post.thumbnail %}
+                <div class="article-thumbnail">
+                        <img
+                          src="https://res.cloudinary.com/practicaldev/image/fetch/s--kx7yCZBU--/c_imagga_scale,f_auto,fl_progressive,h_420,q_auto,w_1000/https://res.cloudinary.com/practicaldev/image/fetch/s--1FtZPGGk--/c_imagga_scale%2Cf_auto%2Cfl_progressive%2Ch_420%2Cq_auto%2Cw_1000/https://thepracticaldev.s3.amazonaws.com/i/rqxxh9ot8u2rtssi3moz.jpeg">
                 </div>
-            </div>
-        </form>
-        {% endif %}
-        {% for post in posts.items %}
-        {% if post.approved %}
-        <div class="card" style="margin-bottom:10px;">
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-2" style="min-width:110px;">
-                        <button type="button" class="btn btn-outline-primary btn-sm"
-                            style="width: 100%;margin-bottom:2px;" disabled>{{post.replies()}} Answers</button>
-
-                        <button type="button" class="btn btn-outline-primary btn-sm" style="width: 100%;"
-                            disabled>{{post.unique_views()}} Views</button>
-                    </div>
-                    <div class="col">
-                        <h1 class="card-title" style="font-size: 1.171875rem;" ><a href="{{url_for('home.post', id=post.id, title=post.title)}}"
-                                style="color: #212529;" title="{{post.title}}">{{post.title}}</a></h1>
-
+                {% endif %}
+                <div class="article-main">
+                <div class="article-author-image"><img class="profile_image"
+                    src="{{post.user_in.avatar}}" height="50px" width="50px" title="profile image">
+                </div>
+                <div class="article-info">
+                    <div class="article-title"><a href="{{url_for('home.post', id=post.id, title=post.title)}}">{{post.title}}</a></div>
+                    <div class="article-author">Author: <a href="{{url_for('users.user', name=post.user_in.name, id=post.user_in.id )}}">Danutu</a></div>
+                    <div class="article-tags">
+                        <span>Tags: </span>
                         {% for tag in tags %}
                         {% if tag.post_id == post.id %}
-                        <a href="{{url_for('home.home',tag_finder=tag.tag)}}" class="badge badge-success"
-                            style="font-size:10px;">{{tag.tag}}</a>
+                        <a href="{{url_for('home.home',tag_finder=tag.tag)}}"><tag class="article-tag">{{tag.tag}}</tag></a>
                         {% endif %}
                         {% endfor %}
-                        <div id="img_{{post.id}}" class="author" style="float:right;">
-                            <a id="name_{{post.id}}" style="color: #333"
-                                href="{{url_for('users.user', name=post.user_in.name, id=post.user_in.id )}}">{{post.user_in.name}}</a>
-                        </div>
                     </div>
                 </div>
+                </div>
+                <div class="article-footbar">
+                <div class="article-date">Published on {{post.posted_on}}</div>
+                {% if current_user.is_authenticated %}
+                <div class="article-save">
+                    <button class="article-save" id="save-{{post.id}}" onclick="Save_Post({{post.id}})">{% if post.id in current_user.saved_posts %}Saved{% else %}Save{% endif %}</button>
+                </div>
+                {% endif %}
+                </div>
             </div>
+            
+            {% endif %}
+            {% endfor %}
         </div>
-        {% endif %}
-        {% endfor %}
-        {% if posts.pages > 1 %}
-        <nav aria-label="Pagination">
-
-            <ul class="pagination">
-                {% if posts.has_prev %}
-                <li class="page-item">
-                    {% if request.args.get('search') %}
-                    <a class="page-link" href="{{url_for('home.home',page=posts.page-1, search=request.args.get('search'))}}"
-                        aria-disabled="true">Previous</a>
-                    {% elif request.args.get('tag_finder') %}
-                    <a class="page-link" href="{{url_for('home.home',page=posts.page-1, search=request.args.get('tag_finder'))}}"
-                        aria-disabled="true">Previous</a>
-                    {% else %}
-                    <a class="page-link" href="{{url_for('home.home',page=posts.page-1)}}"
-                        aria-disabled="true">Previous</a>
-                    {% endif %}
-                </li>
-                {% endif %}
-                {% for pages in posts.iter_pages(left_edge=1, right_edge=1, left_current=3, right_current=3) %}
-                {% if pages %}
-                {% if pages == posts.page %}
-                <li class="page-item disabled"><a class="page-link">{{pages}} <span class="sr-only">(current)</span></a>
-                </li>
-                {% else %}
-                {% if request.args.get('search') %}
-                <li class="page-item"><a class="page-link" href="{{url_for('home.home', page=pages, search=request.args.get('search'))}}">{{pages}}</a>
-                {% elif request.args.get('tag_finder') %}
-                <li class="page-item"><a class="page-link" href="{{url_for('home.home', page=pages, search=request.args.get('tag_finder'))}}">{{pages}}</a>
-                {% else %}
-                <li class="page-item"><a class="page-link" href="{{url_for('home.home', page=pages)}}">{{pages}}</a>
-                {% endif %}
-                </li>
-                {% endif %}
-                {% else %}
-                {% endif %}
-                {% endfor %}
-                {% if posts.has_next %}
-                <li class="page-item">
-                    {% if request.args.get('search') %}
-                    <a class="page-link" href="{{url_for('home.home',page=posts.page+1, search=request.args.get('search'))}}" aria-disabled="true">Next</a>
-                    {% elif request.args.get('tag_finder') %}
-                    <a class="page-link" href="{{url_for('home.home',page=posts.page+1, search=request.args.get('tag_finder'))}}" aria-disabled="true">Next</a>
-                    {% else %}
-                    <a class="page-link" href="{{url_for('home.home',page=posts.page+1)}}" aria-disabled="true">Next</a>
-                    {% endif %}
-                </li>
-                {% endif %}
-            </ul>
-        </nav>
-        {% endif %}
-    </div>
-    {% include 'sidebar.html' %}
-</div>
+    
+{% if current_user.is_authenticated %}
 <script>
     var toolbarOptions = [
         ['bold', 'italic', 'underline'],
@@ -137,39 +74,40 @@
         });
     }
     window.addEventListener("load", LoadQuill, false);
-    var submit_entry = function () {
+    window.addEventListener("load",function () {
+        var submit_entry = function () {
         var hidden_text_field = document.getElementById('text');
         hidden_text_field.value = document.querySelector(".ql-editor").innerHTML
     }
-    var new_post_form = document.getElementsByClassName('form-thread')[0];
-    new_post_form.onsubmit = submit_entry;
-    window.addEventListener("load", function () {
-        jQuery(document).ready(function() {
-            jQuery(".form-thread").submit(function() { 
-                var hidden_text_field = document.getElementById('tag');
-                hidden_text_field.value = jQuery("#input_tags").val();
-            }); 
-            var states = [{% for tag in tagi %}'{{tag.tag}}',{% endfor %}]
-            jQuery('#input_tags').tagsinput({
-                    typeaheadjs:({
-                    hint: true,
-                    highlight: true,
-                    minLength: 1
-                },{
-                    name: 'states',
-                    source: substringMatcher(states)
-                })
-            });
+    });
+    window.addEventListener("load",function(){
+    jQuery(document).ready(function() {
+        jQuery(".form-thread").submit(function() { 
+            var hidden_text_field = document.getElementById('text');
+            hidden_text_field.value = document.querySelector(".ql-editor").innerHTML;
+            console.log( document.querySelector(".ql-editor").innerHTML);
         });
+    }); 
     });
 </script>
+{% endif %}
 <script>
-    var posts = [{% for post in posts.items %}{{post.id}},{% endfor %}]
+    /*var posts = [{% for post in posts.items %}{{post.id}},{% endfor %}]
     var posts_img = [{% for post in posts.items %}"{{post.user_in.avatar}}",{% endfor %}]
     var i;
     for (i = 0; i < posts.length; i++) { 
         LoadImages(posts[i], posts_img[i]); 
     }
-   
+    function Minimize(type, widget) {
+    var button = document.getElementById('minimize-widget-' + widget + '-' + type);
+    var list = document.getElementById('widget-list-' + widget + '-' + type);
+    if (list.style.display == 'block') {
+      list.style.display = 'none';
+      //button.innerHTML = '+';
+    } else {
+      list.style.display = 'block';
+      //button.innerHTML = '-';
+    }
+  }*/
 </script>
 {% endblock %}

@@ -20,6 +20,9 @@ from flask_cors import CORS
 import eventlet
 import redis
 from celery import Celery
+from elasticsearch import Elasticsearch
+from flask_login import logout_user
+from flask_compress import Compress
 
 #from pusher import Pusher
 
@@ -42,6 +45,7 @@ serializer = URLSafeTimedSerializer(key_c)
 
 app.secret_key = key_c
 app.config['SESSION_TYPE'] = 'filesystem'
+app.config['ELASTISEARCH_URL'] = 'http://localhost:9200'
 app.config['SQLALCHEMY_DATABASE_URI'] = "postgresql:///newapp"
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 app.config['WHOOSH_BASE'] = 'whoosh'
@@ -58,10 +62,13 @@ app.config['UPLOAD_FOLDER'] = app.root_path + '/static/profile_pics'
 app.config['CELERY_BROKER_URL'] = os.environ.get('REDIS_URL', 'redis://localhost:6379/0')
 app.config['CELERY_RESULT_BACKEND'] = app.config['CELERY_BROKER_URL']
 app.config['REDIS_URL'] = os.environ.get('REDIS_URL')
+app.config['COMPRESS_MIMETYPES'] =  ['text/html', 'text/css', 'text/xml', 'application/json', 'application/javascript']
+app.config['COMPRESS_LEVEL'] = 6
+app.config['COMPRESS_MIN_SIZE'] = 500
 
-
+Compress(app)
 redis_sv = redis.Redis()
-
+es = Elasticsearch(app.config['ELASTISEARCH_URL'])
 celery = Celery(app.import_name, broker=app.config['CELERY_BROKER_URL'])
 Session(app)
 db = SQLAlchemy(app)
@@ -94,8 +101,7 @@ from models import UserModel, PostModel
 def load_user(user_id):
     return db.session.query(UserModel).filter(UserModel.id == int(user_id)).first()
 
-
-@app.errorhandler(404)
+""" @app.errorhandler(404)
 def not_found_error(error):
   users = db.session.query(UserModel).all()
   posts = db.session.query(PostModel).all()
@@ -103,7 +109,7 @@ def not_found_error(error):
   register = RegisterForm(request.form)
   login = LoginForm(request.form)
   reset = ResetPasswordForm(request.form)
-  return render_template('error.html',code=404,error='Sorry Page not found!',reset=reset,users=users,posts=posts,search=search,register=register,login=login)
+  return render_template('error_code.html',code=404,error='Sorry Page not found!',reset=reset,users=users,posts=posts,search=search,register=register,login=login)
 
 @app.errorhandler(500)
 def server_error(error):
@@ -113,11 +119,15 @@ def server_error(error):
   register = RegisterForm(request.form)
   login = LoginForm(request.form)
   reset = ResetPasswordForm(request.form)
-  return render_template('error.html',code=500,error='Server error!',reset=reset,users=users,posts=posts,search=search,register=register,login=login)
+  return render_template('error_code.html',code=500,error='Server error!',reset=reset,users=users,posts=posts,search=search,register=register,login=login) """
 
 @app.route('/robots.txt')
 def robots():
   return render_template('robots.txt')
+
+@app.route('/manifest.json', methods=['GET'])
+def manifest():
+  return app.send_static_file('manifest.json')
 
 @app.route('/sw.js', methods=['GET'])
 def sw():
@@ -191,4 +201,5 @@ celery = make_celery(app)
 
 
 if __name__=="__main__":
-    socket.run(app)
+    app.jinja_env.cache = {}
+    socket.run(app);

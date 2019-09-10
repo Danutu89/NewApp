@@ -13,6 +13,8 @@ from models import (OPostSchema, OUserSchema, PostModel, PostsSchema,
 from users import (BadSignature, BadTimeSignature, Message, SignatureExpired,
                    cipher_suite, login_user, mail, serializer)
 
+from flask_login import current_user
+
 json_pages = Blueprint(
     'jsons',__name__,
     template_folder='json_templates'
@@ -282,4 +284,101 @@ def analyze_sessions():
     result = SessionsSchema.dump(sessions)
     response = make_response(jsonify(result.data),200)
     response.mimetype = 'application/json'
+    return response
+
+@json_pages.route('/save-post/<int:id>')
+def save_post(id):
+
+    posts = list(current_user.saved_posts)
+
+    if posts is not None:
+        if id in posts:
+            posts.remove(id)
+            response = jsonify({'operation': 'deleted'})
+        else:
+            response = jsonify({'operation': 'saved'})
+            posts.append(id)
+    else:
+        response = jsonify({'operation': 'saved'})
+        posts.append(id)
+
+    current_user.saved_posts = posts
+    db.session.commit()
+
+
+    return response
+
+@json_pages.route('/like-post/<int:id>')
+def like_post(id):
+
+    like = list(current_user.liked_posts)
+    post = db.session.query(PostModel).filter_by(id=id).first()
+
+    if like is not None:
+        if id in like:
+            like.remove(id)
+            response = jsonify({'operation': 'unliked'})
+            post.likes = post.likes - 1
+        else:
+            response = jsonify({'operation': 'liked'})
+            post.likes = post.likes + 1
+            like.append(id)
+    else:
+        response = jsonify({'operation': 'liked'})
+        post.likes = post.likes + 1
+        like.append(id)
+
+    current_user.liked_posts = like
+    db.session.commit()
+
+
+    return response
+
+
+@json_pages.route('/follow-tag/<string:tag>')
+def follow_tag(tag):
+
+    int_tags = list(current_user.int_tags)
+
+    if int_tags is not None:
+        if tag in int_tags:
+            int_tags.remove(tag)
+            response = jsonify({'operation': 'unfollowed'})
+        else:
+            response = jsonify({'operation': 'followed'})
+            int_tags.append(tag)
+    else:
+        response = jsonify({'operation': 'followed'})
+        int_tags.append(tag)
+
+    current_user.int_tags = int_tags
+    db.session.commit()
+
+
+    return response
+
+@json_pages.route('/follow-user/<int:id>')
+def follow_user(id):
+
+    follow = list(current_user.follow)
+    followed = db.session.query(UserModel).filter_by(id=id).first()
+    user_followed = list(followed.followed)
+    if follow is not None:
+        if id in follow:
+            follow.remove(id)
+            user_followed.remove(current_user.id)
+            response = jsonify({'operation' : 'unfollowed'})
+        else:
+            follow.append(id)
+            user_followed.append(current_user.id)
+            response = jsonify({'operation' : 'followed'})
+    else:
+        follow.append(id)
+        user_followed.append(current_user.id)
+        response = jsonify({'operation' : 'followed'})
+
+    current_user.follow = follow
+    followed.followed = user_followed
+    db.session.commit()
+
     return response

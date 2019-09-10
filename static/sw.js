@@ -29,7 +29,9 @@
 
 
 /* eslint-disable quotes, comma-spacing */
-var PrecacheConfig = [["/bower_components/webcomponentsjs/webcomponents-lite.min.js","f04ed23700daeb36f637bfe095960659"],["/index.html","6018d0295f8faf690e2878af152ecbbc"],["/manifest.json","2eefc15db4b58758cddc0d666e27d399"],["/src/my-app.html","7e5dee7784534c0ccc50f8ec71bccd3f"],["/src/my-view1.html","4ccb8d9cd5b87a92973cc7704873b65f"],["/src/my-view2.html","7e00f1613408e109e6d26853846c8467"],["/src/my-view3.html","1971572d82bd5c7e058dce75bdd068df"],["/src/my-view404.html","858fecebfa5de274e8d3f7ba905d599e"]];
+var PrecacheConfig = [
+  
+];
 /* eslint-enable quotes, comma-spacing */
 var CacheNamePrefix = 'sw-precache-v1--' + (self.registration ? self.registration.scope : '') + '-';
 
@@ -202,53 +204,37 @@ self.addEventListener('message', function(event) {
     });
   }
 });
-
-
+/*
 self.addEventListener('fetch', function(event) {
-  if (event.request.method === 'GET') {
-    var urlWithoutIgnoredParameters = stripIgnoredUrlParameters(event.request.url,
-      IgnoreUrlParametersMatching);
+  //find urls that only have numbers as parameters
+  //yours will obviously differ, my queries to ignore were just repo revisions
+  var shaved = event.request.url.match(/^([^?]*)[?]\d+$/);
+  //extract the url without the query
+  shaved = shaved && shaved[1];
 
-    var cacheName = AbsoluteUrlToCacheName[urlWithoutIgnoredParameters];
-    var directoryIndex = 'index.html';
-    if (!cacheName && directoryIndex) {
-      urlWithoutIgnoredParameters = addDirectoryIndex(urlWithoutIgnoredParameters, directoryIndex);
-      cacheName = AbsoluteUrlToCacheName[urlWithoutIgnoredParameters];
-    }
+  event.respondWith(
+      //try to get the url from the cache.
+      //if this is a resource, use the shaved url,
+      //otherwise use the original request
+      //(I assume it [can] contain post-data and stuff)
+      caches.match(shaved || event.request).then(function(response) {
+          //respond
+          return response || fetch(event.request);
+      })
+  );
+});*/
 
-    var navigateFallback = '/index.html';
-    // Ideally, this would check for event.request.mode === 'navigate', but that is not widely
-    // supported yet:
-    // https://code.google.com/p/chromium/issues/detail?id=540967
-    // https://bugzilla.mozilla.org/show_bug.cgi?id=1209081
-    if (!cacheName && navigateFallback && event.request.headers.has('accept') &&
-        event.request.headers.get('accept').includes('text/html') &&
-        /* eslint-disable quotes, comma-spacing */
-        isPathWhitelisted([], event.request.url)) {
-        /* eslint-enable quotes, comma-spacing */
-      var navigateFallbackUrl = new URL(navigateFallback, self.location);
-      cacheName = AbsoluteUrlToCacheName[navigateFallbackUrl.toString()];
-    }
-
-    if (cacheName) {
-      event.respondWith(
-        // Rely on the fact that each cache we manage should only have one entry, and return that.
-        caches.open(cacheName).then(function(cache) {
-          return cache.keys().then(function(keys) {
-            return cache.match(keys[0]).then(function(response) {
-              if (response) {
-                return response;
-              }
-              // If for some reason the response was deleted from the cache,
-              // raise and exception and fall back to the fetch() triggered in the catch().
-              throw Error('The cache ' + cacheName + ' is empty.');
-            });
-          });
-        }).catch(function(e) {
-          console.warn('Couldn\'t serve response for "%s" from cache: %O', event.request.url, e);
-          return fetch(event.request);
-        })
-      );
-    }
-  }
+self.addEventListener('push', function(event) {
+  var title = "NewApp"
+      , body = event.data.text()
+      , icon = "https://newapp.nl/static/logo.jpg"
+      , n = "default-tag" + body;
+    event.waitUntil(self.registration.showNotification(title, {
+        body: body,
+        icon: icon,
+        tag: n,
+        data: {
+            url: "https://newapp.nl"
+        }
+    }))
 });

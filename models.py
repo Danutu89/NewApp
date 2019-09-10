@@ -8,6 +8,8 @@ import sqlalchemy as sq
 from app import bcrypt, db, db_engine,ma,fields
 import flask_whooshalchemy
 
+from search_engine import SearchableMixin
+
 Base = declarative_base()
 
 
@@ -34,16 +36,20 @@ class UserModel(db.Model):
     country_name = db.Column(db.String, primary_key = False)
     country_flag = db.Column(db.String, primary_key = False)
     lang = db.Column(db.String, primary_key = False, default = 'eng')
-    int_tags = db.Column(sq.ARRAY(db.String), primary_key = False)
+    int_tags = db.Column(sq.ARRAY(db.String),default=[], primary_key = False)
     birthday = db.Column(db.Date, primary_key = False)
     profession = db.Column(db.String, primary_key = False)
+    saved_posts = db.Column(sq.ARRAY(db.Integer),default=[], primary_key = False)
+    liked_posts = db.Column(sq.ARRAY(db.Integer),default=[], primary_key = False)
+    follow = db.Column(sq.ARRAY(db.Integer), default=[2], primary_key = False)
+    followed = db.Column(sq.ARRAY(db.Integer), default=[], primary_key = False)
 
     posts = relationship("PostModel", backref="user_in")
     replyes = relationship("ReplyModel", backref="user_in")
     likes = relationship("LikeModel", backref="user_in")
 
     def __init__(self,id,join_date,name,real_name,github_name,email,password,avatar,genre,role,bio,activated,is_online,
-                    ip_address,browser,country_name,country_flag,lang,int_tags,birthday,profession):
+                    ip_address,browser,country_name,country_flag,lang,int_tags,birthday,profession,saved_posts,liked_posts,follow,followed):
         self.id = id
         self.join_date = join_date
         self.name = name
@@ -65,6 +71,10 @@ class UserModel(db.Model):
         self.int_tags = int_tags
         self.birthday = birthday
         self.profession = profession
+        self.saved_posts = saved_posts
+        self.liked_posts = liked_posts
+        self.follow = follow
+        self.followed = followed
 
     def is_authenticated(self):
         return True
@@ -80,6 +90,13 @@ class UserModel(db.Model):
 
     def __repr__(self):
         return ('<name {}').format(self.name)
+
+    def get_followers(self):
+        user = db.session.query(UserModel).filter_by(id=self.id).first()
+        return len(user.followed)
+
+    def get_notifications(self):
+        return db.session.query(Notifications_Model).filter_by(for_user=self.id).all()
 
 class UserSchema(ma.Schema):
     class Meta:
@@ -130,7 +147,7 @@ class RoleModel(db.Model):
     def __repr__(self):
         return ('<name {}').format(self.name)
 
-class PostModel(db.Model):
+class PostModel(SearchableMixin, db.Model):
 
     __tablename__ = 'posts'
 
@@ -150,10 +167,12 @@ class PostModel(db.Model):
     closed_on = db.Column(db.Date, primary_key = False)
     closed_by = db.Column(db.Integer, primary_key = False)
     lang = db.Column(db.String, primary_key = False, default = 'eng')
+    thumbnail = db.Column(db.String, primary_key = False)
+    likes = db.Column(db.Integer, primary_key = False, default=0)
     
     author = db.relationship("UserModel", backref = "author")
 
-    def __init__(self,id,title,text,views,reply,user,posted_on,approved,closed,closed_on,closed_by,lang):
+    def __init__(self,id,title,text,views,reply,user,posted_on,approved,closed,closed_on,closed_by,lang,thumbnail,likes):
         self.id = id
         self.title = title
         self.text = text
@@ -166,6 +185,8 @@ class PostModel(db.Model):
         self.closed_on = closed_on
         self.closed_by = closed_by
         self.lang = lang
+        self.thumbnail = thumbnail
+        self.likes = likes
 
     def __repr__(self):
         return '{0}(title={1})'.format(self.__class__.__name__, self.title)
@@ -311,6 +332,30 @@ class Analyze_Pages(Base):
     def count_replies():
         return db.session.query(ReplyModel).count()
     
+class Notifications_Model(db.Model):
+
+    __tablename__ = 'notifications'
+
+    id = db.Column(db.Integer, db.Sequence('notifications_id_seq'), primary_key = True)
+    user = db.Column(db.Integer, ForeignKey('users.id'))
+    author = db.relationship("UserModel", backref = "n_author", foreign_keys=[user])
+    title = db.Column(db.String, primary_key = False)
+    body = db.Column(db.String, primary_key = False)
+    link = db.Column(db.String, primary_key = False)
+    for_user = db.Column(db.Integer, ForeignKey('users.id'))
+    checked = db.Column(db.Boolean, primary_key = False, default = False)
+    created_on = db.Column(db.Date, primary_key = False, default = datetime.datetime.utcnow)
+
+    def __init__(self,id,user,title,body,link,for_user,checked,created_on):
+        self.id = id
+        self.user = user
+        self.title = title
+        self.body = body
+        self.link = link
+        self.for_user = for_user
+        self.checked = checked
+        self.created_on = created_on
+
 class Gits:
 
     def __init__(self,name,link,desc):

@@ -29,6 +29,7 @@ var cScriptLoader = (function () {
       this.loadScript = function (i) {
         var script = document.createElement('script');
         script.type = 'text/javascript';
+        script.async = true;
         script.src = (_this.m_js_files[i]);
         var loadNextScript = function () {
           if (i + 1 < _this.m_js_files.length) {
@@ -75,21 +76,22 @@ var cScriptLoader = (function () {
 })();
 
 var LoadScripts = new cScriptLoader([
-    "https://cdn.quilljs.com/1.3.6/quill.snow.css",
+    //"https://cdn.quilljs.com/1.3.6/quill.snow.css",
     //"https://use.fontawesome.com/releases/v5.8.2/css/all.css",
-    "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.9.0/css/all.css",
-    "https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css",
-    "https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/css/bootstrap-datepicker.min.css",
-    "https://bootswatch.com/4/flatly/bootstrap.css",
-    "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.8/styles/default.min.css",
+   // "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.9.0/css/all.css",
+    //"https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.css",
+    //"https://newapp.nl/static/css/editor.css",
+    //"https://newapp.nl/static/flags/flag-icon.min.css",
+    //"https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css",
+    //"https://bootswatch.com/4/flatly/bootstrap.css",
+    //"https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.8/styles/default.min.css",
+    "https://newapp.nl/static/js/newapp.js",
     "https://code.jquery.com/jquery-3.3.1.min.js",
-    "https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/js/bootstrap-datepicker.min.js",
-    "https://cdn.quilljs.com/1.3.6/quill.min.js",
+    //"https://cdn.quilljs.com/1.3.6/quill.min.js",
+    
     "https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js",
-    "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js",
-    "https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js",
-    "https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js",
-    "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.8/highlight.min.js",
+    //"https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.js"
+    //"https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js",
     
 ]);
 

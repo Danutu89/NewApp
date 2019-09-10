@@ -1,0 +1,134 @@
+{% if request.endpoint == 'home.home' %}
+<div class="sidebar" id="sidebar-right">
+    {% for success in get_flashed_messages(category_filter=["success"]) %}
+    <alert-box type='success'>
+      <span class="alert-message">{{success}}</span>
+      <span class="alert-close" onclick="this.parentElement.style.display='none';">&times;</span>
+    </alert-box>
+    {% endfor %}
+    {% for error in get_flashed_messages(category_filter=["error"]) %}
+    <alert-box type='error'>
+      <span class="alert-message">{{error}}</span>
+      <span class="alert-close" onclick="this.parentElement.style.display='none';">&times;</span>
+    </alert-box>
+    {% endfor %}
+    <div class="widget" id="widget-popular-posts">
+        <div class="widget-header">
+            <div class="widget-title">Popular Posts</div>
+            <button class="minimize-widget" id="minimize-widget-popular4dd0e1-sidebar"
+                onclick="Minimize('sidebar','popular-posts')">-</button>
+        </div>
+        <div class="widget-list" id="widget-list-popular-posts-sidebar" style="display: block;">
+            {% for post in popular_posts %}
+            <div class="widget-item">
+                <div class="text">
+                    <a href="{{url_for('home.post',id=post.id, title=post.title)}}">{{post.title[:35]}}{% if post.title|length > 35 %}..{% endif %}</a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="widget" id="widget-popular-tags">
+        <div class="widget-header">
+            <div class="widget-title">Popular Tags</div>
+            <button class="minimize-widget" id="minimize-widget-popular-sidebar"
+                onclick="Minimize('sidebar','popular-tags')">-</button>
+        </div>
+        <div class="widget-list" id="widget-list-popular-tags-sidebar" style="display: block;">
+            {% for tag in most_tags %}
+            {% if tag.tag is not none %}
+            <div class="widget-item">
+                <div class="text">
+                    <a href="{{url_for('home.home',tag_finder=tag.tag)}}">
+                        <tag class="widget-tag">{{tag.tag}}</tag>
+                    </a>
+                </div>
+            </div>
+            {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+
+</div>
+{% endif %}
+{% if request.endpoint == 'home.post' %}
+<div class="sidebar" id="sidebar-right">
+    {% if current_user.is_authenticated %}
+    {% if current_user.roleinfo.edit_post_permission == True %}
+    <div class="widget">
+        <div class="widget-header">
+            <div class="widget-title">Post Actions</div>
+        </div>
+        <div class="widget-list">
+            {% if current_user.roleinfo.close_post_permission == True %}
+            {% if posts.closed == False %}
+            <div class="widget-item" style="display: flex;justify-content: space-between;">
+                <div class="text">Close Post</div>
+                <form action="{{url_for('home.close_post', id=posts.id)}}">
+                <button class="widget-button">Close</button>
+                </form>
+            </div>
+            {% endif %}
+            {% endif %}
+            {% if current_user.roleinfo.delete_post_permission == True %}
+            <div class="widget-item" style="display: flex;justify-content: space-between;">
+                <div class="text">Delete Post</div>
+                <form action="{{url_for('home.delete_post', id=posts.id)}}">
+                <button class="widget-button">Delete</button>
+                </form>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+    {% endif %}
+    {% endif %}
+  <div class="user-card"  style="align-items: unset">
+    <div class="user-image">
+        <img class="profile_image" src="{{posts.user_in.avatar}}" height="50px" width="50px" title="profile image">
+    </div>
+    <div class="user-info">
+        <span style="display: flex">{{posts.user_in.real_name}}<span class="{% if posts.user_in.is_online %}dot_online{% else %}dot_offline{% endif %}" style="margin-left: 2%;height: 10px;width: 10px;margin-right: 0;"></span></span>
+        <a href="{{url_for('users.user', name=posts.user_in.name, id=posts.user_in.id )}}"><span class="user-tag">@{{posts.user_in.name}}</span></a>
+    </div>
+  </div>
+  <div class="widget">
+      <div class="widget-header">
+          <div class="widget-">{{posts.user_in.name}} Info:</div>
+      </div>
+      <div class="widget-list">
+        <div class="widget-item">
+            <div class="text">
+                <span style="font-size: 0.8rem;">Profession: {{posts.user_in.profession}}</span>
+            </div>
+        </div>
+        <div class="widget-item">
+            <div class="text">
+                <span style="font-size: 0.8rem;">Location: {{posts.user_in.country_name}} <span class="flag-icon flag-icon-{{posts.user_in.country_flag}}"></span></span>
+            </div>
+        </div>
+        <div class="widget-item">
+            <div class="text">
+                <span style="font-size: 0.8rem;">Joined on: {{posts.user_in.join_date}}</span>
+            </div>
+        </div>
+      </div>
+  </div>
+  <div class="widget">
+      <div class="widget-header">
+          <div class="widget-title">More From {{posts.user_in.name}}</div>
+      </div>
+      <div class="widget-list" style="padding: 0.1rem;max-height: 400px;overflow: auto;">
+          {% for post in post_from_user %}
+          <div class="widget-post">
+              <div class="post-header"><img style="border-radius: 20px;" src="{{posts.user_in.avatar}}" height="30px" width="30px"><a href="{{url_for('home.post',id=post.id, title=post.title)}}"><span class="post-title" style="margin-left: 2%;">{{post.title}}</span></a></div>
+              <div class="post-footer">
+                  {% for tag in tags_all %}
+                  {% endfor %}
+              </div>
+          </div>
+          {% endfor %}
+      </div>
+  </div>
+</div>
+{% endif %}
