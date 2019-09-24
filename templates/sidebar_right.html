@@ -1,28 +1,65 @@
+{% if request.MOBILE == False %}
 {% if request.endpoint == 'home.home' %}
 <div class="sidebar" id="sidebar-right">
     {% for success in get_flashed_messages(category_filter=["success"]) %}
     <alert-box type='success'>
-      <span class="alert-message">{{success}}</span>
-      <span class="alert-close" onclick="this.parentElement.style.display='none';">&times;</span>
+        <span class="alert-message">{{success}}</span>
+        <span class="alert-close" onclick="this.parentElement.style.display='none';">&times;</span>
     </alert-box>
     {% endfor %}
     {% for error in get_flashed_messages(category_filter=["error"]) %}
     <alert-box type='error'>
-      <span class="alert-message">{{error}}</span>
-      <span class="alert-close" onclick="this.parentElement.style.display='none';">&times;</span>
+        <span class="alert-message">{{error}}</span>
+        <span class="alert-close" onclick="this.parentElement.style.display='none';">&times;</span>
     </alert-box>
     {% endfor %}
+    <div class="widget" id="widget-trending-posts">
+        <div class="widget-header">
+            <div class="widget-title">Trending Posts 🔥</div>
+            <button class="minimize-widget" id="minimize-widget-trending-sidebar"
+                onclick="Minimize('sidebar','trending-posts')">-</button>
+        </div>
+        <div class="widget-list" id="widget-list-trending-posts-sidebar" style="display: block;">
+            <div class="widget-item">
+                <div class="text">
+                    <a href="" id="trending-1" class="loading" style="height: 0.92em; width:100%;display: block;"></a>
+                </div>
+            </div>
+            <div class="widget-item">
+                <div class="text">
+                    <a href="" id="trending-2" class="loading" style="height: 0.92em; width:100%;display: block;"></a>
+                </div>
+            </div>
+            <div class="widget-item">
+                <div class="text">
+                    <a href="" id="trending-3" class="loading" style="height: 0.92em; width:100%;display: block;"></a>
+                </div>
+            </div>
+            <div class="widget-item">
+                <div class="text">
+                    <a href="" id="trending-4" class="loading" style="height: 0.92em; width:100%;display: block;"></a>
+                </div>
+            </div>
+            <div class="widget-item">
+                <div class="text">
+                    <a href="" id="trending-5" class="loading" style="height: 0.92em; width:100%;display: block;"></a>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="widget" id="widget-popular-posts">
         <div class="widget-header">
-            <div class="widget-title">Popular Posts</div>
-            <button class="minimize-widget" id="minimize-widget-popular4dd0e1-sidebar"
+            <div class="widget-title">Most Viewed Posts</div>
+            <button class="minimize-widget" id="minimize-widget-popular-sidebar"
                 onclick="Minimize('sidebar','popular-posts')">-</button>
         </div>
         <div class="widget-list" id="widget-list-popular-posts-sidebar" style="display: block;">
             {% for post in popular_posts %}
             <div class="widget-item">
                 <div class="text">
-                    <a href="{{url_for('home.post',id=post.id, title=post.title)}}">{{post.title[:35]}}{% if post.title|length > 35 %}..{% endif %}</a>
+                    <a
+                        href="{{url_for('home.post',id=post.id, title=post.title)}}">{{post.title[:35]}}{% if post.title|length > 35 %}..{% endif %}</a>
                 </div>
             </div>
             {% endfor %}
@@ -31,17 +68,17 @@
 
     <div class="widget" id="widget-popular-tags">
         <div class="widget-header">
-            <div class="widget-title">Popular Tags</div>
+            <div class="widget-title">Most Used Tags</div>
             <button class="minimize-widget" id="minimize-widget-popular-sidebar"
                 onclick="Minimize('sidebar','popular-tags')">-</button>
         </div>
         <div class="widget-list" id="widget-list-popular-tags-sidebar" style="display: block;">
             {% for tag in most_tags %}
-            {% if tag.tag is not none %}
+            {% if tag.name  %}
             <div class="widget-item">
                 <div class="text">
-                    <a href="{{url_for('home.home',tag_finder=tag.tag)}}">
-                        <tag class="widget-tag">{{tag.tag}}</tag>
+                    <a href="{{url_for('home.home',tag_finder=tag.name)}}">
+                        <tag class="widget-tag">{{tag.name}}</tag>
                     </a>
                 </div>
             </div>
@@ -66,7 +103,7 @@
             <div class="widget-item" style="display: flex;justify-content: space-between;">
                 <div class="text">Close Post</div>
                 <form action="{{url_for('home.close_post', id=posts.id)}}">
-                <button class="widget-button">Close</button>
+                    <button class="widget-button">Close</button>
                 </form>
             </div>
             {% endif %}
@@ -75,60 +112,128 @@
             <div class="widget-item" style="display: flex;justify-content: space-between;">
                 <div class="text">Delete Post</div>
                 <form action="{{url_for('home.delete_post', id=posts.id)}}">
-                <button class="widget-button">Delete</button>
+                    <button class="widget-button">Delete</button>
                 </form>
             </div>
+            {% endif %} 
+            {% if current_user.roleinfo.edit_post_permission or current_user.id == posts.userinf.id %}
+            <div class="widget-item" style="display: flex;justify-content: space-between;">
+                    <div class="text" style="display:flex;white-space: nowrap;">Edit Post</div>
+                    <a href="{{url_for('home.edit_post', id=posts.id)}}" style="margin: 0;width:0;display:contents"><button class="widget-button">Edit</button></a>
+                </div>
             {% endif %}
         </div>
     </div>
     {% endif %}
     {% endif %}
-  <div class="user-card"  style="align-items: unset">
-    <div class="user-image">
-        <img class="profile_image" src="{{posts.user_in.avatar}}" height="50px" width="50px" title="profile image">
+    <div class="user-card" style="align-items: unset">
+        <div class="user-image">
+            <img class="profile_image" src="{{posts.user_in.avatar}}" height="50px" width="50px" title="profile image">
+        </div>
+        <a href="{{url_for('users.user', name=posts.user_in.name, id=posts.user_in.id )}}"
+            style="margin-bottom:0.2rem;">
+            <div class="user-info">
+                <span style="display: flex;height:0.92em;">{{posts.user_in.real_name}}<span
+                        class="{% if posts.user_in.is_online %}dot_online{% else %}dot_offline{% endif %}"
+                        style="margin-left: 2%;height: 10px;width: 10px;margin-right: 0;margin-top: 4px;"></span></span>
+                <span class="user-tag">@{{posts.user_in.name}}</span>
+                {% if current_user.is_authenticated %}
+                {% if current_user.id != posts.user_in.id %}
+                <div class="profile-actions">
+                    <button class="follow-user" onclick="Follow_User({{posts.user_in.id}})"
+                        id="follow-user-{{posts.user_in.id}}">{% if posts.user_in.id in current_user.follow %}&#x2713
+                        Following{% else %}Follow{% endif %}</button>
+                </div>
+                {% endif %}
+                {% endif %}
+            </div>
+        </a>
     </div>
-    <div class="user-info">
-        <span style="display: flex">{{posts.user_in.real_name}}<span class="{% if posts.user_in.is_online %}dot_online{% else %}dot_offline{% endif %}" style="margin-left: 2%;height: 10px;width: 10px;margin-right: 0;"></span></span>
-        <a href="{{url_for('users.user', name=posts.user_in.name, id=posts.user_in.id )}}"><span class="user-tag">@{{posts.user_in.name}}</span></a>
+    <div class="widget">
+        <div class="widget-header">
+            <div class="widget-">{{posts.user_in.name}} Info:</div>
+        </div>
+        <div class="widget-list">
+            <div class="widget-item">
+                <div class="text">
+                    <span style="font-size: 0.8rem;">Profession: {{posts.user_in.profession}}</span>
+                </div>
+            </div>
+            <div class="widget-item">
+                <div class="text">
+                    <span style="font-size: 0.8rem;">Location: {{posts.user_in.country_name}} <span
+                            class="flag-icon flag-icon-{{posts.user_in.country_flag}}"></span></span>
+                </div>
+            </div>
+            <div class="widget-item">
+                <div class="text">
+                    <span style="font-size: 0.8rem;">Joined on: {{posts.user_in.join_date}}</span>
+                </div>
+            </div>
+        </div>
     </div>
-  </div>
-  <div class="widget">
-      <div class="widget-header">
-          <div class="widget-">{{posts.user_in.name}} Info:</div>
-      </div>
-      <div class="widget-list">
-        <div class="widget-item">
-            <div class="text">
-                <span style="font-size: 0.8rem;">Profession: {{posts.user_in.profession}}</span>
+    <div class="widget">
+        <div class="widget-header" style="border:none;">
+            <div class="widget-title">More From {{posts.user_in.name}}</div>
+        </div>
+        <div class="widget-list" style="padding: 0.1rem;max-height: 550px;overflow: auto;">
+            {% for post in post_from_user %}
+            <div class="widget-post">
+                <div class="post-header">
+                    <img style="border-radius: 20px;" src="{{posts.user_in.avatar}}" height="30px"
+                        width="30px">
+                        <a href="{{url_for('home.post',id=post.id, title=post.title)}}">
+                            <span class="post-title" style="margin-left: 2%;">{{post.title}}</span>
+                        </a>
+                    </div>
+                <div class="post-footer">
+                    {% for tag in tags_all %}
+                    {% if post.id in tag.post %}
+                    <a href="{{url_for('home.home',tag_finder=tag.name)}}"><tag class="article-tag">{{tag.name}}</tag></a>
+                    {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="widget" id="widget-trending-posts">
+        <div class="widget-header">
+            <div class="widget-title">Trending Posts 🔥</div>
+            <button class="minimize-widget" id="minimize-widget-trending-sidebar"
+                onclick="Minimize('sidebar','trending-posts')">-</button>
+        </div>
+        <div class="widget-list" id="widget-list-trending-posts-sidebar" style="display: block;">
+            <div class="widget-item">
+                <!-- <div class="widget-header loading" id="header-trending-2">
+                
+                </div> -->
+                <div class="text">
+                    <a href="" id="trending-1" class="loading" style="height: 0.92em; width:100%;display: block;"></a>
+                </div>
+            </div>
+            <div class="widget-item">
+                <div class="text">
+                    <a href="" id="trending-2" class="loading" style="height: 0.92em; width:100%;display: block;"></a>
+                </div>
+            </div>
+            <div class="widget-item">
+                <div class="text">
+                    <a href="" id="trending-3" class="loading" style="height: 0.92em; width:100%;display: block;"></a>
+                </div>
+            </div>
+            <div class="widget-item">
+                <div class="text">
+                    <a href="" id="trending-4" class="loading" style="height: 0.92em; width:100%;display: block;"></a>
+                </div>
+            </div>
+            <div class="widget-item">
+                <div class="text">
+                    <a href="" id="trending-5" class="loading" style="height: 0.92em; width:100%;display: block;"></a>
+                </div>
             </div>
         </div>
-        <div class="widget-item">
-            <div class="text">
-                <span style="font-size: 0.8rem;">Location: {{posts.user_in.country_name}} <span class="flag-icon flag-icon-{{posts.user_in.country_flag}}"></span></span>
-            </div>
-        </div>
-        <div class="widget-item">
-            <div class="text">
-                <span style="font-size: 0.8rem;">Joined on: {{posts.user_in.join_date}}</span>
-            </div>
-        </div>
-      </div>
-  </div>
-  <div class="widget">
-      <div class="widget-header">
-          <div class="widget-title">More From {{posts.user_in.name}}</div>
-      </div>
-      <div class="widget-list" style="padding: 0.1rem;max-height: 400px;overflow: auto;">
-          {% for post in post_from_user %}
-          <div class="widget-post">
-              <div class="post-header"><img style="border-radius: 20px;" src="{{posts.user_in.avatar}}" height="30px" width="30px"><a href="{{url_for('home.post',id=post.id, title=post.title)}}"><span class="post-title" style="margin-left: 2%;">{{post.title}}</span></a></div>
-              <div class="post-footer">
-                  {% for tag in tags_all %}
-                  {% endfor %}
-              </div>
-          </div>
-          {% endfor %}
-      </div>
-  </div>
+    </div>
 </div>
+{% endif %}
 {% endif %}

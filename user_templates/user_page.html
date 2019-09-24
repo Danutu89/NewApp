@@ -1,35 +1,39 @@
 {% extends "index.html" %}
 {% block content %}
 <profile class="profile-page">
-    <div class="profile-cover">
-      
+    <div class="profile-cover" {%if not user.cover %}style="background-color: #14947b;border: 1px solid #dddd;height:300px;"{% endif %}>
+      {% if user.cover %}
+      <img src="{{user.cover}}" alt="">
+      {% endif %}
     </div>
     <div class="profile-main">
       <div class="sidebar-info">
         <div class="profile-image">
           <div><img src="{{user.avatar}}" alt=""></div>
-          
+
           <div class="user-name">
             <h1>{{user.real_name}}</h1>
             <h4>@{{user.name}}</h4>
           </div>
         </div>
+        {% if current_user.is_authenticated %}
+        {% if current_user.id != user.id %}
         <div class="profile-actions">
-          {% if current_user.is_authenticated %}
-          {% if current_user.id != user.id %}
           <button class="follow-user" onclick="Follow_User({{user.id}})" id="follow-user-{{user.id}}">{% if user.id in current_user.follow %}&#x2713 Following{% else %}Follow{% endif %}</button>
-          {% endif %}
-          {% endif %}
         </div>
+        {% endif %}
+        {% endif %}
         <div class="widgets">
           <div class="profile-presentation">
             <div class="header"><i class="fa fa-globe"></i> Presentation</div>
             <div class="bio">{{user.bio}}</div>
             <div class="info">
+              {% if user.profession %}
               <p><i class="fas fa-briefcase"></i> Profession {{user.profession}}</p>
-              <p><i class="fas fa-home"></i> From {{user.country_name}}<span class="flag-icon flag-icon-{{user.country_flag}}"></span></p>
+              {% endif %}
+              <p><i class="fas fa-home"></i> From {{user.country_name}} <span class="flag-icon flag-icon-{{user.country_flag}}"></span></p>
               <p><i class="fas fa-clock"></i> Joined on {{user.join_date}}</p>
-              <p><i class="fas fa-rss"></i> Followed by {{user.get_followers()}} people</p>
+              <p><i class="fas fa-rss"></i> Followed by {{user.followed|length}} people</p>
             </div>
           </div>
           <div class="interesed-tags">
@@ -49,7 +53,7 @@
                 {% for post in posts %}
                 {% if post.approved %}
             <div class="article-card">
-            
+
                 <div class="article-main">
                   <div class="article-author-image"><img class="profile_image"
                     src="{{post.user_in.avatar}}" height="50px" width="50px" title="profile image">
@@ -60,8 +64,8 @@
                   <div class="article-tags">
                         <span>Tags: </span>
                         {% for tag in tags %}
-                        {% if tag.post_id == post.id %}
-                        <a href="{{url_for('home.home',tag_finder=tag.tag)}}"><tag class="article-tag">{{tag.tag}}</tag></a>
+                        {% if post.id in tag.post %}
+                        <a href="{{url_for('home.home',tag_finder=tag.name)}}"><tag class="article-tag">{{tag.name}}</tag></a>
                         {% endif %}
                         {% endfor %}
                     </div>
@@ -69,9 +73,9 @@
                 </div>
                 <div class="article-footbar">
                   <div class="article-date">Published on {{post.posted_on}}</div>
-                
+
                 </div>
-              
+
             </div>
             {% endif %}
               {% endfor %}
@@ -80,16 +84,20 @@
       <div class="sidebar-right">
         <div class="widgets">
           <div class="user-follows">
-            <div class="header">{{user.name}} Follows</div>
+            <div class="header">{{user.real_name}} Follows</div>
             <div class="users">
+              {% for fllw in follow %}
               <div class="user-followed" id="user-1">
-                  <div class="user-img"><img src="https://newapp.nl/static/profile_pics/user_2.jpg" alt=""></div>
+                  <div class="user-img"><img src="{{fllw.avatar}}" alt=""></div>
+                  <a href="{{url_for('users.user',id=fllw.id,name=fllw.name)}}">
                   <div class="user-info">
-                    <span>Daniel Ionut</span>
+                    <span>{{fllw.real_name}}</span>
                     <br>
-                    <span>@Danutu</span>
+                    <span style="font-size: 0.7rem;">@{{fllw.name}}</span>
                   </div>
+                  </a>
               </div>
+              {% endfor %}
             </div>
           </div>
         </div>

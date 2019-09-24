@@ -62,14 +62,14 @@ def login():
     else:
       login_user(user)
       flash("You were just logged in!", 'success')
-    
+
     userInfo = httpagentparser.detect(request.headers.get('User-Agent'))
 
     if request.environ.get('HTTP_X_FORWARDED_FOR') is None:
         userIP = request.environ['REMOTE_ADDR']
     else:
         userIP = request.environ['HTTP_X_FORWARDED_FOR']
-    
+
     resp = requests.get(('https://www.iplocate.io/api/lookup/{}').format(userIP))
     userLoc = resp.json()
 
@@ -87,7 +87,7 @@ def login():
     user.country_name = str(userLoc['country'])
     user.country_flag = str(userLoc['country_code']).lower()
     user.lang = str(userLanguage).lower()
-    
+
     db.session.commit()
     return redirect("https://newapp.nl"+request.args.get('url'))
 
@@ -97,14 +97,14 @@ def logout():
     user.is_online = False
     db.session.commit()
     logout_user()
-    flash("You were just logged out in!", 'success')
+    flash("You were just logged out!", 'success')
     return redirect(url_for('home.home'))
 
 @users_pages.route("/register", methods=['GET','POST'])
 def register():
     if request.method != 'POST':
         return redirect(url_for('home.home'))
-    
+
     register = RegisterForm(request.form)
 
     #if register.validate_on_submit() == False:
@@ -115,7 +115,7 @@ def register():
     if check is not None:
         flash('Username taken', 'error')
         return redirect(url_for('home.home'))
-    
+
     check = db.session.query(UserModel).filter_by(email=register.email.data).first()
 
     if check is not None:
@@ -144,7 +144,7 @@ def register():
         userIP = request.environ['REMOTE_ADDR']
     else:
         userIP = request.environ['HTTP_X_FORWARDED_FOR']
-    
+
     resp = requests.get(('https://www.iplocate.io/api/lookup/{}').format(userIP))
     userLoc = resp.json()
 
@@ -186,6 +186,7 @@ def register():
             None,
             None,
             None,
+            None
         )
     db.session.add(new_user)
     db.session.commit()
@@ -210,9 +211,7 @@ def confirm_register(email,token):
 
   users = db.session.query(UserModel).filter_by(email=email).first()
   users.activated = True
-  own = db.session.query(USerModel).filter_by(name='Danutu').first()
-  x = own.followed
-  own.followed = x.append(users.id)
+
   db.session.commit()
 
   flash('Register successfully', 'success')
@@ -224,78 +223,82 @@ def user(name,id):
     register = RegisterForm(request.form)
     loginf = LoginForm(request.form)
     reset = ResetPasswordForm(request.form)
-    modify_profile = ModifyProfileForm(request.form)
     user = db.session.query(UserModel).filter_by(id=id).first()
-    posts = db.session.query(PostModel).filter_by(user=id).all()
-    tagp = db.session.query(TagModel.tag,func.count(TagModel.id).label('qty')).group_by(TagModel.tag).order_by(desc('qty'))
+    posts = db.session.query(PostModel).filter_by(user=id).order_by(desc(PostModel.id)).all()
+    follow = db.session.query(UserModel).filter(UserModel.id.in_(user.follow)).limit(6).all()
     tags = db.session.query(TagModel).all()
     post_count = db.session.query(PostModel).filter_by(user=id).count()
     reply_count = db.session.query(ReplyModel).filter_by(user=id).count()
     location = db.session.query(Analyze_Session).filter_by(session=session['user']).first()
-    response = requests.get(('https://api.github.com/users/{}/repos?client_id=2b17d8aee65d2c4d23a2&client_secret=b40fa945fb8081884f6de54abe4a02ef0607a8c6').format(user.github_name))
-    login = response.json()
-    repos = []
-    lang = {}
-    if user.github_name:
-      for gits in login:
-          repos.append(Gits(gits['name'],gits['svn_url'],gits['description']))
-          resp = requests.get(('https://api.github.com/repos/{}/{}/languages?client_id=2b17d8aee65d2c4d23a2&client_secret=b40fa945fb8081884f6de54abe4a02ef0607a8c6').format(user.github_name,gits['name']))
-          respond = resp.json()
-          lan = []
-          for key in respond.keys():
-              lan.append(key)
-          lang[gits['name']] = lan
-    return render_template('user_page.html',tagp=tagp,tags=tags,posts=posts,user=user,repos=repos,modify_profile=modify_profile,lang=lang,post_count=post_count,reply_count=reply_count,search=search,register=register,login=loginf, reset=reset,location=location)
+    return render_template('user_page.html',follow=follow,tags=tags,posts=posts,user=user,post_count=post_count,reply_count=reply_count,search=search,register=register,login=loginf, reset=reset,location=location)
 
 
-def save_img(user_id):
+def save_img(user_id,type):
     #if(form_img.data):
-    file_name, file_ext = os.path.splitext(request.files['avatarimg'].filename)
-    users = db.session.query(UserModel).filter_by(id=user_id)
-    picture_fn = 'user_' + str(user_id) + str(file_ext)
-    picture_path = os.path.join(app.config['UPLOAD_FOLDER'], picture_fn)
-    
-    output_size = (500, 500)
-    i = Image.open(request.files['avatarimg'])
-    i.thumbnail(output_size)
+
+    if type == 'profile':
+        file_name, file_ext = os.path.splitext(request.files['avatarimg'].filename)
+        users = db.session.query(UserModel).filter_by(id=user_id)
+        picture_fn = 'user_' + str(user_id) + str(file_ext)
+        picture_path = os.path.join(app.config['UPLOAD_FOLDER_PROFILE'], picture_fn)
+    elif type == 'cover':
+        file_name, file_ext = os.path.splitext(request.files['coverimg'].filename)
+        users = db.session.query(UserModel).filter_by(id=user_id)
+        picture_fn = 'user_' + str(user_id) + str(file_ext)
+        picture_path = os.path.join(app.config['UPLOAD_FOLDER_PROFILE_COVER'], picture_fn)
+
+
+    if type == 'profile':
+        i = Image.open(request.files['avatarimg'])
+        output_size = (500, 500)
+        i.thumbnail(output_size)
+    elif type == 'cover':
+        i = Image.open(request.files['coverimg'])
+
     i.save(picture_path)
 
     return picture_fn
     #return None
 
 
+@users_pages.route('/user/<string:name>/settings', methods=['GET'])
+def settings(name):
+    if current_user.is_authenticated == False:
+        return redirect(url_for('home.home'))
+
+    profile = ModifyProfileForm(request.form)
+    user = db.session.query(UserModel).filter_by(name=name).first()
+    modify_prof = ModifyProfileForm(request.form)
+    return render_template('user_settings.html', profile=profile, user=user,modify_prof=modify_prof)
 
 @users_pages.route("/user/modify_profile/id=<int:idm>", methods=['GET','POST'])
 def modify_profile(idm):
-    if request.method != 'POST':
-        return redirect(url_for('users.user'))
 
-    modify_prof = ModifyProfileForm(request.form)
     user = db.session.query(UserModel).filter_by(id=idm).first()
 
-    #if modify_prof.validate_on_submit() == False:
-    #    return redirect(url_for('users.user',id=idm,name=user.name))
-    
-    
-    user.name = modify_prof.username.data
+    if request.method != 'POST':
+        return redirect(url_for('users.user',id=idm,name=user.name))
+
+    modify_prof = ModifyProfileForm(request.form)
+
     user.email = modify_prof.email.data
     user.real_name = modify_prof.realname.data
     user.bio = modify_prof.bio.data
     user.profession = modify_prof.profession.data
-    user.birthday = request.form['birthday']
-    tag = modify_prof.int_tags.data.lower()
-    tags = tag.split(",")
-    user.int_tags = tags
+
 
     if request.files['avatarimg']:
-        profile_file = save_img(user.id)
-        user.avatar = url_for('static', filename='profile_pics/{}'.format(profile_file))
-    else:
-        user.avatar = modify_prof.avatar.data
+        if  request.files.get('avatarimg', None):
+            profile_file = save_img(user.id,'profile')
+            user.avatar = url_for('static', filename='profile_pics/{}'.format(profile_file))
+
+    if request.files['coverimg']:
+        if  request.files.get('coverimg', None):
+            profile_file = save_img(user.id,'cover')
+            user.cover = url_for('static', filename='profile_cover/{}'.format(profile_file))
 
     user.genre = modify_prof.genre.data
     db.session.commit()
-    flash('Fields updated successfully', 'success')
     return redirect(url_for('users.user',id=idm,name=user.name))
 
 @users_pages.route('/confirm_email')
@@ -370,7 +373,7 @@ def main():
       return redirect(url_for('home.home'))
     users = db.session.query(UserModel).all()
     posts = db.session.query(PostModel).all()
-    sessions = db.session.query(Analyze_Session).all()
+    sessions = db.session.query(Analyze_Session).filter_by(bot=False).all()
     pages = db.session.query(Analyze_Pages).all()
     now = datetime.now()
     sess = {}

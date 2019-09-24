@@ -1,0 +1,62 @@
+{% extends "index.html" %}
+{% block content %}
+<form class="" action="{{url_for('users.modify_profile', idm=user.id)}}" enctype='multipart/form-data' method="POST">
+<profile class="profile-page">
+  <div class="profile-cover" {%if not user.cover %}style="background-color: #14947b;border: 1px solid #dddd;height:300px;"{% endif %}>
+    {% if user.cover %}
+    <img src="{{user.cover}}" alt="">
+    {% endif %}
+  </div>
+  <div class="profile-main">
+    <div class="sidebar-info">
+      <div class="profile-image">
+        <div>
+          <img src="{{user.avatar}}" alt="">
+        </div>
+
+        <div class="user-name">
+          <h1>{{user.real_name}}</h1>
+          <h4>@{{user.name}}</h4>
+        </div>
+      </div>
+      <div class="profile-actions">
+          <button type="submit" class="save-settings">Save</button>
+      </div>
+      <div class="widgets">
+        <div class="settings-menu">
+          <div class="header">Settings</div>
+          <div class="settings">
+            <button class="item" active>Profile</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="sidebar-main">
+      <div class="edit-info">
+        <div class="col-1" style="text-align:left;">
+          Email:
+          {{modify_prof.email(value=user.email)}}
+          Real Name:
+          {{modify_prof.realname(value=user.real_name)}}
+          {% if request.MOBILE == False %}
+          Avatar:
+          <input type="file" name="avatarimg" value="">
+          <br>
+          Cover:
+          <input type="file" name="coverimg" value="">
+          {% endif %}
+        </div>
+        <div class="col-2"  style="text-align:left;">
+          Bio:
+          {{modify_prof.bio(value=user.bio)}}
+          Profession:
+          {{modify_prof.profession(value=user.profession)}}
+          Gender:
+          {{modify_prof.genre(value=user.genre)}}
+        </div>
+      </div>
+    </div>
+  </div>
+</profile>
+  </form>
+{% endblock %}

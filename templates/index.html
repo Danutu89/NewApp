@@ -1,14 +1,36 @@
 <!DOCTYPE html>
-<html {% if location %}lang="{{location.lang}}" {% endif %}>
+<html {% if location %}lang="{{location.lang}}-{{location.lang|upper}}" {% endif %}>
 <head>
+  {% if error_check != True %}
   {% if request.url_rule.endpoint == 'home.home' %}<title>New App - Where Developers Learn, Share, & Code</title>{% endif %}
   {% if request.url_rule.endpoint == 'users.user' %}<title>{{user.name}} - NewApp</title>{% endif %}
   {% if request.url_rule.endpoint == 'home.post' %}<title>{{posts.title}} - NewApp</title>{% endif %}
   <meta charset="utf-8">
   <meta name="msvalidate.01" content="FA1B41824E0AF3D2CC7B0F86730E5C45" />
   <link rel='icon' href="https://newapp.nl/static/favicon_web.png" type='image/x-icon' />
+  <link rel="preconnect" href="https://newappcdn.b-cdn.net/" crossorigin>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="keywords" content="software development,engineering,python,javascript,java">
+  {% if request.url_rule.endpoint == 'home.home' %}
+  <script type="application/ld+json">    
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "url": "https://newapp.nl/",
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": "https://newapp.nl/search={search_term_string}",
+        "query-input": "required name=search_term_string"
+      }
+    }
+  </script>
+  <meta name="keywords" content="newapp,forum,developers,web">
+  {% endif %}
+  {% if request.url_rule.endpoint == 'home.post' %}
+  <meta name="keywords" content="{% for key in keywords %}{{key}},{% endfor %}newapp">
+  {% endif %}
+  {% if request.url_rule.endpoint == 'users.user' %}
+  <meta name="keywords" content="newapp,{{user.name}}">
+  {% endif %}
 
   <meta name="theme-color" content="rgb(34, 34, 34)" />
   <meta name="application-name" content="NewApp">
@@ -16,16 +38,16 @@
 
 
   {% if request.url_rule.endpoint == 'home.home' %}
-  <meta name="description"
-    content="The newest community for developers to learn, share​ ​their programming ​knowledge, and build their careers.">
+  <meta name="description" content="NewApp the newest community for developers to learn, share​ ​their programming ​knowledge, and build their careers.">
   {% endif %}
   {% if request.url_rule.endpoint == 'users.user' %}
-  <meta name="description" content="{{user.bio}}">{% endif %}
+  <meta name="description" content="{{user.name}} - {{user.bio}}">
+  {% endif %}
   {% if request.url_rule.endpoint == 'home.post' %}
-  <meta name="description" content="{{posts.text[41:100]}}">{% endif %}
-
-  <link rel="canonical" href="https://newapp.nl/">
-  <link rel="manifest" href="https://newapp.nl/{{url_for('static', filename='manifest.json')}}">
+  <meta name="description" content="{{posts.text[41:100]}}">
+  {% endif %}
+  <link rel="canonical" href="https://newapp.nl{{ request.path }}">
+  <link rel="manifest" href="https://newapp.nl/static/manifest.json">
   <link rel="alternate" type="application/rss+xml" title="NewApp RSS Feed" href="https://newapp.nl/feed">
 
   {% if location %}
@@ -49,34 +71,11 @@
   <meta property="og:site_name" content="{{posts.title}}">
   <meta property="og:description" content="{{posts.text[41:100]}}">
   {% endif %}
-
+  {% endif %}
   <meta name="environment" content="production">
   <script async src="https://newappcdn.b-cdn.net/newapp.js"></script>
   <script async src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
   <script async src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"></script>
-  <!-- <script async src="https://www.googletagmanager.com/gtag/js?id=UA-145440871-1"></script>
-
-  <script>
-    window.dataLayer = window.dataLayer || [];
-
-    function gtag() {
-      dataLayer.push(arguments);
-    }
-    gtag('js', new Date());
-
-    gtag('config', 'UA-145440871-1', {
-      'optimize_id': 'GTM-KKCQ2T7'
-    });
-    {% if current_user.is_authenticated %}
-    gtag('set', {'user_id': '{{current_user.id}}'});
-    {% endif %} 
-  </script> -->
-
-
-
-  <!-- <script>
-      var loaded = LoadScripts.loadFiles();
-    </script> -->
   <style>
     body {
       margin: 0;
@@ -406,9 +405,12 @@
       background-color: white;
       border-radius: 5px;
       border: 1px solid #d6d6d6;
-      padding: 0.5rem;
       margin-bottom: 0.2rem;
       box-shadow: 5px 5px 11px 0px rgba(0, 0, 0, 0.2);
+    }
+
+    content .artcile .post .content-post {
+      padding: 0.5rem;
     }
 
     content .article .reply {
@@ -451,6 +453,15 @@
       font-weight: 700;
     }
 
+    tag {
+      border-radius: 4px;
+      background-color: #18BC9C;
+      padding: 0.056rem 0.3rem;
+      font-size: 10px;
+      color: white;
+      font-weight: 700;
+    }
+
     @media screen and (min-width: 1120px) {
 
       content .articles,
@@ -461,6 +472,7 @@
         max-width: calc(100% - 380px);
         float: left;
       }
+
     }
 
     @media screen and (min-width: 1240px) {
@@ -478,7 +490,7 @@
     @media screen and (min-width: 950px) {
 
       content .articles,
-      <i class="far fa-bell"></i>content .article {
+      .article {
         width: 100%;
         margin-left: 2.3%;
         margin-right: 15px;
@@ -522,6 +534,26 @@
       content .articles {
         max-width: calc(100% - 640px);
       }
+    }
+
+    @keyframes placeHolderShimmer{
+      0%{
+          background-position: -468px 0
+      }
+      100%{
+          background-position: 468px 0
+      }
+    }
+
+    .loading {
+      animation-duration: 1.25s;
+      animation-fill-mode: forwards;
+      animation-iteration-count: infinite;
+      animation-name: placeHolderShimmer;
+      animation-timing-function: linear;
+      background: #F6F6F6;
+      background: linear-gradient(to right, #F6F6F6 8%, #F0F0F0 18%, #F6F6F6 33%);
+      border-radius: 3px;
     }
 
     content .sidebar .widget-post,
@@ -622,6 +654,22 @@
       width: 100%;
     }
 
+    content .sidebar .user-info .profile-actions,
+    wrapper .sidebar .user-info .profile-actions {
+      display: flex;
+    }
+
+    content .sidebar .user-info .profile-actions button.follow-user ,
+    wrapper .sidebar .user-info .profile-actions button.follow-user {
+      cursor: pointer;
+      width: 90%;
+      border: 1px solid rgba(0, 0, 0, 0.125);
+      background-color: rgb(0, 157, 230);
+      border-radius: 4px;
+      color: white;
+      font-weight: 600;
+    }
+
     content .sidebar .user-info span.user-tag,
     wrapper .sidebar .user-info span.user-tag {
       font-size: 0.7rem;
@@ -630,6 +678,7 @@
     content .sidebar .profile_image,
     wrapper .sidebar .profile_image {
       border-radius: 50px;
+      margin-top: 0.3rem;
     }
 
     content .sidebar .user-image,
@@ -723,10 +772,11 @@
 
     content .article-card .article-footbar .article-save button.article-save {
       border: 1px solid rgba(0, 0, 0, 0.125);
-      background-color: #18BC9C;
+      background-color: rgb(0, 157, 230);
       border-radius: 4px;
       color: white;
       font-weight: 600;
+      padding: 0.1rem 0.6rem 0.1rem 0.6rem;
 
     }
 
@@ -735,11 +785,11 @@
     }
 
     content .article-card .article-footbar .article-save button.article-save:hover {
-      background-color: #1cc7a6;
+      background-color: rgb(0, 174, 255);
     }
 
     content .article-card .article-footbar .article-save button.article-save:active {
-      background-color: #14947b;
+      background-color: rgb(2, 135, 197);
     }
 
     content .article-card .article-footbar .article-save {
@@ -759,9 +809,10 @@
     content .sidebar .widget .widget-header,
     wrapper .sidebar .widget .widget-header {
       padding: 0.5rem;
-      width: 100%;
+      width: calc(100% - 1rem);
       font-size: 1rem;
       display: flex;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.125);
     }
 
     content .sidebar .widget .widget-header button.minimize-widget,
@@ -789,7 +840,7 @@
 
     content .sidebar .widget .widget-list .widget-item,
     wrapper .sidebar .widget .widget-list .widget-item {
-      border-top: 1px solid rgba(0, 0, 0, 0.125);
+
     }
 
     content .sidebar .widget .widget-list .widget-item .text,
@@ -815,17 +866,23 @@
     content profile.profile-page {
 
       border-radius: 5px;
-      border: 1px solid #d6d6d6;
-
       margin-bottom: 0.2rem;
 
     }
 
     content profile .profile-cover {
-      background-color: #14947b;
-      height: 300px;
-      display: block;
 
+      max-height: 500px;
+      display: block;
+      
+      border-radius: 5px;
+      overflow: hidden;
+    }
+
+    content profile .profile-cover img {
+      border: 1px solid #dddd;
+      width: 100%;
+      border-radius: 5px;
     }
 
     content profile .profile-main .sidebar-info {
@@ -837,7 +894,7 @@
       text-align: center;
       margin-left: 3rem;
       display: flex;
-      width: 400px;
+      width: 500px;
     }
 
     content profile .profile-main .sidebar-info .profile-image img {
@@ -848,10 +905,14 @@
     }
 
     content profile .profile-main .sidebar-main {
-      width: 600px;
+      width: 800px;
       margin-top: 0.1rem;
+      {% if request.url_rule.endpoint == 'users.user' %}
       margin-left: 0.5rem;
       margin-right: 0.4rem;
+      {% else %}
+      width: 90%;
+      {% endif %}
     }
 
     content profile .profile-main {
@@ -893,6 +954,16 @@
       padding: 0.5rem 0 0.5rem 0;
     }
 
+    content profile .profile-main .sidebar-info .profile-actions button.save-settings {
+      width: 70%;
+      border: 1px solid rgba(0, 0, 0, 0.125);
+      background-color: rgb(0, 157, 230);
+      border-radius: 4px;
+      color: white;
+      font-weight: 600;
+      padding: 0.5rem 0 0.5rem 0;
+    }
+
     content profile .profile-main .sidebar-info .widgets .profile-presentation {
       border: 1px solid #d6d6d6;
       border-radius: 5px;
@@ -900,6 +971,7 @@
       background-color: #ffffff;
       text-align: left;
       padding: 0.8rem;
+      margin: auto;
       margin-bottom: 0.7rem;
     }
 
@@ -934,6 +1006,7 @@
       background-color: #ffffff;
       text-align: left;
       padding: 0.8rem;
+      margin: auto;
     }
 
     content profile .profile-main .sidebar-info .widgets .interesed-tags .header {
@@ -975,6 +1048,7 @@
       background-color: #ffffff;
       text-align: left;
       padding: 0.8rem;
+      margin: auto;
     }
 
     content profile .profile-main .sidebar-right .widgets .user-follows .users {
@@ -1009,8 +1083,73 @@
       padding: 0.4rem;
     }
 
+    content profile .profile-main .sidebar-info .widgets .settings-menu {
+      border: 1px solid #d6d6d6;
+      border-radius: 5px;
+      width: 70%;
+      background-color: #ffffff;
+      text-align: center;
+      padding: 0.8rem;
+      margin-bottom: 0.7rem;
+    }
+
+    content profile .profile-main .sidebar-info .widgets .settings-menu .header {
+      margin-bottom: 0.4rem;
+      margin-top: 0.4rem;
+    }
+
+    content profile .profile-main .sidebar-info .widgets .settings-menu .settings {
+      border-top:1px solid #d6d6d6;
+    }
+
+    content profile .profile-main .sidebar-info .widgets .settings-menu {
+      margin: auto;
+      margin-bottom: 1rem;
+    }
+    content profile .profile-main .sidebar-info .widgets .settings-menu .settings {
+      padding-top: 0.5rem;
+    }
+    content profile .profile-main .sidebar-info .widgets .settings-menu .settings button.item{
+      width: 100%;
+      border: none;
+      padding: 0.4rem 0rem 0.4rem 0rem;
+      background: white;
+      font-size: 0.8rem;
+    }
+    content profile .profile-main .sidebar-info .widgets .settings-menu .settings button.item:active {
+      background-color: #1cc7a6;
+       color: white;
+    }
+    content profile .profile-main .sidebar-info .widgets .settings-menu .settings button.item:hover {
+      background-color: #14947b;
+      color: white;
+    }
+    content profile .profile-main .sidebar-info .widgets .settings-menu .settings button.item:focus {
+      outline: none;
+    }
+    content profile .profile-main .sidebar-main .edit-info {
+      display: flex;
+      border: 1px solid #d6d6d6;
+      border-radius: 5px;
+      width: 90%;
+      background-color: #ffffff;
+      text-align: center;
+      padding: 0.8rem;
+    }
+
+    content profile .profile-main .sidebar-main .edit-info .col-1 {
+      margin-right: 0.4rem;
+        width: 50%;
+    }
+    content profile .profile-main .sidebar-main .edit-info .col-2 {
+      width: 50%;
+    }
+
     @media screen and (max-width: 1260px) {
       content profile .profile-main .sidebar-right {
+        display: none;
+      }
+      content .sidebar#sidebar-right {
         display: none;
       }
     }
@@ -1025,16 +1164,19 @@
       }
 
       content profile .profile-main .sidebar-info .widgets .profile-presentation {
-        width: 90%;
+        width: auto;
       }
 
       content profile .profile-main .sidebar-info .widgets .interesed-tags {
-        width: 90%;
+        width: auto;
       }
 
       content profile .profile-main .sidebar-main {
         text-align: center;
         min-width: 90%;
+        width: auto;
+        margin-left: 0;
+        margin-right: 0;
       }
 
       content profile .profile-main .sidebar-info .profile-image {
@@ -1058,12 +1200,60 @@
         text-align: center;
       }
 
-      content profile .profile-main .sidebar-main {
-        width: auto;
+      content profile .profile-main .sidebar-main .edit-info {
+        display: inline-block;
+        text-align: center;
+        width: 90%;
+      }
+      content profile .profile-main .sidebar-info .widgets .settings-menu {
+        width: 90%;
+      }
+      content profile .profile-main .sidebar-main .edit-info .col-1 {
+        margin: 0;
+      }
+      content profile .profile-main .sidebar-main .edit-info .col-1 {
+        width: auto !important;
+      }
+      content profile .profile-main .sidebar-main .edit-info .col-2 {
+        width: auto !important;
       }
     }
 
-
+    new_post {
+      background: white;
+      border: 1px solid #d6d6d6;
+      display: block;
+      border-radius: 10px;
+      padding: 2rem;
+    }
+    new_post input[type=text]{
+      margin-bottom: 1%;
+    }
+    new_post .footer button.newpost {
+      cursor: pointer;
+      border: 2px solid rgba(255, 255, 255, 1);
+      background-color: rgb(0, 157, 230);
+      border-radius: 4px;
+      color: white;
+      font-weight: 600;
+      padding: 0.4rem 1rem 0.4rem 1rem;
+      margin-top: 0.9rem;
+      font-size: 1rem;
+      box-shadow: 2px 2px;
+      margin-inline-start: auto;
+    }
+    new_post .footer button.newpost:hover {
+      background-color: rgb(0, 174, 255);
+    }
+    new_post .footer button.newpost:active {
+      background-color: rgb(0, 148, 216);
+    }
+    new_post .footer button.newpost:focus {
+      outline: none;
+    }
+    new_post .footer {
+      display: flex;
+    }
 
     modal {
       position: fixed;
@@ -1190,7 +1380,7 @@
 
     input[type=text] {
       border: none;
-      background-color: #d6d6d6;
+      background-color: #f3f2f2;
       border-radius: 2px;
       padding: 0.4rem 0rem 0.4rem 0.4rem;
       color: #212529;
@@ -1200,7 +1390,7 @@
 
     input[type=password] {
       border: none;
-      background-color: #d6d6d6;
+      background-color: #f3f2f2;
       border-radius: 2px;
       padding: 0.4rem 0rem 0.4rem 0.4rem;
       color: #212529;
@@ -1269,43 +1459,82 @@
           <input type="text" name="search" placeholder="Search">
         </form>
       </div>
+
       {% if current_user.is_authenticated == false %}
       <div class="navbar-item" style="margin-inline-start: auto;">
         <a href="#login-modal" style="color: white;vertical-align: sub;cursor: pointer;"><span
             style="vertical-align: inherit;"><span class="fas fa-sign-in-alt"></span> Login</span></a>
       </div>
       {% else %}
-      <div class="navbar-item" style="margin-inline-start: auto;">
-        <div class="newapp-dropdown">
-            <img src="{{current_user.avatar}}" height="30px" width="30px" style="border-radius: 30px;" alt="">
-          <div class="newapp-dropdown-content">
-            {{current_user.name}}
-            <hr>
-            <div class="dropdown-item">
-              <a href="{{url_for('users.user', id=current_user.id, name=current_user.name)}}" style="color: white;"><i class="fas fa-user"></i> Profile</a>
+      <div style="margin-inline-start: auto;display:flex;">
+          <div class="navbar-item">
+              <div class="newapp-dropdown">
+                  <i class="far fa-bell fa-lg" style="    margin-top: 0.55rem;
+                  margin-right: 0.4rem;{% if request.MOBILE %}margin-right:0.9rem;{% endif %}"></i>
+                  <div class="newapp-dropdown-content" style="min-width: 13rem;margin-inline-start:-12.4rem;">
+                      Notifications
+                      <hr>
+                    {% for notification in current_user.n_receiver %}
+                    {% if notification.checked == False %}
+                      <div class="dropdown-item" style="display:flex;">
+                          <img src="{{notification.author.avatar}}" height="30px" width="30px" style="border-radius: 30px;" alt="">
+                          <a  href="{{notification.link}}?notification={{notification.id}}" style="color: white;margin-left: 0.4rem;">{{notification.body}}</a>
+                        </div>
+                      {% endif %}
+                      {% endfor %}
+                  </div>
+              </div>
             </div>
-            {% if current_user.roleinfo.admin_panel_permission %}
-            <div class="dropdown-item">
-              <a href="{{url_for('admin.main')}}" style="color: white;"><i class="fas fa-user-shield"></i>
-                Admin</a>
-            </div>
-            {% endif %}
-            <div class="dropdown-item">
-              <a href="{{url_for('users.logout')}}" style="color: white;"><i class="fas fa-sign-out-alt"></i> Logout</a>
+          {% if request.url_rule.endpoint != 'home.newpost' %}
+          {% if request.MOBILE == False %}
+          <div class="navbar-item">
+              <a href="/newpost"><button class="navbar-button" style="margin-right:0.7rem">New Post</button></a>
+          </div>
+          {% else %}
+          <div class="navbar-item">
+              <a href="/newpost"><i class="fas fa-plus-circle fa-lg" style="color:white;margin-top: 0.55rem;
+                margin-right: 0.9rem;"></i></a>
+          </div>
+          {% endif %}
+          {% endif %}
+          <div class="navbar-item">
+            <div class="newapp-dropdown">
+                <img src="{{current_user.avatar}}" height="30px" width="30px" style="border-radius: 30px;" alt="">
+              <div class="newapp-dropdown-content">
+                @{{current_user.name}}
+                <hr>
+                <div class="dropdown-item">
+                  <a href="{{url_for('users.user', id=current_user.id, name=current_user.name)}}" style="color: white;"><i class="fas fa-user"></i> Profile</a>
+                </div>
+                {% if current_user.roleinfo.admin_panel_permission %}
+                <div class="dropdown-item">
+                  <a href="{{url_for('admin.main')}}" style="color: white;"><i class="fas fa-user-shield"></i>
+                    Admin</a>
+                </div>
+                {% endif %}
+                <div class="dropdown-item">
+                  <a href="{{url_for('users.settings', name=current_user.name)}}" style="color: white;"><i class="fas fa-user-cog"></i></i> Settings</a>
+                </div>
+                <div class="dropdown-item">
+                  <a href="{{url_for('users.logout')}}" style="color: white;"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                </div>
+              </div>
             </div>
           </div>
-        </div>
       </div>
       {% endif %}
-
     </div>
   </nav>
 </header>
 <content>
+  {% if error_check != True %}
   {% include 'sidebar_left.html' %}
+  {% endif %}
   {% block content %}
   {% endblock %}
+  {% if error_check != True %}
   {% include 'sidebar_right.html' %}
+  {% endif %}
 </content>
 {% include 'modals.html' %}
 
@@ -1341,7 +1570,14 @@
       });
       {% if current_user.is_authenticated %}
       gtag('set', {'user_id': '{{current_user.id}}'});
-      {% endif %} 
+      {% endif %}
+      {% if request.MOBILE == False %}
+      {%  if request.endpoint == 'home.home' %}
+      LoadTrending();
+      {% elif request.endpoint == 'home.post' %}
+      LoadTrending();
+      {% endif %}
+      {% endif %}
       };
   }
 </script>

@@ -3,7 +3,7 @@ import datetime
 from sqlalchemy import ForeignKey
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
-import sqlalchemy as sq
+import sqlalchemy.dialects.postgresql as sq
 
 from app import bcrypt, db, db_engine,ma,fields
 import flask_whooshalchemy
@@ -25,7 +25,7 @@ class UserModel(db.Model):
     github_name = db.Column(db.String(50), primary_key = False)
     email = db.Column(db.String(50), primary_key = False)
     password = db.Column(db.String(255), primary_key = False)
-    avatar = db.Column(db.String, primary_key = False, default = 'None')
+    avatar = db.Column(db.String, primary_key = False)
     genre = db.Column(db.String, primary_key = False, default = 'None')
     role = db.Column(db.Integer, ForeignKey('roles.id') ,default = 0)
     bio = db.Column(db.String(250), primary_key = False, default = 'Hey i`m new here')
@@ -41,15 +41,17 @@ class UserModel(db.Model):
     profession = db.Column(db.String, primary_key = False)
     saved_posts = db.Column(sq.ARRAY(db.Integer),default=[], primary_key = False)
     liked_posts = db.Column(sq.ARRAY(db.Integer),default=[], primary_key = False)
-    follow = db.Column(sq.ARRAY(db.Integer), default=[2], primary_key = False)
-    followed = db.Column(sq.ARRAY(db.Integer), default=[], primary_key = False)
+    follow = db.Column(sq.ARRAY(db.Integer), ForeignKey('users.id'), default=[], primary_key = False)
+    followed = db.Column(sq.ARRAY(db.Integer), ForeignKey('users.id'), default=[],primary_key = False)
+    cover = db.Column(db.String, primary_key = False)
 
     posts = relationship("PostModel", backref="user_in")
     replyes = relationship("ReplyModel", backref="user_in")
     likes = relationship("LikeModel", backref="user_in")
+    following = db.relationship("UserModel",foreign_keys=[follow])
 
     def __init__(self,id,join_date,name,real_name,github_name,email,password,avatar,genre,role,bio,activated,is_online,
-                    ip_address,browser,country_name,country_flag,lang,int_tags,birthday,profession,saved_posts,liked_posts,follow,followed):
+                    ip_address,browser,country_name,country_flag,lang,int_tags,birthday,profession,saved_posts,liked_posts,follow,followed,cover):
         self.id = id
         self.join_date = join_date
         self.name = name
@@ -75,6 +77,7 @@ class UserModel(db.Model):
         self.liked_posts = liked_posts
         self.follow = follow
         self.followed = followed
+        self.cover = cover
 
     def is_authenticated(self):
         return True
@@ -91,23 +94,19 @@ class UserModel(db.Model):
     def __repr__(self):
         return ('<name {}').format(self.name)
 
-    def get_followers(self):
-        user = db.session.query(UserModel).filter_by(id=self.id).first()
-        return len(user.followed)
-
     def get_notifications(self):
         return db.session.query(Notifications_Model).filter_by(for_user=self.id).all()
 
 class UserSchema(ma.Schema):
     class Meta:
         fields = ('id','join_date','name','real_name','github_name','email','avatar')
-    
+
 UsersSchema = UserSchema(many=True)
 
 class OUserSchema(ma.Schema):
     class Meta:
         fields = ('id','join_date','name','real_name','github_name','email','genre','role','bio','avatar')
-    
+
 OUserSchema = OUserSchema()
 
 class RoleModel(db.Model):
@@ -160,7 +159,7 @@ class PostModel(SearchableMixin, db.Model):
     text = db.Column(db.String, primary_key = False)
     views = db.Column(db.Integer, primary_key = False, default=0)
     reply = db.Column(db.Integer, primary_key = False, default=0)
-    user = db.Column(db.Integer, ForeignKey('users.id')) 
+    user = db.Column(db.Integer, ForeignKey('users.id'))
     posted_on = db.Column(db.Date, primary_key = False, default = datetime.datetime.now)
     approved = db.Column(db.Boolean, primary_key = False)
     closed = db.Column(db.Boolean, primary_key = False)
@@ -169,7 +168,7 @@ class PostModel(SearchableMixin, db.Model):
     lang = db.Column(db.String, primary_key = False, default = 'eng')
     thumbnail = db.Column(db.String, primary_key = False)
     likes = db.Column(db.Integer, primary_key = False, default=0)
-    
+
     author = db.relationship("UserModel", backref = "author")
 
     def __init__(self,id,title,text,views,reply,user,posted_on,approved,closed,closed_on,closed_by,lang,thumbnail,likes):
@@ -205,14 +204,14 @@ class PostSchema(ma.Schema):
     author = fields.Nested(UserSchema())
     class Meta:
         fields = ('id','title','text','views','posted_on','author')
-    
+
 PostsSchema = PostSchema(many=True)
 OPostSchema = PostSchema()
 
 class ReplyModel(db.Model):
 
     __tablename__ = 'replyes'
- 
+
     id = db.Column(db.Integer, db.Sequence('replyes_id_seq'), primary_key = True)
     text = db.Column(db.String(250), primary_key = False)
     post_id = db.Column(db.Integer, primary_key = False)
@@ -230,7 +229,7 @@ class ReplyModel(db.Model):
 class ReplySchema(ma.Schema):
     class Meta:
         fields = ('id','text','post_id','user')
-    
+
 RepliesSchema = ReplySchema(many=True)
 
 class LikeModel(db.Model):
@@ -250,19 +249,32 @@ class LikeModel(db.Model):
     def __repr__(self):
         return ('<id {}').format(self.id)
 
-class TagModel(db.Model):
+# class TagModel(db.Model):
 
-    __tablename__ = 'post_tags'
+#     __tablename__ = 'post_tags'
 
- 
-    id = db.Column(db.Integer, db.Sequence('post_tags_id_seq'), primary_key = True)
-    tag = db.Column(db.String(50), primary_key = False)
-    post_id = db.Column(db.Integer, primary_key = False)
 
-    def __init__(self,id,tag,post_id):
+#     id = db.Column(db.Integer, db.Sequence('post_tags_id_seq'), primary_key = True)
+#     tag = db.Column(db.String(50), primary_key = False)
+#     post_id = db.Column(db.Integer, primary_key = False)
+
+#     def __init__(self,id,tag,post_id):
+#         self.id = id
+#         self.tag = tag
+#         self.post_id = post_id
+
+class TagModel(Base):
+
+    __tablename__ = 'tags'
+
+    id = db.Column(db.Integer, db.Sequence('tags_id_seq'), primary_key = True)
+    name = db.Column(db.String, primary_key = False)
+    post = db.Column(sq.ARRAY(db.Integer), default=[],primary_key = False)
+
+    def __init__(self,id,name,post):
         self.id = id
-        self.tag = tag
-        self.post_id = post_id
+        self.name = name
+        self.post = post
 
 class Analyze_Session(Base):
 
@@ -296,7 +308,7 @@ class Analyze_Session(Base):
 class Analyze_Sessions_Schema(ma.Schema):
     class Meta:
         fields = ('id','ip','continent','country','city','os','browser','session','created_at','bot')
-    
+
 SessionsSchema = Analyze_Sessions_Schema(many=True)
 
 class Analyze_Pages(Base):
@@ -318,7 +330,7 @@ class Analyze_Pages(Base):
 
     @staticmethod
     def total_views():
-        return db.session.query(Analyze_Session).count()
+        return db.session.query(Analyze_Session).filter_by(bot=False).count()
 
     @staticmethod
     def total_users():
@@ -331,7 +343,7 @@ class Analyze_Pages(Base):
     @staticmethod
     def count_replies():
         return db.session.query(ReplyModel).count()
-    
+
 class Notifications_Model(db.Model):
 
     __tablename__ = 'notifications'
@@ -343,6 +355,7 @@ class Notifications_Model(db.Model):
     body = db.Column(db.String, primary_key = False)
     link = db.Column(db.String, primary_key = False)
     for_user = db.Column(db.Integer, ForeignKey('users.id'))
+    receiver = db.relationship("UserModel", backref = "n_receiver", foreign_keys=[for_user])
     checked = db.Column(db.Boolean, primary_key = False, default = False)
     created_on = db.Column(db.Date, primary_key = False, default = datetime.datetime.utcnow)
 

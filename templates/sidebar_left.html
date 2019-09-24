@@ -1,3 +1,4 @@
+{% if request.MOBILE == False %}
 {% if request.endpoint == 'home.home' %}
 <div class="sidebar" id="sidebar-left">
     {% if current_user.is_authenticated %}
@@ -26,9 +27,10 @@
         <div class="widget-header">
             <div class="widget-title">Customize your experience</div>
         </div>
-        <div class="widget-list" style="max-height: 400px;border-top: 1px solid rgba(0, 0, 0, 0.125);overflow: auto;">
+        <div class="widget-list" style="max-height: 400px;overflow: auto;">
             {% if current_user.is_authenticated %}
             {% for tag in current_user.int_tags %}
+            {% if tag %}
             <div class="widget-item" id="widget-tags" style="border-top: none;display: flex;">
                 <div class="text">
                     <a style="text-decoration: underline;" href="{{url_for('home.home',tag_finder=tag)}}">
@@ -37,6 +39,7 @@
                 </div>
                 <button class="widget-button" onclick="Follow_Tag('{{tag}}')" id="follow-tag-{{tag}}" style="margin-inline-start: auto;">Unfollow</button>
             </div>
+            {% endif %}
             {% endfor %}
             <div class="widget-item" style="border-top: none;display: flex;background-color: #f3f3f3;">
                 <div class="text">
@@ -47,27 +50,32 @@
             {% for tag in tagi %}
             {% if current_user.is_authenticated %}
             {% if tag.tag not in current_user.int_tags %}
+            {% if tag.name %}
             <div class="widget-item" id="widget-tags" style="border-top: none;display: flex;">
                 <div class="text">
-                    <a style="text-decoration: underline;" href="{{url_for('home.home',tag_finder=tag.tag)}}">
-                        #{{tag.tag}}
+                    <a style="text-decoration: underline;" href="{{url_for('home.home',tag_finder=tag.name)}}">
+                        #{{tag.name}}
                     </a>
                 </div>
-                <button class="widget-button" onclick="Follow_Tag('{{tag.tag}}')" id="follow-tag-{{tag.tag}}" style="margin-inline-start: auto;">Follow</button>
+                <button class="widget-button" onclick="Follow_Tag('{{tag.name}}')" id="follow-tag-{{tag.name}}" style="margin-inline-start: auto;">Follow</button>
             </div>
             {% endif %}
+            {% endif %}
             {% else %}
+            {% if tag.name %}
             <div class="widget-item" id="widget-tags" style="border-top: none;display: flex;">
                 <div class="text">
-                    <a style="text-decoration: underline;" href="{{url_for('home.home',tag_finder=tag.tag)}}">
-                        #{{tag.tag}}
+                    <a style="text-decoration: underline;" href="{{url_for('home.home',tag_finder=tag.name)}}">
+                        #{{tag.name}}
                     </a>
                 </div>
                 
             </div>
             {% endif %}
+            {% endif %}
             {% endfor %}
         </div>
     </div>
 </div>
+{% endif %}
 {% endif %}

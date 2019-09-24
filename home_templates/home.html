@@ -6,11 +6,12 @@
         <div class="articles">
             {% for post in posts %}
             {% if post.approved %}
-            <div class="article-card">
+            <div class="article-card" id="{{post.id}}">
                 {% if post.thumbnail %}
                 <div class="article-thumbnail">
                         <img
-                          src="https://res.cloudinary.com/practicaldev/image/fetch/s--kx7yCZBU--/c_imagga_scale,f_auto,fl_progressive,h_420,q_auto,w_1000/https://res.cloudinary.com/practicaldev/image/fetch/s--1FtZPGGk--/c_imagga_scale%2Cf_auto%2Cfl_progressive%2Ch_420%2Cq_auto%2Cw_1000/https://thepracticaldev.s3.amazonaws.com/i/rqxxh9ot8u2rtssi3moz.jpeg">
+                          src="https://newapp.nl/static/thumbnail_post/post_{{post.id}}.jpeg" style="border-top-left-radius: 4px;
+                          border-top-right-radius: 4px;">
                 </div>
                 {% endif %}
                 <div class="article-main">
@@ -18,13 +19,15 @@
                     src="{{post.user_in.avatar}}" height="50px" width="50px" title="profile image">
                 </div>
                 <div class="article-info">
-                    <div class="article-title"><a href="{{url_for('home.post', id=post.id, title=post.title)}}">{{post.title}}</a></div>
+                    <div class="article-title"><a href="{{url_for('home.post', id=post.id, title=post.title)}}"><h1 style="font-size: 1.5rem;
+                        font-weight: 400;
+                        margin: 0;">{{post.title}}</h1></a></div>
                     <div class="article-author">Author: <a href="{{url_for('users.user', name=post.user_in.name, id=post.user_in.id )}}">Danutu</a></div>
                     <div class="article-tags">
                         <span>Tags: </span>
                         {% for tag in tags %}
-                        {% if tag.post_id == post.id %}
-                        <a href="{{url_for('home.home',tag_finder=tag.tag)}}"><tag class="article-tag">{{tag.tag}}</tag></a>
+                        {% if post.id in tag.post %}
+                        <a href="{{url_for('home.home',tag_finder=tag.name)}}"><tag class="article-tag">{{tag.name}}</tag></a>
                         {% endif %}
                         {% endfor %}
                     </div>
@@ -44,70 +47,4 @@
             {% endfor %}
         </div>
     
-{% if current_user.is_authenticated %}
-<script>
-    var toolbarOptions = [
-        ['bold', 'italic', 'underline'],
-        ['blockquote', 'code-block'],
-        [{
-            'header': [1, 2, 3, 4, 5, 6, false]
-        }],
-        [{
-            'color': []
-        }, {
-            'background': []
-        }],
-        [{
-            'font': []
-        }],
-        [{
-            'align': []
-        }],
-    ];
-
-    function LoadQuill() {
-        var quill = new Quill('#editor', {
-            modules: {
-                toolbar: toolbarOptions
-            },
-            theme: 'snow'
-        });
-    }
-    window.addEventListener("load", LoadQuill, false);
-    window.addEventListener("load",function () {
-        var submit_entry = function () {
-        var hidden_text_field = document.getElementById('text');
-        hidden_text_field.value = document.querySelector(".ql-editor").innerHTML
-    }
-    });
-    window.addEventListener("load",function(){
-    jQuery(document).ready(function() {
-        jQuery(".form-thread").submit(function() { 
-            var hidden_text_field = document.getElementById('text');
-            hidden_text_field.value = document.querySelector(".ql-editor").innerHTML;
-            console.log( document.querySelector(".ql-editor").innerHTML);
-        });
-    }); 
-    });
-</script>
-{% endif %}
-<script>
-    /*var posts = [{% for post in posts.items %}{{post.id}},{% endfor %}]
-    var posts_img = [{% for post in posts.items %}"{{post.user_in.avatar}}",{% endfor %}]
-    var i;
-    for (i = 0; i < posts.length; i++) { 
-        LoadImages(posts[i], posts_img[i]); 
-    }
-    function Minimize(type, widget) {
-    var button = document.getElementById('minimize-widget-' + widget + '-' + type);
-    var list = document.getElementById('widget-list-' + widget + '-' + type);
-    if (list.style.display == 'block') {
-      list.style.display = 'none';
-      //button.innerHTML = '+';
-    } else {
-      list.style.display = 'block';
-      //button.innerHTML = '-';
-    }
-  }*/
-</script>
 {% endblock %}

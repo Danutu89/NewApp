@@ -1,6 +1,6 @@
 from app import celery, db, app
 from flask import session
-from models import  PostModel
+from models import PostModel
 import re
 
 @celery.task

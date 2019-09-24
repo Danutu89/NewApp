@@ -14683,3 +14683,335 @@ AttributeError: 'NoneType' object has no attribute 'github_name'
 [2019-09-10 06:10:40 -0400] [9356] [INFO] Handling signal: term
 [2019-09-10 06:10:55 -0400] [9434] [INFO] Worker exiting (pid: 9434)
 [2019-09-10 06:10:55 -0400] [9356] [INFO] Shutting down: Master
+[2019-09-11 12:11:24 -0400] [28170] [INFO] Starting gunicorn 19.9.0
+[2019-09-11 12:11:24 -0400] [28170] [INFO] Listening at: http://0.0.0.0:8000 (28170)
+[2019-09-11 12:11:24 -0400] [28170] [INFO] Using worker: eventlet
+[2019-09-11 12:11:24 -0400] [28174] [INFO] Booting worker with pid: 28174
+[2019-09-11 12:11:26,008] INFO in app: NewApp Launched successfully
+[2019-09-11 12:11:26,015] INFO in app: Security keys
+[2019-09-11 12:11:26,017] INFO in app: Session keys
+[2019-09-11 12:11:26,017] INFO in app: Î,CHÀÒK9ã ZÍùÝNÿ¯;rï
+[2019-09-11 12:11:26,017] INFO in app: Cryptography key
+[2019-09-11 12:11:26,017] INFO in app: b'vgF_Yo8-IutJs-AcwWPnuNBgRSgncuVo1yfc9uqSiiU='
+[2019-09-11 12:11:26,017] INFO in app: JWT Key
+[2019-09-11 12:11:26,017] INFO in app: mRo48tU4ebP6jIshqaoNf2HAnesrCGHm
+[2019-09-11 12:11:26,018] INFO in app: JWT Algorithm
+[2019-09-11 12:11:26,018] INFO in app: HS256
+[2019-09-11 14:36:15,824] ERROR in app: Exception on /post/Hi/id=6 [GET]
+Traceback (most recent call last):
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/app.py", line 1832, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/app.py", line 1818, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "/root/Flask/NewApp/home.py", line 154, in post
+    posts = db.session.query(PostModel).filter_by(id=id).first_or_404()
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask_sqlalchemy/__init__.py", line 432, in first_or_404
+    abort(404, description=description)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/werkzeug/exceptions.py", line 762, in abort
+    return _aborter(status, *args, **kwargs)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/werkzeug/exceptions.py", line 743, in __call__
+    raise self.mapping[code](*args, **kwargs)
+werkzeug.exceptions.NotFound: 404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/app.py", line 2311, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/app.py", line 1834, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask_cors/extension.py", line 161, in wrapped_function
+    return cors_after_request(app.make_response(f(*args, **kwargs)))
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/app.py", line 1732, in handle_user_exception
+    return self.handle_http_exception(e)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/app.py", line 1661, in handle_http_exception
+    return handler(e)
+  File "/root/Flask/NewApp/app.py", line 112, in not_found_error
+    return render_template('error_code.html',code=404,error='Sorry Page not found!',reset=reset,users=users,posts=posts,search=search,register=register,login=login)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/templating.py", line 135, in render_template
+    context, ctx.app)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/templating.py", line 117, in _render
+    rv = template.render(context)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/jinja2/asyncsupport.py", line 76, in render
+    return original_render(self, *args, **kwargs)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/jinja2/environment.py", line 1008, in render
+    return self.environment.handle_exception(exc_info, True)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/jinja2/environment.py", line 780, in handle_exception
+    reraise(exc_type, exc_value, tb)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/jinja2/_compat.py", line 37, in reraise
+    raise value.with_traceback(tb)
+  File "/root/Flask/NewApp/templates/error_code.html", line 1, in top-level template code
+    {% extends "index.html" %}
+  File "/root/Flask/NewApp/templates/index.html", line 25, in top-level template code
+    <meta name="description" content="{{posts.text[41:100]}}">{% endif %}
+jinja2.exceptions.UndefinedError: 'list object' has no attribute 'text'
+[2019-09-11 14:36:15 -0400] [28174] [ERROR] Error handling request /post/Hi/id%3D6
+Traceback (most recent call last):
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/app.py", line 1832, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/app.py", line 1818, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "/root/Flask/NewApp/home.py", line 154, in post
+    posts = db.session.query(PostModel).filter_by(id=id).first_or_404()
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask_sqlalchemy/__init__.py", line 432, in first_or_404
+    abort(404, description=description)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/werkzeug/exceptions.py", line 762, in abort
+    return _aborter(status, *args, **kwargs)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/werkzeug/exceptions.py", line 743, in __call__
+    raise self.mapping[code](*args, **kwargs)
+werkzeug.exceptions.NotFound: 404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/app.py", line 2311, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/app.py", line 1834, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask_cors/extension.py", line 161, in wrapped_function
+    return cors_after_request(app.make_response(f(*args, **kwargs)))
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/app.py", line 1732, in handle_user_exception
+    return self.handle_http_exception(e)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/app.py", line 1661, in handle_http_exception
+    return handler(e)
+  File "/root/Flask/NewApp/app.py", line 112, in not_found_error
+    return render_template('error_code.html',code=404,error='Sorry Page not found!',reset=reset,users=users,posts=posts,search=search,register=register,login=login)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/templating.py", line 135, in render_template
+    context, ctx.app)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/templating.py", line 117, in _render
+    rv = template.render(context)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/jinja2/asyncsupport.py", line 76, in render
+    return original_render(self, *args, **kwargs)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/jinja2/environment.py", line 1008, in render
+    return self.environment.handle_exception(exc_info, True)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/jinja2/environment.py", line 780, in handle_exception
+    reraise(exc_type, exc_value, tb)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/jinja2/_compat.py", line 37, in reraise
+    raise value.with_traceback(tb)
+  File "/root/Flask/NewApp/templates/error_code.html", line 1, in top-level template code
+    {% extends "index.html" %}
+  File "/root/Flask/NewApp/templates/index.html", line 25, in top-level template code
+    <meta name="description" content="{{posts.text[41:100]}}">{% endif %}
+jinja2.exceptions.UndefinedError: 'list object' has no attribute 'text'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/gunicorn/workers/base_async.py", line 56, in handle
+    self.handle_request(listener_name, req, client, addr)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/gunicorn/workers/base_async.py", line 107, in handle_request
+    respiter = self.wsgi(environ, resp.start_response)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/app.py", line 2328, in __call__
+    return self.wsgi_app(environ, start_response)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask_socketio/__init__.py", line 46, in __call__
+    start_response)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/engineio/middleware.py", line 74, in __call__
+    return self.wsgi_app(environ, start_response)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/app.py", line 2314, in wsgi_app
+    response = self.handle_exception(e)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask_cors/extension.py", line 161, in wrapped_function
+    return cors_after_request(app.make_response(f(*args, **kwargs)))
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/app.py", line 1767, in handle_exception
+    return self.finalize_request(handler(e), from_error_handler=True)
+  File "/root/Flask/NewApp/app.py", line 122, in server_error
+    return render_template('error_code.html',code=500,error='Server error!',reset=reset,users=users,posts=posts,search=search,register=register,login=login)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/templating.py", line 135, in render_template
+    context, ctx.app)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/templating.py", line 117, in _render
+    rv = template.render(context)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/jinja2/asyncsupport.py", line 76, in render
+    return original_render(self, *args, **kwargs)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/jinja2/environment.py", line 1008, in render
+    return self.environment.handle_exception(exc_info, True)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/jinja2/environment.py", line 780, in handle_exception
+    reraise(exc_type, exc_value, tb)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/jinja2/_compat.py", line 37, in reraise
+    raise value.with_traceback(tb)
+  File "/root/Flask/NewApp/templates/error_code.html", line 1, in top-level template code
+    {% extends "index.html" %}
+  File "/root/Flask/NewApp/templates/index.html", line 25, in top-level template code
+    <meta name="description" content="{{posts.text[41:100]}}">{% endif %}
+jinja2.exceptions.UndefinedError: 'list object' has no attribute 'text'
+[2019-09-11 15:11:27 -0400] [28170] [INFO] Handling signal: hup
+[2019-09-11 15:11:27 -0400] [28170] [INFO] Hang up: Master
+[2019-09-11 15:11:27 -0400] [28170] [INFO] Handling signal: hup
+[2019-09-11 15:11:27 -0400] [28170] [INFO] Hang up: Master
+[2019-09-11 15:11:27 -0400] [25542] [INFO] Booting worker with pid: 25542
+[2019-09-11 15:11:27 -0400] [25543] [INFO] Booting worker with pid: 25543
+[2019-09-11 15:11:30,165] INFO in app: NewApp Launched successfully
+[2019-09-11 15:11:30,165] INFO in app: Security keys
+[2019-09-11 15:11:30,165] INFO in app: Session keys
+[2019-09-11 15:11:30,165] INFO in app: Î,CHÀÒK9ã ZÍùÝNÿ¯;rï
+[2019-09-11 15:11:30,166] INFO in app: Cryptography key
+[2019-09-11 15:11:30,166] INFO in app: b'vgF_Yo8-IutJs-AcwWPnuNBgRSgncuVo1yfc9uqSiiU='
+[2019-09-11 15:11:30,166] INFO in app: JWT Key
+[2019-09-11 15:11:30,166] INFO in app: mRo48tU4ebP6jIshqaoNf2HAnesrCGHm
+[2019-09-11 15:11:30,166] INFO in app: JWT Algorithm
+[2019-09-11 15:11:30,166] INFO in app: HS256
+[2019-09-11 15:11:30,163] INFO in app: NewApp Launched successfully
+[2019-09-11 15:11:30,167] INFO in app: Security keys
+[2019-09-11 15:11:30,167] INFO in app: Session keys
+[2019-09-11 15:11:30,167] INFO in app: Î,CHÀÒK9ã ZÍùÝNÿ¯;rï
+[2019-09-11 15:11:30,168] INFO in app: Cryptography key
+[2019-09-11 15:11:30,168] INFO in app: b'vgF_Yo8-IutJs-AcwWPnuNBgRSgncuVo1yfc9uqSiiU='
+[2019-09-11 15:11:30,168] INFO in app: JWT Key
+[2019-09-11 15:11:30,168] INFO in app: mRo48tU4ebP6jIshqaoNf2HAnesrCGHm
+[2019-09-11 15:11:30,168] INFO in app: JWT Algorithm
+[2019-09-11 15:11:30,168] INFO in app: HS256
+[2019-09-11 15:11:30 -0400] [25542] [INFO] Worker exiting (pid: 25542)
+[2019-09-12 08:18:11,682] ERROR in app: Exception on /user/Daniel/id=27 [GET]
+Traceback (most recent call last):
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/app.py", line 2311, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/app.py", line 1834, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask_cors/extension.py", line 161, in wrapped_function
+    return cors_after_request(app.make_response(f(*args, **kwargs)))
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/app.py", line 1737, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/_compat.py", line 36, in reraise
+    raise value
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/app.py", line 1832, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/app.py", line 1818, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "/root/Flask/NewApp/users.py", line 234, in user
+    response = requests.get(('https://api.github.com/users/{}/repos?client_id=2b17d8aee65d2c4d23a2&client_secret=b40fa945fb8081884f6de54abe4a02ef0607a8c6').format(user.github_name))
+AttributeError: 'NoneType' object has no attribute 'github_name'
+[2019-09-12 08:18:11 -0400] [25543] [ERROR] Error handling request /user/Daniel/id%3D27
+Traceback (most recent call last):
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/app.py", line 2311, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/app.py", line 1834, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask_cors/extension.py", line 161, in wrapped_function
+    return cors_after_request(app.make_response(f(*args, **kwargs)))
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/app.py", line 1737, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/_compat.py", line 36, in reraise
+    raise value
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/app.py", line 1832, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/app.py", line 1818, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "/root/Flask/NewApp/users.py", line 234, in user
+    response = requests.get(('https://api.github.com/users/{}/repos?client_id=2b17d8aee65d2c4d23a2&client_secret=b40fa945fb8081884f6de54abe4a02ef0607a8c6').format(user.github_name))
+AttributeError: 'NoneType' object has no attribute 'github_name'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/gunicorn/workers/base_async.py", line 56, in handle
+    self.handle_request(listener_name, req, client, addr)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/gunicorn/workers/base_async.py", line 107, in handle_request
+    respiter = self.wsgi(environ, resp.start_response)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/app.py", line 2328, in __call__
+    return self.wsgi_app(environ, start_response)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask_socketio/__init__.py", line 46, in __call__
+    start_response)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/engineio/middleware.py", line 74, in __call__
+    return self.wsgi_app(environ, start_response)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/app.py", line 2314, in wsgi_app
+    response = self.handle_exception(e)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask_cors/extension.py", line 161, in wrapped_function
+    return cors_after_request(app.make_response(f(*args, **kwargs)))
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/app.py", line 1767, in handle_exception
+    return self.finalize_request(handler(e), from_error_handler=True)
+  File "/root/Flask/NewApp/app.py", line 122, in server_error
+    return render_template('error_code.html',code=500,error='Server error!',reset=reset,users=users,posts=posts,search=search,register=register,login=login)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/templating.py", line 135, in render_template
+    context, ctx.app)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/templating.py", line 117, in _render
+    rv = template.render(context)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/jinja2/asyncsupport.py", line 76, in render
+    return original_render(self, *args, **kwargs)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/jinja2/environment.py", line 1008, in render
+    return self.environment.handle_exception(exc_info, True)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/jinja2/environment.py", line 780, in handle_exception
+    reraise(exc_type, exc_value, tb)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/jinja2/_compat.py", line 37, in reraise
+    raise value.with_traceback(tb)
+  File "/root/Flask/NewApp/templates/error_code.html", line 1, in top-level template code
+    {% extends "index.html" %}
+  File "/root/Flask/NewApp/templates/index.html", line 5, in top-level template code
+    {% if request.url_rule.endpoint == 'users.user' %}<title>{{user.name}} - NewApp</title>{% endif %}
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/jinja2/environment.py", line 430, in getattr
+    return getattr(obj, attribute)
+jinja2.exceptions.UndefinedError: 'user' is undefined
+[2019-09-12 12:35:22 -0400] [28170] [INFO] Handling signal: term
+[2019-09-12 12:35:36 -0400] [25543] [INFO] Worker exiting (pid: 25543)
+[2019-09-12 12:35:36 -0400] [28170] [INFO] Shutting down: Master
+/root/Flask/NewApp/env/lib/python3.6/site-packages/celery/platforms.py:801: RuntimeWarning: You're running the worker with superuser privileges: this is
+absolutely not recommended!
+
+Please specify a different user using the --uid option.
+
+User information: uid=0 euid=0 gid=1002 egid=1002
+
+  uid=uid, euid=euid, gid=gid, egid=egid,
+[2019-09-19 13:08:38,829: ERROR/ForkPoolWorker-1] Task celery_worker.verify_post[44aea054-ff6d-44a4-9c29-87b7e94c7fb5] raised unexpected: AttributeError("'NoneType' object has no attribute 'text'",)
+Traceback (most recent call last):
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/celery/app/trace.py", line 385, in trace_task
+    R = retval = fun(*args, **kwargs)
+  File "/root/Flask/NewApp/app.py", line 191, in __call__
+    class ContextTask(TaskBase):
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/celery/app/trace.py", line 648, in __protected_call__
+    return self.run(*args, **kwargs)
+  File "/root/Flask/NewApp/celery_worker.py", line 23, in verify_post
+    text = post.text
+AttributeError: 'NoneType' object has no attribute 'text'
+[2019-09-19 13:19:14,220: ERROR/ForkPoolWorker-1] Task celery_worker.verify_post[a2752738-45ba-40b6-bb61-9804a7be9c53] raised unexpected: AttributeError("'NoneType' object has no attribute 'text'",)
+Traceback (most recent call last):
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/celery/app/trace.py", line 385, in trace_task
+    R = retval = fun(*args, **kwargs)
+  File "/root/Flask/NewApp/app.py", line 191, in __call__
+    class ContextTask(TaskBase):
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/celery/app/trace.py", line 648, in __protected_call__
+    return self.run(*args, **kwargs)
+  File "/root/Flask/NewApp/celery_worker.py", line 23, in verify_post
+    text = post.text
+AttributeError: 'NoneType' object has no attribute 'text'
+[2019-09-19 13:24:50,802: ERROR/ForkPoolWorker-1] Task celery_worker.verify_post[ef910599-8571-4e60-8a46-b7a00c81f828] raised unexpected: AttributeError("'NoneType' object has no attribute 'text'",)
+Traceback (most recent call last):
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/celery/app/trace.py", line 385, in trace_task
+    R = retval = fun(*args, **kwargs)
+  File "/root/Flask/NewApp/app.py", line 191, in __call__
+    TaskBase = celery.Task
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/celery/app/trace.py", line 648, in __protected_call__
+    return self.run(*args, **kwargs)
+  File "/root/Flask/NewApp/celery_worker.py", line 23, in verify_post
+    text = post.text
+AttributeError: 'NoneType' object has no attribute 'text'
+[2019-09-19 13:28:42,892: ERROR/ForkPoolWorker-1] Task celery_worker.verify_post[92975e25-6f0a-43cb-b86f-f9595fa3cdf4] raised unexpected: AttributeError("'NoneType' object has no attribute 'text'",)
+Traceback (most recent call last):
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/celery/app/trace.py", line 385, in trace_task
+    R = retval = fun(*args, **kwargs)
+  File "/root/Flask/NewApp/app.py", line 191, in __call__
+    TaskBase = celery.Task
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/celery/app/trace.py", line 648, in __protected_call__
+    return self.run(*args, **kwargs)
+  File "/root/Flask/NewApp/celery_worker.py", line 23, in verify_post
+    text = post.text
+AttributeError: 'NoneType' object has no attribute 'text'
+[2019-09-19 13:29:43,277: ERROR/ForkPoolWorker-1] Task celery_worker.verify_post[87f25bf5-6999-4cc8-91b5-44c5ecddcc92] raised unexpected: AttributeError("'NoneType' object has no attribute 'text'",)
+Traceback (most recent call last):
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/celery/app/trace.py", line 385, in trace_task
+    R = retval = fun(*args, **kwargs)
+  File "/root/Flask/NewApp/app.py", line 191, in __call__
+    TaskBase = celery.Task
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/celery/app/trace.py", line 648, in __protected_call__
+    return self.run(*args, **kwargs)
+  File "/root/Flask/NewApp/celery_worker.py", line 23, in verify_post
+    text = post.text
+AttributeError: 'NoneType' object has no attribute 'text'
+[2019-09-19 18:01:54,292: ERROR/ForkPoolWorker-1] Task celery_worker.verify_post[a20a8aa1-95f2-4ebf-a9f2-fce731fb5a5a] raised unexpected: AttributeError("'NoneType' object has no attribute 'text'",)
+Traceback (most recent call last):
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/celery/app/trace.py", line 385, in trace_task
+    R = retval = fun(*args, **kwargs)
+  File "/root/Flask/NewApp/app.py", line 191, in __call__
+    TaskBase = celery.Task
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/celery/app/trace.py", line 648, in __protected_call__
+    return self.run(*args, **kwargs)
+  File "/root/Flask/NewApp/celery_worker.py", line 23, in verify_post
+    text = post.text
+AttributeError: 'NoneType' object has no attribute 'text'

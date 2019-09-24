@@ -9,11 +9,13 @@ from flask import (Blueprint, abort, jsonify, make_response, render_template,
 from app import app, db, key_jwt, time
 from models import (OPostSchema, OUserSchema, PostModel, PostsSchema,
                     RepliesSchema, ReplyModel, TagModel, UserModel,
-                    UsersSchema, SessionsSchema, Analyze_Session, bcrypt)
+                    UsersSchema, SessionsSchema, Analyze_Session, bcrypt, Analyze_Pages)
 from users import (BadSignature, BadTimeSignature, Message, SignatureExpired,
                    cipher_suite, login_user, mail, serializer)
 
 from flask_login import current_user
+import datetime as dt
+from sqlalchemy import desc
 
 json_pages = Blueprint(
     'jsons',__name__,
@@ -257,7 +259,6 @@ def post_post_app():
     return jsonify({'post': 'success'})
 
 @json_pages.route('/app/post/reply', methods=['POST'])
-
 def post_reply_app():
     data = request.json
 
@@ -382,3 +383,43 @@ def follow_user(id):
     db.session.commit()
 
     return response
+
+def getItemForKey(value):
+    return value['post']['trending_value']
+
+@json_pages.route('/api/trending', methods=['GET'])
+def trending():
+
+    posts = db.session.query(PostModel).order_by(desc(PostModel.posted_on)).filter_by(approved=True).all()
+    analyze_posts = db.session.query(Analyze_Pages).all()
+
+    data = []
+    temp = {}
+    analyze_json = []
+
+    for post in posts:
+        published_on = post.posted_on
+        today = dt.date.today()
+
+        total_days = (today - published_on).days - 1
+        
+        day_1 = 0
+        day_0 = 0
+
+        for analyze in analyze_posts:
+            if analyze.name == 'Post_{}'.format(post.id):
+                if (today-analyze.first_visited).days < 2:
+                    day_1 += analyze.visits
+                if (today-analyze.first_visited).days < 1:
+                    day_0 += analyze.visits
+        
+        total = (day_1 + day_0)/2
+        temp['post'] = {'trending_value': total,'id': post.id,'title': post.title, 'lurl': url_for('home.post',id=post.id,title=post.title),
+        'author':{ 'id':post.user_in.id, 'name':post.user_in.name, 'avatar':post.user_in.avatar }}
+        data.append(temp.copy())
+        day_1 = 0
+        day_0 = 0
+        data.sort(key=getItemForKey, reverse=True)
+
+
+    return jsonify(data)

@@ -1,0 +1,71 @@
+{% extends "index.html" %}
+{% block content %}
+<style>
+    .ql-container {
+        min-height: 250px !important;
+    }
+</style>
+<new_post>
+    <form role="form" class="form-thread" method="POST"  enctype='multipart/form-data' action="{{url_for('home.edit_post', id=post.id)}}">
+        <div class="header">
+            {{editpost.csrf_token}}
+            {{editpost.title(value=post.title)}}
+        </div>
+        <br>
+        <div class="body">{{editpost.text(value=post.text)}}<div id="editor"></div></div>
+        <div class="footer">
+            <button type="submit" class="newpost">Post</button>
+        </div>
+    </form>
+  </new_post>
+
+{% if current_user.is_authenticated %}
+<script>
+    var toolbarOptions = [
+        ['bold', 'italic', 'underline'],
+        ['blockquote', 'code-block'],
+        [{
+            'header': [1, 2, 3, 4, 5, 6, false]
+        }],
+        [{
+            'color': []
+        }, {
+            'background': []
+        }],
+        [{
+            'font': []
+        }],
+        [{
+            'align': []
+        }],
+    ];
+
+    function LoadQuill() {
+        var quill = new Quill('#editor', {
+            modules: {
+                toolbar: toolbarOptions
+            },
+            theme: 'snow'
+        });
+    }
+    
+    window.addEventListener("load", LoadQuill, false);
+    window.addEventListener("load",function () {
+        document.querySelector(".ql-editor").innerHTML = document.getElementById("text").value;
+        var submit_entry = function () {
+        var hidden_text_field = document.getElementById('text');
+        hidden_text_field.value = document.querySelector(".ql-editor").innerHTML
+    }
+    });
+    window.addEventListener("load",function(){
+    jQuery(document).ready(function() {
+        jQuery(".form-thread").submit(function() { 
+            var hidden_text_field = document.getElementById('text');
+            hidden_text_field.value = document.querySelector(".ql-editor").innerHTML;
+            
+        });
+    }); 
+    });
+</script>
+{% endif %}
+{% endblock %}

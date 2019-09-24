@@ -3,7 +3,6 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_session import Session
 from flask_bcrypt import Bcrypt
 from flask_login import LoginManager, current_user
-import flask_whooshalchemy
 from sqlalchemy import create_engine
 from marshmallow import fields
 from flask_marshmallow import Marshmallow
@@ -23,8 +22,10 @@ from celery import Celery
 from elasticsearch import Elasticsearch
 from flask_login import logout_user
 from flask_compress import Compress
-
-#from pusher import Pusher
+from flask_mobility import Mobility
+from werkzeug.wrappers import BaseRequest
+from werkzeug.wsgi import responder
+from werkzeug.exceptions import HTTPException, NotFound
 
 key_c = '\xce,CH\xc0\xd2K9\xe3\x87\xa0Z\x19\x8a\xcd\xf9\x91\x94\xddN\xff\xaf;r\xef'
 key_cr = b'vgF_Yo8-IutJs-AcwWPnuNBgRSgncuVo1yfc9uqSiiU='
@@ -41,6 +42,7 @@ app = Flask(__name__)
 CORS(app)
 eventlet.monkey_patch()
 ma = Marshmallow(app)
+Mobility(app)
 serializer = URLSafeTimedSerializer(key_c)
 
 app.secret_key = key_c
@@ -55,16 +57,20 @@ app.config['MAIL_USE_SSL'] = True
 app.config['MAIL_USERNAME'] = 'contact@newapp.nl'
 app.config['MAIL_PASSWORD'] = 'FCsteaua89'
 app.config['JWT_ALGORITHM'] = key_jwt['alg']
+app.config['SESSION_COOKIE_SECURE'] = True
 app.config['REMEMBER_COOKIE_DURATION'] = time.timedelta(minutes=60)
 app.config['PERMANENT_SESSION_LIFETIME'] =  time.timedelta(minutes=60)
 app.config['SESSION_FILE_THRESHOLD'] = 100
-app.config['UPLOAD_FOLDER'] = app.root_path + '/static/profile_pics'
+app.config['UPLOAD_FOLDER_PROFILE'] = app.root_path + '/static/profile_pics'
+app.config['UPLOAD_FOLDER_PROFILE_COVER'] = app.root_path + '/static/profile_cover'
+app.config['UPLOAD_FOLDER_POST'] = app.root_path + '/static/thumbnail_post'
 app.config['CELERY_BROKER_URL'] = os.environ.get('REDIS_URL', 'redis://localhost:6379/0')
 app.config['CELERY_RESULT_BACKEND'] = app.config['CELERY_BROKER_URL']
 app.config['REDIS_URL'] = os.environ.get('REDIS_URL')
 app.config['COMPRESS_MIMETYPES'] =  ['text/html', 'text/css', 'text/xml', 'application/json', 'application/javascript']
 app.config['COMPRESS_LEVEL'] = 6
 app.config['COMPRESS_MIN_SIZE'] = 500
+
 
 Compress(app)
 redis_sv = redis.Redis()
@@ -101,7 +107,7 @@ from models import UserModel, PostModel
 def load_user(user_id):
     return db.session.query(UserModel).filter(UserModel.id == int(user_id)).first()
 
-""" @app.errorhandler(404)
+@app.errorhandler(404)
 def not_found_error(error):
   users = db.session.query(UserModel).all()
   posts = db.session.query(PostModel).all()
@@ -109,7 +115,8 @@ def not_found_error(error):
   register = RegisterForm(request.form)
   login = LoginForm(request.form)
   reset = ResetPasswordForm(request.form)
-  return render_template('error_code.html',code=404,error='Sorry Page not found!',reset=reset,users=users,posts=posts,search=search,register=register,login=login)
+  error_check = True
+  return render_template('error_code.html',code=404,error='Sorry Page not found!',reset=reset,users=users,posts=posts,error_check=error_check,search=search,register=register,login=login)
 
 @app.errorhandler(500)
 def server_error(error):
@@ -119,7 +126,16 @@ def server_error(error):
   register = RegisterForm(request.form)
   login = LoginForm(request.form)
   reset = ResetPasswordForm(request.form)
-  return render_template('error_code.html',code=500,error='Server error!',reset=reset,users=users,posts=posts,search=search,register=register,login=login) """
+  error_check = True
+  return render_template('error_code.html',code=500,error='Server error!',reset=reset,error_check=error_check,users=users,posts=posts,search=search,register=register,login=login)
+
+@responder
+def application(environ, start_response):
+    request = BaseRequest(environ)
+    try:
+        return not_found_error(404)
+    except HTTPException as e:
+        return not_found_error(404)
 
 @app.route('/robots.txt')
 def robots():
@@ -142,7 +158,7 @@ app.register_blueprint(admin_pages)
 app.register_blueprint(home_pages)
 app.register_blueprint(json_pages)
 
-flask_whooshalchemy.whoosh_index(app,PostModel)
+#flask_whooshalchemy.whoosh_index(app,PostModel)
 
 gunicorn_error_logger = logging.getLogger('gunicorn.info')
 
@@ -184,7 +200,7 @@ def on_disconnect():
 
 def make_celery(app):
 	# set redis url vars
-  
+
   celery.conf.update(app.config)
   TaskBase = celery.Task
   class ContextTask(TaskBase):
@@ -197,8 +213,6 @@ def make_celery(app):
 
 
 celery = make_celery(app)
-
-
 
 if __name__=="__main__":
     app.jinja_env.cache = {}
