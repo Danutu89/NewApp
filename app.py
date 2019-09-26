@@ -55,7 +55,7 @@ app.config['MAIL_SERVER'] = 'smtp.zoho.eu'
 app.config['MAIL_PORT'] = 465
 app.config['MAIL_USE_SSL'] = True
 app.config['MAIL_USERNAME'] = 'contact@newapp.nl'
-app.config['MAIL_PASSWORD'] = 'FCsteaua89'
+app.config['MAIL_PASSWORD'] = 'ACmilan89'
 app.config['JWT_ALGORITHM'] = key_jwt['alg']
 app.config['SESSION_COOKIE_SECURE'] = True
 app.config['REMEMBER_COOKIE_DURATION'] = time.timedelta(minutes=60)
