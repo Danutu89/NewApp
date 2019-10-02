@@ -15015,3 +15015,76 @@ Traceback (most recent call last):
   File "/root/Flask/NewApp/celery_worker.py", line 23, in verify_post
     text = post.text
 AttributeError: 'NoneType' object has no attribute 'text'
+[2019-09-27 09:15:04 -0400] [17807] [INFO] Starting gunicorn 19.9.0
+[2019-09-27 09:15:04 -0400] [17807] [INFO] Listening at: http://0.0.0.0:8000 (17807)
+[2019-09-27 09:15:04 -0400] [17807] [INFO] Using worker: eventlet
+[2019-09-27 09:15:04 -0400] [17811] [INFO] Booting worker with pid: 17811
+[2019-09-27 09:15:05,369] INFO in app: NewApp Launched successfully
+[2019-09-27 09:15:05,369] INFO in app: Security keys
+[2019-09-27 09:15:05,374] INFO in app: Session keys
+[2019-09-27 09:15:05,374] INFO in app: Î,CHÀÒK9ã ZÍùÝNÿ¯;rï
+[2019-09-27 09:15:05,374] INFO in app: Cryptography key
+[2019-09-27 09:15:05,374] INFO in app: b'vgF_Yo8-IutJs-AcwWPnuNBgRSgncuVo1yfc9uqSiiU='
+[2019-09-27 09:15:05,375] INFO in app: JWT Key
+[2019-09-27 09:15:05,375] INFO in app: mRo48tU4ebP6jIshqaoNf2HAnesrCGHm
+[2019-09-27 09:15:05,375] INFO in app: JWT Algorithm
+[2019-09-27 09:15:05,375] INFO in app: HS256
+[2019-09-27 09:15:06 -0400] [17807] [INFO] Handling signal: hup
+[2019-09-27 09:15:06 -0400] [17807] [INFO] Hang up: Master
+[2019-09-27 09:15:06 -0400] [17826] [INFO] Booting worker with pid: 17826
+[2019-09-27 09:15:07,946] INFO in app: NewApp Launched successfully
+[2019-09-27 09:15:07,946] INFO in app: Security keys
+[2019-09-27 09:15:07,946] INFO in app: Session keys
+[2019-09-27 09:15:07,946] INFO in app: Î,CHÀÒK9ã ZÍùÝNÿ¯;rï
+[2019-09-27 09:15:07,946] INFO in app: Cryptography key
+[2019-09-27 09:15:07,946] INFO in app: b'vgF_Yo8-IutJs-AcwWPnuNBgRSgncuVo1yfc9uqSiiU='
+[2019-09-27 09:15:07,946] INFO in app: JWT Key
+[2019-09-27 09:15:07,946] INFO in app: mRo48tU4ebP6jIshqaoNf2HAnesrCGHm
+[2019-09-27 09:15:07,947] INFO in app: JWT Algorithm
+[2019-09-27 09:15:07,947] INFO in app: HS256
+[2019-09-27 09:26:02 -0400] [17826] [ERROR] Error handling request /socket.io/?EIO=3&transport=polling&t=MrotXy0&sid=f77a0b6d02c84bac841272cfcaf35c2f
+Traceback (most recent call last):
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/gunicorn/workers/base_async.py", line 56, in handle
+    self.handle_request(listener_name, req, client, addr)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/gunicorn/workers/base_async.py", line 107, in handle_request
+    respiter = self.wsgi(environ, resp.start_response)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask/app.py", line 2328, in __call__
+    return self.wsgi_app(environ, start_response)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/flask_socketio/__init__.py", line 46, in __call__
+    start_response)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/engineio/middleware.py", line 60, in __call__
+    return self.engineio_app.handle_request(environ, start_response)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/socketio/server.py", line 534, in handle_request
+    return self.eio.handle_request(environ, start_response)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/engineio/server.py", line 383, in handle_request
+    socket = self._get_socket(sid)
+  File "/root/Flask/NewApp/env/lib/python3.6/site-packages/engineio/server.py", line 551, in _get_socket
+    raise KeyError('Session is disconnected')
+KeyError: 'Session is disconnected'
+[2019-09-27 09:56:04 -0400] [16247] [INFO] Starting gunicorn 19.9.0
+[2019-09-27 09:56:04 -0400] [16247] [INFO] Listening at: http://0.0.0.0:8000 (16247)
+[2019-09-27 09:56:04 -0400] [16247] [INFO] Using worker: eventlet
+[2019-09-27 09:56:04 -0400] [16251] [INFO] Booting worker with pid: 16251
+[2019-09-27 09:56:05,974] INFO in app: NewApp Launched successfully
+[2019-09-27 09:56:05,977] INFO in app: Security keys
+[2019-09-27 09:56:05,979] INFO in app: Session keys
+[2019-09-27 09:56:05,979] INFO in app: Î,CHÀÒK9ã ZÍùÝNÿ¯;rï
+[2019-09-27 09:56:05,980] INFO in app: Cryptography key
+[2019-09-27 09:56:05,980] INFO in app: b'vgF_Yo8-IutJs-AcwWPnuNBgRSgncuVo1yfc9uqSiiU='
+[2019-09-27 09:56:05,980] INFO in app: JWT Key
+[2019-09-27 09:56:05,980] INFO in app: mRo48tU4ebP6jIshqaoNf2HAnesrCGHm
+[2019-09-27 09:56:05,980] INFO in app: JWT Algorithm
+[2019-09-27 09:56:05,980] INFO in app: HS256
+[2019-09-27 09:56:06 -0400] [16247] [INFO] Handling signal: hup
+[2019-09-27 09:56:06 -0400] [16247] [INFO] Hang up: Master
+[2019-09-27 09:56:06 -0400] [16311] [INFO] Booting worker with pid: 16311
+[2019-09-27 09:56:07,888] INFO in app: NewApp Launched successfully
+[2019-09-27 09:56:07,891] INFO in app: Security keys
+[2019-09-27 09:56:07,891] INFO in app: Session keys
+[2019-09-27 09:56:07,891] INFO in app: Î,CHÀÒK9ã ZÍùÝNÿ¯;rï
+[2019-09-27 09:56:07,892] INFO in app: Cryptography key
+[2019-09-27 09:56:07,894] INFO in app: b'vgF_Yo8-IutJs-AcwWPnuNBgRSgncuVo1yfc9uqSiiU='
+[2019-09-27 09:56:07,894] INFO in app: JWT Key
+[2019-09-27 09:56:07,894] INFO in app: mRo48tU4ebP6jIshqaoNf2HAnesrCGHm
+[2019-09-27 09:56:07,894] INFO in app: JWT Algorithm
+[2019-09-27 09:56:07,894] INFO in app: HS256

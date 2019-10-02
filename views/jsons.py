@@ -10,7 +10,7 @@ from app import app, db, key_jwt, time
 from models import (OPostSchema, OUserSchema, PostModel, PostsSchema,
                     RepliesSchema, ReplyModel, TagModel, UserModel,
                     UsersSchema, SessionsSchema, Analyze_Session, bcrypt, Analyze_Pages)
-from users import (BadSignature, BadTimeSignature, Message, SignatureExpired,
+from views.users import (BadSignature, BadTimeSignature, Message, SignatureExpired,
                    cipher_suite, login_user, mail, serializer)
 
 from flask_login import current_user

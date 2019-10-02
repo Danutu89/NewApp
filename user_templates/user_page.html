@@ -11,9 +11,9 @@
         <div class="profile-image">
           <div><img src="{{user.avatar}}" alt=""></div>
 
-          <div class="user-name">
-            <h1>{{user.real_name}}</h1>
-            <h4>@{{user.name}}</h4>
+          <div class="user-name" style="line-height: 1.7rem;">
+            <h1 style="font-weight: 400;">{{user.real_name}}</h1>
+            <h4 style="font-weight: 400;">@{{user.name}}</h4>
           </div>
         </div>
         {% if current_user.is_authenticated %}
@@ -41,7 +41,7 @@
             <div class="tags">
               {% for tag in user.int_tags %}
                     <a style="text-decoration: none;" title="{{tag}}" href="{{url_for('home.home',tag_finder=tag)}}"><span
-                        class="badge badge-light" style="font-size: 12px;"> {{ tag[0]|upper}}{{tag[1:] }}</span></a>
+                        style="font-size: 12px;"> {{ tag[0]|upper}}{{tag[1:] }}</span></a>
                         <br>
                     {% endfor %}
             </div>

@@ -27,12 +27,12 @@ from sqlalchemy import desc
 
 users_pages = Blueprint(
     'users',__name__,
-    template_folder='user_templates'
+    template_folder='../user_templates'
 )
 
 admin_pages = Blueprint(
     'admin',__name__,
-    template_folder='admin_templates'
+    template_folder='../admin_templates'
 )
 
 @users_pages.route("/login", methods=['GET','POST'])

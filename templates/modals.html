@@ -10,7 +10,6 @@
         </div>
         <form role="form" method="post" action="{{url_for('users.register')}}">
             <div class="modal-content">
-                {{register.csrf_token}}
                 {{register.username}}
                 {{register.realname}}
                 {{register.email}}
@@ -35,7 +34,6 @@
         </div>
         <form role="form" method="post" action="{{url_for('users.login', url=request.path)}}">
             <div class="modal-content">
-                {{register.csrf_token}}
                 {{login.username}}
                 {{login.password}}
                 <span style="font-size: 0.6rem">Forgot password? <a href="#reset-password-modal">Click Here</a></span>
@@ -59,9 +57,7 @@
         </div>
         <form role="form" method="post" action="{{url_for('users.reset_password')}}">
             <div class="modal-content">
-                {{reset.csrf_token}}
                 {{reset.email}}
-                {{login.password}}
             </div>
             <div class="modal-footer">
                 <span style="font-size: 0.6rem;">Already have an account?<a href="#login-modal"> Login here</a></span>

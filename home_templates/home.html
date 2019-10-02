@@ -6,7 +6,7 @@
         <div class="articles">
             {% for post in posts %}
             {% if post.approved %}
-            <div class="article-card" id="{{post.id}}">
+            <div class="article-card" id="post_{{post.id}}">
                 {% if post.thumbnail %}
                 <div class="article-thumbnail">
                         <img

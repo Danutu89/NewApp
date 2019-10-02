@@ -3,3 +3,6 @@ env
 __pycache__
 *.pyc
 whoosh
+flask_session
+.patch
+.out

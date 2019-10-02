@@ -18,7 +18,7 @@ from PIL import Image
 
 home_pages = Blueprint(
     'home',__name__,
-    template_folder='home_templates'
+    template_folder='../home_templates'
 )
 
 def save_img(post_id):
@@ -162,7 +162,7 @@ def home():
     else:
         flw_tags = db.session.query(TagModel).order_by(desc(func.array_length(TagModel.post, 1))).all()
     replyes = db.session.query(ReplyModel).all()
-    tags = db.session.query(TagModel).order_by(desc(func.array_length(TagModel.post, 1))).all()
+    tags = db.session.query(TagModel).order_by(desc(func.array_length(TagModel.post, 1))).limit(20).all()
 
     if current_user.is_authenticated:
         return render_template('home.html',tagi=flw_tags ,reset=reset,search=search_post,posts=posts,tags=tags,replyes=replyes,popular_posts=popular_posts,most_tags=most_tags,location=location)

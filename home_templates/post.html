@@ -2,6 +2,15 @@
 {% block content %}
 
 <style>
+
+    .reply p {
+        margin:0;
+    }
+
+    .content-post p {
+        margin:0;
+    }
+
     .ql-syntax {
         background-color: #f0f0f0;
         color: #212529;
@@ -126,7 +135,7 @@
                         <img style="border-radius:50px;margin-right: 5px;" height="40px" width="40px"
                             src="{{posts.user_in.avatar}}">
                         <div class="author-info">
-                            <span class="author-name">{{posts.user_in.name}}</span>
+                            <a href="{{url_for('users.user', id=posts.user_in.id,name=posts.user_in.name)}}"><span class="author-name">{{posts.user_in.name}}</span></a>
                             <div class="post-tags">
                                 {% if tags[0].name %}
                                 {% for tag in tags %}
@@ -141,8 +150,9 @@
                             </div>
                         </div>
                     </div>
+                    <br>
                     {{posts.text | safe}}
-            
+                    <br>
                     {% if current_user.is_authenticated %}
                     <div class="user-actions">
                         <span onclick="Like_Post({{posts.id}})" style="cursor: pointer;"><i id="heart"
@@ -176,7 +186,7 @@
         
     </div>
     {% for replies in replyes %}
-    <div class="reply">
+    <div class="reply" id="reply_{{replies.id}}">
 
         {{replies.text | safe}}
 
@@ -196,7 +206,7 @@
 
                     <a id="reply_name" style="color: #333"
                         href="{{url_for('users.user', name=replies.user_in.name, id=replies.user_in.id )}}">{{replies.user_in.name}}</a>
-                    <p style="font-size: 60%;opacity: 0.6;margin-bottom: 0;">
+                    <p style="font-size: 60%;opacity: 0.6;margin-bottom: 0;margin-top: 0;">
                         {% if replies.user_in.is_online %}
                         Online
                         {% else %}
@@ -210,10 +220,10 @@
     {% endfor %}
 
     <br>
-    <p style="margin-top: 4%; font-size:initial">Not the answer you're looking for? Browse other questions tagged
-        {% if tags[0].tag %}{% for tag in tags %}<a href="{{url_for('home.home',tag_finder=tag.tag)}}"
-            class="badge badge-success" style="font-size:13px;margin-left:3px;"> {{tag.tag}} </a>{% endfor %}{% endif %}
-        or <a href="{{url_for('home.home')}}"> ask your own question</a>.</p>
+    <p style="margin-top: 1rem; font-size:initial">Not the answer you're looking for? Browse other questions tagged
+        {% if tags[0].name %}{% for tag in tags %}<a href="{{url_for('home.home',tag_finder=tag.name)}}"
+            style="font-size:13px;margin-left:3px;"><tag>{{tag.name}}</tag> </a>{% endfor %}{% endif %}
+        or <a href="{{url_for('home.home')}}" style="color:#18BC9C;"> ask your own question</a>.</p>
 </div>
 {% if current_user.is_authenticated %}
 {% if posts.closed == False %}

@@ -64,16 +64,6 @@ def create_session(data):
 
 def parseVisitator(data):
     update_or_create_page(data)
-    """ Pusher.trigger(channels_client,channels=u'pageview', event_name=u'new', data={
-            u'page': data[0],
-            u'session': sessionID,
-            u'ip': userIP
-        })
-    Pusher.trigger(channels_client,channels=u'numbers', event_name=u'update', data={
-            u'page': data[0],
-            u'session': sessionID,
-            u'ip': userIP
-        }) """
 
 def getSession():
     global sessionID
@@ -82,16 +72,6 @@ def getSession():
         lines = (str(time)+userIP).encode('utf-8')
         session['user'] = hashlib.md5(lines).hexdigest()
         sessionID = session['user']
-        """ Pusher.trigger(channels_client,channels=u'session', event_name=u'new', data={
-            u'ip': userIP,
-            u'continent': userContinent,
-            u'country': userCountry,
-            u'city': userCity,
-            u'os': userOS,
-            u'browser': userBrowser,
-            u'session': sessionID,
-            u'time': str(time),
-        }) """
         data = [userIP, userContinent, userCountry, userCity, userOS, userBrowser, sessionID, time, bot, str(userLanguage).lower()]
         create_session(data)
     else:

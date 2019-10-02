@@ -137,21 +137,9 @@ def application(environ, start_response):
     except HTTPException as e:
         return not_found_error(404)
 
-@app.route('/robots.txt')
-def robots():
-  return render_template('robots.txt')
-
-@app.route('/manifest.json', methods=['GET'])
-def manifest():
-  return app.send_static_file('manifest.json')
-
-@app.route('/sw.js', methods=['GET'])
-def sw():
-  return app.send_static_file('sw.js')
-
-from users import users_pages, admin_pages
-from home import home_pages
-from jsons import json_pages
+from views.users import users_pages, admin_pages
+from views.home import home_pages
+from views.jsons import json_pages
 
 app.register_blueprint(users_pages)
 app.register_blueprint(admin_pages)

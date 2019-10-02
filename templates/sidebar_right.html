@@ -128,7 +128,7 @@
     {% endif %}
     <div class="user-card" style="align-items: unset">
         <div class="user-image">
-            <img class="profile_image" src="{{posts.user_in.avatar}}" height="50px" width="50px" title="profile image">
+            <img class="profile_image" src="{{posts.user_in.avatar}}" height="50px" width="50px" {% if current_user.is_authenticated %}{% if current_user.id != posts.user_in.id %}style="margin-top: 0.3rem;"{% endif %}{% endif %} title="profile image">
         </div>
         <a href="{{url_for('users.user', name=posts.user_in.name, id=posts.user_in.id )}}"
             style="margin-bottom:0.2rem;">

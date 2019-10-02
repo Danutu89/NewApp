@@ -151,7 +151,7 @@
 
     /* Track */
     ::-webkit-scrollbar-track {
-      background: white;
+      background: transparent;
     }
 
     /* Handle */
@@ -309,13 +309,14 @@
     }
 
     .newapp-navbar input[type=text] {
+      vertical-align: baseline;
       vertical-align: -webkit-baseline-middle;
       border: none;
       background-color: rgb(60, 60, 60);
       border-radius: 2px;
       padding: 0.4rem 0.4rem 0.4rem 0.4rem;
       color: white;
-      width: 100%;
+      width: calc(100% - 0.8rem);
     }
 
     .newapp-navbar input[type=text]:focus {
@@ -349,6 +350,7 @@
       position: relative;
       z-index: 4;
       display: none;
+      
     }
 
     content .open-wrapper {
@@ -558,10 +560,9 @@
       .newapp-navbar {
         position: fixed;
         margin-top: 0;
-        z-index: 99;
-        width: 100vw;
+        z-index: 7;
         top: 0;
-        left: -10px;
+        max-width: calc(100% - 1rem);
       }
 
       content {
@@ -722,7 +723,7 @@
     content .sidebar .profile_image,
     wrapper .sidebar .profile_image {
       border-radius: 50px;
-      margin-top: 0.3rem;
+
     }
 
     content .sidebar .user-image,
@@ -905,6 +906,7 @@
 
     content profile {
       display: block;
+      width: fit-content;
       width: -webkit-fill-available;
     }
 
@@ -1040,6 +1042,7 @@
     }
 
     content profile .profile-main .sidebar-info .widgets {
+      text-align: center;
       text-align: -webkit-center;
       margin-top: 0.8rem;
     }
@@ -1083,6 +1086,7 @@
     }
 
     content profile .profile-main .sidebar-right .widgets {
+      text-align: center;
       text-align: -webkit-center;
     }
 
@@ -1262,6 +1266,10 @@
       content profile .profile-main .sidebar-main .edit-info .col-2 {
         width: auto !important;
       }
+      modal>.modal {
+        width: 90% !important;
+      }
+
     }
 
     new_post {
@@ -1308,7 +1316,7 @@
       bottom: 0;
       right: 0;
       left: 0;
-      z-index: 100;
+      z-index: 20;
       visibility: hidden;
       opacity: 0;
       pointer-events: none;
@@ -1496,11 +1504,17 @@
       bottom: 0;
       background-color: rgb(34, 34, 34);
       color: white;
+      width: fit-content;
       width: -webkit-fill-available;
-      display: flex;
       padding: 0.7rem;
       justify-content: space-around;
       z-index: 7;
+      display: none;
+    }
+    @media all and (display-mode: standalone) {
+      navigation {
+        display: flex;
+      }
     }
   </style>
 </head>
@@ -1508,8 +1522,8 @@
   <nav class="newapp-navbar">
     <div class="navbar-items">
       <div class="navbar-item">
-        <a href="/" class="navbar-logo"><img style="vertical-align: middle;" src="https://newapp.nl/static/logo.svg"
-            width="30" height="30" alt=""><span class="newapp-title"><span style="color:#18BC9C;">New</span><span
+        <a href="/" class="navbar-logo"><img style="vertical-align: middle;margin-left: -1px;" src="https://newapp.nl/static/logo.svg"
+            width="30" height="30" alt=""><span style="margin-left: 0.2rem;" class="newapp-title"><span style="color:#18BC9C;">New</span><span
               style="color:white;">App</span><span style="color:#18BC9C;font-size: 55%;font-weight: 600;">
               Beta</span></span></a>
       </div>
@@ -1627,7 +1641,6 @@
 {% include 'modals.html' %}
 
 <script>
-  var wrapper_opened = false;
   var loadCss = function(cssPath){
     var cssLink = document.createElement('link');
     cssLink.rel = 'stylesheet';
@@ -1667,17 +1680,11 @@
       LoadTrending();
       {% endif %}
 
-      $(document).on('click', function (e) {
-        if ($(e.target).closest("#wrapper-left").length === 0 && $(e.target).closest("#open-wrapper").length === 0) {
-          if (wrapper_opened == true){
-              closeNav();
-          }
-        }
-      });
       };
   }
 </script>
 {% if request.url_rule.endpoint == 'home.home' %}
+{% if request.MOBILE %}
 <script>
   function openNav() {
     document.getElementById("wrapper-left").style.width = "250px";
@@ -1738,6 +1745,7 @@ function handleTouchMove(evt) {
     yDown = null;                                             
 };
 </script>
+{% endif %}
 {% endif %}
 </body>
 
