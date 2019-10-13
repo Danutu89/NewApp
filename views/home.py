@@ -1,7 +1,7 @@
 import datetime
 
 from flask import (Blueprint, flash, make_response, redirect, render_template,
-                   request, url_for, session, abort)
+                   request, url_for, session, abort, send_file)
 from flask_login import current_user
 from jinja2 import TemplateNotFound
 from sqlalchemy import desc, func, or_
@@ -15,6 +15,7 @@ from analyze import parseVisitator, sessionID, GetSessionId
 from celery_worker import cleanup_sessions, verify_post
 from app import app
 from PIL import Image
+import readtime
 
 home_pages = Blueprint(
     'home',__name__,
@@ -24,7 +25,7 @@ home_pages = Blueprint(
 def save_img(post_id):
     #if(form_img.data):
     file_name, file_ext = os.path.splitext(request.files['thumbnail'].filename)
-    picture_fn = 'post_' + str(post_id) + str(file_ext)
+    picture_fn = 'post_' + str(post_id) + '.jpeg'
     picture_path = os.path.join(app.config['UPLOAD_FOLDER_POST'], picture_fn)
     
     output_size = (600,400)
@@ -36,8 +37,9 @@ def save_img(post_id):
 
 @home_pages.before_request
 def views():
-    data = ['NewApp', GetSessionId(), str(datetime.datetime.now().replace(microsecond=0))]
+    data = [request.path, GetSessionId(), str(datetime.datetime.now().replace(microsecond=0))]
     parseVisitator(data)
+    
 
 @home_pages.route("/", methods=['GET','POST'])
 def home():
@@ -53,6 +55,10 @@ def home():
     if request.method == 'POST':
         if new_question.validate_on_submit():
             
+            if new_question.text.data == '<p><br></p>' or new_question.text.data == '':
+                flash('Missing the body of the post.', 'error')
+                return redirect(url_for('home.home'))
+
             index = db.session.execute(Sequence('posts_id_seq')) + 1
             thumbnail_link = None
             if request.files['thumbnail']:
@@ -74,13 +80,13 @@ def home():
                 None,
                 str(lang.iso_tag).lower(),
                 thumbnail_link,
-                None
+                None,
+                str(readtime.of_html(new_question.text.data))
             )
 
             db.session.add(new_post)
             db.session.commit()
 
-            
             tags = []
             tag_p = new_question.tag.data.lower()
             tag = tag_p.replace(" ", "")
@@ -118,6 +124,7 @@ def home():
             flash('New question posted successfully', 'success')
             
     post_page = request.args.get('page',1,type=int)
+
     if request.args.get('search'):
         if current_user.is_authenticated:
             posts, total = PostModel.search_post(request.args.get('search'),post_page,99,current_user.lang)
@@ -139,6 +146,46 @@ def home():
         if current_user.is_authenticated == False:
             return redirect(url_for('home.home'))
         posts = PostModel.query.filter(or_(PostModel.lang.like(current_user.lang),PostModel.lang.like('en'))).filter(PostModel.id.in_(current_user.saved_posts)).order_by(PostModel.id.desc()).all()#.paginate(page=post_page,per_page=9)
+    elif request.args.get('all'):
+        if current_user.is_authenticated:
+            posts = PostModel.query.filter(or_(PostModel.lang.like(current_user.lang),PostModel.lang.like('en'))).order_by(PostModel.id.desc()).all()
+        else:
+            get_lang = db.session.query(Analyze_Session).filter_by(session=session['user']).first()
+            posts = PostModel.query.filter(or_(PostModel.lang.like(get_lang.lang),PostModel.lang.like('en'))).order_by(PostModel.id.desc()).all()
+    elif request.args.get('feed'):
+        if current_user.is_authenticated:
+            if len(current_user.int_tags) > 0:
+                tg = db.session.query(TagModel).filter(TagModel.name.in_(current_user.int_tags)).order_by(desc(func.array_length(TagModel.post, 1))).all()
+                tgi = []
+                for t in tg:
+                    tgi.extend(t.post)
+                posts = PostModel.query.filter(or_(PostModel.lang.like(current_user.lang),PostModel.lang.like('en'))).filter(PostModel.id.in_(tgi)).order_by(PostModel.id.desc()).all()#.paginate(page=post_page,per_page=9)
+            else:
+                posts = PostModel.query.filter(or_(PostModel.lang.like(current_user.lang),PostModel.lang.like('en'))).order_by(PostModel.id.desc()).all()#.paginate(page=post_page,per_page=9)
+        else:
+            get_lang = db.session.query(Analyze_Session).filter_by(session=session['user']).first()
+            posts = PostModel.query.filter(or_(PostModel.lang.like(get_lang.lang),PostModel.lang.like('en'))).order_by(PostModel.id.desc()).all()#.paginate(page=post_page,per_page=9)
+        #posts = db.session.query(PostModel).order_by(PostModel.id.desc()).paginate(page=post_page,per_page=9)
+    elif request.args.get('discuss'):
+        tg = db.session.query(TagModel).filter(TagModel.name.in_(['discuss','talk'])).order_by(desc(func.array_length(TagModel.post, 1))).all()
+        tgi = []
+        for t in tg:
+            tgi.extend(t.post)
+        if current_user.is_authenticated:
+            posts = PostModel.query.filter(or_(PostModel.lang.like(current_user.lang),PostModel.lang.like('en'))).filter(PostModel.id.in_(tgi)).order_by(PostModel.id.desc()).all()#.paginate(page=post_page,per_page=9)
+        else:
+            get_lang = db.session.query(Analyze_Session).filter_by(session=session['user']).first()
+            posts = PostModel.query.filter(or_(PostModel.lang.like(get_lang.lang),PostModel.lang.like('en'))).filter(PostModel.id.in_(tgi)).order_by(PostModel.id.desc()).all()
+    elif request.args.get('tutorials'):
+        tg = db.session.query(TagModel).filter(TagModel.name.in_(['tutorial','howto','tutorials','how_to'])).order_by(desc(func.array_length(TagModel.post, 1))).all()
+        tgi = []
+        for t in tg:
+            tgi.extend(t.post)
+        if current_user.is_authenticated:
+            posts = PostModel.query.filter(or_(PostModel.lang.like(current_user.lang),PostModel.lang.like('en'))).filter(PostModel.id.in_(tgi)).order_by(PostModel.id.desc()).all()#.paginate(page=post_page,per_page=9)
+        else:
+            get_lang = db.session.query(Analyze_Session).filter_by(session=session['user']).first()
+            posts = PostModel.query.filter(or_(PostModel.lang.like(get_lang.lang),PostModel.lang.like('en'))).filter(PostModel.id.in_(tgi)).order_by(PostModel.id.desc()).all()
     else:
         if current_user.is_authenticated:
             if len(current_user.int_tags) > 0:
@@ -157,12 +204,14 @@ def home():
     popular_posts = db.session.query(PostModel).order_by(PostModel.views.desc()).limit(9)
 
     most_tags = db.session.query(TagModel).order_by(desc(func.array_length(TagModel.post, 1))).limit(9)
+
     if current_user.is_authenticated:
         flw_tags = db.session.query(TagModel).filter(~TagModel.name.in_(current_user.int_tags)).order_by(desc(func.array_length(TagModel.post, 1))).all()
     else:
         flw_tags = db.session.query(TagModel).order_by(desc(func.array_length(TagModel.post, 1))).all()
+
     replyes = db.session.query(ReplyModel).all()
-    tags = db.session.query(TagModel).order_by(desc(func.array_length(TagModel.post, 1))).limit(20).all()
+    tags = db.session.query(TagModel).order_by(desc(func.array_length(TagModel.post, 1))).all()
 
     if current_user.is_authenticated:
         return render_template('home.html',tagi=flw_tags ,reset=reset,search=search_post,posts=posts,tags=tags,replyes=replyes,popular_posts=popular_posts,most_tags=most_tags,location=location)
@@ -188,13 +237,9 @@ def post(title,id):
     replyes = db.session.query(ReplyModel).filter_by(post_id=id)
     tags = db.session.query(TagModel).filter(TagModel.post.contains([id])).all()
     tags_all = db.session.query(TagModel).all()
-    post_from_user = db.session.query(PostModel).filter_by(user=posts.user_in.id).all()
+    post_from_user = db.session.query(PostModel).filter_by(user=posts.user_in.id).limit(6).all()
     popular_posts = db.session.query(PostModel).order_by(PostModel.views.desc()).limit(9)
     keywords = str(posts.title).split(" ")
-    
-
-    data = [('Post_{}').format(posts.id), GetSessionId(), str(datetime.datetime.now().replace(microsecond=0))]
-    parseVisitator(data)
 
     location = db.session.query(Analyze_Session).filter_by(session=session['user']).first()
 
@@ -202,7 +247,9 @@ def post(title,id):
         if request.args.get('notification'):
             notification = db.session.query(Notifications_Model).filter_by(id=int(request.args.get('notification'))).first()
             notification.checked = True
+            db.session.query(Notifications_Model).filter_by(id=int(request.args.get('notification'))).delete()
             db.session.commit()
+
         return render_template('post.html',tags_all=tags_all,post_from_user=post_from_user ,reset=reset, reply=reply,posts=posts,replyes=replyes,tags=tags,search=search,popular_posts=popular_posts,location=location,keywords=keywords)
     else:
         login = LoginForm(request.form)
@@ -216,6 +263,7 @@ def edit_post(id):
     if request.method == 'POST':
         post.text = editpost.text.data
         post.title = editpost.title.data
+        post.read_time = str(readtime.of_html(editpost.text.data))
         db.session.commit()
         flash('Post updated successfully.')
         return redirect(url_for('home.home'))
@@ -238,15 +286,31 @@ def reply(id,title):
 
     posts = db.session.query(PostModel).filter_by(id=id).first()
 
+    
     if posts.closed:
         flash('This post is closed you can`t reply', 'error')
         return redirect(url_for('home.post',title=title,id=id))
+
+    index = db.session.execute(Sequence('replyes_id_seq')) + 1
+
+    notify = Notifications_Model(
+        None,
+        current_user.id,
+        'New reply',
+        'New reply from {}'.format(current_user.name),
+        str(url_for('home.post',id=posts.id,title=posts.title)),
+        posts.user_in.id,
+        None,
+        None
+    )
+    db.session.add(notify)
 
     new_reply = ReplyModel(
         None,
         reply.text.data,
         id,
-        current_user.id
+        current_user.id,
+        None
     )
     
     db.session.add(new_reply)
@@ -255,80 +319,7 @@ def reply(id,title):
     flash('New reply added successfully','success')
     return redirect(url_for('home.post',id=id,title=title))
 
-@home_pages.route("/sitemap")
-def sitemap():
 
-    posts = db.session.query(PostModel).all()
-    users = db.session.query(UserModel).all()
-
-    sitemap_xml = render_template('sitemap.xml',posts=posts,users=users)
-    response = make_response(sitemap_xml)
-    response.headers['Content-Type'] = "application/xml"
-
-    return response
-
-@home_pages.route('/opensearch')
-def opensearch():
-    opensearch_xml = render_template('opensearch.xml')
-    response = make_response(opensearch_xml)
-    response.headers['Content-Type'] = "application/xml"
-
-    return response
-
-@home_pages.route('/delete/post/<int:id>')
-def delete_post(id):
-    posts = db.session.query(PostModel).filter_by(id=id).first()
-
-    if current_user.is_authenticated == False:
-        return redirect(url_for('home.home'))
-
-    if current_user.id != posts.user_in.id:
-        return redirect(url_for('home.home'))
-    if current_user.roleinfo.delete_post_permission == False:
-        return redirect(url_for('home.home'))
-
-    db.session.query(PostModel).filter_by(id=id).delete()
-    db.session.query(ReplyModel).filter_by(post_id=id).delete()
-    tags = db.session.query(TagModel).filter(TagModel.post.contains([id])).all()
-    for t in tags:
-        x = list(t.post)
-        x.remove(id)
-        t.post = x
-
-    picture_fn = 'post_' + str(id) + '.jpeg'
-    os.remove(os.path.join(app.config['UPLOAD_FOLDER_POST'], picture_fn))
-
-    db.session.commit()
-    flash('Post successfully deleted', 'success')
-    return redirect(url_for('home.home'))
-
-@home_pages.route('/close/post/<int:id>')
-def close_post(id):
-    posts = db.session.query(PostModel).filter_by(id=id).first()
-
-    if current_user.is_authenticated == False:
-        return redirect(url_for('home.home'))
-
-    if current_user.roleinfo.close_post_permission:
-        posts.closed = True
-        posts.closed_on = datetime.datetime.now()
-        posts.closed_by = current_user.id
-        db.session.commit()
-        flash('Post successfully closed', 'success')
-    return redirect(url_for('home.home'))
-
-@home_pages.route('/feed')
-def rss_feed():
-    tags = db.session.query(TagModel).filter_by(name='discuss').all()
-    ids = []
-    for t in tags:
-        ids.extend(i.post)
-    posts = db.session.query(PostModel).filter(PostModel.id.in_(ids)).filter_by(lang='en').order_by(PostModel.id.desc()).limit(5)
-    newsfeed_rss = render_template('newsfeed.xml', posts=posts)
-    response = make_response(newsfeed_rss)
-    response.headers['Content-Type'] = "application/xml"
-
-    return response
 
 
 

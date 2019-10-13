@@ -15,7 +15,8 @@ class RegisterForm(FlaskForm):
         ],
         render_kw = {
             "required":"true",
-            "placeholder":"Username"
+            "placeholder":"Username",
+            "pattern" : "[A-Za-z0-9_.-]{3,15}"
         }
     )
     email = TextField(
@@ -26,7 +27,8 @@ class RegisterForm(FlaskForm):
         ],
         render_kw = {
             "required":"true",
-            "placeholder":"Email"
+            "placeholder":"Email",
+            "pattern" : "[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
         }
     )
     realname = TextField(
@@ -167,6 +169,56 @@ class ModifyProfileForm(FlaskForm):
             "placeholder":"Profession"
         }
     )
+    instagram = TextField(
+        'Instagram_ModifyProfile',
+        validators = [
+            Length(min=5,max=15)
+        ],
+        render_kw = {
+            "placeholder":"Instagram",
+            "pattern":"^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$"
+        }
+    )
+    facebook = TextField(
+        'Facebook_ModifyProfile',
+        validators = [
+            Length(min=5,max=15)
+        ],
+        render_kw = {
+            "placeholder":"Facebook",
+            "pattern":"^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$"
+        }
+    )
+    twitter = TextField(
+        'Twitter_ModifyProfile',
+        validators = [
+            Length(min=5,max=15)
+        ],
+        render_kw = {
+            "placeholder":"Twitter",
+            "pattern":"^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$"
+        }
+    )
+    website = TextField(
+        'Website_ModifyProfile',
+        validators = [
+            Length(min=5,max=15)
+        ],
+        render_kw = {
+            "placeholder":"Website",
+            "pattern":"^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$"
+        }
+    )
+    github = TextField(
+        'Github_ModifyProfile',
+        validators = [
+            Length(min=5,max=15)
+        ],
+        render_kw = {
+            "placeholder":"Github",
+            "pattern":"^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$"
+        }
+    )
     birthday = HiddenField(
         'Birthday_ModifyProfile'
     )
@@ -207,10 +259,17 @@ class NewQuestionForm(FlaskForm):
         }
     )
     text = HiddenField(
-        'NewQuestionForm_Text'
+        'NewQuestionForm_Text',
+        render_kw = {
+            "required":"true"
+        }
     )
     tag = TextField(
-        'NewQuestionForm_Tags'
+        'NewQuestionForm_Tags',
+        render_kw = {
+            "placeholder":"Tags",
+            "required":"true"
+        }
     )
     submit = SubmitField(
         'Ask',

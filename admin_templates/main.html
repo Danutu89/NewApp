@@ -21,8 +21,13 @@
 				<div class="col-xs-6 col-md-3 col-lg-3 no-padding">
 					<div class="panel panel-teal panel-widget border-right">
 						<div class="row no-padding"><em class="fa fa-xl fa-sticky-note color-blue"></em>
-							<div class="large">{{analyze.count_posts()}}</div>
-							<div class="text-muted">Questions</div>
+							<div class="large">{{analyze.posts_15_days()}}{% if  analyze.perc_posts() > 0 %}
+								<span style="color:green;font-size:0.5em;">+{{analyze.perc_posts()}}%</span>
+								{% else %}
+								<span style="color:red;font-size:0.5em;">-{{analyze.perc_posts()}}%</span>
+								{% endif %}</div>
+							
+							<div class="text-muted">New Questions</div>
 						</div>
 					</div>
 				</div>
@@ -37,30 +42,40 @@
 				<div class="col-xs-6 col-md-3 col-lg-3 no-padding">
 					<div class="panel panel-orange panel-widget border-right">
 						<div class="row no-padding"><em class="fa fa-xl fa-users color-teal"></em>
-							<div class="large">{{analyze.total_users()}}</div>
-							<div class="text-muted">Users</div>
+							<div class="large">{{analyze.user_15_days()}}{% if  analyze.perc_users() > 0 %}
+								<span style="color:green;font-size:0.5em;">+{{analyze.perc_users()}}%</span>
+								{% else %}
+								<span style="color:red;font-size:0.5em;">-{{analyze.perc_users()}}%</span>
+								{% endif %}</div>
+							<div class="text-muted">New Users</div>
 						</div>
 					</div>
 				</div>
 				<div class="col-xs-6 col-md-3 col-lg-3 no-padding">
 					<div class="panel panel-red panel-widget ">
 						<div class="row no-padding"><em class="fa fa-xl fa-search color-red"></em>
-							<div class="large">{{analyze.total_views()}}</div>
-							<div class="text-muted">Page Views</div>
+							<div class="large">{{analyze.views_15_days()}}{% if  analyze.perc_views() > 0 %}
+								<span style="color:green;font-size:0.5em;">+{{analyze.perc_views()}}%</span>
+								{% else %}
+								<span style="color:red;font-size:0.5em;">-{{analyze.perc_views()}}%</span>
+								{% endif %}</div>
+							
+							<div class="text-muted">New Page Views</div>
 						</div>
 					</div>
 				</div>
 			</div><!--/.row-->
 		</div>
+
 		<div class="row">
 			<div class="col-md-12">
-				<div class="panel panel-default">
-					<div class="panel-heading">
-						Site Traffic Overview
+					<div class="panel panel-default" style="box-shadow: none;-webkit-box-shadow:none;">
+							<div class="panel-heading" style="background-color: #f1f4f7">
+						Site Traffic
 						
 						<!--<span class="pull-right clickable panel-toggle panel-button-tab-left"><em class="fa fa-toggle-up"></em></span>-->
 					</div>
-					<div class="panel-body">
+					<div class="panel-body" style="box-shadow:0 1px 2px rgba(0,0,0,.05);-webkit-box-shadow:0 1px 2px rgba(0,0,0,.05);">
 						<div class="canvas-wrapper">
 							<canvas class="main-chart" id="line-chart" height="200" width="600"></canvas>
 						</div>
@@ -68,44 +83,313 @@
 				</div>
 			</div>
 		</div><!--/.row-->
+		<div class="row">
+				<div class="col-md-4">
+						<div class="panel panel-default" style="box-shadow: none;-webkit-box-shadow:none;">
+							<div class="panel-heading" style="background-color: #f1f4f7">
+								Pages Traffic
+	
+								<!--<span class="pull-right clickable panel-toggle panel-button-tab-left"><em class="fa fa-toggle-up"></em></span>-->
+							</div>
+							<div class="panel-body" style="box-shadow:0 1px 2px rgba(0,0,0,.05);-webkit-box-shadow:0 1px 2px rgba(0,0,0,.05);">
+								<table class="table">
+									<thead>
+										<tr>
+											<th scope="col">Page</th>
+											<th scope="col">Visits</th>
+										</tr>
+									</thead>
+									<tbody>
+										{% for page in pages %}
+										<tr>
+											<td>{{page.name}}</td>
+											<td>{{page.views}}</td>
+										</tr>
+										{% endfor %}
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+			<div class="col-md-3">
+					<div class="panel panel-default" style="box-shadow: none;-webkit-box-shadow:none;">
+							<div class="panel-heading" style="background-color: #f1f4f7">
+						Devices Traffic
+
+						<!--<span class="pull-right clickable panel-toggle panel-button-tab-left"><em class="fa fa-toggle-up"></em></span>-->
+					</div>
+					<div class="panel-body" style="box-shadow:0 1px 2px rgba(0,0,0,.05);-webkit-box-shadow:0 1px 2px rgba(0,0,0,.05);">
+						<div class="canvas-wrapper">
+							<canvas class="main-chart" id="devices-chart" height="150" width="150"></canvas>
+						</div>
+						<hr>
+						<div class="devices-perc" style="display: flex;">
+							<div class="computer" style="    width: 50%;
+							text-align: center;
+							padding: 2rem;
+							display: inline-grid;">
+								<em class="fa fa-xl fa-desktop color-blue" style="font-size:4rem;"></em>
+								<span>{{devices['Computer']}} Sessions</span>
+								{% if  per_devices['computer'] > 0 %}
+								<span style="color:green">+{{per_devices['computer']}}%</span>
+								{% else %}
+								<span style="color:red">-{{per_devices['computer']}}%</span>
+								{% endif %}
+							</div>
+							<div class="mobile" style="    width: 50%;
+							text-align: center;
+							padding: 2rem;
+							display: inline-grid;">
+								<em class="fa fa-xl fa-mobile color-blue" style="font-size:4rem;"></em>
+								<span>{{devices['Mobile']}} Sessions</span>
+								{% if  per_devices['mobile'] > 0 %}
+								<span style="color:green">+{{per_devices['mobile']}}%</span>
+								{% else %}
+								<span style="color:red">-{{per_devices['mobile']}}%</span>
+								{% endif %}
+							</div>
+						</div>
+					</div>
+
+				</div>
+			</div>
+			<div class="col-md-5">
+				<div class="panel panel-default" style="box-shadow: none;-webkit-box-shadow:none;">
+					<div class="panel-heading" style="background-color: #f1f4f7">
+				User Acquisition
 				
-		
+				<!--<span class="pull-right clickable panel-toggle panel-button-tab-left"><em class="fa fa-toggle-up"></em></span>-->
+				</div>
+				<div class="panel-body" style="box-shadow:0 1px 2px rgba(0,0,0,.05);-webkit-box-shadow:0 1px 2px rgba(0,0,0,.05);">
+					<div class="canvas-wrapper">
+						<canvas class="referer-chart" id="referer-chart" height="300" width="400"></canvas>
+					</div>
+				</div>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-4">
+				<div class="panel panel-default" style="box-shadow: none;-webkit-box-shadow:none;">
+					<div class="panel-heading" style="background-color: #f1f4f7">
+				User Countries
+				
+				<!--<span class="pull-right clickable panel-toggle panel-button-tab-left"><em class="fa fa-toggle-up"></em></span>-->
+				</div>
+				<div class="panel-body" style="box-shadow:0 1px 2px rgba(0,0,0,.05);-webkit-box-shadow:0 1px 2px rgba(0,0,0,.05);">
+					<div class="canvas-wrapper">
+						<div class="country-chart" id="countries-chart" ></div>
+						<canvas class="country-chart" id="country-chart" height="150" width="200"></canvas>
+					</div>
+				</div>
+				</div>
+			</div>
+		</div><!--/.row-->
 	</div>	<!--/.main-->
 	
 	<script>
+		function getRandomColor() {
+			var letters = '0123456789ABCDEF'.split('');
+			var color = '#';
+			for (var i = 0; i < 6; i++ ) {
+				color += letters[Math.floor(Math.random() * 16)];
+			}
+			return color;
+		}
 		var lineChartData = {
-		labels : [
-			{% for m in data.keys() %}
-				"{{months[m]}}",
-			{% endfor %}
-		],
+		labels : [{% for l in label_days %}"{{l}}",{% endfor %}],
 		datasets : [
-			{
-				label: "My First dataset",
-				fillColor : "rgba(48, 164, 255, 0.2)",
+		{
+				label: "Visits",
+				backgroundColor : "rgba(48, 164, 255, 0.2)",
+				fill : true,
 				strokeColor : "rgba(48, 164, 255, 1)",
-				pointColor : "rgba(48, 164, 255, 1)",
+				borderColor : "rgba(48, 164, 255, 1)",
 				pointStrokeColor : "#fff",
 				pointHighlightFill : "#fff",
 				pointHighlightStroke : "rgba(48, 164, 255, 1)",
-				data : [
-					{% for m in data.keys() %}
-						{{data[m]}},
-					{% endfor %}
-				]
+				data : [{% for m in data.keys() %}{{data[m]}},{% endfor %}]
+			},
+			{
+				label: "Visits Old",
+				backgroundColor : "rgba(220,220,220,0.2)",
+				fill : true,
+				strokeColor : "rgba(220,220,220,1)",
+				borderColor : "rgba(220,220,220,1)",
+				pointStrokeColor : "#fff",
+				pointHighlightFill : "#fff",
+				pointHighlightStroke : "rgba(220,220,220,1)",
+				data : [{% for m in sess_old.keys() %}{{sess_old[m]}},{% endfor %}]
 			}
-			
 		]
-
-	}
+		};
+		var doughnutData = {
+			labels: ["Mobiles", "Computers"],
+			datasets: [
+				{
+					label: "Devices",
+					backgroundColor: ["rgba(48, 164, 255, 0.9)", "rgba(48, 164, 255, 0.8)"],
+					data: [{{devices['Mobile']}},{{devices['Computer']}}]
+				}
+			]
+		}
+		var barData = {
+			labels: [{% for l in label_days %}"{{l}}",{% endfor %}],
+			datasets: [
+				{% for l in referer.keys() %}
+				{
+					label: '{{l}}',
+					backgroundColor: getRandomColor(),
+					data: [{% for g in label_days %}{% if referer[l][g] %}{{referer[l][g]}},{% else %}0,{% endif %}{% endfor %}]
+				},
+				{% endfor %}
+			]
+		}
+		var HbarData = {
+			labels: [{% for l in countries %}{% if country[l] > 5 %}"{{countries[l]}}",{% endif %}{% endfor %}],
+			datasets: [
+				{
+					label: 'Countries',
+					backgroundColor: "rgba(48, 164, 255, 1)",
+					data: [{% for h in country %}{% if country[h] > 5 %}{{country[h]}},{% endif %}{% endfor %}]
+				},
+			]
+		}
 	window.onload = function () {
 	var chart1 = document.getElementById("line-chart").getContext("2d");
-	window.myLine = new Chart(chart1).Line(lineChartData, {
-	responsive: true,
-	scaleLineColor: "rgba(0,0,0,.2)",
-	scaleGridLineColor: "rgba(0,0,0,.05)",
-	scaleFontColor: "#c5c7cc"
+	label_old = [{% for m in sess_old.keys() %}'{{m}}',{% endfor %}];
+	label_new = [{% for m in data.keys() %}'{{m}}',{% endfor %}];
+	country = [{% for l in countries %}{% if country[l] > 5 %}"{{countries[l]}}",{% endif %}{% endfor %}];
+	window.myLine = new Chart(chart1,{ 
+	data: lineChartData, 
+	type: 'line',
+	options: {
+		responsive: true,
+		tooltips: {
+			mode: 'index',
+            intersect: false,
+			callbacks: {
+				title: function(tooltipItem, data) {
+					
+					return label_new[tooltipItem[0]['index']] + ' vs ' + label_old[tooltipItem[0]['index']];
+				},
+				label: function(tooltipItem, data) {
+					if ( tooltipItem['datasetIndex'] == 0){
+						var percent = Math.round(((data['datasets'][0]['data'][tooltipItem['index']] - data['datasets'][1]['data'][tooltipItem['index']]) / data['datasets'][1]['data'][tooltipItem['index']]) * 100)
+						return data['datasets'][tooltipItem['datasetIndex']]['data'][tooltipItem['index']] + ' (' + percent + '%)';
+					}else {
+						return data['datasets'][tooltipItem['datasetIndex']]['data'][tooltipItem['index']];
+					}
+				}
+			},
+			scales: {
+				yAxes: [{
+					id: "y-axis-1",
+					position: "left"
+				}, {
+					id: "y-axis-2",
+					position: "right"
+				}]
+			}
+		}
+	}
 	});
+	var devices = document.getElementById("devices-chart").getContext("2d");
+	window.myDoughnut = new Chart(devices,{
+	type : 'doughnut',
+	data: doughnutData, 
+	options: {
+		responsive: true,
+    maintainAspectRatio: false,
+		legend: {
+            display: false
+         },
+		tooltips: {
+			callbacks: {
+				title: function(tooltipItem, data) {
+				return data['labels'][tooltipItem[0]['index']];
+				},
+				label: function(tooltipItem, data) {
+				var dataset = data['datasets'][0];
+				var percent = Math.round((dataset['data'][tooltipItem['index']] / ({{devices['Mobile']}} + {{devices['Computer']}})) * 100);
+				return data['datasets'][0]['data'][tooltipItem['index']] + ' (' + percent + '%)';
+				},
+				afterLabel: function(tooltipItem, data) {
+				return '';
+				}
+			}
+		}
+	}
+	});
+	var ctx = document.getElementById('referer-chart').getContext('2d');
+	window.myBar = new Chart(ctx, {
+		type: 'bar',
+		data: barData,
+		options: {
+			tooltips: {
+				mode: 'index',
+				intersect: false,
+				callbacks: {
+					title: function(tooltipItem, data) {
+						return label_new[tooltipItem[0]['index']];
+					},
+					label: function(tooltipItem, data) {
+						if (parseInt(data['datasets'][tooltipItem['datasetIndex']]['data'][tooltipItem['index']]) > 0)
+							return data['datasets'][tooltipItem['datasetIndex']]['label'] + ': ' + data['datasets'][tooltipItem['datasetIndex']]['data'][tooltipItem['index']];
+						else
+							return '';
+					}
+				}
+			},
+			responsive: true,
+			scales: {
+				xAxes: [{
+					stacked: true,
+				}],
+				yAxes: [{
+					stacked: true
+				}]
+			},
+			legend: {
+            display: false
+        }
+		}
+	});
+	var hctx = document.getElementById('country-chart').getContext('2d');
+	window.myBar = new Chart(hctx, {
+		type: 'horizontalBar',
+		data: HbarData,
+		options: {
+			tooltips: {
+				intersect: false,
+				callbacks: {
+					title: function(tooltipItem, data) {
+						return country[tooltipItem[0]['index']];
+					},
+					label: function(tooltipItem, data) {
+						return "Views: " + data['datasets'][tooltipItem['datasetIndex']]['data'][tooltipItem['index']];
+					}
+				}
+			},
+			responsive: true,
+			scales: {
+				xAxes: [{
+					stacked: true,
+				}],
+				yAxes: [{
+					stacked: true
+				}]
+			},
+			legend: {
+            display: false
+        }
+		}
+	});
+	var views = {
+		{% for c in countries %}
+		"{{countries[c]}}":{{country[c]}},
+		{% endfor %}
+	}
 };
 	</script>
 		

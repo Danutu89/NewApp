@@ -1,17 +1,29 @@
 {% extends "index.html" %}
 {% block content %}
-<style>
 
-</style>
         <div class="articles">
+            {% if request.MOBILE %}
+            {% for success in get_flashed_messages(category_filter=["success"]) %}
+                <alert-box type='success'>
+                    <span class="alert-message">{{success}}</span>
+                    <span class="alert-close" onclick="this.parentElement.style.display='none';">&times;</span>
+                </alert-box>
+                {% endfor %}
+                {% for error in get_flashed_messages(category_filter=["error"]) %}
+                <alert-box type='error'>
+                    <span class="alert-message">{{error}}</span>
+                    <span class="alert-close" onclick="this.parentElement.style.display='none';">&times;</span>
+                </alert-box>
+            {% endfor %}
+            {% endif %}
             {% for post in posts %}
             {% if post.approved %}
             <div class="article-card" id="post_{{post.id}}">
                 {% if post.thumbnail %}
-                <div class="article-thumbnail">
+                <div class="article-thumbnail" style="max-height:300px;overflow: hidden;">
                         <img
                           src="https://newapp.nl/static/thumbnail_post/post_{{post.id}}.jpeg" style="border-top-left-radius: 4px;
-                          border-top-right-radius: 4px;">
+                          border-top-right-radius: 4px;object-fit: cover;">
                 </div>
                 {% endif %}
                 <div class="article-main">
@@ -22,7 +34,7 @@
                     <div class="article-title"><a href="{{url_for('home.post', id=post.id, title=post.title)}}"><h1 style="font-size: 1.5rem;
                         font-weight: 400;
                         margin: 0;">{{post.title}}</h1></a></div>
-                    <div class="article-author">Author: <a href="{{url_for('users.user', name=post.user_in.name, id=post.user_in.id )}}">Danutu</a></div>
+                    <div class="article-author">Author: <a href="{{url_for('users.user', name=post.user_in.name, id=post.user_in.id )}}">{{post.user_in.name}}</a></div>
                     <div class="article-tags">
                         <span>Tags: </span>
                         {% for tag in tags %}
@@ -35,11 +47,22 @@
                 </div>
                 <div class="article-footbar">
                 <div class="article-date">Published on {{post.posted_on}}</div>
-                {% if current_user.is_authenticated %}
-                <div class="article-save">
+                
+                
+                <div class="article-misc">
+                        <span class="article-readtime" style="
+                        font-size: 0.8rem;
+                        color: grey;
+                        margin-right: 0.4rem;">
+                            {% if post.read_time %}
+                            {{ post.read_time }}
+                            {% endif %}
+                        </span>
+                        {% if current_user.is_authenticated %}
                     <button class="article-save" id="save-{{post.id}}" onclick="Save_Post({{post.id}})">{% if post.id in current_user.saved_posts %}Saved{% else %}Save{% endif %}</button>
+                    {% endif %}
                 </div>
-                {% endif %}
+                
                 </div>
             </div>
             

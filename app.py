@@ -1,4 +1,4 @@
-from flask import Flask, flash, redirect, render_template, request, url_for,send_from_directory, Blueprint
+from flask import Flask, flash, redirect, render_template, request, url_for,send_file, Blueprint
 from flask_sqlalchemy import SQLAlchemy
 from flask_session import Session
 from flask_bcrypt import Bcrypt
@@ -26,6 +26,7 @@ from flask_mobility import Mobility
 from werkzeug.wrappers import BaseRequest
 from werkzeug.wsgi import responder
 from werkzeug.exceptions import HTTPException, NotFound
+from pywebpush import webpush, WebPushException
 
 key_c = '\xce,CH\xc0\xd2K9\xe3\x87\xa0Z\x19\x8a\xcd\xf9\x91\x94\xddN\xff\xaf;r\xef'
 key_cr = b'vgF_Yo8-IutJs-AcwWPnuNBgRSgncuVo1yfc9uqSiiU='
@@ -39,7 +40,7 @@ key_jwt = {
 
 
 app = Flask(__name__)
-CORS(app)
+
 eventlet.monkey_patch()
 ma = Marshmallow(app)
 Mobility(app)
@@ -71,7 +72,6 @@ app.config['COMPRESS_MIMETYPES'] =  ['text/html', 'text/css', 'text/xml', 'appli
 app.config['COMPRESS_LEVEL'] = 6
 app.config['COMPRESS_MIN_SIZE'] = 500
 
-
 Compress(app)
 redis_sv = redis.Redis()
 es = Elasticsearch(app.config['ELASTISEARCH_URL'])
@@ -100,6 +100,20 @@ cipher_suite = Fernet(key_cr)
   cluster='eu',
   ssl=True
 ) """
+
+PRIVATE_KEY = "MIGHAgEAMBMGByqGSM49AgEGCCqGSM49AwEHBG0wawIBAQQgygRuSpCQnD8wf0FVi2YlTToj7RXoxAAifhnE27zvTK+hRANCAAS2zABRrBAs+o7ZQwKJ+z0PIuehR8ApPoUCiByydODAqsMAlrOLjdhUFsaqckqS50c2+WyTK5ig7OatweJxp5mG"
+
+def send_web_push(subscription_information, message_body):
+    return webpush(
+        subscription_info=subscription_information,
+        data=message_body,
+        vapid_private_key=PRIVATE_KEY,
+        vapid_claims={"sub":"contact@newapp.nl"}
+    )
+
+@app.route('/sw.js')
+def service_worker():
+    return send_file(app.root_path+'/static/sw.js')
 
 from models import UserModel, PostModel
 
@@ -137,14 +151,16 @@ def application(environ, start_response):
     except HTTPException as e:
         return not_found_error(404)
 
-from views.users import users_pages, admin_pages
+from views.users import users_pages
 from views.home import home_pages
 from views.jsons import json_pages
+from views.admin import admin_pages
 
 app.register_blueprint(users_pages)
 app.register_blueprint(admin_pages)
 app.register_blueprint(home_pages)
 app.register_blueprint(json_pages)
+app.register_blueprint(admin_pages)
 
 #flask_whooshalchemy.whoosh_index(app,PostModel)
 

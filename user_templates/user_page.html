@@ -21,6 +21,10 @@
         <div class="profile-actions">
           <button class="follow-user" onclick="Follow_User({{user.id}})" id="follow-user-{{user.id}}">{% if user.id in current_user.follow %}&#x2713 Following{% else %}Follow{% endif %}</button>
         </div>
+        {% elif current_user.id == user.id %}
+        <div class="profile-actions">
+          <a href="{{url_for('users.settings', name=user.name)}}"><button class="follow-user">Settings</button></a>
+        </div>
         {% endif %}
         {% endif %}
         <div class="widgets">
@@ -28,7 +32,7 @@
             <div class="header"><i class="fa fa-globe"></i> Presentation</div>
             <div class="bio">{{user.bio}}</div>
             <div class="info">
-              {% if user.profession %}
+              {% if user.profession != 'None' %}
               <p><i class="fas fa-briefcase"></i> Profession {{user.profession}}</p>
               {% endif %}
               <p><i class="fas fa-home"></i> From {{user.country_name}} <span class="flag-icon flag-icon-{{user.country_flag}}"></span></p>
@@ -36,6 +40,7 @@
               <p><i class="fas fa-rss"></i> Followed by {{user.followed|length}} people</p>
             </div>
           </div>
+          {% if user.int_tags[0] %}
           <div class="interesed-tags">
             <div class="header"><i class="fas fa-tags"></i> Interesed Tags</div>
             <div class="tags">
@@ -46,6 +51,45 @@
                     {% endfor %}
             </div>
           </div>
+          {% endif %}
+          {% if user.facebook or user.instagram or user.twitter or user.github or user.website %}
+          <div class="social">
+            <div class="header"><i class="fas fa-share-alt"></i> Social</div>
+            <div class="links">
+              {% if user.facebook %}
+              <div style="margin-bottom: 0.3rem">
+              <a style="text-decoration: none;"  href="{{user.facebook}}"><span
+                style="font-size: 12px;"><i class="fab fa-facebook" style="font-size: 1rem;"></i> @{{user.facebook[25]|upper}}{{ user.facebook[26:] }}</span></a>
+              </div>
+              {% endif %}
+              {% if user.instagram %}
+              <div style="margin-bottom: 0.3rem">
+              <a style="text-decoration: none;" href="{{user.instagram}}"><span
+                style="font-size: 12px;"><i class="fab fa-instagram" style="font-size: 1rem;"></i> @{{user.instagram[26]|upper}}{{ user.instagram[27:] }}</span></a>
+              </div>
+              {% endif %}
+              {% if user.twitter %}
+              <div style="margin-bottom: 0.3rem">
+              <a style="text-decoration: none;" href="{{user.twitter}}"><span
+                style="font-size: 12px;"><i class="fab fa-twitter" style="font-size: 1rem;"></i> @{{user.twitter[20]|upper}}{{ user.twitter[21:] }}</span></a>
+              </div>
+              {% endif %}
+              {% if user.github %}
+              <div style="margin-bottom: 0.3rem">
+              <a style="text-decoration: none;" href="{{user.github}}"><span
+                style="font-size: 12px;"><i class="fab fa-github" style="font-size: 1rem;"></i> @{{user.github[19]|upper}}{{ user.github[20:] }}</span></a>
+              </div>
+              {% endif %}
+              {% if user.website %}
+              <div style="margin-bottom: 0.3rem">
+                  <a style="text-decoration: none;" href="{{user.website}}"><span
+                    style="font-size: 12px;"><i class="fa fa-globe" style="font-size: 1rem;"></i> {{user.website}}</span></a>
+                    
+              </div>
+              {% endif %}
+            </div>
+          </div>
+          {% endif %}
         </div>
       </div>
       <div class="sidebar-main">

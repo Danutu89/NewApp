@@ -10,6 +10,8 @@ import flask_whooshalchemy
 
 from search_engine import SearchableMixin
 
+from flask import url_for,json
+
 Base = declarative_base()
 
 
@@ -22,7 +24,6 @@ class UserModel(db.Model):
     join_date = db.Column(db.Date, primary_key = False, default = datetime.datetime.now)
     name = db.Column(db.String(50), primary_key = False)
     real_name = db.Column(db.String(50), primary_key = False)
-    github_name = db.Column(db.String(50), primary_key = False)
     email = db.Column(db.String(50), primary_key = False)
     password = db.Column(db.String(255), primary_key = False)
     avatar = db.Column(db.String, primary_key = False)
@@ -44,19 +45,24 @@ class UserModel(db.Model):
     follow = db.Column(sq.ARRAY(db.Integer), ForeignKey('users.id'), default=[], primary_key = False)
     followed = db.Column(sq.ARRAY(db.Integer), ForeignKey('users.id'), default=[],primary_key = False)
     cover = db.Column(db.String, primary_key = False)
+    instagram = db.Column(db.String, primary_key = False)
+    facebook = db.Column(db.String, primary_key = False)
+    twitter = db.Column(db.String, primary_key = False)
+    github = db.Column(db.String, primary_key = False)
+    website = db.Column(db.String, primary_key = False)
 
     posts = relationship("PostModel", backref="user_in")
     replyes = relationship("ReplyModel", backref="user_in")
     likes = relationship("LikeModel", backref="user_in")
     following = db.relationship("UserModel",foreign_keys=[follow])
 
-    def __init__(self,id,join_date,name,real_name,github_name,email,password,avatar,genre,role,bio,activated,is_online,
-                    ip_address,browser,country_name,country_flag,lang,int_tags,birthday,profession,saved_posts,liked_posts,follow,followed,cover):
+    def __init__(self,id,join_date,name,real_name,email,password,avatar,genre,role,bio,activated,is_online,
+                    ip_address,browser,country_name,country_flag,lang,int_tags,birthday,profession,saved_posts,liked_posts,follow,followed,cover,
+                    instagram,facebook,twitter,github,website):
         self.id = id
         self.join_date = join_date
         self.name = name
         self.real_name = real_name
-        self.github_name = github_name
         self.email = email
         self.password = bcrypt.generate_password_hash(password).decode('utf-8')
         self.avatar = avatar
@@ -78,6 +84,11 @@ class UserModel(db.Model):
         self.follow = follow
         self.followed = followed
         self.cover = cover
+        self.instagram = instagram
+        self.facebook = facebook
+        self.twitter = twitter
+        self.github = github
+        self.website = website
 
     def is_authenticated(self):
         return True
@@ -168,10 +179,11 @@ class PostModel(SearchableMixin, db.Model):
     lang = db.Column(db.String, primary_key = False, default = 'eng')
     thumbnail = db.Column(db.String, primary_key = False)
     likes = db.Column(db.Integer, primary_key = False, default=0)
+    read_time = db.Column(db.String, primary_key = False)
 
     author = db.relationship("UserModel", backref = "author")
 
-    def __init__(self,id,title,text,views,reply,user,posted_on,approved,closed,closed_on,closed_by,lang,thumbnail,likes):
+    def __init__(self,id,title,text,views,reply,user,posted_on,approved,closed,closed_on,closed_by,lang,thumbnail,likes,read_time):
         self.id = id
         self.title = title
         self.text = text
@@ -186,6 +198,7 @@ class PostModel(SearchableMixin, db.Model):
         self.lang = lang
         self.thumbnail = thumbnail
         self.likes = likes
+        self.read_time = read_time
 
     def __repr__(self):
         return '{0}(title={1})'.format(self.__class__.__name__, self.title)
@@ -198,7 +211,7 @@ class PostModel(SearchableMixin, db.Model):
         return users.name
 
     def unique_views(self):
-        return db.session.query(Analyze_Pages).filter_by(name=('Post_{}').format(self.id)).count()
+        return db.session.query(Analyze_Pages).filter_by(name=url_for('home.post',id=self.id, title=self.title)).count()
 
 class PostSchema(ma.Schema):
     author = fields.Nested(UserSchema())
@@ -213,15 +226,18 @@ class ReplyModel(db.Model):
     __tablename__ = 'replyes'
 
     id = db.Column(db.Integer, db.Sequence('replyes_id_seq'), primary_key = True)
-    text = db.Column(db.String(250), primary_key = False)
+    text = db.Column(db.String, primary_key = False)
     post_id = db.Column(db.Integer, primary_key = False)
     user = db.Column(db.Integer, ForeignKey('users.id'))
+    posted_on = db.Column(db.Date, primary_key = False, default = datetime.datetime.now)
 
-    def __init__(self,id,text,post_id,user):
+
+    def __init__(self,id,text,post_id,user,posted_on):
         self.id = id
         self.text = text
         self.post_id = post_id
         self.user = user
+        self.posted_on = posted_on
 
     def __repr__(self):
         return ('<id {}').format(self.id)
@@ -248,20 +264,6 @@ class LikeModel(db.Model):
 
     def __repr__(self):
         return ('<id {}').format(self.id)
-
-# class TagModel(db.Model):
-
-#     __tablename__ = 'post_tags'
-
-
-#     id = db.Column(db.Integer, db.Sequence('post_tags_id_seq'), primary_key = True)
-#     tag = db.Column(db.String(50), primary_key = False)
-#     post_id = db.Column(db.Integer, primary_key = False)
-
-#     def __init__(self,id,tag,post_id):
-#         self.id = id
-#         self.tag = tag
-#         self.post_id = post_id
 
 class TagModel(Base):
 
@@ -291,8 +293,10 @@ class Analyze_Session(Base):
     created_at = db.Column(db.Date, primary_key = False)
     bot = db.Column(db.Boolean, primary_key = False, default=False)
     lang = db.Column(db.String, primary_key = False, default = 'eng')
+    referer = db.Column(db.String, primary_key = False)
+    iso_code = db.Column(db.String, primary_key = False)
 
-    def __init__(self,id,ip,continent,country,city,os,browser,session,created_at,bot,lang):
+    def __init__(self,id,ip,continent,country,city,os,browser,session,created_at,bot,lang,referer,iso_code):
         self.id = id
         self.ip = ip
         self.continent = continent
@@ -304,6 +308,8 @@ class Analyze_Session(Base):
         self.created_at = created_at
         self.bot = bot
         self.lang = lang
+        self.referer = referer
+        self.iso_code = iso_code
 
 class Analyze_Sessions_Schema(ma.Schema):
     class Meta:
@@ -335,10 +341,62 @@ class Analyze_Pages(Base):
     @staticmethod
     def total_users():
         return db.session.query(UserModel).count()
+        
+    @staticmethod
+    def views_15_days():
+        now = datetime.datetime.now()
+        back_days = now - datetime.timedelta(days = 15)
+        return db.session.query(Analyze_Pages).filter(Analyze_Pages.first_visited.between('{}-{}-{}'.format(back_days.year,back_days.month,back_days.day), '{}-{}-{}'.format(now.year,now.month,now.day))).count()
+
+    @staticmethod
+    def views_30_days():
+        now = datetime.datetime.now()
+        back_days = now - datetime.timedelta(days = 15)
+        back_perc = back_days - datetime.timedelta(days = 15)
+        return db.session.query(Analyze_Pages).filter(Analyze_Pages.first_visited.between('{}-{}-{}'.format(back_perc.year,back_perc.month,back_perc.day), '{}-{}-{}'.format(back_days.year,back_days.month,back_days.day))).count()
+
+
+    @staticmethod
+    def user_15_days():
+        now = datetime.datetime.now()
+        back_days = now - datetime.timedelta(days = 15)
+        return db.session.query(UserModel).filter(UserModel.join_date.between('{}-{}-{}'.format(back_days.year,back_days.month,back_days.day), '{}-{}-{}'.format(now.year,now.month,now.day))).count()
+
+    @staticmethod
+    def user_30_days():
+        now = datetime.datetime.now()
+        back_days = now - datetime.timedelta(days = 15)
+        back_perc = back_days - datetime.timedelta(days = 15)
+        return db.session.query(UserModel).filter(UserModel.join_date.between('{}-{}-{}'.format(back_perc.year,back_perc.month,back_perc.day), '{}-{}-{}'.format(back_days.year,back_days.month,back_days.day))).count()
 
     @staticmethod
     def count_posts():
         return db.session.query(PostModel).count()
+
+    @staticmethod
+    def posts_15_days():
+        now = datetime.datetime.now()
+        back_days = now - datetime.timedelta(days = 15)
+        return db.session.query(PostModel).filter(PostModel.posted_on.between('{}-{}-{}'.format(back_days.year,back_days.month,back_days.day), '{}-{}-{}'.format(now.year,now.month,now.day))).count()
+
+    @staticmethod
+    def posts_30_days():
+        now = datetime.datetime.now()
+        back_days = now - datetime.timedelta(days = 15)
+        back_perc = back_days - datetime.timedelta(days = 15)
+        return db.session.query(PostModel).filter(PostModel.posted_on.between('{}-{}-{}'.format(back_perc.year,back_perc.month,back_perc.day), '{}-{}-{}'.format(back_days.year,back_days.month,back_days.day))).count()
+
+    @staticmethod
+    def perc_posts():
+        return ((Analyze_Pages.posts_30_days() - Analyze_Pages.posts_15_days()) - Analyze_Pages.posts_15_days())%100
+
+    @staticmethod
+    def perc_views():
+        return ((Analyze_Pages.views_30_days() - Analyze_Pages.views_15_days()) - Analyze_Pages.views_15_days())%100
+
+    @staticmethod
+    def perc_users():
+        return ((Analyze_Pages.user_30_days() - Analyze_Pages.user_15_days()) - Analyze_Pages.user_15_days())%100
 
     @staticmethod
     def count_replies():
@@ -368,6 +426,32 @@ class Notifications_Model(db.Model):
         self.for_user = for_user
         self.checked = checked
         self.created_on = created_on
+
+class Subscriber(Base):
+    __tablename__ = 'subscriber'
+
+    id = db.Column(db.Integer(), primary_key=True, default=None)
+    user = db.Column(db.Integer)
+    created = db.Column(db.DateTime())
+    modified = db.Column(db.DateTime())
+    subscription_info = db.Column(db.Text())
+    is_active = db.Column(db.Boolean(), default=True)
+
+    def __init__(self,id,user,created,modified,subscription_info,is_active):
+        self.id = id
+        self.user = user
+        self.created = created
+        self.modified = modified
+        self.subscription_info = subscription_info
+        self.is_active = is_active
+
+    @property
+    def subscription_info_json(self):
+        return json.loads(self.subscription_info)
+
+    @subscription_info_json.setter
+    def subscription_info_json(self, value):
+        self.subscription_info = json.dumps(value)
 
 class Gits:
 

@@ -20,21 +20,26 @@ import os
 from PIL import Image
 
 from datetime import datetime
+import datetime as dt
 
 from analyze import hashlib, httpagentparser
 
 from sqlalchemy import desc
+
+import calendar
+
+from analyze import GetSessionId, parseVisitator
 
 users_pages = Blueprint(
     'users',__name__,
     template_folder='../user_templates'
 )
 
-admin_pages = Blueprint(
-    'admin',__name__,
-    template_folder='../admin_templates'
-)
-
+@users_pages.before_request
+def views():
+    data = [request.path, GetSessionId(), str(datetime.now().replace(microsecond=0))]
+    parseVisitator(data)
+        
 @users_pages.route("/login", methods=['GET','POST'])
 def login():
     if request.method != 'POST':
@@ -45,10 +50,10 @@ def login():
     #if login.validate_on_submit() == False:
     #    return redirect(url_for('home.home'))
 
-    user = db.session.query(UserModel).filter_by(name=login.username.data).first()
+    user = db.session.query(UserModel).filter_by(name=str(login.username.data).lower().replace(' ','')).first()
 
     if user is None:
-        user = db.session.query(UserModel).filter_by(email=login.username.data).first()
+        user = db.session.query(UserModel).filter_by(email=str(login.username.data).lower().replace(' ','')).first()
     if user is None:
         flash("No user with that username", 'error')
         return redirect(url_for('home.home'))
@@ -110,13 +115,13 @@ def register():
     #if register.validate_on_submit() == False:
      #   return redirect(url_for('home.home'))
 
-    check = db.session.query(UserModel).filter_by(name=register.username.data).first()
+    check = db.session.query(UserModel).filter_by(name=str(register.username.data).lower()).first()
 
     if check is not None:
         flash('Username taken', 'error')
         return redirect(url_for('home.home'))
 
-    check = db.session.query(UserModel).filter_by(email=register.email.data).first()
+    check = db.session.query(UserModel).filter_by(email=str(register.email.data).lower()).first()
 
     if check is not None:
         flash('Email taken', 'error')
@@ -163,10 +168,9 @@ def register():
     new_user = UserModel(
             None,
             None,
-            register.username.data,
+            str(register.username.data).lower(),
             register.realname.data,
-            None,
-            register.email.data,
+            str(register.email.data).lower(),
             register.password.data,
             "https://www.component-creator.com/images/testimonials/defaultuser.png",
             None,
@@ -179,6 +183,11 @@ def register():
             str(userLoc['country']),
             str(userLoc['country_code']).lower(),
             str(userLanguage).lower(),
+            None,
+            None,
+            None,
+            None,
+            None,
             None,
             None,
             None,
@@ -219,6 +228,8 @@ def confirm_register(email,token):
 
 @users_pages.route("/user/<string:name>/id=<int:id>")
 def user(name,id):
+    data = [request.path, GetSessionId(), str(datetime.now().replace(microsecond=0))]
+    parseVisitator(data)
     search = SearchForm(request.form)
     register = RegisterForm(request.form)
     loginf = LoginForm(request.form)
@@ -285,19 +296,26 @@ def modify_profile(idm):
     user.real_name = modify_prof.realname.data
     user.bio = modify_prof.bio.data
     user.profession = modify_prof.profession.data
+    user.instagram = modify_prof.instagram.data
+    user.facebook = modify_prof.facebook.data
+    user.twitter = modify_prof.twitter.data
+    user.github = modify_prof.github.data
+    user.website = modify_prof.website.data
 
+    if request.MOBILE is not True:
+        if request.files['avatarimg']:
+            if  request.files.get('avatarimg', None):
+                profile_file = save_img(user.id,'profile')
+                user.avatar = url_for('static', filename='profile_pics/{}'.format(profile_file))
 
-    if request.files['avatarimg']:
-        if  request.files.get('avatarimg', None):
-            profile_file = save_img(user.id,'profile')
-            user.avatar = url_for('static', filename='profile_pics/{}'.format(profile_file))
+        if request.files['coverimg']:
+            if  request.files.get('coverimg', None):
+                profile_file = save_img(user.id,'cover')
+                user.cover = url_for('static', filename='profile_cover/{}'.format(profile_file))
 
-    if request.files['coverimg']:
-        if  request.files.get('coverimg', None):
-            profile_file = save_img(user.id,'cover')
-            user.cover = url_for('static', filename='profile_cover/{}'.format(profile_file))
+        if modify_prof.genre.data:
+            user.genre = modify_prof.genre.data
 
-    user.genre = modify_prof.genre.data
     db.session.commit()
     return redirect(url_for('users.user',id=idm,name=user.name))
 
@@ -366,46 +384,4 @@ def get():
     login = response.json()
     return jsonify(login)
 
-@admin_pages.route('/admin/main')
-@login_required
-def main():
-    if current_user.roleinfo.admin_panel_permission == False:
-      return redirect(url_for('home.home'))
-    users = db.session.query(UserModel).all()
-    posts = db.session.query(PostModel).all()
-    sessions = db.session.query(Analyze_Session).filter_by(bot=False).all()
-    pages = db.session.query(Analyze_Pages).all()
-    now = datetime.now()
-    sess = {}
-    months = {
-        '01' : 'Junuary',
-        '02' : 'February',
-        '03' : 'March',
-        '04' : 'April',
-        '05' : 'May',
-        '06' : 'June',
-        '07' : 'July',
-        '08' : 'August',
-        '09' : 'September',
-        '10' : 'October',
-        '11' : 'November',
-        '12' : 'December'
-        }
-    for session in sessions:
-        year, month, day = str(session.created_at).split("-")
 
-        if int(year) == int(now.year):
-            try:
-                sess[str(month)] += 1
-            except:
-                sess.__setitem__(str(month),1)
-
-    return render_template('main.html',users=users,posts=posts,pages=pages,sessions=sessions,analyze=Analyze_Pages,data=sess,months=months)
-
-@admin_pages.route('/admin/sessions')
-@login_required
-def sessions():
-    post_page = request.args.get('page',1,type=int)
-    sessions = db.session.query(Analyze_Session).order_by(desc(Analyze_Session.id)).paginate(page=post_page,per_page=20)
-
-    return render_template('sessions.html', sessions=sessions)

@@ -1,185 +1,39 @@
-/**
- * Copyright 2016 Google Inc. All rights reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
-// This generated service worker JavaScript will precache your site's resources.
-// The code needs to be saved in a .js file at the top-level of your site, and registered
-// from your pages in order to be used. See
-// https://github.com/googlechrome/sw-precache/blob/master/demo/app/js/service-worker-registration.js
-// for an example of how you can register this script and handle various service worker events.
-
-/* eslint-env worker, serviceworker */
-/* eslint-disable indent, no-unused-vars, no-multiple-empty-lines, max-nested-callbacks, space-before-function-paren */
-'use strict';
 
 
+const applicationServerPublicKey = 'BLbMAFGsECz6jtlDAon7PQ8i56FHwCk-hQKIHLJ04MCqwwCWs4uN2FQWxqpySpLnRzb5bJMrmKDs5q3B4nGnmYY';
 
+/* eslint-enable max-len */
 
+function urlB64ToUint8Array(base64String) {
+  const padding = '='.repeat((4 - base64String.length % 4) % 4);
+  const base64 = (base64String + padding)
+    .replace(/\-/g, '+')
+    .replace(/_/g, '/');
 
-/* eslint-disable quotes, comma-spacing */
-var PrecacheConfig = [
-  
-];
-/* eslint-enable quotes, comma-spacing */
-var CacheNamePrefix = 'sw-precache-v1--' + (self.registration ? self.registration.scope : '') + '-';
+  const rawData = window.atob(base64);
+  const outputArray = new Uint8Array(rawData.length);
 
-
-var IgnoreUrlParametersMatching = [/^utm_/];
-
-
-
-var addDirectoryIndex = function (originalUrl, index) {
-    var url = new URL(originalUrl);
-    if (url.pathname.slice(-1) === '/') {
-      url.pathname += index;
-    }
-    return url.toString();
-  };
-
-var getCacheBustedUrl = function (url, param) {
-    param = param || Date.now();
-
-    var urlWithCacheBusting = new URL(url);
-    urlWithCacheBusting.search += (urlWithCacheBusting.search ? '&' : '') +
-      'sw-precache=' + param;
-
-    return urlWithCacheBusting.toString();
-  };
-
-var isPathWhitelisted = function (whitelist, absoluteUrlString) {
-    // If the whitelist is empty, then consider all URLs to be whitelisted.
-    if (whitelist.length === 0) {
-      return true;
-    }
-
-    // Otherwise compare each path regex to the path of the URL passed in.
-    var path = (new URL(absoluteUrlString)).pathname;
-    return whitelist.some(function(whitelistedPathRegex) {
-      return path.match(whitelistedPathRegex);
-    });
-  };
-
-var populateCurrentCacheNames = function (precacheConfig,
-    cacheNamePrefix, baseUrl) {
-    var absoluteUrlToCacheName = {};
-    var currentCacheNamesToAbsoluteUrl = {};
-
-    precacheConfig.forEach(function(cacheOption) {
-      var absoluteUrl = new URL(cacheOption[0], baseUrl).toString();
-      var cacheName = cacheNamePrefix + absoluteUrl + '-' + cacheOption[1];
-      currentCacheNamesToAbsoluteUrl[cacheName] = absoluteUrl;
-      absoluteUrlToCacheName[absoluteUrl] = cacheName;
-    });
-
-    return {
-      absoluteUrlToCacheName: absoluteUrlToCacheName,
-      currentCacheNamesToAbsoluteUrl: currentCacheNamesToAbsoluteUrl
-    };
-  };
-
-var stripIgnoredUrlParameters = function (originalUrl,
-    ignoreUrlParametersMatching) {
-    var url = new URL(originalUrl);
-
-    url.search = url.search.slice(1) // Exclude initial '?'
-      .split('&') // Split into an array of 'key=value' strings
-      .map(function(kv) {
-        return kv.split('='); // Split each 'key=value' string into a [key, value] array
-      })
-      .filter(function(kv) {
-        return ignoreUrlParametersMatching.every(function(ignoredRegex) {
-          return !ignoredRegex.test(kv[0]); // Return true iff the key doesn't match any of the regexes.
-        });
-      })
-      .map(function(kv) {
-        return kv.join('='); // Join each [key, value] array into a 'key=value' string
-      })
-      .join('&'); // Join the array of 'key=value' strings into a string with '&' in between each
-
-    return url.toString();
-  };
-
-
-var mappings = populateCurrentCacheNames(PrecacheConfig, CacheNamePrefix, self.location);
-var AbsoluteUrlToCacheName = mappings.absoluteUrlToCacheName;
-var CurrentCacheNamesToAbsoluteUrl = mappings.currentCacheNamesToAbsoluteUrl;
-
-function deleteAllCaches() {
-  return caches.keys().then(function(cacheNames) {
-    return Promise.all(
-      cacheNames.map(function(cacheName) {
-        return caches.delete(cacheName);
-      })
-    );
-  });
+  for (let i = 0; i < rawData.length; ++i) {
+    outputArray[i] = rawData.charCodeAt(i);
+  }
+  return outputArray;
 }
 
 self.addEventListener('install', function(event) {
-  event.waitUntil(
-    // Take a look at each of the cache names we expect for this version.
-    Promise.all(Object.keys(CurrentCacheNamesToAbsoluteUrl).map(function(cacheName) {
-      return caches.open(cacheName).then(function(cache) {
-        // Get a list of all the entries in the specific named cache.
-        // For caches that are already populated for a given version of a
-        // resource, there should be 1 entry.
-        return cache.keys().then(function(keys) {
-          // If there are 0 entries, either because this is a brand new version
-          // of a resource or because the install step was interrupted the
-          // last time it ran, then we need to populate the cache.
-          if (keys.length === 0) {
-            // Use the last bit of the cache name, which contains the hash,
-            // as the cache-busting parameter.
-            // See https://github.com/GoogleChrome/sw-precache/issues/100
-            var cacheBustParam = cacheName.split('-').pop();
-            var urlWithCacheBusting = getCacheBustedUrl(
-              CurrentCacheNamesToAbsoluteUrl[cacheName], cacheBustParam);
-
-            var request = new Request(urlWithCacheBusting,
-              {credentials: 'same-origin'});
-            return fetch(request).then(function(response) {
-              if (response.ok) {
-                return cache.put(CurrentCacheNamesToAbsoluteUrl[cacheName],
-                  response);
-              }
-
-              console.error('Request for %s returned a response status %d, ' +
-                'so not attempting to cache it.',
-                urlWithCacheBusting, response.status);
-              // Get rid of the empty cache if we can't add a successful response to it.
-              return caches.delete(cacheName);
-            });
-          }
-        });
-      });
-    })).then(function() {
-      return caches.keys().then(function(allCacheNames) {
-        return Promise.all(allCacheNames.filter(function(cacheName) {
-          return cacheName.indexOf(CacheNamePrefix) === 0 &&
-            !(cacheName in CurrentCacheNamesToAbsoluteUrl);
-          }).map(function(cacheName) {
-            return caches.delete(cacheName);
-          })
-        );
-      });
-    }).then(function() {
-      if (typeof self.skipWaiting === 'function') {
-        // Force the SW to transition from installing -> active state
-        self.skipWaiting();
+  if(document.querySelector('html').getAttribute("id")){
+    Notification.requestPermission().then(function(result) {
+      if (result === 'denied') {
+        console.log('Permission wasn\'t granted. Allow a retry.');
+        return;
       }
-    })
-  );
+      if (result === 'default') {
+        console.log('The permission request was dismissed.');
+        
+        return;
+      }
+      subscribeUser();
+    });
+  }
 });
 
 if (self.clients && (typeof self.clients.claim === 'function')) {
@@ -204,25 +58,6 @@ self.addEventListener('message', function(event) {
     });
   }
 });
-/*
-self.addEventListener('fetch', function(event) {
-  //find urls that only have numbers as parameters
-  //yours will obviously differ, my queries to ignore were just repo revisions
-  var shaved = event.request.url.match(/^([^?]*)[?]\d+$/);
-  //extract the url without the query
-  shaved = shaved && shaved[1];
-
-  event.respondWith(
-      //try to get the url from the cache.
-      //if this is a resource, use the shaved url,
-      //otherwise use the original request
-      //(I assume it [can] contain post-data and stuff)
-      caches.match(shaved || event.request).then(function(response) {
-          //respond
-          return response || fetch(event.request);
-      })
-  );
-});*/
 
 self.addEventListener('push', function(event) {
   var title = "NewApp"
@@ -238,3 +73,46 @@ self.addEventListener('push', function(event) {
         }
     }))
 });
+
+this.addEventListener('fetch', function (event) {
+  // it can be empty if you just want to get rid of that error
+});
+
+self.addEventListener('pushsubscriptionchange', function(event) {
+  console.log('[Service Worker]: \'pushsubscriptionchange\' event fired.');
+  const applicationServerKey = urlB64ToUint8Array(applicationServerPublicKey);
+  event.waitUntil(
+    self.registration.pushManager.subscribe({
+      userVisibleOnly: true,
+      applicationServerKey: applicationServerKey
+    })
+    .then(function(newSubscription) {
+      const dataToSend = JSON.stringify(newSubscription);
+      var get_id = document.querySelector('html').getAttribute("id");
+      dataToSend['user'] = get_id;
+      fetch("https://newapp.nl/api/subscribe",{method:"post",body:dataToSend})
+      console.log('[Service Worker] New subscription: ', newSubscription);
+    })
+  );
+});
+
+function subscribeUser() {
+  const applicationServerKey = urlB64ToUint8Array(applicationServerPublicKey);
+  swRegistration.pushManager.subscribe({
+    userVisibleOnly: true,
+    applicationServerKey: applicationServerKey
+  })
+  .then(function(subscription) {
+    console.log('User is subscribed.');
+
+    const dataToSend = JSON.stringify(subscription);
+      var get_id = document.querySelector('html').getAttribute("id");
+      dataToSend['user'] = get_id;
+      fetch("https://newapp.nl/api/subscribe",{method:"post",body:dataToSend})
+      console.log('[Service Worker] New subscription: ', subscription);
+
+  })
+  .catch(function(err) {
+    console.log('Failed to subscribe the user: ', err);
+  });
+}

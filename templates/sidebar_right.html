@@ -102,7 +102,7 @@
             {% if posts.closed == False %}
             <div class="widget-item" style="display: flex;justify-content: space-between;">
                 <div class="text">Close Post</div>
-                <form action="{{url_for('home.close_post', id=posts.id)}}">
+                <form action="{{url_for('jsons.close_post', id=posts.id)}}">
                     <button class="widget-button">Close</button>
                 </form>
             </div>
@@ -111,7 +111,7 @@
             {% if current_user.roleinfo.delete_post_permission == True %}
             <div class="widget-item" style="display: flex;justify-content: space-between;">
                 <div class="text">Delete Post</div>
-                <form action="{{url_for('home.delete_post', id=posts.id)}}">
+                <form action="{{url_for('jsons.delete_post', id=posts.id)}}">
                     <button class="widget-button">Delete</button>
                 </form>
             </div>
@@ -151,14 +151,16 @@
     </div>
     <div class="widget">
         <div class="widget-header">
-            <div class="widget-">{{posts.user_in.name}} Info:</div>
+            <div class="widget-">@{{posts.user_in.name}} Info:</div>
         </div>
         <div class="widget-list">
+            {% if posts.user_in.profession != 'None' %}
             <div class="widget-item">
                 <div class="text">
                     <span style="font-size: 0.8rem;">Profession: {{posts.user_in.profession}}</span>
                 </div>
             </div>
+            {% endif %}
             <div class="widget-item">
                 <div class="text">
                     <span style="font-size: 0.8rem;">Location: {{posts.user_in.country_name}} <span
@@ -180,18 +182,24 @@
             {% for post in post_from_user %}
             <div class="widget-post">
                 <div class="post-header">
-                    <img style="border-radius: 20px;" src="{{posts.user_in.avatar}}" height="30px"
-                        width="30px">
-                        <a href="{{url_for('home.post',id=post.id, title=post.title)}}">
-                            <span class="post-title" style="margin-left: 2%;">{{post.title}}</span>
-                        </a>
+                    <img style="border-radius: 20px;margin-top: 0.25rem;" src="{{posts.user_in.avatar}}" height="40px"
+                        width="40px">
+                        
                     </div>
-                <div class="post-footer">
-                    {% for tag in tags_all %}
-                    {% if post.id in tag.post %}
-                    <a href="{{url_for('home.home',tag_finder=tag.name)}}"><tag class="article-tag">{{tag.name}}</tag></a>
-                    {% endif %}
-                    {% endfor %}
+                <div class="post-footer" style="margin-left: 2%;">
+                    <div class="post-title">
+                        <a href="{{url_for('home.post',id=post.id, title=post.title)}}">
+                                <span class="post-title">{{post.title}}</span>
+                            </a>
+                    </div>
+                    <div class="post-tags">
+                        {% for tag in tags_all %}
+                        {% if post.id in tag.post %}
+                        <a href="{{url_for('home.home',tag_finder=tag.name)}}"><tag class="article-tag">{{tag.name}}</tag></a>
+                        {% endif %}
+                        {% endfor %}
+                    </div>
+                    
                 </div>
             </div>
             {% endfor %}

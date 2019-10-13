@@ -33,6 +33,8 @@
 				<th scope="col">Browser</th>
 				<th scope="col">Bot</th>
 				<th scope="col">Lang</th>
+				<th scope="col">Country</th>
+				<th scope="col">Referer</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -47,6 +49,8 @@
 					<td>{{session.browser}}</td>
 					<td>{{session.bot}}</td>
 					<td>{{session.lang}}</td>
+					<td>{{session.iso_code}}</td>
+					<td>{{session.referer}}</td>
 				</tr>
 				{% endfor %}
 			</tbody>

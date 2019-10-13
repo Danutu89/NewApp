@@ -12,17 +12,31 @@
                     </div>
                     </a>
     </div>
+    {% endif %}
     <div class="widget">
         <div class="widget-header">
             <div class="widget-title">Navigation</div>
         </div>
         <div class="widget-list">
+            {% if current_user.is_authenticated %}
             <div class="widget-item">
-                <div class="text"><a href="{{url_for('home.home', saved=true)}}"><img src="{{url_for('static', filename='bookmark.svg')}}" height="20px" width="20px"><span style="vertical-align: top;">Saved Posts</span></a></div>
+                <div class="text"><a href="{{url_for('home.home', saved=true)}}"><span class="section">Saved Posts</span></a></div>
+            </div>
+            <div class="widget-item">
+                <div class="text"><a href="{{url_for('home.home', feed='true')}}"><span class="section">Feed</span></a></div>
+            </div>
+            {% endif %}
+            <div class="widget-item">
+                    <div class="text"><a href="{{url_for('home.home', all='true')}}"><span class="section">All</span></a></div>
+            </div>
+            <div class="widget-item">
+                    <div class="text"><a href="{{url_for('home.home', discuss='true')}}"><span class="section">Discuss</span></a></div>
+            </div>
+            <div class="widget-item">
+                    <div class="text"><a href="{{url_for('home.home', tutorials='true')}}"><span class="section">Tutorials</span></a></div>
             </div>
         </div>
     </div>
-    {% endif %}
     <div class="widget">
         <div class="widget-header">
             <div class="widget-title">Customize your experience</div>
@@ -30,7 +44,7 @@
         <div class="widget-list" style="max-height: 400px;overflow: auto;">
             {% if current_user.is_authenticated %}
             {% for tag in current_user.int_tags %}
-            {% if tag %}
+            {% if tag  %}
             <div class="widget-item" id="widget-tags" style="border-top: none;display: flex;">
                 <div class="text">
                     <a style="text-decoration: underline;" href="{{url_for('home.home',tag_finder=tag)}}">
@@ -50,7 +64,7 @@
             {% for tag in tagi %}
             {% if current_user.is_authenticated %}
             {% if tag.tag not in current_user.int_tags %}
-            {% if tag.name %}
+            {% if tag.name and tag.name != 'discuss' and tag.name != 'howto' and tag.name != 'tutorial' and tag.name != 'how_to' and tag.name != 'tutorials' %}
             <div class="widget-item" id="widget-tags" style="border-top: none;display: flex;">
                 <div class="text">
                     <a style="text-decoration: underline;" href="{{url_for('home.home',tag_finder=tag.name)}}">
@@ -62,7 +76,7 @@
             {% endif %}
             {% endif %}
             {% else %}
-            {% if tag.name %}
+            {% if tag.name and tag.name != 'discuss' and tag.name != 'howto' and tag.name != 'tutorial' and tag.name != 'how_to' and tag.name != 'tutorials' %}
             <div class="widget-item" id="widget-tags" style="border-top: none;display: flex;">
                 <div class="text">
                     <a style="text-decoration: underline;" href="{{url_for('home.home',tag_finder=tag.name)}}">

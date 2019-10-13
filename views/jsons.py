@@ -4,18 +4,20 @@ from functools import wraps
 import jwt
 import requests
 from flask import (Blueprint, abort, jsonify, make_response, render_template,
-                   request, url_for)
+                   request, url_for, redirect, flash)
 
 from app import app, db, key_jwt, time
 from models import (OPostSchema, OUserSchema, PostModel, PostsSchema,
                     RepliesSchema, ReplyModel, TagModel, UserModel,
-                    UsersSchema, SessionsSchema, Analyze_Session, bcrypt, Analyze_Pages)
+                    UsersSchema, SessionsSchema, Analyze_Session, bcrypt, Analyze_Pages,Subscriber)
 from views.users import (BadSignature, BadTimeSignature, Message, SignatureExpired,
                    cipher_suite, login_user, mail, serializer)
 
 from flask_login import current_user
 import datetime as dt
 from sqlalchemy import desc
+
+from datetime import datetime
 
 json_pages = Blueprint(
     'jsons',__name__,
@@ -83,7 +85,7 @@ def user(id):
     return response
 
 @json_pages.route('/api/delete/post/<int:id>', methods=['DELETE'])
-def delete_post(id):
+def delete_postt(id):
     db.session.query(PostModel).filter_by(id=id).delete()
     db.session.query(ReplyModel).filter_by(post_id=id).delete()
     db.session.query(TagModel).filter_by(post_id=id).delete()
@@ -422,4 +424,125 @@ def trending():
         data.sort(key=getItemForKey, reverse=True)
 
 
-    return jsonify(data)
+    resp = jsonify(data)
+    resp.headers['Access-Control-Allow-Origin'] = '*'
+
+    return resp
+
+
+@json_pages.route("/sitemap")
+def sitemap():
+
+    posts = db.session.query(PostModel).all()
+    users = db.session.query(UserModel).all()
+
+    sitemap_xml = render_template('sitemap.xml',posts=posts,users=users)
+    response = make_response(sitemap_xml)
+    response.headers['Content-Type'] = "application/xml"
+
+    return response
+
+@json_pages.route('/opensearch')
+def opensearch():
+    opensearch_xml = render_template('opensearch.xml')
+    response = make_response(opensearch_xml)
+    response.headers['Content-Type'] = "application/xml"
+
+    return response
+
+@json_pages.route('/delete/post/<int:id>')
+def delete_post(id):
+    posts = db.session.query(PostModel).filter_by(id=id).first()
+
+    if current_user.is_authenticated == False:
+        return redirect(url_for('home.home'))
+
+    if current_user.id != posts.user_in.id:
+        return redirect(url_for('home.home'))
+    if current_user.roleinfo.delete_post_permission == False:
+        return redirect(url_for('home.home'))
+
+    if posts.thumbnail:
+        picture_fn = 'post_' + str(id) + '.jpeg'
+        os.remove(os.path.join(app.config['UPLOAD_FOLDER_POST'], picture_fn))
+
+    db.session.query(PostModel).filter_by(id=id).delete()
+    db.session.query(ReplyModel).filter_by(post_id=id).delete()
+    tags = db.session.query(TagModel).filter(TagModel.post.contains([id])).all()
+    for t in tags:
+        x = list(t.post)
+        x.remove(id)
+        t.post = x
+
+    db.session.commit()
+    flash('Post successfully deleted', 'success')
+    return redirect(url_for('home.home'))
+
+@json_pages.route('/close/post/<int:id>')
+def close_post(id):
+    posts = db.session.query(PostModel).filter_by(id=id).first()
+
+    if current_user.is_authenticated == False:
+        return redirect(url_for('home.home'))
+
+    if current_user.roleinfo.close_post_permission:
+        posts.closed = True
+        posts.closed_on = datetime.now()
+        posts.closed_by = current_user.id
+        db.session.commit()
+        flash('Post successfully closed', 'success')
+    return redirect(url_for('home.home'))
+
+@json_pages.route('/feed')
+def rss_feed():
+    tags = db.session.query(TagModel).filter_by(name='discuss').all()
+    ids = []
+    for t in tags:
+        ids.extend(i.post)
+    posts = db.session.query(PostModel).filter(PostModel.id.in_(ids)).filter_by(lang='en').order_by(PostModel.id.desc()).limit(5)
+    newsfeed_rss = render_template('newsfeed.xml', posts=posts)
+    response = make_response(newsfeed_rss)
+    response.headers['Content-Type'] = "application/xml"
+
+    return response
+
+
+@app.route('/api/subscribe')
+def subscribe():
+    subscription_info = request.json.get('subscription_info')
+    # if is_active=False == unsubscribe
+    is_active = request.json.get('is_active')
+    user = request.json.get('user')
+
+    # we assume subscription_info shall be the same
+    item =  db.session.query(Subscriber).filter(Subscriber.subscription_info == subscription_info).first()
+    if not item:
+        item = Subscriber()
+        item.created = datetime.datetime.utcnow()
+        item.subscription_info = subscription_info
+        item.user = user
+
+    item.is_active = is_active
+    item.modified = datetime.datetime.utcnow()
+    db.session.add(item)
+    db.session.commit()
+
+    return jsonify({ id: item.id })
+
+@json_pages.route('/delete/reply/<int:id>')
+def delete_reply(id):
+    reply = db.session.query(ReplyModel).filter_by(id=id).first()
+
+    if current_user.is_authenticated == False:
+        return redirect(url_for('home.home'))
+
+    if current_user.id != reply.user_in.id:
+        return redirect(url_for('home.home'))
+    if current_user.roleinfo.delete_post_permission == False:
+        return redirect(url_for('home.home'))
+
+    db.session.query(ReplyModel).filter_by(id=id).delete()
+
+    db.session.commit()
+    flash('Reply successfully deleted', 'success')
+    return redirect(url_for('home.home'))

@@ -8,6 +8,7 @@ from flask import request, session
 from models import Analyze_Pages, Analyze_Session
 import requests
 from flask_login import current_user
+from urllib.parse import urlparse
 
 gip = geoip2.database.Reader('GeoLite2-City.mmdb')
 
@@ -20,6 +21,7 @@ userContinent = None
 userLanguage = None
 sessionID = None
 bot = False
+iso_code = None
 
 def create_pages(data):
     query = Analyze_Pages(
@@ -57,7 +59,9 @@ def create_session(data):
         data[6],
         data[7],
         data[8],
-        data[9]
+        data[9],
+        data[10],
+        data[11]
     )
     db.session.add(query)
     db.session.commit()
@@ -69,10 +73,26 @@ def getSession():
     global sessionID
     time = datetime.now().replace(microsecond=0)
     if 'user' not in session:
-        lines = (str(time)+userIP).encode('utf-8')
+        if current_user.is_authenticated:
+            lines = (str(current_user.id)+current_user.name).encode('utf-8')
+        else:
+            lines = (str(time)+userIP).encode('utf-8')
         session['user'] = hashlib.md5(lines).hexdigest()
         sessionID = session['user']
-        data = [userIP, userContinent, userCountry, userCity, userOS, userBrowser, sessionID, time, bot, str(userLanguage).lower()]
+        try:
+            temp = urlparse(str(request.headers['referer']))
+            if len(temp.netloc.split(".")) > 2:
+                domain = temp.netloc.split(".")[1]
+            else:
+                domain = temp.netloc.split(".")[0]
+            referer = str(domain)[0].upper() + str(domain)[1:]
+            if referer == 'Google' or referer == 'Bing' or referer == 'Yandex' or referer == 'Duckduckgo':
+                referer = 'Organic'
+            if referer == 'nl' or referer == 'Newapp':
+                referer = None
+        except:
+            referer = 'Direct'
+        data = [userIP, userContinent, userCountry, userCity, userOS, userBrowser, sessionID, time, bot, str(userLanguage).lower(),referer,iso_code]
         create_session(data)
     else:
         sessionID = session['user']
@@ -80,7 +100,7 @@ def getSession():
 @app.before_request
 def getAnalyticsData():
     if request.endpoint != 'static' and request.endpoint != 'sitemap' and request.endpoint != 'opensearch' and request.endpoint != 'flask_session':
-        global userOS, userBrowser, userIP, userContinent, userCity, userCountry, sessionID, bot, userLanguage
+        global userOS, userBrowser, userIP, userContinent, userCity, userCountry, sessionID, bot, userLanguage, iso_code
         userInfo = httpagentparser.detect(request.headers.get('User-Agent'))
         try:
             userOS = userInfo['platform']['name']
@@ -107,6 +127,7 @@ def getAnalyticsData():
                 userCountry = res.country.name
                 userContinent = res.continent.name
                 userCity = res.city.name
+                iso_code = res.country.iso_code
                 try:
                     api_2 = requests.get(("https://restcountries.eu/rest/v2/alpha/{}").format(res.country.iso_code))
                     result_2 = api_2.json()
@@ -118,7 +139,7 @@ def getAnalyticsData():
                 print("Could not find: ", userIP)
                 print(e)
             getSession()
-
+    
 
 def GetSessionId():
     return sessionID

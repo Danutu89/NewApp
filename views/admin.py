@@ -1,0 +1,130 @@
+import calendar
+import datetime as dt
+import os
+from datetime import datetime
+import collections
+import requests
+from cryptography.fernet import Fernet
+from flask import (Blueprint, abort, flash, jsonify, redirect, render_template,
+                   request, session, url_for)
+from flask_login import current_user, login_required, login_user, logout_user
+from sqlalchemy import desc, func, or_
+
+from analyze import hashlib, httpagentparser
+from app import  cipher_suite, db
+from models import (Analyze_Pages, Analyze_Session, Gits, PostModel,
+                    ReplyModel, TagModel, UserModel, bcrypt)
+
+admin_pages = Blueprint(
+    'admin',__name__,
+    template_folder='../admin_templates'
+)
+
+class CustomDict(dict):
+
+    def __init__(self): 
+        self = dict() 
+
+    def add(self, key, value): 
+        self[key] = value 
+
+    def __missing__(self, key):
+        value = self[key] = type(self)() # retain local pointer to value
+        return value 
+
+@admin_pages.route('/admin/main')
+@login_required
+def main():
+    if current_user.roleinfo.admin_panel_permission == False:
+      return redirect(url_for('home.home'))
+      
+    users = db.session.query(UserModel).all()
+    posts = db.session.query(PostModel).all()
+    sessions = db.session.query(Analyze_Session).order_by(Analyze_Session.id).filter_by(bot=False).all()
+    now = datetime.now()
+    sess = {}
+    sess_old = {}
+    label_days = []
+    referer = CustomDict()
+    country = CustomDict()
+    countries = CustomDict()
+    per_devices = {'mobile': 0, 'computer': 0}
+    devices_now = {'Mobile' : 0, 'Computer': 0}
+    devices_old = {'Mobile' : 0, 'Computer': 0}
+    months = {
+        '01' : 'Junuary',
+        '02' : 'February',
+        '03' : 'March',
+        '04' : 'April',
+        '05' : 'May',
+        '06' : 'June',
+        '07' : 'July',
+        '08' : 'August',
+        '09' : 'September',
+        '10' : 'October',
+        '11' : 'November',
+        '12' : 'December'
+        }
+
+    back_days = now - dt.timedelta(days = 15)
+    back_perc = back_days - dt.timedelta(days = 15)
+    pages = db.session.query(Analyze_Pages.name,func.count(Analyze_Pages.name).label('views')).filter(Analyze_Pages.first_visited.between('{}-{}-{}'.format(back_days.year,back_days.month,back_days.day), '{}-{}-{}'.format(now.year,now.month,now.day))).group_by(Analyze_Pages.name).order_by(
+    func.count(Analyze_Pages.name).desc()).limit(10).all()
+    label_days.clear()
+    for session in sessions:
+        year, month, day = str(session.created_at).split("-")
+        date = dt.datetime(int(year),int(month),int(day))
+        if int(year) == int(now.year):
+            if date <= now and date >= back_days:
+                if str(session.os).lower() == 'android' or str(session.os).lower() == 'ios':
+                    devices_now['Mobile'] += 1
+                else:
+                    devices_now['Computer'] += 1
+                try:
+                    sess[calendar.day_name[int(calendar.weekday(int(year),int(month),int(day)))]+' '+str(day)] += 1
+                except:
+                    sess.__setitem__(calendar.day_name[int(calendar.weekday(int(year),int(month),int(day)))]+' '+str(day),1)
+
+                if str(day) not in label_days and str(months[str(month)]+' '+day) not in label_days:
+                    if int(day) == 1:
+                        label_days.append(months[str(month)]+' '+day)
+                    else:
+                        label_days.append(str(day))
+
+                if str(session.referer) != 'None':
+                    try:
+                        referer[str(session.referer)][str(day)] += 1
+                    except:
+                        referer[str(session.referer)][str(day)] = 1
+                
+                if str(session.iso_code) != 'None':
+                    try:
+                        country[str(session.iso_code)] += 1
+                    except:
+                        country[str(session.iso_code)] = 1
+                    countries[str(session.iso_code)] = str(session.country)
+                
+
+            if date <= back_days and date >= back_perc:
+                if str(session.os).lower() == 'android' or str(session.os).lower() == 'ios':
+                    devices_old['Mobile'] += 1
+                else:
+                    devices_old['Computer'] += 1
+                try:
+                    sess_old[calendar.day_name[int(calendar.weekday(int(year),int(month),int(day)))]+' '+str(day)] += 1
+                except:
+                    sess_old.__setitem__(calendar.day_name[int(calendar.weekday(int(year),int(month),int(day)))]+' '+str(day),1)
+        
+    per_devices['mobile'] = ((devices_old['Mobile'] - devices_now['Mobile']) - devices_now['Mobile']) % 100
+    per_devices['computer'] = ((devices_old['Computer'] - devices_now['Computer']) - devices_now['Computer']) % 100
+
+    return render_template('main.html',countries=countries,country=country,referer=referer,label_days=label_days,users=users,posts=posts,pages=pages,sessions=sessions,analyze=Analyze_Pages,data=sess,devices=devices_now,devices_old=devices_old,sess_old=sess_old,per_devices=per_devices)
+
+@admin_pages.route('/admin/sessions')
+@login_required
+def sessions():
+    post_page = request.args.get('page',1,type=int)
+    sessions = db.session.query(Analyze_Session).order_by(desc(Analyze_Session.id)).paginate(page=post_page,per_page=20)
+
+
+    return render_template('sessions.html', sessions=sessions)

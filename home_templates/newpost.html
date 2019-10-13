@@ -11,9 +11,12 @@
             {{new_question.csrf_token}}
             {{new_question.title}}
             {{new_question.tag}}
-            <small class="form-text text-muted">
+            <p style="    color: #b5b5b5;
+            font-size: 0.6rem;
+            margin: 0;
+            margin-top: -0.4rem;">
                 Separate tags with commas.
-            </small>
+            </p>
             <br>
             Thumbnail: <input type="file" name="thumbnail">
         </div>
@@ -30,6 +33,7 @@
     var toolbarOptions = [
         ['bold', 'italic', 'underline'],
         ['blockquote', 'code-block'],
+        ['link', 'image'],
         [{
             'header': [1, 2, 3, 4, 5, 6, false]
         }],
