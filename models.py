@@ -50,6 +50,7 @@ class UserModel(db.Model):
     twitter = db.Column(db.String, primary_key = False)
     github = db.Column(db.String, primary_key = False)
     website = db.Column(db.String, primary_key = False)
+    theme = db.Column(db.String, primary_key = False, default = 'Light')
 
     posts = relationship("PostModel", backref="user_in")
     replyes = relationship("ReplyModel", backref="user_in")
@@ -58,7 +59,7 @@ class UserModel(db.Model):
 
     def __init__(self,id,join_date,name,real_name,email,password,avatar,genre,role,bio,activated,is_online,
                     ip_address,browser,country_name,country_flag,lang,int_tags,birthday,profession,saved_posts,liked_posts,follow,followed,cover,
-                    instagram,facebook,twitter,github,website):
+                    instagram,facebook,twitter,github,website,theme):
         self.id = id
         self.join_date = join_date
         self.name = name
@@ -89,6 +90,7 @@ class UserModel(db.Model):
         self.twitter = twitter
         self.github = github
         self.website = website
+        self.theme = theme
 
     def is_authenticated(self):
         return True
@@ -110,13 +112,13 @@ class UserModel(db.Model):
 
 class UserSchema(ma.Schema):
     class Meta:
-        fields = ('id','join_date','name','real_name','github_name','email','avatar')
+        fields = ('id','join_date','name','real_name','email','avatar')
 
 UsersSchema = UserSchema(many=True)
 
 class OUserSchema(ma.Schema):
     class Meta:
-        fields = ('id','join_date','name','real_name','github_name','email','genre','role','bio','avatar')
+        fields = ('id','join_date','name','real_name','email','genre','role','bio','avatar')
 
 OUserSchema = OUserSchema()
 
@@ -216,7 +218,7 @@ class PostModel(SearchableMixin, db.Model):
 class PostSchema(ma.Schema):
     author = fields.Nested(UserSchema())
     class Meta:
-        fields = ('id','title','text','views','posted_on','author')
+        fields = ('id','title','text','views','posted_on','author','read_time')
 
 PostsSchema = PostSchema(many=True)
 OPostSchema = PostSchema()
@@ -396,7 +398,9 @@ class Analyze_Pages(Base):
 
     @staticmethod
     def perc_users():
-        return ((Analyze_Pages.user_30_days() - Analyze_Pages.user_15_days()) - Analyze_Pages.user_15_days())%100
+        users_15 = Analyze_Pages.user_15_days()
+        users_30 = Analyze_Pages.user_30_days()
+        return ((users_30 - users_15) - users_15)%100
 
     @staticmethod
     def count_replies():

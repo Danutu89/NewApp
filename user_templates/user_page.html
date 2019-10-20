@@ -1,7 +1,7 @@
 {% extends "index.html" %}
 {% block content %}
 <profile class="profile-page">
-    <div class="profile-cover" {%if not user.cover %}style="background-color: #14947b;border: 1px solid #dddd;height:300px;"{% endif %}>
+    <div class="profile-cover" {%if not user.cover %}style="background-color: #14947b;border: var(--border);height:350px;"{% endif %}>
       {% if user.cover %}
       <img src="{{user.cover}}" alt="">
       {% endif %}
@@ -126,6 +126,7 @@
         </div>
       </div>
       <div class="sidebar-right">
+          {% if follow|length > 0 %}
         <div class="widgets">
           <div class="user-follows">
             <div class="header">{{user.real_name}} Follows</div>
@@ -145,6 +146,7 @@
             </div>
           </div>
         </div>
+        {% endif %}
       </div>
     </div>
   </profile>

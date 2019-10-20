@@ -30,6 +30,8 @@ import calendar
 
 from analyze import GetSessionId, parseVisitator
 
+from webptools import webplib as webp
+
 users_pages = Blueprint(
     'users',__name__,
     template_folder='../user_templates'
@@ -98,6 +100,8 @@ def login():
 
 @users_pages.route("/logout")
 def logout():
+    if current_user.is_authenticated == False:
+        return redirect(url_for('home.home'))
     user = db.session.query(UserModel).filter_by(name=current_user.name).first_or_404()
     user.is_online = False
     db.session.commit()
@@ -234,7 +238,7 @@ def user(name,id):
     register = RegisterForm(request.form)
     loginf = LoginForm(request.form)
     reset = ResetPasswordForm(request.form)
-    user = db.session.query(UserModel).filter_by(id=id).first()
+    user = db.session.query(UserModel).filter_by(id=id).first_or_404()
     posts = db.session.query(PostModel).filter_by(user=id).order_by(desc(PostModel.id)).all()
     follow = db.session.query(UserModel).filter(UserModel.id.in_(user.follow)).limit(6).all()
     tags = db.session.query(TagModel).all()
@@ -267,6 +271,15 @@ def save_img(user_id,type):
         i = Image.open(request.files['coverimg'])
 
     i.save(picture_path)
+
+    if type == 'profile':
+        webp.cwebp(os.path.join(app.config['UPLOAD_FOLDER_PROFILE'], picture_fn),os.path.join(app.config['UPLOAD_FOLDER_PROFILE'], 'user_' + str(user_id) + '.webp'), "-q 80")
+        os.remove(os.path.join(app.config['UPLOAD_FOLDER_PROFILE'], picture_fn))
+    elif type == 'cover':
+        webp.cwebp(os.path.join(app.config['UPLOAD_FOLDER_PROFILE_COVER'], picture_fn),os.path.join(app.config['UPLOAD_FOLDER_PROFILE_COVER'], 'user_' + str(user_id) + '.webp'), "-q 80")
+        os.remove(os.path.join(app.config['UPLOAD_FOLDER_PROFILE_COVER'], picture_fn))
+
+    picture_fn = 'user_' + str(user_id) + '.webp'
 
     return picture_fn
     #return None
@@ -301,6 +314,9 @@ def modify_profile(idm):
     user.twitter = modify_prof.twitter.data
     user.github = modify_prof.github.data
     user.website = modify_prof.website.data
+    
+    if modify_prof.theme.data:
+            user.theme = modify_prof.theme.data
 
     if request.MOBILE is not True:
         if request.files['avatarimg']:

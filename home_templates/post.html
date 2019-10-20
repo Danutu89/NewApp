@@ -1,5 +1,12 @@
 {% extends "index.html" %}
 {% block content %}
+<style>.article * p{padding: 0;margin: 0;}
+content .sidebar#sidebar-right{
+    position: -webkit-sticky;
+    position: sticky;
+    top: 3.2rem;
+    align-self: flex-start;
+  }</style>
 <div class="article">
     <div class="post">
         {% if posts.thumbnail %}
@@ -16,7 +23,7 @@
                         <img style="border-radius:50px;margin-right: 5px;" height="40px" width="40px"
                             src="{{posts.user_in.avatar}}">
                         <div class="author-info">
-                            <a href="{{url_for('users.user', id=posts.user_in.id,name=posts.user_in.name)}}"><span class="author-name">{{posts.user_in.name}}</span></a>
+                            <a href="{{url_for('users.user', id=posts.user_in.id,name=posts.user_in.name)}}"><span class="author-name">{{posts.user_in.real_name}}</span></a>
                             <div class="post-tags">
                                 {% if tags[0].name %}
                                 {% for tag in tags %}
@@ -48,9 +55,9 @@
                     </div>
                     {% if posts.closed == False %}
                     <div class="post-reply" style="margin-top:3%;">
-                        <form class="form-reply" id="reply" role="form" method="post"
+                        <form class="form-thread" id="reply" role="form" method="post"
                             action="{{url_for('home.reply',id=posts.id,title=posts.title)}}">
-                            <div class="editor" id="editor" style="margin-bottom:1%;"></div>
+                            <div class="editor" id="editor" style="margin-bottom:1%;" minlength="0"  autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"></div>
                             {{reply.csrf_token}}
                             {{reply.text}}
                             <button class="reply-button" type="submit">Post Reply</button>
@@ -108,54 +115,9 @@
     {% endfor %}
 
     <br>
-    <p style="margin-top: 1rem; font-size:initial">Not the answer you're looking for? Browse other questions tagged
+    <p style="margin-top: 1rem; font-size:initial;color:var(--color);">Not the answer you're looking for? Browse other questions tagged
         {% if tags[0].name %}{% for tag in tags %}<a href="{{url_for('home.home',tag_finder=tag.name)}}"
             style="font-size:13px;margin-left:3px;"><tag>{{tag.name}}</tag> </a>{% endfor %}{% endif %}
         or <a href="{{url_for('home.home')}}" style="color:#18BC9C;"> ask your own question</a>.</p>
 </div>
-{% if current_user.is_authenticated %}
-{% if posts.closed == False %}
-<script>
-    var toolbarOptions = [
-        ['bold', 'italic', 'underline'],
-        ['blockquote', 'code-block'],
-        ['link', 'image'],
-        [{
-            'header': [1, 2, 3, 4, 5, 6, false]
-        }],
-        [{
-            'color': []
-        }, {
-            'background': []
-        }],
-        [{
-            'font': []
-        }],
-        [{
-            'align': []
-        }],
-    ];
-
-   function LoadQuill(){
-        var quill = new Quill('#editor', {
-            modules: {
-                toolbar: toolbarOptions
-            },
-            theme: 'snow'
-        });
-    }
-    window.addEventListener("load", LoadQuill, false);
-    window.addEventListener('load', function(event) { PR.prettyPrint(); }, false);
-    window.addEventListener("load",function(){
-    jQuery(document).ready(function() {
-        jQuery(".form-reply").submit(function() { 
-            var hidden_text_field = document.getElementById('text');
-            hidden_text_field.value = document.querySelector(".ql-editor").innerHTML;
-        });
-    }); 
-    });
-
-</script>
-{% endif %}
-{% endif %}
 {% endblock %}

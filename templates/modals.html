@@ -6,7 +6,7 @@
             <img style="vertical-align: middle;" src="{{url_for('static', filename='logo.svg')}}" width="70" height="70"
                 alt="">
             <br>
-            <span><span style="color:#18BC9C;">New</span>App - Register</span>
+            <span style="color:var(--color)"><span style="color:#18BC9C;">New</span>App - Register</span>
         </div>
         <form role="form" method="post" action="{{url_for('users.register')}}">
             <div class="modal-content">
@@ -17,7 +17,7 @@
                 {{register.confirm_password}}
             </div>
             <div class="modal-footer">
-                <span style="font-size: 0.6rem;">Already have an account?<a href="#login-modal"> Login here</a></span>
+                <span style="font-size: 0.6rem;color:var(--color);">Already have an account?<a href="#login-modal"> Login here</a></span>
                 <button type="submit" class="modal-button">Register</button>
             </div>
         </form>
@@ -30,16 +30,16 @@
             <img style="vertical-align: middle;" src="{{url_for('static', filename='logo.svg')}}" width="70" height="70"
                 alt="">
             <br>
-            <span><span style="color:#18BC9C;">New</span>App - Login</span>
+            <span style="color:var(--color)"><span style="color:#18BC9C;">New</span>App - Login</span>
         </div>
         <form role="form" method="post" action="{{url_for('users.login', url=request.path)}}">
             <div class="modal-content">
                 {{login.username}}
                 {{login.password}}
-                <span style="font-size: 0.6rem">Forgot password? <a href="#reset-password-modal">Click Here</a></span>
+                <span style="font-size: 0.6rem;color:var(--color)">Forgot password? <a href="#reset-password-modal">Click Here</a></span>
             </div>
             <div class="modal-footer">
-                <span style="font-size: 0.6rem;">You don`t have an account? <a href="#register-modal">Register
+                <span style="font-size: 0.6rem;color:var(--color)">You don`t have an account? <a href="#register-modal">Register
                         here</a></span>
                 <button type="submit" class="modal-button">Login</button>
             </div>
@@ -53,14 +53,14 @@
             <img style="vertical-align: middle;" src="{{url_for('static', filename='logo.svg')}}" width="70" height="70"
                 alt="">
             <br>
-            <span><span style="color:#18BC9C;">New</span>App - Login</span>
+            <span style="color: var(--color)"><span style="color:#18BC9C;">New</span>App - Login</span>
         </div>
         <form role="form" method="post" action="{{url_for('users.reset_password')}}">
             <div class="modal-content">
                 {{reset.email}}
             </div>
             <div class="modal-footer">
-                <span style="font-size: 0.6rem;">Already have an account?<a href="#login-modal"> Login here</a></span>
+                <span style="font-size: 0.6rem;color:var(--color)">Already have an account?<a href="#login-modal"> Login here</a></span>
                 <button type="submit" class="modal-button">Reset</button>
             </div>
         </form>

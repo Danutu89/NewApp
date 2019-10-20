@@ -1,4 +1,4 @@
-from flask import Flask, flash, redirect, render_template, request, url_for,send_file, Blueprint
+from flask import Flask, flash, redirect, render_template, request, url_for, send_file, Blueprint
 from flask_sqlalchemy import SQLAlchemy
 from flask_session import Session
 from flask_bcrypt import Bcrypt
@@ -14,7 +14,6 @@ import logging
 import datetime as time
 from forms import SearchForm, LoginForm, RegisterForm, ResetPasswordForm
 from retinasdk import FullClient
-from flask_socketio import SocketIO
 from flask_cors import CORS
 import eventlet
 import redis
@@ -85,7 +84,7 @@ db.create_all()
 bcrypt = Bcrypt(app)
 login_manager = LoginManager()
 login_manager.init_app(app)
-socket = SocketIO(app)
+
 translate = FullClient("7eaa96e0-be79-11e9-8f72-af685da1b20e",apiServer="http://api.cortical.io/rest", retinaName="en_associative")
 
 login_manager.login_view = "home.home"
@@ -180,27 +179,6 @@ app.logger.info(key_jwt['alg'])
 
 """ logging.basicConfig()
 logging.getLogger('sqlalchemy.engine').setLevel(logging.INFO) """
-
-@socket.on('message')
-def handle_message(message):
-    print('received message: ' + message)
-
-@socket.on('connect')
-def on_connect():
-    if current_user.is_authenticated:
-        user = db.session.query(UserModel).filter_by(id=current_user.id).first()
-        user.is_online = True
-        db.session.commit()
-    #print('my response', {'data': 'Connected'})
-
-@socket.on('disconnect')
-def on_disconnect():
-    if current_user.is_authenticated:
-        user = db.session.query(UserModel).filter_by(id=current_user.id).first()
-        user.is_online = False
-        db.session.commit()
-    #print('my response', {'data': 'Disconnected'})
-
 
 def make_celery(app):
 	# set redis url vars

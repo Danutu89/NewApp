@@ -16,6 +16,7 @@ from celery_worker import cleanup_sessions, verify_post
 from app import app
 from PIL import Image
 import readtime
+from webptools import webplib as webp
 
 home_pages = Blueprint(
     'home',__name__,
@@ -32,6 +33,10 @@ def save_img(post_id):
     i = Image.open(request.files['thumbnail'])
     #i.thumbnail(output_size)
     i.save(picture_path)
+    webp.cwebp(os.path.join(app.config['UPLOAD_FOLDER_POST'], picture_fn),os.path.join(app.config['UPLOAD_FOLDER_POST'], 'post_' + str(post_id) + '.webp'), "-q 80")
+    os.remove(os.path.join(app.config['UPLOAD_FOLDER_POST'], picture_fn))
+
+    picture_fn = 'post_' + str(post_id) + '.webp'
 
     return picture_fn
 
@@ -84,9 +89,6 @@ def home():
                 str(readtime.of_html(new_question.text.data))
             )
 
-            db.session.add(new_post)
-            db.session.commit()
-
             tags = []
             tag_p = new_question.tag.data.lower()
             tag = tag_p.replace(" ", "")
@@ -105,7 +107,6 @@ def home():
                         [index]
                     )
                     db.session.add(tag)
-                db.session.commit()
             #verify_post.delay(index)
             #print(index[0].id)
             for user in current_user.followed:
@@ -120,6 +121,7 @@ def home():
                     None
                 )
                 db.session.add(notify)
+            db.session.add(new_post)
             db.session.commit()
             flash('New question posted successfully', 'success')
             
@@ -186,6 +188,16 @@ def home():
         else:
             get_lang = db.session.query(Analyze_Session).filter_by(session=session['user']).first()
             posts = PostModel.query.filter(or_(PostModel.lang.like(get_lang.lang),PostModel.lang.like('en'))).filter(PostModel.id.in_(tgi)).order_by(PostModel.id.desc()).all()
+    elif request.args.get('questions'):
+        tg = db.session.query(TagModel).filter(TagModel.name.in_(['help','question'])).order_by(desc(func.array_length(TagModel.post, 1))).all()
+        tgi = []
+        for t in tg:
+            tgi.extend(t.post)
+        if current_user.is_authenticated:
+            posts = PostModel.query.filter(or_(PostModel.lang.like(current_user.lang),PostModel.lang.like('en'))).filter(PostModel.id.in_(tgi)).order_by(PostModel.id.desc()).all()#.paginate(page=post_page,per_page=9)
+        else:
+            get_lang = db.session.query(Analyze_Session).filter_by(session=session['user']).first()
+            posts = PostModel.query.filter(or_(PostModel.lang.like(get_lang.lang),PostModel.lang.like('en'))).filter(PostModel.id.in_(tgi)).order_by(PostModel.id.desc()).all()
     else:
         if current_user.is_authenticated:
             if len(current_user.int_tags) > 0:
@@ -237,7 +249,7 @@ def post(title,id):
     replyes = db.session.query(ReplyModel).filter_by(post_id=id)
     tags = db.session.query(TagModel).filter(TagModel.post.contains([id])).all()
     tags_all = db.session.query(TagModel).all()
-    post_from_user = db.session.query(PostModel).filter_by(user=posts.user_in.id).limit(6).all()
+    post_from_user = db.session.query(PostModel).filter_by(user=posts.user_in.id).limit(4).all()
     popular_posts = db.session.query(PostModel).order_by(PostModel.views.desc()).limit(9)
     keywords = str(posts.title).split(" ")
 
@@ -260,15 +272,16 @@ def post(title,id):
 def edit_post(id):
     post = db.session.query(PostModel).filter_by(id=id).first()
     editpost = NewQuestionForm(request.form)
+    text = post.text
     if request.method == 'POST':
-        post.text = editpost.text.data
+        post.text = markdown(editpost.text.data)
         post.title = editpost.title.data
         post.read_time = str(readtime.of_html(editpost.text.data))
         db.session.commit()
         flash('Post updated successfully.')
         return redirect(url_for('home.home'))
 
-    return render_template('edit_post.html', post=post, editpost=editpost)
+    return render_template('edit_post.html', post=post, editpost=editpost,text=text)
 
 @home_pages.route('/post/reply/id=<int:id>/<string:title>', methods=['POST','GET'])
 def reply(id,title):

@@ -6,19 +6,24 @@
     }
 </style>
 <new_post>
+    <div class="newpost-info">
+        <strong>Informations:</strong>
+        <p>If you wanna start a discussion add <tag>discuss</tag> in the tags section</p>
+        <p>If you wanna ask a question add <tag>help</tag> / <tag>question</tag> in the tags section</p>
+        <p>If you wanna create a tutorial add <tag>tutorial</tag> / <tag>howto</tag> in the tags section</p>
+    </div>
     <form role="form" class="form-thread" method="POST"  enctype='multipart/form-data' action="{{url_for('home.home')}}">
         <div class="header">
             {{new_question.csrf_token}}
-            {{new_question.title}}
-            {{new_question.tag}}
-            <p style="    color: #b5b5b5;
-            font-size: 0.6rem;
-            margin: 0;
-            margin-top: -0.4rem;">
-                Separate tags with commas.
-            </p>
-            <br>
-            Thumbnail: <input type="file" name="thumbnail">
+            {{new_question.title(style="background: transparent !important;
+            font-size: 2rem;")}}
+            <div style="display: flex;">
+            {{new_question.tag(style="border: var(--border);background-color:transparent;")}}
+            <label for="file-upload" class="file-upload">
+                <i class="fas fa-image" style="    vertical-align: sub;"></i>
+            </label>
+            <input type="file" id="file-upload" name="thumbnail" style="display: none">
+        </div>
         </div>
         <br>
         <div class="body">{{new_question.text}}<div id="editor"></div></div>
@@ -27,53 +32,4 @@
         </div>
     </form>
   </new_post>
-
-{% if current_user.is_authenticated %}
-<script>
-    var toolbarOptions = [
-        ['bold', 'italic', 'underline'],
-        ['blockquote', 'code-block'],
-        ['link', 'image'],
-        [{
-            'header': [1, 2, 3, 4, 5, 6, false]
-        }],
-        [{
-            'color': []
-        }, {
-            'background': []
-        }],
-        [{
-            'font': []
-        }],
-        [{
-            'align': []
-        }],
-    ];
-
-    function LoadQuill() {
-        var quill = new Quill('#editor', {
-            modules: {
-                toolbar: toolbarOptions
-            },
-            theme: 'snow'
-        });
-    }
-    window.addEventListener("load", LoadQuill, false);
-    window.addEventListener("load",function () {
-        var submit_entry = function () {
-        var hidden_text_field = document.getElementById('text');
-        hidden_text_field.value = document.querySelector(".ql-editor").innerHTML
-    }
-    });
-    window.addEventListener("load",function(){
-    jQuery(document).ready(function() {
-        jQuery(".form-thread").submit(function() { 
-            var hidden_text_field = document.getElementById('text');
-            hidden_text_field.value = document.querySelector(".ql-editor").innerHTML;
-            console.log( document.querySelector(".ql-editor").innerHTML);
-        });
-    }); 
-    });
-</script>
-{% endif %}
 {% endblock %}

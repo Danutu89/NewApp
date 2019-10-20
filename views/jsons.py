@@ -18,11 +18,17 @@ import datetime as dt
 from sqlalchemy import desc
 
 from datetime import datetime
+import os
 
 json_pages = Blueprint(
     'jsons',__name__,
     template_folder='json_templates'
 )
+
+@json_pages.after_request
+def add_header(response):
+    response.headers['Access-Control-Allow-Origin'] = '*'
+    return response
 
 def token_required(f):
     @wraps(f)
@@ -498,7 +504,7 @@ def rss_feed():
     tags = db.session.query(TagModel).filter_by(name='discuss').all()
     ids = []
     for t in tags:
-        ids.extend(i.post)
+        ids.extend(t.post)
     posts = db.session.query(PostModel).filter(PostModel.id.in_(ids)).filter_by(lang='en').order_by(PostModel.id.desc()).limit(5)
     newsfeed_rss = render_template('newsfeed.xml', posts=posts)
     response = make_response(newsfeed_rss)

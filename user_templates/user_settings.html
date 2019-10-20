@@ -2,7 +2,7 @@
 {% block content %}
 <form action="{{url_for('users.modify_profile', idm=user.id)}}" {% if request.MOBILE == False %}enctype='multipart/form-data'{% endif %} method="POST">
 <profile class="profile-page">
-  <div class="profile-cover" {%if not user.cover %}style="background-color: #14947b;border: 1px solid #dddd;height:300px;"{% endif %}>
+  <div class="profile-cover" {%if not user.cover %}style="background-color: #14947b;border: var(--border);height:350px;"{% endif %}>
     {% if user.cover %}
     <img src="{{user.cover}}" alt="">
     {% endif %}
@@ -22,17 +22,18 @@
       <div class="profile-actions">
           <button type="submit" class="save-settings">Save</button>
       </div>
-      <!-- <div class="widgets">
+      <div class="widgets">
         <div class="settings-menu">
           <div class="header">Settings</div>
           <div class="settings">
-            <button class="item" active>Profile</button>
-          </div>
+            <div class="item" onclick="ShowMain()">Main Info</div>
+              <div class="item" onclick="ShowMisc()">Misc</div>
+            </div>
         </div>
-      </div> -->
+      </div>
     </div>
     <div class="sidebar-main">
-      <div class="edit-info">
+      <div class="edit-info" id="main">
         <div class="col-1" style="text-align:left;">
           Email:
           {{modify_prof.email(value=user.email)}}
@@ -76,18 +77,29 @@
         <div class="col-2"  style="text-align:left;">
           {% if request.MOBILE == False %}
           Gender:
+          <br>
           {{modify_prof.genre(value=user.genre)}}
           <br>
           Avatar:
+          <br>
           <input type="file" name="avatarimg" value="">
           <br>
           Cover:
+          <br>
           <input type="file" name="coverimg" value="">
           {% endif %}
         </div>
       </div>
+      <div class="edit-misc" id="misc">
+          <div class="col-1" style="text-align:left;">
+          Theme:
+          <br>
+          {{modify_prof.theme(value=user.theme)}}
+          </div>
+          <div class="col-2"  style="text-align:left;"></div>
+      </div>
     </div>
   </div>
 </profile>
-  </form>
+</form>
 {% endblock %}

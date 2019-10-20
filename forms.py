@@ -156,9 +156,9 @@ class ModifyProfileForm(FlaskForm):
     )
     genre = SelectField(
         choices=[('Male','Male'),('Female','Female')],
-        render_kw = {
-            "class":"custom-select custom-select-sm"
-        }
+    )
+    theme = SelectField(
+        choices=[('Light','Light'),('Dark','Dark')],
     )
     profession = TextField(
         'Profession_ModifyProfile',
@@ -267,7 +267,7 @@ class NewQuestionForm(FlaskForm):
     tag = TextField(
         'NewQuestionForm_Tags',
         render_kw = {
-            "placeholder":"Tags",
+            "placeholder":"Separate tags with commas",
             "required":"true"
         }
     )

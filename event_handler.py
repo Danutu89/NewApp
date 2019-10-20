@@ -1,5 +1,8 @@
-from app import app, socket, db, UserModel
+from app import app, db, UserModel
 from flask_login import current_user
+from flask_socketio import SocketIO
+
+socket = SocketIO(app)
 
 @socket.on('message')
 def handle_message(message):
@@ -11,7 +14,7 @@ def on_connect():
         user = db.session.query(UserModel).filter_by(id=current_user.id).first()
         user.is_online = True
         db.session.commit()
-    print('my response', {'data': 'Connected'})
+    #print('my response', {'data': 'Connected'})
 
 @socket.on('disconnect')
 def on_disconnect():
@@ -19,4 +22,4 @@ def on_disconnect():
         user = db.session.query(UserModel).filter_by(id=current_user.id).first()
         user.is_online = False
         db.session.commit()
-    print('my response', {'data': 'Disconnected'})
+    #print('my response', {'data': 'Disconnected'})

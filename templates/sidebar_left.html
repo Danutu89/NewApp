@@ -32,6 +32,9 @@
                     <div class="text"><a href="{{url_for('home.home', all='true')}}"><span class="section">All</span></a></div>
             </div>
             <div class="widget-item">
+                    <div class="text"><a href="{{url_for('home.home', questions='true')}}"><span class="section">Questions</span></a></div>
+            </div>
+            <div class="widget-item">
                     <div class="text"><a href="{{url_for('home.home', discuss='true')}}"><span class="section">Discuss</span></a></div>
             </div>
             <div class="widget-item">
@@ -57,7 +60,7 @@
             </div>
             {% endif %}
             {% endfor %}
-            <div class="widget-item" style="border-top: none;display: flex;background-color: #f3f3f3;">
+            <div class="widget-item" style="border-top: none;display: flex;background-color: var(--body-bg);">
                 <div class="text">
                     Other Popular Tags
                 </div>

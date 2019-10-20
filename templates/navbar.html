@@ -1,0 +1,87 @@
+<nav class="newapp-navbar">
+    <div class="navbar-items">
+      <div class="navbar-item">
+        <a href="/" class="navbar-logo"><img style="vertical-align: middle;margin-left: -1px;" src="https://newapp.nl/static/logo.svg"
+            width="30" height="30" alt=""><span style="margin-left: 0.2rem;" class="newapp-title"><span style="color:#18BC9C;">New</span><span
+              style="color:white;">App</span><span style="color:#18BC9C;font-size: 55%;font-weight: 600;">
+              Beta</span></span></a>
+      </div>
+      <div class="navbar-item navbar-center navbar-search">
+        <form action="/" method="GET">
+          <input type="text" name="search" placeholder="Search">
+        </form>
+      </div>
+
+      {% if current_user.is_authenticated == false %}
+      <div class="navbar-item" style="margin-inline-start: auto;display:flex;">
+        <a href="#login-modal" style="color: white;margin-block-start:auto;margin-block-end: auto;cursor: pointer;"><span
+            style="vertical-align: inherit;"><span class="fas fa-sign-in-alt"></span> Login</span></a>
+      </div>
+      {% else %}
+      <div style="margin-inline-start: auto;display:flex;">
+          <div class="navbar-item">
+              <div class="newapp-dropdown">
+                  <i class="far fa-bell fa-lg" style="    margin-top: 0.55rem;
+                  margin-right: 0.4rem;{% if request.MOBILE %}margin-right:0.9rem;{% endif %}"></i>
+                  <div class="newapp-dropdown-content" style="min-width: 13rem;margin-inline-start:-12.4rem;">
+                      Notifications
+                      <hr>
+                    {% for notification in current_user.n_receiver %}
+                    {% if notification.checked == False %}
+                      <div class="dropdown-item" style="display:flex;">
+                          <img src="{{notification.author.avatar}}" height="30px" width="30px" style="border-radius: 30px;" alt="">
+                          <a  href="{{notification.link}}?notification={{notification.id}}" style="color: white;margin-left: 0.4rem;">{{notification.body}}</a>
+                        </div>
+                      {% endif %}
+                      {% endfor %}
+                  </div>
+              </div>
+            </div>
+          {% if request.url_rule.endpoint != 'home.newpost' %}
+          {% if request.MOBILE == False %}
+          <div class="navbar-item">
+              <a href="/newpost"><button class="navbar-button" style="margin-right:0.7rem">New Post</button></a>
+          </div>
+          {% else %}
+          <div class="navbar-item">
+              <a href="/newpost"><i class="fas fa-plus-circle fa-lg" style="color:white;margin-top: 0.55rem;
+                margin-right: 0.9rem;"></i></a>
+          </div>
+          {% endif %}
+          {% endif %}
+          <div class="navbar-item">
+            <div class="newapp-dropdown">
+                <img src="{{current_user.avatar}}" height="30px" width="30px" style="border-radius: 30px;" alt="">
+              <div class="newapp-dropdown-content">
+                @{{current_user.name}}
+                <hr>
+                <a href="{{url_for('users.user', id=current_user.id, name=current_user.name)}}" style="color: white;">
+                <div class="dropdown-item">
+                  <i class="fas fa-user"></i> Profile
+                </div>
+                </a>
+                {% if current_user.roleinfo.admin_panel_permission %}
+                <a href="{{url_for('admin.main')}}" style="color: white;">
+                <div class="dropdown-item">
+                <i class="fas fa-user-shield"></i>
+                    Admin
+                </div>
+                </a>
+                {% endif %}
+                <a href="{{url_for('users.settings', name=current_user.name)}}" style="color: white;">
+                <div class="dropdown-item">
+                  <i class="fas fa-user-cog"></i></i> Settings
+                </div>
+                </a>
+                <a href="{{url_for('users.logout')}}" style="color: white;">
+                <div class="dropdown-item">
+                  <i class="fas fa-sign-out-alt"></i> Logout
+                </div>
+                </a>
+              </div>
+            </div>
+          </div>
+      </div>
+      {% endif %}
+    </div>
+  </nav>

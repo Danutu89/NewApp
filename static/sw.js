@@ -20,20 +20,19 @@ function urlB64ToUint8Array(base64String) {
 }
 
 self.addEventListener('install', function(event) {
-  if(document.querySelector('html').getAttribute("id")){
-    Notification.requestPermission().then(function(result) {
-      if (result === 'denied') {
-        console.log('Permission wasn\'t granted. Allow a retry.');
-        return;
-      }
-      if (result === 'default') {
-        console.log('The permission request was dismissed.');
-        
-        return;
-      }
-      subscribeUser();
-    });
-  }
+  event.waitUntil(
+    caches.open('newapp.cache').then(function(cache) {
+      return cache.addAll(
+        [
+          'https://newappcdn.b-cdn.net/newapp.js',
+          'https://newappcdn.b-cdn.net/jquery.js',
+          'https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js',
+          'https://newappcdn.b-cdn.net/all.css',
+          'https://newappcdn.b-cdn.net/styles.css'
+        ]
+      );
+    })
+  );
 });
 
 if (self.clients && (typeof self.clients.claim === 'function')) {
@@ -74,27 +73,30 @@ self.addEventListener('push', function(event) {
     }))
 });
 
-this.addEventListener('fetch', function (event) {
-  // it can be empty if you just want to get rid of that error
-});
-
-self.addEventListener('pushsubscriptionchange', function(event) {
-  console.log('[Service Worker]: \'pushsubscriptionchange\' event fired.');
-  const applicationServerKey = urlB64ToUint8Array(applicationServerPublicKey);
-  event.waitUntil(
-    self.registration.pushManager.subscribe({
-      userVisibleOnly: true,
-      applicationServerKey: applicationServerKey
-    })
-    .then(function(newSubscription) {
-      const dataToSend = JSON.stringify(newSubscription);
-      var get_id = document.querySelector('html').getAttribute("id");
-      dataToSend['user'] = get_id;
-      fetch("https://newapp.nl/api/subscribe",{method:"post",body:dataToSend})
-      console.log('[Service Worker] New subscription: ', newSubscription);
+self.addEventListener('fetch', function(event) {
+  event.respondWith(
+    caches.match(event.request).then(function(response) {
+      return response || fetch(event.request);
     })
   );
 });
+// self.addEventListener('pushsubscriptionchange', function(event) {
+//   console.log('[Service Worker]: \'pushsubscriptionchange\' event fired.');
+//   const applicationServerKey = urlB64ToUint8Array(applicationServerPublicKey);
+//   event.waitUntil(
+//     self.registration.pushManager.subscribe({
+//       userVisibleOnly: true,
+//       applicationServerKey: applicationServerKey
+//     })
+//     .then(function(newSubscription) {
+//       const dataToSend = JSON.stringify(newSubscription);
+//       var get_id = document.querySelector('html').getAttribute("id");
+//       dataToSend['user'] = get_id;
+//       fetch("https://newapp.nl/api/subscribe",{method:"post",body:dataToSend})
+//       console.log('[Service Worker] New subscription: ', newSubscription);
+//     })
+//   );
+// });
 
 function subscribeUser() {
   const applicationServerKey = urlB64ToUint8Array(applicationServerPublicKey);

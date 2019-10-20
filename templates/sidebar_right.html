@@ -1,4 +1,4 @@
-{% if request.MOBILE == False %}
+
 {% if request.endpoint == 'home.home' %}
 <div class="sidebar" id="sidebar-right">
     {% for success in get_flashed_messages(category_filter=["success"]) %}
@@ -243,5 +243,4 @@
         </div>
     </div>
 </div>
-{% endif %}
 {% endif %}

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html {% if location %}lang="{{location.lang}}-{{location.lang|upper}}" {% endif %} {% if current_user.is_authenticated %}id={{current_user.id}}{% endif %}>
+<html {% if location %}lang="{{location.lang}}-{{location.lang|upper}}" {% endif %} {% if current_user.is_authenticated %}id={{current_user.id}}{% endif %} {% if current_user.is_authenticated and current_user.theme == 'Dark' %}data-theme="dark"{% endif %}>
 <head>
   {% if error_check != True %}
   {% if request.url_rule.endpoint == 'home.home' %}<title>New App - Where Developers Learn, Share, & Code</title>{% endif %}
@@ -75,133 +75,36 @@
   {% endif %}
   {% endif %}
   <meta name="environment" content="production">
-  <script async src="https://newappcdn.b-cdn.net/newapp.js"></script>
-  <script async src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+  <script async src="https://newappcdn.b-cdn.net/newapp.min.js"></script>
+  <!-- <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script> -->
+  <script async src="https://newappcdn.b-cdn.net/jquery.js"></script>
+  <!-- <script async src="https://code.jquery.com/jquery-3.3.1.min.js"></script> -->
   <script async src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"></script>
   {% include 'style.html' %}
 </head>
 <header>
-  <nav class="newapp-navbar">
-    <div class="navbar-items">
-      <div class="navbar-item">
-        <a href="/" class="navbar-logo"><img style="vertical-align: middle;margin-left: -1px;" src="https://newapp.nl/static/logo.svg"
-            width="30" height="30" alt=""><span style="margin-left: 0.2rem;" class="newapp-title"><span style="color:#18BC9C;">New</span><span
-              style="color:white;">App</span><span style="color:#18BC9C;font-size: 55%;font-weight: 600;">
-              Beta</span></span></a>
-      </div>
-      <div class="navbar-item navbar-center navbar-search">
-        <form action="/" method="GET">
-          <input type="text" name="search" placeholder="Search">
-        </form>
-      </div>
-
-      {% if current_user.is_authenticated == false %}
-      <div class="navbar-item" style="margin-inline-start: auto;display:flex;">
-        <a href="#login-modal" style="color: white;margin-block-start:auto;margin-block-end: auto;cursor: pointer;"><span
-            style="vertical-align: inherit;"><span class="fas fa-sign-in-alt"></span> Login</span></a>
-      </div>
-      {% else %}
-      <div style="margin-inline-start: auto;display:flex;">
-          <div class="navbar-item">
-              <div class="newapp-dropdown">
-                  <i class="far fa-bell fa-lg" style="    margin-top: 0.55rem;
-                  margin-right: 0.4rem;{% if request.MOBILE %}margin-right:0.9rem;{% endif %}"></i>
-                  <div class="newapp-dropdown-content" style="min-width: 13rem;margin-inline-start:-12.4rem;">
-                      Notifications
-                      <hr>
-                    {% for notification in current_user.n_receiver %}
-                    {% if notification.checked == False %}
-                      <div class="dropdown-item" style="display:flex;">
-                          <img src="{{notification.author.avatar}}" height="30px" width="30px" style="border-radius: 30px;" alt="">
-                          <a  href="{{notification.link}}?notification={{notification.id}}" style="color: white;margin-left: 0.4rem;">{{notification.body}}</a>
-                        </div>
-                      {% endif %}
-                      {% endfor %}
-                  </div>
-              </div>
-            </div>
-          {% if request.url_rule.endpoint != 'home.newpost' %}
-          {% if request.MOBILE == False %}
-          <div class="navbar-item">
-              <a href="/newpost"><button class="navbar-button" style="margin-right:0.7rem">New Post</button></a>
-          </div>
-          {% else %}
-          <div class="navbar-item">
-              <a href="/newpost"><i class="fas fa-plus-circle fa-lg" style="color:white;margin-top: 0.55rem;
-                margin-right: 0.9rem;"></i></a>
-          </div>
-          {% endif %}
-          {% endif %}
-          <div class="navbar-item">
-            <div class="newapp-dropdown">
-                <img src="{{current_user.avatar}}" height="30px" width="30px" style="border-radius: 30px;" alt="">
-              <div class="newapp-dropdown-content">
-                @{{current_user.name}}
-                <hr>
-                <div class="dropdown-item">
-                  <a href="{{url_for('users.user', id=current_user.id, name=current_user.name)}}" style="color: white;"><i class="fas fa-user"></i> Profile</a>
-                </div>
-                {% if current_user.roleinfo.admin_panel_permission %}
-                <div class="dropdown-item">
-                  <a href="{{url_for('admin.main')}}" style="color: white;"><i class="fas fa-user-shield"></i>
-                    Admin</a>
-                </div>
-                {% endif %}
-                <div class="dropdown-item">
-                  <a href="{{url_for('users.settings', name=current_user.name)}}" style="color: white;"><i class="fas fa-user-cog"></i></i> Settings</a>
-                </div>
-                <div class="dropdown-item">
-                  <a href="{{url_for('users.logout')}}" style="color: white;"><i class="fas fa-sign-out-alt"></i> Logout</a>
-                </div>
-              </div>
-            </div>
-          </div>
-      </div>
-      {% endif %}
-    </div>
-  </nav>
+  {% include 'navbar.html' %}
 </header>
 <content>
   {% if error_check != True %}
-  {% if request.MOBILE %}
-  {% if request.url_rule.endpoint == 'home.home' %}
-  <!-- <div class="open-wrapper">
-      <i class="fas fa-coins fa-lg" id="open-wrapper" onclick="openNav()"></i>
-  </div> -->
-  {% include 'wrapper_left.html' %}
+    {% if request.MOBILE %}
+      {% if request.url_rule.endpoint == 'home.home' %}
+      <!-- <div class="open-wrapper">
+          <i class="fas fa-coins fa-lg" id="open-wrapper" onclick="openNav()"></i>
+      </div> -->
+        {% include 'wrapper_left.html' %}
+      {% endif %}
+    {% else %}
+        {% include 'sidebar_left.html' %}
+    {% endif %}
   {% endif %}
-  {% else %}
-  {% include 'sidebar_left.html' %}
-  {% endif %}
-  {% endif %}
-  {% block content %}
-  {% endblock %}
+    {% block content %}
+    {% endblock %}
   {% if error_check != True %}
-  {% include 'sidebar_right.html' %}
+    {% include 'sidebar_right.html' %}
   {% endif %}
 </content>
-{% if error_check != True %}
-{% if request.MOBILE %}
-<!-- <navigation>
-  <div class="navigation-item">
-      <i class="fas fa-chevron-left" onclick="window.history.back();"></i>
-  </div>
-  <div class="navigation-item">
-      <i class="fas fa-home" onclick="goHome()"></i>
-  </div>
-  <div class="navigation-item">
-      <i class="fas fa-chevron-right" onclick="window.history.forward();"></i>
-  </div>
-</navigation>
-<script>
-  function goHome(){
-    window.location.pathname = "/";
-  }
-</script> -->
-{% endif %}
-{% endif %}
 {% include 'modals.html' %}
-
 <script>
   var loadCss = function(cssPath){
     var cssLink = document.createElement('link');
@@ -216,44 +119,103 @@
     var head = document.getElementsByTagName('head')[0];
     head.appendChild(cssLink);
   };
-  document.onreadystatechange = function () {
-    if (document.readyState === "complete") {
-      loadCss("https://newappcdn.b-cdn.net/all.css");
-      loadCss("https://newappcdn.b-cdn.net/styles.css");
-      loadJs("https://www.googletagmanager.com/gtag/js?id=UA-145440871-1");
-      setTimeout(init_NewApp,1000);
-      window.dataLayer = window.dataLayer || [];
+  window.onload = function () {
+    loadCss("https://newappcdn.b-cdn.net/all.css");
+    loadCss("https://newappcdn.b-cdn.net/styles.css");
+    loadJs("https://www.googletagmanager.com/gtag/js?id=UA-145440871-1");
+    var x232 = document.getElementsByTagName("HTML")[0];
+    if (x232.getAttribute("data-theme") == "dark"){
+      loadCss("https://newappcdn.b-cdn.net/dark_code.css");
+    }
+    else{
+      loadCss("https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/prettify.css");
+    }
+    setTimeout(init_NewApp,1000);
+    window.dataLayer = window.dataLayer || [];
 
-      function gtag() {
-        dataLayer.push(arguments);
-      }
-      gtag('js', new Date());
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+    gtag('js', new Date());
 
-      gtag('config', 'UA-145440871-1', {
-        'optimize_id': 'GTM-KKCQ2T7'
-      });
-      {% if current_user.is_authenticated %}
-      gtag('set', {'user_id': '{{current_user.id}}'});
-      {% endif %}
-
-      {%  if request.endpoint == 'home.home' %}
-      LoadTrending();
-      {% elif request.endpoint == 'home.post' %}
-      LoadTrending();
-      {% endif %}
-      if ('serviceWorker' in navigator) {
-        window.addEventListener('load', function() {
-          navigator.serviceWorker.register("https://" + window.location.hostname + "/sw.js").then(function(registration) {
-            // Registration was successful
-            console.log('ServiceWorker registration successful with scope: ', registration.scope);
-          }, function(err) {
-            // registration failed :(
-            console.log('ServiceWorker registration failed: ', err);
-          });
+    gtag('config', 'UA-145440871-1', {
+      'optimize_id': 'GTM-KKCQ2T7'
+    });
+    {% if current_user.is_authenticated %}
+    gtag('set', {'user_id': '{{current_user.id}}'});
+    {% endif %}
+    {%  if request.endpoint == 'home.home' %}
+    LoadTrending();
+    {% elif request.endpoint == 'home.post' %}
+    LoadTrending();
+    {% endif %}
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', function() {
+        navigator.serviceWorker.register("https://" + window.location.hostname + "/sw.js").then(function(registration) {
+          // Registration was successful
+          console.log('ServiceWorker registration successful with scope: ', registration.scope);
+        }, function(err) {
+          // registration failed :(
+          console.log('ServiceWorker registration failed: ', err);
         });
-      }
-      };
+      });
+    
+    };
+    {% if current_user.is_authenticated %}
+    {% if request.url_rule.endpoint == 'home.post' or request.url_rule.endpoint == 'home.newpost' or request.url_rule.endpoint == 'home.edit_post' %}
+    var toolbarOptions = [
+      ['bold', 'italic', 'underline'],
+      ['blockquote', 'code-block'],
+      ['link', 'image'],
+      [{
+          'header': [1, 2, 3, 4, 5, 6, false]
+      }],
+      [{
+          'color': []
+      }, {
+          'background': []
+      }],
+      [{
+          'font': []
+      }],
+      [{
+          'align': []
+      }],
+    ];
+    function LoadQuill(){
+        var quill = new Quill('#editor', {
+            modules: {
+                toolbar: toolbarOptions
+            },
+            theme: 'snow'
+        });
+    }
+  
+    jQuery(document).ready(function() {
+      LoadQuill();
+      PR.prettyPrint();
+      jQuery(".form-thread").submit(function() { 
+          var hidden_text_field = document.getElementById('text');
+          hidden_text_field.value = document.querySelector(".ql-editor").innerHTML;
+      });
+    });
+    {% endif %}
+    {% endif %}
+  };
+  {% if request.url_rule.endpoint == 'users.settings' %}
+  function ShowMisc(){
+    var x = document.getElementById('main');
+    x.style.display = 'none';
+    x = document.getElementById('misc');
+    x.style.display = {% if request.MOBILE %}'block'{% else %}'flex'{% endif %};
   }
+  function ShowMain(){
+    var x = document.getElementById('misc');
+    x.style.display = 'none';
+    x = document.getElementById('main');
+    x.style.display = {% if request.MOBILE %}'block'{% else %}'flex'{% endif %};
+  }
+  {% endif %}
 </script>
 {% if request.url_rule.endpoint == 'home.home' %}
 {% if request.MOBILE %}
@@ -269,9 +231,9 @@
     document.getElementById("wrapper-left").style.margin = "-20px";
     wrapper_opened = false;
   }
-  </script>
+</script>
 <script>
-  document.addEventListener('touchstart', handleTouchStart, false);        
+document.addEventListener('touchstart', handleTouchStart, false);        
 document.addEventListener('touchmove', handleTouchMove, false);
 
 var xDown = null;                                                        
@@ -309,7 +271,9 @@ function handleTouchMove(evt) {
         if ( yDiff > 0 ) {
             /* up swipe */ 
         } else { 
-            /* down swipe */
+            if (yDiff < -15){
+              
+            }
         }                                                                 
     }
     /* reset values */

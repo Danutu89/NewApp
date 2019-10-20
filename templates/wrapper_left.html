@@ -30,6 +30,9 @@
                     <div class="text"><a href="{{url_for('home.home', all='true')}}"><span class="section">All</span></a></div>
             </div>
             <div class="widget-item">
+                    <div class="text"><a href="{{url_for('home.home', questions='true')}}"><span class="section">Questions</span></a></div>
+            </div>
+            <div class="widget-item">
                     <div class="text"><a href="{{url_for('home.home', discuss='true')}}"><span class="section">Discuss</span></a></div>
             </div>
             <div class="widget-item">
@@ -41,7 +44,7 @@
         <div class="widget-header">
             <div class="widget-title">Customize your experience</div>
         </div>
-        <div class="widget-list" style="max-height: 400px;overflow: auto;">
+        <div class="widget-list" style="overflow: auto;">
             {% if current_user.is_authenticated %}
             {% for tag in current_user.int_tags %}
             {% if tag  %}
@@ -55,7 +58,7 @@
             </div>
             {% endif %}
             {% endfor %}
-            <div class="widget-item" style="border-top: none;display: flex;background-color: #f3f3f3;">
+            <div class="widget-item" style="border-top: none;display: flex;background-color: var(--body-bg);">
                 <div class="text">
                     Other Popular Tags
                 </div>
@@ -90,39 +93,4 @@
             {% endfor %}
         </div>
     </div>
-    <div class="widget" id="widget-trending-posts">
-            <div class="widget-header">
-                <div class="widget-title">Trending Posts 🔥</div>
-                <button class="minimize-widget" id="minimize-widget-trending-sidebar"
-                    onclick="Minimize('sidebar','trending-posts')">-</button>
-            </div>
-            <div class="widget-list" id="widget-list-trending-posts-sidebar" style="display: block;">
-                <div class="widget-item">
-                    <div class="text">
-                        <a href="" id="trending-1" class="loading" style="height: 0.92em; width:100%;display: block;"></a>
-                    </div>
-                </div>
-                <div class="widget-item">
-                    <div class="text">
-                        <a href="" id="trending-2" class="loading" style="height: 0.92em; width:100%;display: block;"></a>
-                    </div>
-                </div>
-                <div class="widget-item">
-                    <div class="text">
-                        <a href="" id="trending-3" class="loading" style="height: 0.92em; width:100%;display: block;"></a>
-                    </div>
-                </div>
-                <div class="widget-item">
-                    <div class="text">
-                        <a href="" id="trending-4" class="loading" style="height: 0.92em; width:100%;display: block;"></a>
-                    </div>
-                </div>
-                <div class="widget-item">
-                    <div class="text">
-                        <a href="" id="trending-5" class="loading" style="height: 0.92em; width:100%;display: block;"></a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    
 </wrapper>
