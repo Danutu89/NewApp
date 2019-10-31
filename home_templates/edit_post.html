@@ -12,7 +12,7 @@
             {{editpost.title(value=post.title)}}
         </div>
         <br>
-        <div class="body">{{editpost.text}}<textarea id="editor"></textarea></div>
+        <div class="body">{{editpost.text(value=post.text)}}<div id="editor"></div></div>
         <div class="footer">
             <button type="submit" class="newpost">Post</button>
         </div>

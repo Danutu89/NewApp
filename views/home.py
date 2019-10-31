@@ -9,9 +9,9 @@ from sqlalchemy.schema import Sequence
 from app import db, translate
 from forms import (LoginForm, NewQuestionForm, RegisterForm, ReplyForm,
                    ResetPasswordForm, SearchForm)
-from models import PostModel, ReplyModel, TagModel, UserModel, Analyze_Session, Notifications_Model
+from models import PostModel, ReplyModel, TagModel, UserModel, Analyze_Session, Notifications_Model, Podcast_SeriesModel, PodcastsModel
 import os
-from analyze import parseVisitator, sessionID, GetSessionId
+from analyze import parseVisitator, sessionID, GetSessionId, getAnalyticsData
 from celery_worker import cleanup_sessions, verify_post
 from app import app
 from PIL import Image
@@ -26,12 +26,10 @@ home_pages = Blueprint(
 def save_img(post_id):
     #if(form_img.data):
     file_name, file_ext = os.path.splitext(request.files['thumbnail'].filename)
-    picture_fn = 'post_' + str(post_id) + '.jpeg'
+    picture_fn = 'post_' + str(post_id) + file_ext
     picture_path = os.path.join(app.config['UPLOAD_FOLDER_POST'], picture_fn)
     
-    output_size = (600,400)
     i = Image.open(request.files['thumbnail'])
-    #i.thumbnail(output_size)
     i.save(picture_path)
     webp.cwebp(os.path.join(app.config['UPLOAD_FOLDER_POST'], picture_fn),os.path.join(app.config['UPLOAD_FOLDER_POST'], 'post_' + str(post_id) + '.webp'), "-q 80")
     os.remove(os.path.join(app.config['UPLOAD_FOLDER_POST'], picture_fn))
@@ -42,6 +40,7 @@ def save_img(post_id):
 
 @home_pages.before_request
 def views():
+    getAnalyticsData()
     data = [request.path, GetSessionId(), str(datetime.datetime.now().replace(microsecond=0))]
     parseVisitator(data)
     
@@ -51,7 +50,6 @@ def home():
     cleanup_sessions.delay()
     login = LoginForm(request.form)
     register = RegisterForm(request.form)
-    search_post = SearchForm(request.form)
     new_question = NewQuestionForm(request.form)
     reset = ResetPasswordForm(request.form)
 
@@ -113,7 +111,7 @@ def home():
                 notify = Notifications_Model(
                     None,
                     current_user.id,
-                    'New post',
+                    str(new_question.title.data),
                     'New post from {}'.format(current_user.name),
                     str(url_for('home.post',id=index,title=new_question.title.data)),
                     user,
@@ -215,7 +213,28 @@ def home():
 
     popular_posts = db.session.query(PostModel).order_by(PostModel.views.desc()).limit(9)
 
-    most_tags = db.session.query(TagModel).order_by(desc(func.array_length(TagModel.post, 1))).limit(9)
+    tgs = []
+
+    questions_tag = db.session.query(TagModel).filter(TagModel.name.in_(['help','question'])).all()
+    for t in questions_tag:
+        tgs.extend(t.post)
+    questions_post = db.session.query(PostModel).filter(PostModel.id.in_(tgs)).order_by(PostModel.id.desc()).limit(9).all()
+
+    tgs.clear()
+
+    discuss_tag = db.session.query(TagModel).filter_by(name='discuss').all()
+    for t in discuss_tag:
+        tgs.extend(t.post)
+    discuss_post = db.session.query(PostModel).filter(PostModel.id.in_(tgs)).order_by(PostModel.id.desc()).limit(9).all()
+
+    tgs.clear()
+
+    howto_tag = db.session.query(TagModel).filter(TagModel.name.in_(['howto','tutorial'])).all()
+    for t in howto_tag:
+        tgs.extend(t.post)
+    howto_post = db.session.query(PostModel).filter(PostModel.id.in_(tgs)).order_by(PostModel.id.desc()).limit(9).all()
+
+    most_tags = db.session.query(TagModel).order_by(desc(func.array_length(TagModel.post, 1))).limit(12)
 
     if current_user.is_authenticated:
         flw_tags = db.session.query(TagModel).filter(~TagModel.name.in_(current_user.int_tags)).order_by(desc(func.array_length(TagModel.post, 1))).all()
@@ -226,9 +245,9 @@ def home():
     tags = db.session.query(TagModel).order_by(desc(func.array_length(TagModel.post, 1))).all()
 
     if current_user.is_authenticated:
-        return render_template('home.html',tagi=flw_tags ,reset=reset,search=search_post,posts=posts,tags=tags,replyes=replyes,popular_posts=popular_posts,most_tags=most_tags,location=location)
+        return render_template('home.html',tagi=flw_tags ,reset=reset,posts=posts,tags=tags,replyes=replyes,popular_posts=popular_posts,most_tags=most_tags,location=location)
     else:
-        return render_template('home.html', tagi=flw_tags,reset=reset,login=login,register=register,search=search_post,posts=posts,tags=tags,replyes=replyes,popular_posts=popular_posts,most_tags=most_tags,location=location)
+        return render_template('home.html', tagi=flw_tags,reset=reset,login=login,register=register,posts=posts,tags=tags,replyes=replyes,popular_posts=popular_posts,most_tags=most_tags,location=location)
 
 @home_pages.route('/newpost')
 def newpost():
@@ -274,7 +293,7 @@ def edit_post(id):
     editpost = NewQuestionForm(request.form)
     text = post.text
     if request.method == 'POST':
-        post.text = markdown(editpost.text.data)
+        post.text = editpost.text.data
         post.title = editpost.title.data
         post.read_time = str(readtime.of_html(editpost.text.data))
         db.session.commit()
@@ -333,6 +352,20 @@ def reply(id,title):
     return redirect(url_for('home.post',id=id,title=title))
 
 
+@home_pages.route('/podcast')
+def podcast():
+    login = LoginForm(request.form)
+    register = RegisterForm(request.form)
+    new_question = NewQuestionForm(request.form)
+    reset = ResetPasswordForm(request.form)
 
+    if request.args.get('all'):
+        podcasts = db.session.query(PodcastsModel).order_by(PodcastsModel.posted_on.desc()).all()
+    elif request.args.get('feed'):
+        if current_user.is_authenticated == False:
+            return redirect(url_for('home.podcast'))
+        podcasts = db.session.query(PodcastsModel).filter(PodcastsModel.series_id.in_(current_user.int_podcasts)).order_by(PodcastsModel.posted_on.desc()).all()
+    podcast_series = db.session.query(Podcast_SeriesModel).all()
 
+    return render_template('podcasts.html',login=login,register=register,new_question=new_question,reset=reset,podcasts=podcast,podcast_series=podcast_series)
 

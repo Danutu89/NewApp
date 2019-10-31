@@ -11,9 +11,12 @@ from flask_login import current_user, login_required, login_user, logout_user
 from sqlalchemy import desc, func, or_
 
 from analyze import hashlib, httpagentparser
-from app import  cipher_suite, db
+from app import  cipher_suite, db,app
 from models import (Analyze_Pages, Analyze_Session, Gits, PostModel,
-                    ReplyModel, TagModel, UserModel, bcrypt)
+                    ReplyModel, TagModel, UserModel, bcrypt, Podcast_SeriesModel)
+from sqlalchemy.schema import Sequence
+from PIL import Image
+from webptools import webplib as webp
 
 admin_pages = Blueprint(
     'admin',__name__,
@@ -128,3 +131,44 @@ def sessions():
 
 
     return render_template('sessions.html', sessions=sessions)
+
+
+@admin_pages.route('/admin/users')
+@login_required
+def users():
+    post_page = request.args.get('page',1,type=int)
+    users = db.session.query(UserModel).order_by(desc(UserModel.id)).paginate(page=post_page,per_page=20)
+
+
+    return render_template('users.html', users=users)
+
+
+@admin_pages.route('/admin/podcasts', methods=['POST','GET'])
+@login_required
+def podcasts():
+
+    if request.method == 'POST':
+        file_name, file_ext = os.path.splitext(request.files['image'].filename)
+        picture_fn = 'p_series_' + str(db.session.execute(Sequence('podcasts_series_id_seq')) + 1) + file_ext
+        picture_path = os.path.join(app.config['UPLOAD_FOLDER_PODCAST_SERIES'], picture_fn)
+        
+        i = Image.open(request.files['image'])
+        i.save(picture_path)
+        webp.cwebp(os.path.join(app.config['UPLOAD_FOLDER_PODCAST_SERIES'], picture_fn),os.path.join(app.config['UPLOAD_FOLDER_PODCAST_SERIES'], 'p_series_' + str(db.session.execute(Sequence('podcasts_series_id_seq')) + 1) + '.webp'), "-q 80")
+        os.remove(os.path.join(app.config['UPLOAD_FOLDER_PODCAST_SERIES'], picture_fn))
+
+        picture_fn = 'p_series_' + str(db.session.execute(Sequence('podcasts_series_id_seq')) + 1) + '.webp'
+
+        new_series = Podcast_SeriesModel(
+            None,
+            request.form.get('title'),
+            request.form.get('description'),
+            picture_fn
+        )
+
+        db.session.add(new_series)
+        db.session.commit()
+
+    podcast_series = db.session.query(Podcast_SeriesModel).all()
+
+    return render_template('podcast.html', series=podcast_series)

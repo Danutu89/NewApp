@@ -4,33 +4,25 @@ from flask import (Blueprint, abort, flash, jsonify, redirect, render_template,
 from flask_login import current_user, login_required, login_user, logout_user
 from flask_mail import Message
 from jinja2 import TemplateNotFound
-
 from sqlalchemy import desc, func, or_
-
 from app import (BadSignature, BadTimeSignature, SignatureExpired, db, mail,
                  serializer,cipher_suite,app)
 from forms import (LoginForm, ModifyProfileForm, RegisterForm,
                    ResetPasswordForm, SearchForm)
 from models import Gits, PostModel, ReplyModel, UserModel, bcrypt, Analyze_Pages, Analyze_Session, TagModel
-
 from cryptography.fernet import Fernet
-
 import os
-
 from PIL import Image
-
 from datetime import datetime
 import datetime as dt
-
 from analyze import hashlib, httpagentparser
-
 from sqlalchemy import desc
-
 import calendar
-
-from analyze import GetSessionId, parseVisitator
-
+from analyze import GetSessionId, parseVisitator, getAnalyticsData
 from webptools import webplib as webp
+import socket
+import smtplib
+import dns.resolver
 
 users_pages = Blueprint(
     'users',__name__,
@@ -39,6 +31,7 @@ users_pages = Blueprint(
 
 @users_pages.before_request
 def views():
+    getAnalyticsData()
     data = [request.path, GetSessionId(), str(datetime.now().replace(microsecond=0))]
     parseVisitator(data)
         
@@ -65,10 +58,13 @@ def login():
         return redirect("https://newapp.nl"+request.args.get('url'))
 
     if user.activated == False:
-      flash("Account not activated", 'error')
+        flash("Account not activated", 'error')
     else:
-      login_user(user)
-      flash("You were just logged in!", 'success')
+        if login.remember.data:
+            login_user(user,remember=login.remember.data,duration=dt.timedelta(days=1))
+        else:
+            login_user(user,remember=login.remember.data,duration=dt.timedelta(hours=1))
+        flash("You were just logged in!", 'success')
 
     userInfo = httpagentparser.detect(request.headers.get('User-Agent'))
 
@@ -131,19 +127,19 @@ def register():
         flash('Email taken', 'error')
         return redirect(url_for('home.home'))
 
-    if register.github.data:
-      git = requests.get(('https://api.github.com/users/{}').format(register.github.data))
-      git_check = git.json()
+    host = socket.gethostname()
+    server = smtplib.SMTP()
+    server.set_debuglevel(0)
+    record = dns.resolver.query('emailhippo.com','MX')
+    mxRecord = record[0].exchange
+    mxRecord = str(mxRecord)
+    server.connect(mxRecord)
+    server.helo(host)
+    server.mail('contact@newapp.nl')
+    code,msg = server.rcpt(str(register.email.data))
 
-      try:
-        if git_check['login'] == register.github.data:
-          check = db.session.query(UserModel).filter_by(github_name=register.github.data).first()
-
-          if check is not None:
-              flash('GitHub account taken', 'error')
-              return redirect(url_for('home.home'))
-      except KeyError:
-        flash('This username doesn`t exist', 'error')
+    if code != 250:
+        flash("This email doesn't exist.",'error')
         return redirect(url_for('home.home'))
 
     token = serializer.dumps(register.email.data,salt='register-confirm')
@@ -180,7 +176,7 @@ def register():
             None,
             None,
             None,
-            None,
+            False,
             False,
             userIP,
             userInfo['browser']['name'],
@@ -199,6 +195,8 @@ def register():
             None,
             None,
             None,
+            None,
+            'Light',
             None
         )
     db.session.add(new_user)

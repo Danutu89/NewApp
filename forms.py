@@ -101,6 +101,9 @@ class LoginForm(FlaskForm):
             "class":"modal-button"
         }
     )
+    remember = BooleanField(
+        'Remember Me'
+    )
 
 class ModifyProfileForm(FlaskForm):
 

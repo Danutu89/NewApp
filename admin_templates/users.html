@@ -1,0 +1,73 @@
+{% extends "admin.html" %}
+{% block content %}
+<style>
+	th {
+		text-align: center;
+	}
+</style>
+<div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">
+	<div class="row">
+		<ol class="breadcrumb">
+			<li><a href="#">
+				<em class="fa fa-home"></em>
+			</a></li>
+			<li class="active">Users</li>
+		</ol>
+	</div><!--/.row-->
+		
+	<div class="row">
+		<div class="col-lg-12">
+			<h1 class="page-header">Users</h1>
+		</div>
+	</div><!--/.row-->
+
+	<table class="table" style="text-align: center;">
+		<thead>
+			<tr>
+			<th scope="col">Id</th>
+			<th scope="col">Name</th>
+			<th scope="col">Real Name</th>
+			<th scope="col">Email</th>
+			<th scope="col">Ip</th>
+			<th scope="col">Activated</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for user in users.items %}
+			<tr>
+				<th scope="row">{{user.id}}</th>
+				<td>{{user.name}}</td>
+				<td>{{user.real_name}}</td>
+				<td>{{user.email}}</td>
+				<td>{{user.ip_address}}</td>
+				<td>{{user.activated}}</td>
+			</tr>
+			{% endfor %}
+		</tbody>
+		</table>
+		<nav aria-label="Pagination">
+				<ul class="pagination justify-content-center">
+					{% if users.has_prev %}
+				  <li class="page-item">
+					<a class="page-link" href="{{url_for('admin.users', page=users.page-1)}}" tabindex="-1" aria-disabled="true">Previous</a>
+				  </li>
+				  {% endif %}
+				  {% for pages in users.iter_pages(left_edge=1, right_edge=1, left_current=3, right_current=3) %}
+				  {% if pages %}
+				  {% if pages == users.page %}
+				  <li class="page-item disabled"><a class="page-link" style="background-color: #eee;">{{pages}} <span class="sr-only">(current)</span></a></li>
+				  {% else %}
+				  <li class="page-item"><a class="page-link" href="{{url_for('admin.users', page=pages)}}" >{{pages}}</a></li>
+				  {% endif %}
+				  {% endif %}
+				  {% endfor %}
+				  {% if users.has_next %}
+				  <li class="page-item">
+					<a class="page-link" href="{{url_for('admin.users', page=users.page+1)}}">Next</a>
+				  </li>
+				  {% endif %}
+				</ul>
+			  </nav>
+	</div>
+</div>	<!--/.main-->
+{% endblock %}

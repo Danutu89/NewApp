@@ -37,7 +37,6 @@ key_jwt = {
   "alg": "HS256"
 }
 
-
 app = Flask(__name__)
 
 eventlet.monkey_patch()
@@ -58,12 +57,12 @@ app.config['MAIL_USERNAME'] = 'contact@newapp.nl'
 app.config['MAIL_PASSWORD'] = 'ACmilan89'
 app.config['JWT_ALGORITHM'] = key_jwt['alg']
 app.config['SESSION_COOKIE_SECURE'] = True
-app.config['REMEMBER_COOKIE_DURATION'] = time.timedelta(minutes=60)
-app.config['PERMANENT_SESSION_LIFETIME'] =  time.timedelta(minutes=60)
 app.config['SESSION_FILE_THRESHOLD'] = 100
 app.config['UPLOAD_FOLDER_PROFILE'] = app.root_path + '/static/profile_pics'
 app.config['UPLOAD_FOLDER_PROFILE_COVER'] = app.root_path + '/static/profile_cover'
 app.config['UPLOAD_FOLDER_POST'] = app.root_path + '/static/thumbnail_post'
+app.config['UPLOAD_FOLDER_IMAGES'] = app.root_path + '/static/images/posts'
+app.config['UPLOAD_FOLDER_PODCAST_SERIES'] = app.root_path + '/static/images/podcast_series'
 app.config['CELERY_BROKER_URL'] = os.environ.get('REDIS_URL', 'redis://localhost:6379/0')
 app.config['CELERY_RESULT_BACKEND'] = app.config['CELERY_BROKER_URL']
 app.config['REDIS_URL'] = os.environ.get('REDIS_URL')
@@ -91,24 +90,6 @@ login_manager.login_view = "home.home"
 login_manager.session_protection = "strong"
 
 cipher_suite = Fernet(key_cr)
-
-""" channels_client = Pusher(
-  app_id='829475',
-  key='c2024364db4019cf2cf8',
-  secret='4ec3ec671d1585f6a70f',
-  cluster='eu',
-  ssl=True
-) """
-
-PRIVATE_KEY = "MIGHAgEAMBMGByqGSM49AgEGCCqGSM49AwEHBG0wawIBAQQgygRuSpCQnD8wf0FVi2YlTToj7RXoxAAifhnE27zvTK+hRANCAAS2zABRrBAs+o7ZQwKJ+z0PIuehR8ApPoUCiByydODAqsMAlrOLjdhUFsaqckqS50c2+WyTK5ig7OatweJxp5mG"
-
-def send_web_push(subscription_information, message_body):
-    return webpush(
-        subscription_info=subscription_information,
-        data=message_body,
-        vapid_private_key=PRIVATE_KEY,
-        vapid_claims={"sub":"contact@newapp.nl"}
-    )
 
 @app.route('/sw.js')
 def service_worker():
@@ -181,8 +162,6 @@ app.logger.info(key_jwt['alg'])
 logging.getLogger('sqlalchemy.engine').setLevel(logging.INFO) """
 
 def make_celery(app):
-	# set redis url vars
-
   celery.conf.update(app.config)
   TaskBase = celery.Task
   class ContextTask(TaskBase):
@@ -198,4 +177,4 @@ celery = make_celery(app)
 
 if __name__=="__main__":
     app.jinja_env.cache = {}
-    socket.run(app);
+    socket.run(app, threading=True);

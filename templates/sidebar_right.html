@@ -66,27 +66,6 @@
         </div>
     </div>
 
-    <div class="widget" id="widget-popular-tags">
-        <div class="widget-header">
-            <div class="widget-title">Most Used Tags</div>
-            <button class="minimize-widget" id="minimize-widget-popular-sidebar"
-                onclick="Minimize('sidebar','popular-tags')">-</button>
-        </div>
-        <div class="widget-list" id="widget-list-popular-tags-sidebar" style="display: block;">
-            {% for tag in most_tags %}
-            {% if tag.name  %}
-            <div class="widget-item">
-                <div class="text">
-                    <a href="{{url_for('home.home',tag_finder=tag.name)}}">
-                        <tag class="widget-tag" style="font-weight: 600;">{{tag.name}}</tag>
-                    </a>
-                </div>
-            </div>
-            {% endif %}
-            {% endfor %}
-        </div>
-    </div>
-
 </div>
 {% endif %}
 {% if request.endpoint == 'home.post' %}

@@ -51,6 +51,7 @@ class UserModel(db.Model):
     github = db.Column(db.String, primary_key = False)
     website = db.Column(db.String, primary_key = False)
     theme = db.Column(db.String, primary_key = False, default = 'Light')
+    int_podcasts = db.Column(sq.ARRAY(db.Integer),default=[], primary_key = False)
 
     posts = relationship("PostModel", backref="user_in")
     replyes = relationship("ReplyModel", backref="user_in")
@@ -59,7 +60,7 @@ class UserModel(db.Model):
 
     def __init__(self,id,join_date,name,real_name,email,password,avatar,genre,role,bio,activated,is_online,
                     ip_address,browser,country_name,country_flag,lang,int_tags,birthday,profession,saved_posts,liked_posts,follow,followed,cover,
-                    instagram,facebook,twitter,github,website,theme):
+                    instagram,facebook,twitter,github,website,theme,int_podcasts):
         self.id = id
         self.join_date = join_date
         self.name = name
@@ -91,6 +92,7 @@ class UserModel(db.Model):
         self.github = github
         self.website = website
         self.theme = theme
+        self.int_podcasts = int_podcasts
 
     def is_authenticated(self):
         return True
@@ -430,6 +432,47 @@ class Notifications_Model(db.Model):
         self.for_user = for_user
         self.checked = checked
         self.created_on = created_on
+
+class Podcast_SeriesModel(Base):
+
+    __tablename__ = 'podcast_series'
+
+    id = db.Column(db.Integer(), db.Sequence('podcasts_series_id_seq'), primary_key=True)
+    name = db.Column(db.String(), primary_key = False)
+    description = db.Column(db.String(), primary_key = False)
+    img = db.Column(db.String(), primary_key = False)
+
+    def __init__(self,id,name,description,img):
+        self.id = id
+        self.name = name
+        self.description = description
+        self.img = img
+
+class PodcastsModel(Base):
+
+    __tablename__ = 'podcasts'
+
+    id = db.Column(db.Integer(), db.Sequence('podcasts_id_seq'), primary_key=True)
+    title = db.Column(db.String(), primary_key = False)
+    body = db.Column(db.String(), primary_key = False)
+    audio = db.Column(db.String(), primary_key = False)
+    img = db.Column(db.String(), primary_key = False)
+    series_id = db.Column(db.Integer, ForeignKey('podcast_series.id'))
+    series = db.relationship("Podcast_SeriesModel", backref = "podcasts_series", foreign_keys=[series_id])
+    posted_on = db.Column(db.Date, primary_key = False, default = datetime.datetime.utcnow)
+    source = db.Column(db.String(), primary_key = False)
+
+    def __init__(id,title,body,audio,img,series_id,series,posted_on,source):
+        self.id = id
+        self.title = title
+        self.body = body
+        self.audio = audio
+        self.img = img
+        self.series_id = series_id
+        self.series = series
+        self.posted_on = posted_on
+        self.source = source
+
 
 class Subscriber(Base):
     __tablename__ = 'subscriber'

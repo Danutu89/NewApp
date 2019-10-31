@@ -67,7 +67,7 @@
             {% for tag in tagi %}
             {% if current_user.is_authenticated %}
             {% if tag.tag not in current_user.int_tags %}
-            {% if tag.name and tag.name != 'discuss' and tag.name != 'howto' and tag.name != 'tutorial' and tag.name != 'how_to' and tag.name != 'tutorials' %}
+            {% if tag.name %}
             <div class="widget-item" id="widget-tags" style="border-top: none;display: flex;">
                 <div class="text">
                     <a style="text-decoration: underline;" href="{{url_for('home.home',tag_finder=tag.name)}}">
@@ -79,7 +79,7 @@
             {% endif %}
             {% endif %}
             {% else %}
-            {% if tag.name and tag.name != 'discuss' and tag.name != 'howto' and tag.name != 'tutorial' and tag.name != 'how_to' and tag.name != 'tutorials' %}
+            {% if tag.name %}
             <div class="widget-item" id="widget-tags" style="border-top: none;display: flex;">
                 <div class="text">
                     <a style="text-decoration: underline;" href="{{url_for('home.home',tag_finder=tag.name)}}">

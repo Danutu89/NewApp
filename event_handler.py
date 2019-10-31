@@ -2,7 +2,7 @@ from app import app, db, UserModel
 from flask_login import current_user
 from flask_socketio import SocketIO
 
-socket = SocketIO(app)
+socket = SocketIO(app, message_queue='redis://')
 
 @socket.on('message')
 def handle_message(message):

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html {% if location %}lang="{{location.lang}}-{{location.lang|upper}}" {% endif %} {% if current_user.is_authenticated %}id={{current_user.id}}{% endif %} {% if current_user.is_authenticated and current_user.theme == 'Dark' %}data-theme="dark"{% endif %}>
+<html {% if location %}lang="{{location.lang}}" {% endif %} {% if current_user.is_authenticated %}id={{current_user.id}}{% endif %} {% if current_user.is_authenticated and current_user.theme == 'Dark' %}data-theme="dark"{% endif %}>
 <head>
   {% if error_check != True %}
   {% if request.url_rule.endpoint == 'home.home' %}<title>New App - Where Developers Learn, Share, & Code</title>{% endif %}
@@ -85,6 +85,7 @@
 <header>
   {% include 'navbar.html' %}
 </header>
+<reload style="height: 3rem;display:block"></reload>
 <content>
   {% if error_check != True %}
     {% if request.MOBILE %}
@@ -106,6 +107,53 @@
 </content>
 {% include 'modals.html' %}
 <script>
+  const imageHandler = () => {
+  const input = document.createElement('input');
+
+  input.setAttribute('type', 'file');
+  input.setAttribute('accept', 'image/*');
+  input.click();
+
+  input.onchange = async () => {
+    const file = input.files[0];
+    const formData = new FormData();
+
+    formData.append('image', file);
+
+    // Save current cursor state
+    const range = this.quill.getSelection(true);
+
+    // Insert temporary loading placeholder image
+    //this.quill.insertEmbed(range.index, 'image', `${ window.location.origin }{{url_for('static',filename='loading/loading.gif')}}`); 
+
+    // Move cursor to right side of image (easier to continue typing)
+    this.quill.setSelection(range.index + 1);
+
+    // Post to an api endpoint which uploads to s3. It returns the s3 url
+
+    var res = null;
+
+    await $.ajax({
+      type : 'POST',
+      url : window.location.origin + '/api/upload_post',
+      data: formData,
+      contentType: false,
+      processData: false,
+      success: function(data){
+        res = data.image
+      }
+    })
+    
+    // Remove placeholder image
+    this.quill.deleteText(range.index, 1);
+
+    // Insert uploaded image
+    this.quill.insertEmbed(range.index, 'image', res); 
+  }
+}
+</script>
+<script>
+  var quill = null;
   var loadCss = function(cssPath){
     var cssLink = document.createElement('link');
     cssLink.rel = 'stylesheet';
@@ -183,11 +231,16 @@
       }],
     ];
     function LoadQuill(){
-        var quill = new Quill('#editor', {
+        quill = new Quill('#editor', {
             modules: {
-                toolbar: toolbarOptions
+                toolbar: {
+                  container: toolbarOptions,
+                  handlers: {
+                      image: imageHandler
+                  },
+                }
             },
-            theme: 'snow'
+            theme: 'snow',
         });
     }
   
@@ -196,10 +249,32 @@
       PR.prettyPrint();
       jQuery(".form-thread").submit(function() { 
           var hidden_text_field = document.getElementById('text');
-          hidden_text_field.value = document.querySelector(".ql-editor").innerHTML;
+          hidden_text_field.value = decodeURIComponent(encodeURIComponent(String(document.querySelector(".ql-editor").innerHTML)));
       });
+      {% if request.url_rule.endpoint == 'home.edit_post' %}
+      quill.pasteHTML(document.getElementById('text').value);
+      {% endif %}
     });
+    
     {% endif %}
+    {% endif %}
+    jQuery(document).ready(function() {
+    window.setTimeout(function() {
+        $("alert-box").fadeTo(500, 0).slideUp(500, function(){
+            $(this).remove(); 
+        });
+      }, 500);
+    });
+    {% if request.MOBILE %}
+    PullToRefresh.init({
+      mainElement: 'content', // above which element?
+      onRefresh: function (done) {
+        setTimeout(function () {
+          done(); // end pull to refresh
+          window.location.reload(false);
+        }, 1500);
+      }
+      });
     {% endif %}
   };
   {% if request.url_rule.endpoint == 'users.settings' %}
@@ -217,6 +292,7 @@
   }
   {% endif %}
 </script>
+
 {% if request.url_rule.endpoint == 'home.home' %}
 {% if request.MOBILE %}
 <script>

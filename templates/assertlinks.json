@@ -1,0 +1,5 @@
+[{
+  "relation": ["delegate_permission/common.handle_all_urls"],
+  "target" : { "namespace": "android_app", "package_name": "nl.newapp.app",
+               "sha256_cert_fingerprints": ["F8:B8:FD:3D:11:E3:F5:4C:A6:0F:26:1E:A7:D2:7C:60:9E:54:2E:E0:39:CA:84:6B:86:8C:42:9F:FF:2A:6C:2D"] }
+}]

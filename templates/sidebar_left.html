@@ -1,5 +1,5 @@
 {% if request.MOBILE == False %}
-{% if request.endpoint == 'home.home' %}
+{% if request.endpoint == 'home.home' or request.endpoint == 'home.podcast' %}
 <div class="sidebar" id="sidebar-left">
     {% if current_user.is_authenticated %}
     <div class="user-card">
@@ -20,28 +20,50 @@
             <div class="widget-title">Navigation</div>
         </div>
         <div class="widget-list">
-            {% if current_user.is_authenticated %}
-            <div class="widget-item">
-                <div class="text"><a href="{{url_for('home.home', saved=true)}}"><span class="section">Saved Posts</span></a></div>
+            <div class="widget-item" id='posts-show'>
+                <div class="text"><span class="section">Posts</span></div>
+                <div class='multilevel' id='posts'>
+                    {% if current_user.is_authenticated %}
+                    <div class="widget-item">
+                        <div class="text"><a href="{{url_for('home.home', saved=true)}}"><span class="section"><span style='color:#18BC9C'>•</span> Saved Posts</span></a></div>
+                    </div>
+                    <div class="widget-item">
+                        <div class="text"><a href="{{url_for('home.home', feed='true')}}"><span class="section"><span style='color:#18BC9C'>•</span> Feed</span></a></div>
+                    </div>
+                    {% endif %}
+                    <div class="widget-item">
+                            <div class="text"><a href="{{url_for('home.home', all='true')}}"><span class="section"><span style='color:#18BC9C'>•</span> All</span></a></div>
+                    </div>
+                    <div class="widget-item">
+                            <div class="text"><a href="{{url_for('home.home', questions='true')}}"><span class="section"><span style='color:#18BC9C'>•</span> Questions</span></a></div>
+                    </div>
+                    <div class="widget-item">
+                            <div class="text"><a href="{{url_for('home.home', discuss='true')}}"><span class="section"><span style='color:#18BC9C'>•</span> Discuss</span></a></div>
+                    </div>
+                    <div class="widget-item">
+                            <div class="text"><a href="{{url_for('home.home', tutorials='true')}}"><span class="section"><span style='color:#18BC9C'>•</span> Tutorials</span></a></div>
+                    </div>
+                </div>
             </div>
-            <div class="widget-item">
-                <div class="text"><a href="{{url_for('home.home', feed='true')}}"><span class="section">Feed</span></a></div>
-            </div>
-            {% endif %}
-            <div class="widget-item">
-                    <div class="text"><a href="{{url_for('home.home', all='true')}}"><span class="section">All</span></a></div>
-            </div>
-            <div class="widget-item">
-                    <div class="text"><a href="{{url_for('home.home', questions='true')}}"><span class="section">Questions</span></a></div>
-            </div>
-            <div class="widget-item">
-                    <div class="text"><a href="{{url_for('home.home', discuss='true')}}"><span class="section">Discuss</span></a></div>
-            </div>
-            <div class="widget-item">
-                    <div class="text"><a href="{{url_for('home.home', tutorials='true')}}"><span class="section">Tutorials</span></a></div>
+            <div class="widget-item" id='podcasts-show'>
+                <div class="text"><span class="section">Podcasts</span></div>
+                <div class='multilevel' id='podcasts'>
+                    {% if current_user.is_authenticated %}
+                    <div class="widget-item">
+                        <div class="text"><a href="{{url_for('home.podcast', saved=true)}}"><span class="section"><span style='color:#18BC9C'>•</span> Saved Podcasts</span></a></div>
+                    </div>
+                    <div class="widget-item">
+                        <div class="text"><a href="{{url_for('home.podcast', feed='true')}}"><span class="section"><span style='color:#18BC9C'>•</span> Feed</span></a></div>
+                    </div>
+                    {% endif %}
+                    <div class="widget-item">
+                        <div class="text"><a href="{{url_for('home.podcast', all='true')}}"><span class="section"><span style='color:#18BC9C'>•</span> All</span></a></div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
+    {% if request.endpoint == 'home.home' %}
     <div class="widget">
         <div class="widget-header">
             <div class="widget-title">Customize your experience</div>
@@ -49,7 +71,7 @@
         <div class="widget-list" style="max-height: 400px;overflow: auto;">
             {% if current_user.is_authenticated %}
             {% for tag in current_user.int_tags %}
-            {% if tag and tag != 'discuss' and tag != 'howto' and tag != 'how_to' and tag != 'tutorials' and tag != 'tutorial' %}
+            {% if tag %}
             <div class="widget-item" id="widget-tags" style="border-top: none;display: flex;">
                 <div class="text">
                     <a style="text-decoration: underline;" href="{{url_for('home.home',tag_finder=tag)}}">
@@ -66,10 +88,10 @@
                 </div>
             </div>
             {% endif %}
-            {% for tag in tagi %}
+            {% for tag in most_tags %}
             {% if current_user.is_authenticated %}
             {% if tag.tag not in current_user.int_tags %}
-            {% if tag.name and tag.name != 'discuss' and tag.name != 'howto' and tag.name != 'tutorial' and tag.name != 'how_to' and tag.name != 'tutorials' %}
+            {% if tag.name %}
             <div class="widget-item" id="widget-tags" style="border-top: none;display: flex;">
                 <div class="text">
                     <a style="text-decoration: underline;" href="{{url_for('home.home',tag_finder=tag.name)}}">
@@ -81,7 +103,7 @@
             {% endif %}
             {% endif %}
             {% else %}
-            {% if tag.name and tag.name != 'discuss' and tag.name != 'howto' and tag.name != 'tutorial' and tag.name != 'how_to' and tag.name != 'tutorials' %}
+            {% if tag.name %}
             <div class="widget-item" id="widget-tags" style="border-top: none;display: flex;">
                 <div class="text">
                     <a style="text-decoration: underline;" href="{{url_for('home.home',tag_finder=tag.name)}}">
@@ -95,6 +117,7 @@
             {% endfor %}
         </div>
     </div>
+    {% endif %}
 </div>
 {% endif %}
 {% endif %}

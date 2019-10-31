@@ -20,6 +20,9 @@ from sqlalchemy import desc
 from datetime import datetime
 import os
 
+from PIL import Image
+from webptools import webplib as webp
+
 json_pages = Blueprint(
     'jsons',__name__,
     template_folder='json_templates'
@@ -552,3 +555,27 @@ def delete_reply(id):
     db.session.commit()
     flash('Reply successfully deleted', 'success')
     return redirect(url_for('home.home'))
+
+@json_pages.route('/.well-known/assetlinks.json')
+def deeplink():
+    response = make_response(render_template('assertlinks.json'),200)
+    response.mimetype = 'application/json'
+    return response
+
+@json_pages.route('/api/upload_post', methods=['POST'])
+def upload():
+    if request.method != 'POST':
+        return jsonify({'image': 'error'})
+
+    file_name, file_ext = os.path.splitext(request.files['image'].filename)
+    picture_fn = file_name + file_ext
+    picture_path = os.path.join(app.config['UPLOAD_FOLDER_IMAGES'], picture_fn)
+
+    i = Image.open(request.files['image'])
+    i.save(picture_path)
+    webp.cwebp(os.path.join(app.config['UPLOAD_FOLDER_IMAGES'], picture_fn),os.path.join(app.config['UPLOAD_FOLDER_IMAGES'], file_name + '.webp'), "-q 80")
+    os.remove(os.path.join(app.config['UPLOAD_FOLDER_IMAGES'], picture_fn))
+
+    picture_fn = file_name + '.webp'
+
+    return jsonify({'image': '/static/images/posts/'+picture_fn})

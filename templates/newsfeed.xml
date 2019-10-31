@@ -18,10 +18,10 @@
             https://newapp.nl{{url_for('home.post',id=post.id,title=post.title)}}
             </link>
             <guid>
-                https://newapp.nl{{url_for('home.post',id=post.id,title=post.title)}}
+            https://newapp.nl{{url_for('home.post',id=post.id,title=post.title)}}
             </guid>
             <description>
-                {{post.text | safe}}
+               <![CDATA[{{post.text | safe}}]]>
             </description>
         </item>
         {% endfor %}

@@ -80,24 +80,27 @@ def getSession():
         session['user'] = hashlib.md5(lines).hexdigest()
         sessionID = session['user']
         try:
-            temp = urlparse(str(request.headers['referer']))
-            if len(temp.netloc.split(".")) > 2:
-                domain = temp.netloc.split(".")[1]
+            if request.headers['referer'] != 'android-app://nl.newapp.app':
+                temp = urlparse(str(request.headers['referer']))
+                if len(temp.netloc.split(".")) > 2:
+                    domain = temp.netloc.split(".")[1]
+                else:
+                    domain = temp.netloc.split(".")[0]
+                referer = str(domain)[0].upper() + str(domain)[1:]
+                if referer == 'Google' or referer == 'Bing' or referer == 'Yandex' or referer == 'Duckduckgo':
+                    referer = 'Organic'
+                if referer == 'nl' or referer == 'Newapp':
+                    referer = None
             else:
-                domain = temp.netloc.split(".")[0]
-            referer = str(domain)[0].upper() + str(domain)[1:]
-            if referer == 'Google' or referer == 'Bing' or referer == 'Yandex' or referer == 'Duckduckgo':
-                referer = 'Organic'
-            if referer == 'nl' or referer == 'Newapp':
-                referer = None
+                referer = 'App'
         except:
             referer = 'Direct'
+    
         data = [userIP, userContinent, userCountry, userCity, userOS, userBrowser, sessionID, time, bot, str(userLanguage).lower(),referer,iso_code]
         create_session(data)
     else:
         sessionID = session['user']
 
-@app.before_request
 def getAnalyticsData():
     if request.endpoint != 'static' and request.endpoint != 'sitemap' and request.endpoint != 'opensearch' and request.endpoint != 'flask_session':
         global userOS, userBrowser, userIP, userContinent, userCity, userCountry, sessionID, bot, userLanguage, iso_code

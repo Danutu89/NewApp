@@ -7,6 +7,7 @@
       --editor: trasparent;
       --code: #efefef;
       --placeholder: rgba(238, 238, 238, 0.836);
+      --link: rgb(0, 157, 230);
     }
     :root[data-theme='dark'] {
       --background: #272727;
@@ -16,6 +17,7 @@
       --editor: #212121;
       --code: #212121;
       --placeholder: rgba(255, 255, 255, 0.836);
+      --link: rgb(0, 157, 230);
     }
     body {
       margin: 0;
@@ -116,6 +118,10 @@
       max-width: 100%;
       display: block;
       height: auto;
+    }
+
+    .post_content a{
+      color: var(--link);
     }
 
     .field-icon {
@@ -368,9 +374,7 @@
       min-height: 440px;
       max-width: 1250px;
       display: flex;
-      margin-top: 10px;
       padding: 0.4rem;
-      
     }
 
     content .sidebar {
@@ -383,7 +387,7 @@
       position: relative;
       z-index: 4;
       display: none;
-      margin-top: 2.2rem;
+      
     }
 
     content sidebar form{
@@ -484,7 +488,7 @@
     content .articles,
     content .article {
       text-align: left;
-      margin-top: 2.2rem;
+      
       width: 100%;
       position: relative;
       -webkit-tap-highlight-color: transparent;
@@ -634,12 +638,7 @@
 
     }
 
-    @media screen and (max-width: 450px) {
-      content {
-        margin-top: 0.5rem;
-      }
-    }
-
+    
     @media screen and (max-width: 950px) {
       .newapp-navbar {
         position: fixed;
@@ -693,7 +692,7 @@
       animation-name: placeHolderShimmer;
       animation-timing-function: linear;
       background: var(--body-bg);
-      background: linear-gradient(to right, #F6F6F6 8%, #F0F0F0 18%, #F6F6F6 33%);
+      background: linear-gradient(to right, var(--body-bg) 8%, #F0F0F0 18% ,var(--body-bg) 33%);
       border-radius: 3px;
     }
 
@@ -962,7 +961,7 @@
 
     content .sidebar .widget .widget-header button.minimize-widget,
     wrapper .sidebar .widget .widget-header button.minimize-widget {
-      border: 1px solid #dbdbdb;
+      border: var(--border);
       font-size: 1.2em;
       border-radius: 3px;
       background: transparent;
@@ -984,9 +983,25 @@
       display: block;
     }
 
-    content .sidebar .widget .widget-list .widget-item,
-    wrapper .sidebar .widget .widget-list .widget-item {
+    content .sidebar .widget .widget-list .multilevel,
+    wrapper .sidebar .widget .widget-list .multilevel{
+      -webkit-transition: max-height 0.5s; 
+      -moz-transition: max-height 0.5s; 
+      -ms-transition: max-height 0.5s; 
+      -o-transition: max-height 0.5s; 
+      transition: max-height 0.5s;  
+      max-height: 0px;
+      overflow: hidden;
+    }
 
+    content .sidebar .widget .widget-list .widget-item#posts-show:hover .multilevel#posts,
+    wrapper .sidebar .widget .widget-list .widget-item#posts-show:hover .multilevel#posts{
+      max-height: 210px;
+    }
+
+    content .sidebar .widget .widget-list .widget-item#podcasts-show:hover .multilevel#podcasts,
+    wrapper .sidebar .widget .widget-list .widget-item#podcasts-show:hover .multilevel#podcasts{
+      max-height: 210px;
     }
 
     content .sidebar .widget .widget-list .widget-item .text,
@@ -1024,7 +1039,6 @@
     }
 
     content profile.profile-page {
-      margin-top: 2.2rem;
       border-radius: 5px;
       margin-bottom: 0.2rem;
 
