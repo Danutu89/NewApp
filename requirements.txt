@@ -72,7 +72,7 @@ monotonic==1.5
 ndg-httpsclient==0.5.1
 ordereddict==1.1
 pilkit==2.0
-Pillow==6.1.0
+Pillow==6.2.0
 ply==3.11
 pony==0.7.10
 ponywhoosh==1.7.8
