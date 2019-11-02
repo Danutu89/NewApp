@@ -291,6 +291,9 @@ def settings(name):
     profile = ModifyProfileForm(request.form)
     user = db.session.query(UserModel).filter_by(name=name).first()
     modify_prof = ModifyProfileForm(request.form)
+    modify_prof.theme.default = user.theme
+    modify_prof.genre.default = user.genre
+    modify_prof.process()
     return render_template('user_settings.html', profile=profile, user=user,modify_prof=modify_prof)
 
 @users_pages.route("/user/modify_profile/id=<int:idm>", methods=['GET','POST'])
@@ -312,9 +315,7 @@ def modify_profile(idm):
     user.twitter = modify_prof.twitter.data
     user.github = modify_prof.github.data
     user.website = modify_prof.website.data
-    
-    if modify_prof.theme.data:
-            user.theme = modify_prof.theme.data
+    user.theme = modify_prof.theme.data
 
     if request.MOBILE is not True:
         if request.files['avatarimg']:

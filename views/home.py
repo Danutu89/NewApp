@@ -111,8 +111,8 @@ def home():
                 notify = Notifications_Model(
                     None,
                     current_user.id,
-                    str(new_question.title.data),
-                    'New post from {}'.format(current_user.name),
+                    ('post'),
+                    '{} shared a new post: {}'.format(current_user.name,str(new_question.title.data)),
                     str(url_for('home.post',id=index,title=new_question.title.data)),
                     user,
                     None,
@@ -328,8 +328,8 @@ def reply(id,title):
     notify = Notifications_Model(
         None,
         current_user.id,
-        'New reply',
-        'New reply from {}'.format(current_user.name),
+        'reply',
+        '{} commented on: {}'.format(current_user.name,post.title),
         str(url_for('home.post',id=posts.id,title=posts.title)),
         posts.user_in.id,
         None,
@@ -366,6 +366,7 @@ def podcast():
             return redirect(url_for('home.podcast'))
         podcasts = db.session.query(PodcastsModel).filter(PodcastsModel.series_id.in_(current_user.int_podcasts)).order_by(PodcastsModel.posted_on.desc()).all()
     podcast_series = db.session.query(Podcast_SeriesModel).all()
+    
 
     return render_template('podcasts.html',login=login,register=register,new_question=new_question,reset=reset,podcasts=podcast,podcast_series=podcast_series)
 

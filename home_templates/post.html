@@ -17,7 +17,7 @@ content .sidebar#sidebar-right{
         {% endif %}
         <div class="content-post" style="padding:0.5rem;">
                 <div class="info" style="display:flex;">
-                        <h1 style="margin-top: 1%;font-weight: 400;">{{posts.title}}</h1>
+                        <h1 style="margin-top: 0;font-weight: 400;font-size: 2rem;">{{posts.title}}</h1>
                     </div>
                     <div class="post-author">
                         <img style="border-radius:50px;margin-right: 5px;" height="40px" width="40px"
@@ -28,7 +28,7 @@ content .sidebar#sidebar-right{
                                 {% if tags[0].name %}
                                 {% for tag in tags %}
                                 {% if tag.name %}
-                                <a href="{{url_for('home.home',tag_finder=tag.name)}}" class="badge badge-success"
+                                <a href="{{url_for('home.home',tag_finder=tag.name)}}"
                                     style="font-size:13px;">
                                     <tag>{{tag.name}}</tag>
                                 </a>

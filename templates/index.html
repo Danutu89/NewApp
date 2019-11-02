@@ -198,15 +198,14 @@
     LoadTrending();
     {% endif %}
     if ('serviceWorker' in navigator) {
-      window.addEventListener('load', function() {
-        navigator.serviceWorker.register("https://" + window.location.hostname + "/sw.js").then(function(registration) {
+      
+        navigator.serviceWorker.register("https://newapp.nl/sw.js").then(function(registration) {
           // Registration was successful
           console.log('ServiceWorker registration successful with scope: ', registration.scope);
         }, function(err) {
           // registration failed :(
           console.log('ServiceWorker registration failed: ', err);
         });
-      });
     
     };
     {% if current_user.is_authenticated %}
@@ -263,7 +262,33 @@
         $("alert-box").fadeTo(500, 0).slideUp(500, function(){
             $(this).remove(); 
         });
-      }, 500);
+    }, 500);
+      $('#notification-center').on('click',function(){
+        var n = $('#notifications');
+        if (n.css('display') == 'none'){
+          n.css('display','block');
+        }else{
+          n.css('display','none');
+        }
+      });
+      $('#user-center').on('click',function(){
+        var n = $('#user');
+        if (n.css('display') == 'none'){
+          n.css('display','block');
+        }else{
+          n.css('display','none');
+        }
+      });
+      $(document).on('click', function (e) {
+          if ($(e.target).closest("#notifications").length === 0 && $(e.target).closest("#notification-center").length === 0) {
+            var n = $('#notifications');
+              n.css('display','none');
+          }
+          if ($(e.target).closest("#user").length === 0 && $(e.target).closest("#user-center").length === 0) {
+            var n = $('#user');
+              n.css('display','none');
+          }
+      });
     });
     {% if request.MOBILE %}
     PullToRefresh.init({

@@ -129,7 +129,6 @@ def sessions():
     post_page = request.args.get('page',1,type=int)
     sessions = db.session.query(Analyze_Session).order_by(desc(Analyze_Session.id)).paginate(page=post_page,per_page=20)
 
-
     return render_template('sessions.html', sessions=sessions)
 
 
@@ -138,7 +137,6 @@ def sessions():
 def users():
     post_page = request.args.get('page',1,type=int)
     users = db.session.query(UserModel).order_by(desc(UserModel.id)).paginate(page=post_page,per_page=20)
-
 
     return render_template('users.html', users=users)
 

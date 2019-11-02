@@ -15,7 +15,6 @@ import datetime as time
 from forms import SearchForm, LoginForm, RegisterForm, ResetPasswordForm
 from retinasdk import FullClient
 from flask_cors import CORS
-import eventlet
 import redis
 from celery import Celery
 from elasticsearch import Elasticsearch
@@ -39,7 +38,6 @@ key_jwt = {
 
 app = Flask(__name__)
 
-eventlet.monkey_patch()
 ma = Marshmallow(app)
 Mobility(app)
 serializer = URLSafeTimedSerializer(key_c)

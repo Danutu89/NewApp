@@ -20,18 +20,21 @@
       {% else %}
       <div style="margin-inline-start: auto;display:flex;">
           <div class="navbar-item">
-              <div class="newapp-dropdown">
+              <div class="newapp-dropdown" id="notification-center">
                   <i class="far fa-bell fa-lg" style="    margin-top: 0.55rem;
                   margin-right: 0.4rem;{% if request.MOBILE %}margin-right:0.9rem;{% endif %}"></i>
-                  <div class="newapp-dropdown-content" style="min-width: 13rem;margin-inline-start:-12.4rem;">
+                  <div class="newapp-dropdown-content" id="notifications" style="min-width: 16rem;margin-inline-start:-15.4rem;margin-top: 0.76rem;">
                       Notifications
                       <hr>
                     {% for notification in current_user.n_receiver %}
                     {% if notification.checked == False %}
+                    <a href="{{notification.link}}?notification={{notification.id}}">
                       <div class="dropdown-item" style="display:flex;">
-                          <img src="{{notification.author.avatar}}" height="30px" width="30px" style="border-radius: 30px;" alt="">
-                          <a  href="{{notification.link}}?notification={{notification.id}}" style="color: white;margin-left: 0.4rem;">{{notification.body}}</a>
-                        </div>
+                        <img src="{{notification.author.avatar}}" height="30px" width="30px" style="border-radius: 30px;" alt="">
+                        <span style="color: white;margin-left: 0.4rem;font-size:0.8rem;">{{notification.body}}</span>
+                      </div>
+                    </a>
+                      
                       {% endif %}
                       {% endfor %}
                   </div>
@@ -50,9 +53,9 @@
           {% endif %}
           {% endif %}
           <div class="navbar-item">
-            <div class="newapp-dropdown">
+            <div class="newapp-dropdown" id="user-center">
                 <img src="{{current_user.avatar}}" height="30px" width="30px" style="border-radius: 30px;" alt="">
-              <div class="newapp-dropdown-content">
+              <div class="newapp-dropdown-content" id="user">
                 @{{current_user.name}}
                 <hr>
                 <a href="{{url_for('users.user', id=current_user.id, name=current_user.name)}}" style="color: white;">
