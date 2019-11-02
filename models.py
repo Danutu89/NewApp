@@ -6,7 +6,6 @@ from sqlalchemy.orm import relationship
 import sqlalchemy.dialects.postgresql as sq
 
 from app import bcrypt, db, db_engine,ma,fields
-import flask_whooshalchemy
 
 from search_engine import SearchableMixin
 
@@ -166,8 +165,6 @@ class PostModel(SearchableMixin, db.Model):
     __tablename__ = 'posts'
 
     __searchable__ = ['title']
-
-    __analizer__ = flask_whooshalchemy.whoosh.analysis.NgramAnalyzer(minsize=2,maxsize=4)
 
     id = db.Column(db.Integer, db.Sequence('posts_id_seq'), primary_key = True)
     title = db.Column(db.String(100), primary_key = False)
