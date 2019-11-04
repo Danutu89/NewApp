@@ -2,7 +2,7 @@
     <div class="navbar-items">
       <div class="navbar-item">
         <a href="/" class="navbar-logo"><img style="vertical-align: middle;margin-left: -1px;" src="https://newapp.nl/static/logo.svg"
-            width="30" height="30" alt="">{% if request.MOBILE == False %}<span style="margin-left: 0.2rem;" class="newapp-title"><span style="color:#18BC9C;">New</span><span
+            width="28" height="30" alt="">{% if request.MOBILE == False %}<span style="margin-left: 0.2rem;" class="newapp-title"><span style="color:#18BC9C;">New</span><span
               style="color:white;">App</span><span style="color:#18BC9C;font-size: 55%;font-weight: 600;">
               Beta</span></span>{% endif %}</a>
       </div>
@@ -19,27 +19,56 @@
       </div>
       {% else %}
       <div style="margin-inline-start: auto;display:flex;">
+        <div class="navbar-item" style="cursor: pointer;">
+          <i class="fal fa-comment fa-lg" style="display:block;margin-top: 0.5rem;
+          margin-right: 0.8rem;{% if request.MOBILE %}margin-right:0.9rem;{% endif %}"></i>
+        </div>
+        {% if request.MOBILE %}
+        <div class="navbar-item" style="cursor: pointer;">
+            <a href="{{url_for('users.notifications')}}" style="position: relative;
+            display: inline-block;color:white;">
+                <i class="fal fa-bell fa-lg" style="display:block;margin-top: 0.5rem;
+                margin-right: 0.8rem;{% if request.MOBILE %}margin-right:0.9rem;{% endif %}"></i>
+                {% if current_user.n_receiver | length > 0 %}
+                <span class="notifications-number">{{current_user.n_receiver | length}}</span>
+                {% endif %}
+              </a>
+            </div>
+        {% else %}
           <div class="navbar-item">
-              <div class="newapp-dropdown" id="notification-center">
-                  <i class="far fa-bell fa-lg" style="    margin-top: 0.55rem;
-                  margin-right: 0.4rem;{% if request.MOBILE %}margin-right:0.9rem;{% endif %}"></i>
-                  <div class="newapp-dropdown-content" id="notifications" style="min-width: 16rem;margin-inline-start:-15.4rem;margin-top: 0.76rem;">
+              <div class="newapp-dropdown" id="notification-center" style="cursor: pointer;">
+                  <i class="fal fa-bell fa-lg" style="display:block;margin-top: 0.5rem;
+                  margin-right: 0.8rem;{% if request.MOBILE %}margin-right:0.9rem;{% endif %}"></i>
+                  {% if current_user.n_receiver | length > 0 %}
+                  <span class="notifications-number">{{current_user.n_receiver | length}}</span>
+                  {% endif %}
+                  <div class="newapp-dropdown-content" id="notifications" style="min-width: 16rem;margin-inline-start:-15.4rem;margin-top: 0.9rem;">
                       Notifications
                       <hr>
+                      {% if current_user.n_receiver | length > 0 %}
                     {% for notification in current_user.n_receiver %}
                     {% if notification.checked == False %}
                     <a href="{{notification.link}}?notification={{notification.id}}">
                       <div class="dropdown-item" style="display:flex;">
                         <img src="{{notification.author.avatar}}" height="30px" width="30px" style="border-radius: 30px;" alt="">
-                        <span style="color: white;margin-left: 0.4rem;font-size:0.8rem;">{{notification.body}}</span>
+                        <div style="display: block;margin-left: 0.4rem;line-height: 1.2;">
+                          <span style="color: white;font-size:1rem;line-height: 1;"><span style="font-weight: 500;">{{notification.title.split(" ")[0] }}</span> {{notification.title[notification.title.split(" ")[0] | length::]}}</span>
+                          {% if notification.category != 'follow' and notification.category != 'unfollow' %}
+                          <span style="color: var(--link)">{{notification.body}}</span>
+                          {% endif %}
+                      </div>
                       </div>
                     </a>
                       
                       {% endif %}
                       {% endfor %}
+                      {% else %}
+                      No Notifications
+                      {% endif %}
                   </div>
               </div>
             </div>
+          {% endif %}
           {% if request.url_rule.endpoint != 'home.newpost' %}
           {% if request.MOBILE == False %}
           <div class="navbar-item">
@@ -47,12 +76,12 @@
           </div>
           {% else %}
           <div class="navbar-item">
-              <a href="/newpost"><i class="fas fa-plus-circle fa-lg" style="color:white;margin-top: 0.55rem;
-                margin-right: 0.9rem;"></i></a>
+              <a href="/newpost"><i class="fal fa-plus-circle fa-lg" style="color: white;display:block;margin-top: 0.5rem;
+                margin-right: 0.4rem;{% if request.MOBILE %}margin-right:0.9rem;{% endif %}"></i></a>
           </div>
           {% endif %}
           {% endif %}
-          <div class="navbar-item">
+          <div class="navbar-item" style="cursor: pointer;">
             <div class="newapp-dropdown" id="user-center">
                 <img src="{{current_user.avatar}}" height="30px" width="30px" style="border-radius: 30px;" alt="">
               <div class="newapp-dropdown-content" id="user">
@@ -60,25 +89,25 @@
                 <hr>
                 <a href="{{url_for('users.user', id=current_user.id, name=current_user.name)}}" style="color: white;">
                 <div class="dropdown-item">
-                  <i class="fas fa-user"></i> Profile
+                  <i class="fal fa-user"></i> Profile
                 </div>
                 </a>
                 {% if current_user.roleinfo.admin_panel_permission %}
                 <a href="{{url_for('admin.main')}}" style="color: white;">
                 <div class="dropdown-item">
-                <i class="fas fa-user-shield"></i>
+                <i class="fal fa-user-shield"></i>
                     Admin
                 </div>
                 </a>
                 {% endif %}
                 <a href="{{url_for('users.settings', name=current_user.name)}}" style="color: white;">
                 <div class="dropdown-item">
-                  <i class="fas fa-user-cog"></i></i> Settings
+                  <i class="fal fa-user-cog"></i></i> Settings
                 </div>
                 </a>
                 <a href="{{url_for('users.logout')}}" style="color: white;">
                 <div class="dropdown-item">
-                  <i class="fas fa-sign-out-alt"></i> Logout
+                  <i class="fal fa-sign-out-alt"></i> Logout
                 </div>
                 </a>
               </div>

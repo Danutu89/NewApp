@@ -29,20 +29,20 @@
         {% endif %}
         <div class="widgets">
           <div class="profile-presentation">
-            <div class="header"><i class="fa fa-globe"></i> Presentation</div>
+            <div class="header"><i class="fal fa-globe"></i> Presentation</div>
             <div class="bio">{{user.bio}}</div>
             <div class="info">
               {% if user.profession != 'None' %}
-              <p><i class="fas fa-briefcase"></i> Profession {{user.profession}}</p>
+              <p><i class="fal fa-briefcase"></i> Profession {{user.profession}}</p>
               {% endif %}
-              <p><i class="fas fa-home"></i> From {{user.country_name}} <span class="flag-icon flag-icon-{{user.country_flag}}"></span></p>
-              <p><i class="fas fa-clock"></i> Joined on {{user.join_date}}</p>
-              <p><i class="fas fa-rss"></i> Followed by {{user.followed|length}} people</p>
+              <p><i class="fal fa-home"></i> From {{user.country_name}} <span class="flag-icon flag-icon-{{user.country_flag}}"></span></p>
+              <p><i class="fal fa-clock"></i> Joined on {{user.join_date}}</p>
+              <p><i class="fal fa-rss"></i> Followed by {{user.followed|length}} people</p>
             </div>
           </div>
           {% if user.int_tags[0] %}
           <div class="interesed-tags">
-            <div class="header"><i class="fas fa-tags"></i> Interesed Tags</div>
+            <div class="header"><i class="fal fa-hashtag"></i> Interesed Tags</div>
             <div class="tags">
               {% for tag in user.int_tags %}
                     <a style="text-decoration: none;" title="{{tag}}" href="{{url_for('home.home',tag_finder=tag)}}"><span
@@ -54,7 +54,7 @@
           {% endif %}
           {% if user.facebook or user.instagram or user.twitter or user.github or user.website %}
           <div class="social">
-            <div class="header"><i class="fas fa-share-alt"></i> Social</div>
+            <div class="header"><i class="fal fa-users"></i> Social</div>
             <div class="links">
               {% if user.facebook %}
               <div style="margin-bottom: 0.3rem">
@@ -83,7 +83,7 @@
               {% if user.website %}
               <div style="margin-bottom: 0.3rem">
                   <a style="text-decoration: none;" href="{{user.website}}"><span
-                    style="font-size: 12px;"><i class="fa fa-globe" style="font-size: 1rem;"></i> {{user.website}}</span></a>
+                    style="font-size: 12px;"><i class="fal fa-globe" style="font-size: 1rem;"></i> {{user.website}}</span></a>
                     
               </div>
               {% endif %}

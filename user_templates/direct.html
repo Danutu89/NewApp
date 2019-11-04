@@ -1,0 +1,60 @@
+{% extends "index.html" %}
+{% block content %}
+
+<direct>
+    <div class="conversations">
+        <div class="header">
+            <span>Direct</span>
+        </div>
+        <div class="users">
+
+            <div class="user-conv">
+                <div class="conv-img">
+                    <img class="profile_image" src="/static/profile_pics/user_2.webp" height="40px" width="40px" title="profile image">
+                </div>
+                <div class="conv-info">
+                    <span class="username" style="font-weight: 600;">danutu</span>
+                    <span class="message">You he texted me</span>
+                </div>
+            </div>
+            <div class="user-conv">
+                <div class="conv-img">
+                    <img class="profile_image" src="/static/profile_pics/user_2.webp" height="40px" width="40px" title="profile image">
+                </div>
+                <div class="conv-info">
+                    <span class="username" style="font-weight: 600;">danutu</span>
+                    <span class="message">You he texted me</span>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="conversation">
+        <div class="chat">
+
+            <div class="mine-message">
+                <div class="user-img">
+                    <img class="profile_image" src="/static/profile_pics/user_2.webp" height="30px" width="30px" title="profile image">
+                </div>
+                <div class="user-msg">
+                    <span>Hello</span>
+                </div>
+            </div>
+            <div class="not-mine-message">
+                <div class="user-img">
+                    <img class="profile_image" src="/static/profile_pics/user_2.webp" height="30px" width="30px" title="profile image">
+                </div>
+                <div class="user-msg">
+                    <span>Hello</span>
+                </div>
+            </div>
+
+        </div>
+        <div class="message">
+            <input type="text" name="message" id="message" style="margin-bottom: 0;">
+            <button>Send</button>
+        </div>
+    </div>
+</direct>
+
+{% endblock %}

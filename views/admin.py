@@ -12,7 +12,7 @@ from sqlalchemy import desc, func, or_
 
 from analyze import hashlib, httpagentparser
 from app import  cipher_suite, db,app
-from models import (Analyze_Pages, Analyze_Session, Gits, PostModel,
+from models import (Analyze_Pages, Analyze_Session, PostModel,
                     ReplyModel, TagModel, UserModel, bcrypt, Podcast_SeriesModel)
 from sqlalchemy.schema import Sequence
 from PIL import Image

@@ -9,7 +9,7 @@ from app import (BadSignature, BadTimeSignature, SignatureExpired, db, mail,
                  serializer,cipher_suite,app)
 from forms import (LoginForm, ModifyProfileForm, RegisterForm,
                    ResetPasswordForm, SearchForm)
-from models import Gits, PostModel, ReplyModel, UserModel, bcrypt, Analyze_Pages, Analyze_Session, TagModel
+from models import  PostModel, ReplyModel, UserModel, bcrypt, Analyze_Pages, Analyze_Session, TagModel
 from cryptography.fernet import Fernet
 import os
 from PIL import Image
@@ -61,7 +61,10 @@ def login():
         flash("Account not activated", 'error')
     else:
         if login.remember.data:
-            login_user(user,remember=login.remember.data,duration=dt.timedelta(days=1))
+            if request.MOBILE:
+                login_user(user,remember=login.remember.data,duration=dt.timedelta(days=30))
+            else:
+                login_user(user,remember=login.remember.data,duration=dt.timedelta(days=1))
         else:
             login_user(user,remember=login.remember.data,duration=dt.timedelta(hours=1))
         flash("You were just logged in!", 'success')
@@ -391,6 +394,24 @@ def confirm_password(email,token,passw):
 
     flash('Password successfully changed', 'success')
     return redirect(url_for('home.home'))
+
+
+@users_pages.route('/notifications')
+def notifications():
+    if current_user.is_authenticated == False:
+        flash('You have to be logged in to post.', 'error')
+        return redirect(url_for('home.home'))
+
+    return render_template('notifications.html')
+
+@users_pages.route('/direct')
+def direct():
+    if current_user.is_authenticated == False:
+        flash('You have to be logged in to post.', 'error')
+        return redirect(url_for('home.home'))
+
+    return render_template('direct.html')
+
 
 
 @users_pages.route("/git")

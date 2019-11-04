@@ -9,7 +9,7 @@ from flask import (Blueprint, abort, jsonify, make_response, render_template,
 from app import app, db, key_jwt, time
 from models import (OPostSchema, OUserSchema, PostModel, PostsSchema,
                     RepliesSchema, ReplyModel, TagModel, UserModel,
-                    UsersSchema, SessionsSchema, Analyze_Session, bcrypt, Analyze_Pages,Subscriber)
+                    UsersSchema, SessionsSchema, Analyze_Session, bcrypt, Analyze_Pages,Subscriber,Notifications_Model)
 from views.users import (BadSignature, BadTimeSignature, Message, SignatureExpired,
                    cipher_suite, login_user, mail, serializer)
 
@@ -331,14 +331,49 @@ def like_post(id):
             like.remove(id)
             response = jsonify({'operation': 'unliked'})
             post.likes = post.likes - 1
+            notify = Notifications_Model(
+                None,
+                current_user.id,
+                '{} unliked your post'.format(current_user.name),
+                post.title,
+                url_for('home.post',id=post.id,title=post.title),
+                post.user_in.id,
+                False,
+                None,
+                'unlike'
+            )
         else:
             response = jsonify({'operation': 'liked'})
             post.likes = post.likes + 1
             like.append(id)
+            notify = Notifications_Model(
+                None,
+                current_user.id,
+                '{} liked your post'.format(current_user.name),
+                post.title,
+                url_for('home.post',id=post.id,title=post.title),
+                post.user_in.id,
+                False,
+                None,
+                'like'
+            )
     else:
         response = jsonify({'operation': 'liked'})
         post.likes = post.likes + 1
         like.append(id)
+        notify = Notifications_Model(
+            None,
+            current_user.id,
+            '{} liked your post'.format(current_user.name),
+            post.title,
+            url_for('home.post',id=post.id,title=post.title),
+            post.user_in.id,
+            False,
+            None,
+            'like'
+        )
+    
+    db.session.add(notify)
 
     current_user.liked_posts = like
     db.session.commit()
@@ -380,15 +415,49 @@ def follow_user(id):
             follow.remove(id)
             user_followed.remove(current_user.id)
             response = jsonify({'operation' : 'unfollowed'})
+            notify = Notifications_Model(
+                None,
+                current_user.id,
+                '{} unfolowed you'.format(current_user.name),
+                current_user.name,
+                url_for('users.user',id=current_user.id,name=current_user.name),
+                id,
+                False,
+                None,
+                'unfollow'
+            )
         else:
             follow.append(id)
             user_followed.append(current_user.id)
             response = jsonify({'operation' : 'followed'})
+            notify = Notifications_Model(
+                None,
+                current_user.id,
+                '{} started folowing you'.format(current_user.name),
+                current_user.name,
+                url_for('users.user',id=current_user.id,name=current_user.name),
+                id,
+                False,
+                None,
+                'follow'
+            )
     else:
         follow.append(id)
         user_followed.append(current_user.id)
         response = jsonify({'operation' : 'followed'})
+        notify = Notifications_Model(
+             None,
+            current_user.id,
+            '{} started folowing you'.format(current_user.name),
+            current_user.name,
+            url_for('users.user',id=current_user.id,name=current_user.name),
+            id,
+            False,
+            None,
+            'follow'
+        )
 
+    db.session.add(notify)
     current_user.follow = follow
     followed.followed = user_followed
     db.session.commit()

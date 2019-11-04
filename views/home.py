@@ -111,12 +111,13 @@ def home():
                 notify = Notifications_Model(
                     None,
                     current_user.id,
-                    ('post'),
-                    '{} shared a new post: {}'.format(current_user.name,str(new_question.title.data)),
+                    '{} shared a new post'.format(current_user.name),
+                    str(new_question.title.data),
                     str(url_for('home.post',id=index,title=new_question.title.data)),
                     user,
                     None,
-                    None
+                    None,
+                    'post'
                 )
                 db.session.add(notify)
             db.session.add(new_post)
@@ -135,7 +136,7 @@ def home():
             #posts = PostModel.query.whoosh_search(request.args.get('search')).filter(or_(PostModel.lang.like(get_lang.lang),PostModel.lang.like('en'))).order_by(PostModel.id.desc()).paginate(page=post_page,per_page=9)
     elif request.args.get('tag_finder'):
         tag_finder = request.args.get('tag_finder')
-        tag_posts = db.session.query(TagModel).filter_by(name=tag_finder).first()
+        tag_posts = db.session.query(TagModel).filter_by(name=tag_finder).first_or_404()
         if current_user.is_authenticated:
             posts = PostModel.query.filter(PostModel.id.in_(tag_posts.post)).order_by(PostModel.id.desc()).filter(or_(PostModel.lang.like(current_user.lang),PostModel.lang.like('en'))).all()#.paginate(page=post_page,per_page=9)
         else:
@@ -234,7 +235,10 @@ def home():
         tgs.extend(t.post)
     howto_post = db.session.query(PostModel).filter(PostModel.id.in_(tgs)).order_by(PostModel.id.desc()).limit(9).all()
 
-    most_tags = db.session.query(TagModel).order_by(desc(func.array_length(TagModel.post, 1))).limit(12)
+    if current_user.is_authenticated:
+        most_tags = db.session.query(TagModel).order_by(desc(func.array_length(TagModel.post, 1))).limit(12 + len(current_user.int_tags))
+    else:
+        most_tags = db.session.query(TagModel).order_by(desc(func.array_length(TagModel.post, 1))).limit(12)
 
     if current_user.is_authenticated:
         flw_tags = db.session.query(TagModel).filter(~TagModel.name.in_(current_user.int_tags)).order_by(desc(func.array_length(TagModel.post, 1))).all()
@@ -328,12 +332,13 @@ def reply(id,title):
     notify = Notifications_Model(
         None,
         current_user.id,
-        'reply',
-        '{} commented on: {}'.format(current_user.name,post.title),
+        '{} commented on'.format(current_user.name),
+        posts.title,
         str(url_for('home.post',id=posts.id,title=posts.title)),
         posts.user_in.id,
         None,
-        None
+        None,
+        'reply'
     )
     db.session.add(notify)
 
@@ -367,6 +372,8 @@ def podcast():
         podcasts = db.session.query(PodcastsModel).filter(PodcastsModel.series_id.in_(current_user.int_podcasts)).order_by(PodcastsModel.posted_on.desc()).all()
     podcast_series = db.session.query(Podcast_SeriesModel).all()
     
-
-    return render_template('podcasts.html',login=login,register=register,new_question=new_question,reset=reset,podcasts=podcast,podcast_series=podcast_series)
+    if current_user.is_authenticated:
+        return render_template('podcasts.html',new_question=new_question,podcasts=podcast,podcast_series=podcast_series)
+    else:
+        return render_template('podcasts.html',login=login,reset=reset,register=register,new_question=new_question,podcasts=podcast,podcast_series=podcast_series)
 

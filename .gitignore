@@ -1,6 +1,7 @@
 env
 .vscode
 __pycache__
+.mypy_cache
 *.pyc
 whoosh
 flask_session

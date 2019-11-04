@@ -1,0 +1,25 @@
+{% extends "index.html" %}
+{% block content %}
+
+<notifications>
+    {% for notification in current_user.n_receiver %}
+    {% if notification.checked == False %}
+    <a href="{{notification.link}}?notification={{notification.id}}">
+        <div class="notification" style="display:flex;">
+        <img src="{{notification.author.avatar}}" height="40px" width="40px" style="border-radius: 40px;" alt="">
+        <div style="display: block;margin-left: 0.4rem;line-height: 1.2;">
+            <span style="color: var(--color);font-size:1rem;"><span style="font-weight: 500;">{{notification.title.split(" ")[0] }}</span> {{notification.title[notification.title.split(" ")[0] | length::]}}</span>
+            {% if notification.category != 'follow' and notification.category != 'unfollow' %}
+            <span style="color: var(--link)">{{notification.body}}</span>
+            {% endif %}
+        </div>
+        </div>
+    </a>    
+    {% endif %}
+    {% endfor %}
+    {% if current_user.n_receiver | length < 1%}
+    <span style="align-self: center;color: var(--color);font-size: 1.1rem;">No notifications</span>
+    {% endif %}
+</notifications>
+
+{% endblock %}

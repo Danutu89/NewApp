@@ -168,7 +168,7 @@
     head.appendChild(cssLink);
   };
   window.onload = function () {
-    loadCss("https://newappcdn.b-cdn.net/all.css");
+    loadCss("https://newappcdn.b-cdn.net/pro.min.css");
     loadCss("https://newappcdn.b-cdn.net/styles.css");
     loadJs("https://www.googletagmanager.com/gtag/js?id=UA-145440871-1");
     var x232 = document.getElementsByTagName("HTML")[0];
@@ -194,8 +194,6 @@
     {% endif %}
     {%  if request.endpoint == 'home.home' %}
     LoadTrending();
-    {% elif request.endpoint == 'home.post' %}
-    LoadTrending();
     {% endif %}
     if ('serviceWorker' in navigator) {
       
@@ -208,7 +206,7 @@
         });
     
     };
-    {% if current_user.is_authenticated %}
+    {% if current_user.is_authenticated  %}
     {% if request.url_rule.endpoint == 'home.post' or request.url_rule.endpoint == 'home.newpost' or request.url_rule.endpoint == 'home.edit_post' %}
     var toolbarOptions = [
       ['bold', 'italic', 'underline'],
@@ -244,7 +242,13 @@
     }
   
     jQuery(document).ready(function() {
+      {% if request.url_rule.endpoint == 'home.post' %}
+      {% if posts.closed == False %}
       LoadQuill();
+      {% endif %}
+      {% else %}
+      LoadQuill();
+      {% endif %}
       PR.prettyPrint();
       jQuery(".form-thread").submit(function() { 
           var hidden_text_field = document.getElementById('text');
@@ -292,7 +296,8 @@
     });
     {% if request.MOBILE %}
     PullToRefresh.init({
-      mainElement: 'content', // above which element?
+      mainElement: 'content',
+      triggerElement: 'content', // above which element?
       onRefresh: function (done) {
         setTimeout(function () {
           done(); // end pull to refresh

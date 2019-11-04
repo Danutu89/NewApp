@@ -419,8 +419,9 @@ class Notifications_Model(db.Model):
     receiver = db.relationship("UserModel", backref = "n_receiver", foreign_keys=[for_user])
     checked = db.Column(db.Boolean, primary_key = False, default = False)
     created_on = db.Column(db.Date, primary_key = False, default = datetime.datetime.utcnow)
+    category = db.Column(db.String, primary_key = False)
 
-    def __init__(self,id,user,title,body,link,for_user,checked,created_on):
+    def __init__(self,id,user,title,body,link,for_user,checked,created_on,category):
         self.id = id
         self.user = user
         self.title = title
@@ -429,6 +430,7 @@ class Notifications_Model(db.Model):
         self.for_user = for_user
         self.checked = checked
         self.created_on = created_on
+        self.category = category
 
 class Podcast_SeriesModel(Base):
 
@@ -497,11 +499,19 @@ class Subscriber(Base):
     def subscription_info_json(self, value):
         self.subscription_info = json.dumps(value)
 
-class Gits:
+# class Private_ConversationsModel:
 
-    def __init__(self,name,link,desc):
-        self.name = name
-        self.link = link
-        self.desc = desc
+#     __tablename__ = 'private_conversations'
+
+#     id = db.Column(db.Integer, db.Sequence('private_conversations_id_seq'), primary_key=True)
+#     members = db.Column(sq.ARRAY(db.Integer), default=[], primary_key = False)
+#     seen = db.Column(db.Boolean, primary_key = False)
+
+# class Private_ConversationModel:
+
+#     __tablename__ = 'private_conversation'
+
+
+
 
 Base.metadata.create_all(db_engine, Base.metadata.tables.values(),checkfirst=True)

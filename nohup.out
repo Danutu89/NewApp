@@ -15088,3 +15088,72 @@ KeyError: 'Session is disconnected'
 [2019-09-27 09:56:07,894] INFO in app: mRo48tU4ebP6jIshqaoNf2HAnesrCGHm
 [2019-09-27 09:56:07,894] INFO in app: JWT Algorithm
 [2019-09-27 09:56:07,894] INFO in app: HS256
+[2019-11-04 07:48:10 -0500] [3292] [ERROR] Exception in worker process
+Traceback (most recent call last):
+  File "/home/newapp/Flask/NewApp/env/lib/python3.6/site-packages/gunicorn/arbiter.py", line 583, in spawn_worker
+    worker.init_process()
+  File "/home/newapp/Flask/NewApp/env/lib/python3.6/site-packages/gunicorn/workers/geventlet.py", line 102, in init_process
+    super(EventletWorker, self).init_process()
+  File "/home/newapp/Flask/NewApp/env/lib/python3.6/site-packages/gunicorn/workers/base.py", line 129, in init_process
+    self.load_wsgi()
+  File "/home/newapp/Flask/NewApp/env/lib/python3.6/site-packages/gunicorn/workers/base.py", line 138, in load_wsgi
+    self.wsgi = self.app.wsgi()
+  File "/home/newapp/Flask/NewApp/env/lib/python3.6/site-packages/gunicorn/app/base.py", line 67, in wsgi
+    self.callable = self.load()
+  File "/home/newapp/Flask/NewApp/env/lib/python3.6/site-packages/gunicorn/app/wsgiapp.py", line 52, in load
+    return self.load_wsgiapp()
+  File "/home/newapp/Flask/NewApp/env/lib/python3.6/site-packages/gunicorn/app/wsgiapp.py", line 41, in load_wsgiapp
+    return util.import_app(self.app_uri)
+  File "/home/newapp/Flask/NewApp/env/lib/python3.6/site-packages/gunicorn/util.py", line 350, in import_app
+    __import__(module)
+  File "/home/newapp/Flask/NewApp/app.py", line 132, in <module>
+    from views.users import users_pages
+  File "/home/newapp/Flask/NewApp/views/users.py", line 12, in <module>
+    from models import Gits, PostModel, ReplyModel, UserModel, bcrypt, Analyze_Pages, Analyze_Session, TagModel
+ImportError: cannot import name 'Gits'
+[2019-11-04 07:48:10 -0500] [3293] [ERROR] Exception in worker process
+Traceback (most recent call last):
+  File "/home/newapp/Flask/NewApp/env/lib/python3.6/site-packages/gunicorn/arbiter.py", line 583, in spawn_worker
+    worker.init_process()
+  File "/home/newapp/Flask/NewApp/env/lib/python3.6/site-packages/gunicorn/workers/geventlet.py", line 102, in init_process
+    super(EventletWorker, self).init_process()
+  File "/home/newapp/Flask/NewApp/env/lib/python3.6/site-packages/gunicorn/workers/base.py", line 129, in init_process
+    self.load_wsgi()
+  File "/home/newapp/Flask/NewApp/env/lib/python3.6/site-packages/gunicorn/workers/base.py", line 138, in load_wsgi
+    self.wsgi = self.app.wsgi()
+  File "/home/newapp/Flask/NewApp/env/lib/python3.6/site-packages/gunicorn/app/base.py", line 67, in wsgi
+    self.callable = self.load()
+  File "/home/newapp/Flask/NewApp/env/lib/python3.6/site-packages/gunicorn/app/wsgiapp.py", line 52, in load
+    return self.load_wsgiapp()
+  File "/home/newapp/Flask/NewApp/env/lib/python3.6/site-packages/gunicorn/app/wsgiapp.py", line 41, in load_wsgiapp
+    return util.import_app(self.app_uri)
+  File "/home/newapp/Flask/NewApp/env/lib/python3.6/site-packages/gunicorn/util.py", line 350, in import_app
+    __import__(module)
+  File "/home/newapp/Flask/NewApp/app.py", line 132, in <module>
+    from views.users import users_pages
+  File "/home/newapp/Flask/NewApp/views/users.py", line 12, in <module>
+    from models import Gits, PostModel, ReplyModel, UserModel, bcrypt, Analyze_Pages, Analyze_Session, TagModel
+ImportError: cannot import name 'Gits'
+[2019-11-04 07:48:10 -0500] [3294] [ERROR] Exception in worker process
+Traceback (most recent call last):
+  File "/home/newapp/Flask/NewApp/env/lib/python3.6/site-packages/gunicorn/arbiter.py", line 583, in spawn_worker
+    worker.init_process()
+  File "/home/newapp/Flask/NewApp/env/lib/python3.6/site-packages/gunicorn/workers/geventlet.py", line 102, in init_process
+    super(EventletWorker, self).init_process()
+  File "/home/newapp/Flask/NewApp/env/lib/python3.6/site-packages/gunicorn/workers/base.py", line 129, in init_process
+    self.load_wsgi()
+  File "/home/newapp/Flask/NewApp/env/lib/python3.6/site-packages/gunicorn/workers/base.py", line 138, in load_wsgi
+    self.wsgi = self.app.wsgi()
+  File "/home/newapp/Flask/NewApp/env/lib/python3.6/site-packages/gunicorn/app/base.py", line 67, in wsgi
+    self.callable = self.load()
+  File "/home/newapp/Flask/NewApp/env/lib/python3.6/site-packages/gunicorn/app/wsgiapp.py", line 52, in load
+    return self.load_wsgiapp()
+  File "/home/newapp/Flask/NewApp/env/lib/python3.6/site-packages/gunicorn/app/wsgiapp.py", line 41, in load_wsgiapp
+    return util.import_app(self.app_uri)
+  File "/home/newapp/Flask/NewApp/env/lib/python3.6/site-packages/gunicorn/util.py", line 350, in import_app
+    __import__(module)
+  File "/home/newapp/Flask/NewApp/app.py", line 132, in <module>
+    from views.users import users_pages
+  File "/home/newapp/Flask/NewApp/views/users.py", line 12, in <module>
+    from models import Gits, PostModel, ReplyModel, UserModel, bcrypt, Analyze_Pages, Analyze_Session, TagModel
+ImportError: cannot import name 'Gits'

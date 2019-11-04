@@ -46,7 +46,7 @@ content .sidebar#sidebar-right{
                     {% if current_user.is_authenticated %}
                     <div class="user-actions">
                         <span onclick="Like_Post({{posts.id}})" style="cursor: pointer;"><i id="heart"
-                                class="{% if posts.id in current_user.liked_posts %}fas{% else %}far{% endif %} fa-heart"></i>
+                                class="{% if posts.id in current_user.liked_posts %}fas{% else %}fal{% endif %} fa-heart"></i>
                             Like</span>
                         <!-- <span style="cursor: pointer;"><i class="fas fa-share-alt"></i> Share</span> -->
                     </div>
@@ -64,9 +64,11 @@ content .sidebar#sidebar-right{
                         </form>
                     </div>
                     {% else %}
-                    <div class="card">
+                    <div class="card" style="padding: 0.5rem;
+                    text-align: center;
+                    margin-top: 1rem;">
                         <div class="card-body">
-                            <p><i class="fas fa-lock"></i> Post closed by {{posts.closed_by_name()}} on {{posts.closed_on}}</p>
+                            <p><i class="fal fa-lock"></i> Post closed by {{posts.closed_by_name()}} on {{posts.closed_on}}</p>
                         </div>
                     </div>
                     {% endif %}
