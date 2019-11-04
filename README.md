@@ -20,13 +20,9 @@ Welcome to [newapp.nl](https://newapp.nl). With your help, we can build out NewA
 - [Core Team Members](#core-team)
 - [License](#license)
 
-## Additional docs
-
-[Check out our dedicated docs page for more technical documentation.](https://docs.dev.to)
-
 ## Core team
 
-- [@Danutu](https://dev.to/ben)
+- [@Danutu](https://newapp.nl/user/danutu/id%3D2)
 
 ## License
 
