@@ -1,6 +1,6 @@
 <div align="center">
   <br>
-  <img alt="NewApp" src="https://newapp.nl/static/logo.svg" width="500px">
+  <img alt="NewApp" src="https://newapp.nl/static/logo.svg" width="300px">
   <h1>NewApp</h1>
 </div>
 <br>
