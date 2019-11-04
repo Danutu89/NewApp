@@ -6,7 +6,7 @@
 <br>
 <p align="center">
   <a href="https://www.python.org/">
-    <img src="https://img.shields.io/badge/python-v3.7-blue.scg" alt="ruby version">
+    <img src="https://img.shields.io/badge/python-v3.7-blue.svg" alt="python version">
   </a>
   <a href="#">
     <img src="https://img.shields.io/badge/build-passing-brightgreen.svg" alt="rails version">
