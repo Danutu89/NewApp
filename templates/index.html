@@ -5,6 +5,7 @@
   {% if request.url_rule.endpoint == 'home.home' %}<title>New App - Where Developers Learn, Share, & Code</title>{% endif %}
   {% if request.url_rule.endpoint == 'users.user' %}<title>{{user.name[0]|upper}}{{user.name[1:]}} - NewApp</title>{% endif %}
   {% if request.url_rule.endpoint == 'home.post' %}<title>{{posts.title}} - NewApp</title>{% endif %}
+  {% if request.url_rule.endpoint == 'home.podcast' %}<title>NewApp - Podcasts</title>{% endif %}
   <meta charset="utf-8">
   <meta name="msvalidate.01" content="FA1B41824E0AF3D2CC7B0F86730E5C45" />
   <meta name="yandex-verification" content="c303cb257b715901" />
@@ -168,9 +169,12 @@
     head.appendChild(cssLink);
   };
   window.onload = function () {
-    loadCss("https://newappcdn.b-cdn.net/pro.min.css");
+    loadCss("https://newappcdn.b-cdn.net/style.css");
     loadCss("https://newappcdn.b-cdn.net/styles.css");
     loadJs("https://www.googletagmanager.com/gtag/js?id=UA-145440871-1");
+    {% if request.MOBILE == False %}
+    loadJs("https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js");
+    {% endif %}
     var x232 = document.getElementsByTagName("HTML")[0];
     if (x232.getAttribute("data-theme") == "dark"){
       loadCss("https://newappcdn.b-cdn.net/dark_code.css");
@@ -189,6 +193,12 @@
     gtag('config', 'UA-145440871-1', {
       'optimize_id': 'GTM-KKCQ2T7'
     });
+    {% if request.MOBILE %}
+    (adsbygoogle = window.adsbygoogle || []).push({
+          google_ad_client: "ca-pub-8464409235663505",
+          enable_page_level_ads: true
+     });
+     {% endif %}
     {% if current_user.is_authenticated %}
     gtag('set', {'user_id': '{{current_user.id}}'});
     {% endif %}

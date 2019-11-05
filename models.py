@@ -389,17 +389,15 @@ class Analyze_Pages(Base):
 
     @staticmethod
     def perc_posts():
-        return ((Analyze_Pages.posts_30_days() - Analyze_Pages.posts_15_days()) - Analyze_Pages.posts_15_days())%100
+        return ((Analyze_Pages.posts_30_days() - Analyze_Pages.posts_15_days()) - Analyze_Pages.posts_30_days())%100
 
     @staticmethod
     def perc_views():
-        return ((Analyze_Pages.views_30_days() - Analyze_Pages.views_15_days()) - Analyze_Pages.views_15_days())%100
+        return ((Analyze_Pages.views_30_days() - Analyze_Pages.views_15_days()) - Analyze_Pages.views_30_days())%100
 
     @staticmethod
     def perc_users():
-        users_15 = Analyze_Pages.user_15_days()
-        users_30 = Analyze_Pages.user_30_days()
-        return ((users_30 - users_15) - users_15)%100
+        return ((Analyze_Pages.user_30_days() - Analyze_Pages.user_15_days()) - Analyze_Pages.user_30_days())%100
 
     @staticmethod
     def count_replies():

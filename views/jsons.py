@@ -535,14 +535,15 @@ def delete_post(id):
     if current_user.is_authenticated == False:
         return redirect(url_for('home.home'))
 
-    if current_user.id != posts.user_in.id:
-        return redirect(url_for('home.home'))
-    if current_user.roleinfo.delete_post_permission == False:
+    if current_user.id != posts.user_in.id and current_user.roleinfo.delete_post_permission == False:
         return redirect(url_for('home.home'))
 
     if posts.thumbnail:
-        picture_fn = 'post_' + str(id) + '.jpeg'
-        os.remove(os.path.join(app.config['UPLOAD_FOLDER_POST'], picture_fn))
+        try:
+            picture_fn = 'post_' + str(id) + '.jpeg'
+            os.remove(os.path.join(app.config['UPLOAD_FOLDER_POST'], picture_fn))
+        except:
+            pass
 
     db.session.query(PostModel).filter_by(id=id).delete()
     db.session.query(ReplyModel).filter_by(post_id=id).delete()

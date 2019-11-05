@@ -47,7 +47,6 @@ def views():
 
 @home_pages.route("/", methods=['GET','POST'])
 def home():
-    cleanup_sessions.delay()
     login = LoginForm(request.form)
     register = RegisterForm(request.form)
     new_question = NewQuestionForm(request.form)
@@ -377,3 +376,38 @@ def podcast():
     else:
         return render_template('podcasts.html',login=login,reset=reset,register=register,new_question=new_question,podcasts=podcast,podcast_series=podcast_series)
 
+@home_pages.route('/about')
+def about():
+    login = LoginForm(request.form)
+    register = RegisterForm(request.form)
+    reset = ResetPasswordForm(request.form)
+    new_question = NewQuestionForm(request.form)
+
+    if current_user.is_authenticated:
+        return render_template('about.html',new_question=new_question)
+    else:
+        return render_template('about.html',login=login,reset=reset,register=register,new_question=new_question)
+    
+@home_pages.route('/privacy')
+def privacy():
+    login = LoginForm(request.form)
+    register = RegisterForm(request.form)
+    reset = ResetPasswordForm(request.form)
+    new_question = NewQuestionForm(request.form)
+    
+    if current_user.is_authenticated:
+        return render_template('privacy.html',new_question=new_question)
+    else:
+        return render_template('privacy.html',login=login,reset=reset,register=register,new_question=new_question)
+
+@home_pages.route('/contact')
+def contact():
+    login = LoginForm(request.form)
+    register = RegisterForm(request.form)
+    reset = ResetPasswordForm(request.form)
+    new_question = NewQuestionForm(request.form)
+    
+    if current_user.is_authenticated:
+        return render_template('contact.html',new_question=new_question)
+    else:
+        return render_template('contact.html',login=login,reset=reset,register=register,new_question=new_question)

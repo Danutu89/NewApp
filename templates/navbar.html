@@ -15,30 +15,34 @@
       {% if current_user.is_authenticated == false %}
       <div class="navbar-item" style="margin-inline-start: auto;display:flex;">
         <a href="#login-modal" style="color: white;margin-block-start:auto;margin-block-end: auto;cursor: pointer;"><span
-            style="vertical-align: inherit;"><span class="fas fa-sign-in-alt"></span> Login</span></a>
+            style="vertical-align: inherit;"><i class="na-sign-in-alt"></i> Login</span></a>
       </div>
       {% else %}
       <div style="margin-inline-start: auto;display:flex;">
-        <div class="navbar-item" style="cursor: pointer;">
-          <i class="fal fa-comment fa-lg" style="display:block;margin-top: 0.5rem;
-          margin-right: 0.8rem;{% if request.MOBILE %}margin-right:0.9rem;{% endif %}"></i>
-        </div>
         {% if request.MOBILE %}
+        <div class="navbar-item" style="cursor: pointer;">
+          <i class="na-comment" style="display:block;margin-top: 0.4rem;font-size:1.2rem;
+         margin-right:0.9rem;"></i>
+        </div>
         <div class="navbar-item" style="cursor: pointer;">
             <a href="{{url_for('users.notifications')}}" style="position: relative;
             display: inline-block;color:white;">
-                <i class="fal fa-bell fa-lg" style="display:block;margin-top: 0.5rem;
-                margin-right: 0.8rem;{% if request.MOBILE %}margin-right:0.9rem;{% endif %}"></i>
+                <i class="na-bell" style="display:block;margin-top: 0.4rem;font-size:1.2rem;
+                margin-right:0.9rem;"></i>
                 {% if current_user.n_receiver | length > 0 %}
                 <span class="notifications-number">{{current_user.n_receiver | length}}</span>
                 {% endif %}
               </a>
             </div>
         {% else %}
+        <div class="navbar-item" style="cursor: pointer;">
+          <i class="na-comment" style="display:block;margin-top: 0.35rem;font-size:1.2rem;
+          margin-right: 0.8rem;"></i>
+        </div>
           <div class="navbar-item">
               <div class="newapp-dropdown" id="notification-center" style="cursor: pointer;">
-                  <i class="fal fa-bell fa-lg" style="display:block;margin-top: 0.5rem;
-                  margin-right: 0.8rem;{% if request.MOBILE %}margin-right:0.9rem;{% endif %}"></i>
+                  <i class="na-bell" style="display:block;margin-top: 0.35rem;font-size:1.2rem;
+                  margin-right: 0.8rem;"></i>
                   {% if current_user.n_receiver | length > 0 %}
                   <span class="notifications-number">{{current_user.n_receiver | length}}</span>
                   {% endif %}
@@ -76,8 +80,8 @@
           </div>
           {% else %}
           <div class="navbar-item">
-              <a href="/newpost"><i class="fal fa-plus-circle fa-lg" style="color: white;display:block;margin-top: 0.5rem;
-                margin-right: 0.4rem;{% if request.MOBILE %}margin-right:0.9rem;{% endif %}"></i></a>
+              <a href="/newpost"><i class="na-plus-circle" style="color:white;display:block;margin-top: 0.4rem;font-size:1.2rem;
+                margin-right:0.9rem;"></i></a>
           </div>
           {% endif %}
           {% endif %}
@@ -89,25 +93,25 @@
                 <hr>
                 <a href="{{url_for('users.user', id=current_user.id, name=current_user.name)}}" style="color: white;">
                 <div class="dropdown-item">
-                  <i class="fal fa-user"></i> Profile
+                  <i class="na-user"></i> Profile
                 </div>
                 </a>
                 {% if current_user.roleinfo.admin_panel_permission %}
                 <a href="{{url_for('admin.main')}}" style="color: white;">
                 <div class="dropdown-item">
-                <i class="fal fa-user-shield"></i>
+                <i class="na-user-shield"></i>
                     Admin
                 </div>
                 </a>
                 {% endif %}
                 <a href="{{url_for('users.settings', name=current_user.name)}}" style="color: white;">
                 <div class="dropdown-item">
-                  <i class="fal fa-user-cog"></i></i> Settings
+                  <i class="na-user-cog"></i></i> Settings
                 </div>
                 </a>
                 <a href="{{url_for('users.logout')}}" style="color: white;">
                 <div class="dropdown-item">
-                  <i class="fal fa-sign-out-alt"></i> Logout
+                  <i class="na-sign-out-alt"></i> Logout
                 </div>
                 </a>
               </div>

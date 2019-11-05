@@ -367,7 +367,7 @@
 						return country[tooltipItem[0]['index']];
 					},
 					label: function(tooltipItem, data) {
-						return "Views: " + data['datasets'][tooltipItem['datasetIndex']]['data'][tooltipItem['index']];
+						return "Views: " + (({{analyze.views_15_days()}} - data['datasets'][tooltipItem['datasetIndex']]['data'][tooltipItem['index']])/{{analyze.posts_15_days()}})%100;
 					}
 				}
 			},

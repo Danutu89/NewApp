@@ -9,7 +9,7 @@ from app import (BadSignature, BadTimeSignature, SignatureExpired, db, mail,
                  serializer,cipher_suite,app)
 from forms import (LoginForm, ModifyProfileForm, RegisterForm,
                    ResetPasswordForm, SearchForm)
-from models import  PostModel, ReplyModel, UserModel, bcrypt, Analyze_Pages, Analyze_Session, TagModel
+from models import  PostModel, ReplyModel, UserModel, bcrypt, Analyze_Pages, Analyze_Session, TagModel, Notifications_Model
 from cryptography.fernet import Fernet
 import os
 from PIL import Image
@@ -246,6 +246,11 @@ def user(name,id):
     post_count = db.session.query(PostModel).filter_by(user=id).count()
     reply_count = db.session.query(ReplyModel).filter_by(user=id).count()
     location = db.session.query(Analyze_Session).filter_by(session=session['user']).first()
+
+    if request.args.get('notification'):
+        db.session.query(Notifications_Model).filter_by(id=request.args.get('notification')).delete()
+        db.session.commit()
+
     return render_template('user_page.html',follow=follow,tags=tags,posts=posts,user=user,post_count=post_count,reply_count=reply_count,search=search,register=register,login=loginf, reset=reset,location=location)
 
 
@@ -416,7 +421,7 @@ def direct():
 
 @users_pages.route("/git")
 def get():
-    response = requests.get(('https://api.github.com/users/{}/repos').format(current_user.github_name))
+    response = requests.get(('https://api.github.com/users/{}/repos').format(current_user.github))
     login = response.json()
     return jsonify(login)
 

@@ -118,8 +118,8 @@ def main():
                 except:
                     sess_old.__setitem__(calendar.day_name[int(calendar.weekday(int(year),int(month),int(day)))]+' '+str(day),1)
         
-    per_devices['mobile'] = ((devices_old['Mobile'] - devices_now['Mobile']) - devices_now['Mobile']) % 100
-    per_devices['computer'] = ((devices_old['Computer'] - devices_now['Computer']) - devices_now['Computer']) % 100
+    per_devices['mobile'] = ((devices_old['Mobile'] - devices_now['Mobile']) - devices_old['Mobile']) % 100
+    per_devices['computer'] = ((devices_old['Computer'] - devices_now['Computer']) - devices_old['Computer']) % 100
 
     return render_template('main.html',countries=countries,country=country,referer=referer,label_days=label_days,users=users,posts=posts,pages=pages,sessions=sessions,analyze=Analyze_Pages,data=sess,devices=devices_now,devices_old=devices_old,sess_old=sess_old,per_devices=per_devices)
 
