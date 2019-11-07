@@ -1,17 +1,17 @@
 <!DOCTYPE html>
 <html {% if location %}lang="{{location.lang}}" {% endif %} {% if current_user.is_authenticated %}id={{current_user.id}}{% endif %} {% if current_user.is_authenticated and current_user.theme == 'Dark' %}data-theme="dark"{% endif %}>
 <head>
-  {% if error_check != True %}
-  {% if request.url_rule.endpoint == 'home.home' %}<title>New App - Where Developers Learn, Share, & Code</title>{% endif %}
-  {% if request.url_rule.endpoint == 'users.user' %}<title>{{user.name[0]|upper}}{{user.name[1:]}} - NewApp</title>{% endif %}
-  {% if request.url_rule.endpoint == 'home.post' %}<title>{{posts.title}} - NewApp</title>{% endif %}
-  {% if request.url_rule.endpoint == 'home.podcast' %}<title>NewApp - Podcasts</title>{% endif %}
   <meta charset="utf-8">
   <meta name="msvalidate.01" content="FA1B41824E0AF3D2CC7B0F86730E5C45" />
   <meta name="yandex-verification" content="c303cb257b715901" />
   <link rel='icon' href="https://newapp.nl/static/favicon_web.png" type='image/x-icon' />
   <link rel="preconnect" href="https://newappcdn.b-cdn.net/" crossorigin>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  {% if error_check != True %}
+  {% if request.url_rule.endpoint == 'home.home' %}<title>New App - Where Developers Learn, Share, & Code</title>{% endif %}
+  {% if request.url_rule.endpoint == 'users.user' %}<title>{{user.name[0]|upper}}{{user.name[1:]}} - NewApp</title>{% endif %}
+  {% if request.url_rule.endpoint == 'home.post' %}<title>{{posts.title}} - NewApp</title>{% endif %}
+  {% if request.url_rule.endpoint == 'home.podcast' %}<title>NewApp - Podcasts</title>{% endif %}
   {% if request.url_rule.endpoint == 'home.home' %}
   <script type="application/ld+json">    
     {
@@ -36,6 +36,9 @@
   <meta name="theme-color" content="rgb(34, 34, 34)" />
   <meta name="application-name" content="NewApp">
   <meta name="apple-mobile-web-app-title" content="NewApp">
+  {% if request.url_rule.endpoint == 'home.podcast' %}
+  <meta name="description" content="NewApp Podcasts, where you can listen to listen podcast radio.">
+  {% endif %}
   {% if request.url_rule.endpoint == 'home.home' %}
   <meta name="description" content="NewApp the newest community for developers to learn, share​ ​their programming ​knowledge, and build their careers.">
   {% endif %}
@@ -43,7 +46,7 @@
   <meta name="description" content="{{user.name}} - {{user.bio}}">
   {% endif %}
   {% if request.url_rule.endpoint == 'home.post' %}
-  <meta name="description" content="{{posts.text[35:100]}}">
+  <meta name="description" content="{{description[:97]}}...">
   {% endif %}
   <link rel="canonical" href="https://newapp.nl{{ request.path }}">
   <link rel="manifest" href="https://newapp.nl/static/manifest.json">
@@ -54,9 +57,15 @@
   {% if request.url_rule.endpoint == 'home.home' %}
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://newapp.nl/">
-  <meta property="og:site_name" content="New App">
+  <meta property="og:site_name" content="NewApp">
   <meta property="og:description"
     content="The newest community for developers to learn, share​ ​their programming ​knowledge, and build their careers.">
+  {% elif request.url_rule.endpoint == 'home.podcast' %}
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://newapp.nl/podcast">
+  <meta property="og:site_name" content="NewApp">
+  <meta property="og:description"
+    content="NewApp Podcasts, where you can listen to listen podcast radio.">
   {% elif request.url_rule.endpoint == 'users.user' %}
   <meta property="og:type" content="website">
   <meta property="og:url" content="{{request.path}}">
@@ -90,7 +99,7 @@
 <content>
   {% if error_check != True %}
     {% if request.MOBILE %}
-      {% if request.url_rule.endpoint == 'home.home' %}
+      {% if request.url_rule.endpoint == 'home.home' or request.url_rule.endpoint == 'home.post' %}
       <!-- <div class="open-wrapper">
           <i class="fas fa-coins fa-lg" id="open-wrapper" onclick="openNav()"></i>
       </div> -->
@@ -333,7 +342,7 @@
   {% endif %}
 </script>
 
-{% if request.url_rule.endpoint == 'home.home' %}
+{% if request.url_rule.endpoint == 'home.home' or request.url_rule.endpoint == 'home.post' %}
 {% if request.MOBILE %}
 <script>
   function openNav() {
@@ -354,6 +363,8 @@ document.addEventListener('touchmove', handleTouchMove, false);
 
 var xDown = null;                                                        
 var yDown = null;
+
+var width = (window.innerWidth > 0) ? window.innerWidth : screen.width;
 
 function getTouches(evt) {
   return evt.touches ||             // browser API
@@ -379,9 +390,13 @@ function handleTouchMove(evt) {
 
     if ( Math.abs( xDiff ) > Math.abs( yDiff ) ) {/*most significant*/
         if ( xDiff > 0 ) {
-          closeNav();
+          if (width < 950) {
+            closeNav();
+          }
         } else {
-          openNav();
+          if (width < 950) {
+            openNav();
+          }
         }                       
     } else {
         if ( yDiff > 0 ) {

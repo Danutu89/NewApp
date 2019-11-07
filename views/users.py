@@ -86,6 +86,7 @@ def login():
     except Exception as e:
         print("Not supported country", userLoc["country"])
         print(e)
+        pass
 
     user.is_online = True
     user.ip_address = userIP

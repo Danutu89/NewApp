@@ -17,11 +17,17 @@ from app import app
 from PIL import Image
 import readtime
 from webptools import webplib as webp
+import re
 
 home_pages = Blueprint(
     'home',__name__,
     template_folder='../home_templates'
 )
+
+def cleanhtml(raw_html):
+  cleanr = re.compile('<.*?>|&([a-z0-9]+|#[0-9]{1,6}|#x[0-9a-f]{1,6});')
+  cleantext = re.sub(cleanr, '', raw_html)
+  return cleantext
 
 def save_img(post_id):
     #if(form_img.data):
@@ -274,21 +280,25 @@ def post(title,id):
     post_from_user = db.session.query(PostModel).filter_by(user=posts.user_in.id).limit(4).all()
     popular_posts = db.session.query(PostModel).order_by(PostModel.views.desc()).limit(9)
     keywords = str(posts.title).split(" ")
+    description = cleanhtml(posts.text)
 
     location = db.session.query(Analyze_Session).filter_by(session=session['user']).first()
 
     if current_user.is_authenticated:
         if request.args.get('notification'):
             notification = db.session.query(Notifications_Model).filter_by(id=int(request.args.get('notification'))).first()
-            notification.checked = True
-            db.session.query(Notifications_Model).filter_by(id=int(request.args.get('notification'))).delete()
-            db.session.commit()
+            if notification is None:
+                pass
+            else:
+                notification.checked = True
+                db.session.query(Notifications_Model).filter_by(id=int(request.args.get('notification'))).delete()
+                db.session.commit()
 
-        return render_template('post.html',tags_all=tags_all,post_from_user=post_from_user ,reset=reset, reply=reply,posts=posts,replyes=replyes,tags=tags,search=search,popular_posts=popular_posts,location=location,keywords=keywords)
+        return render_template('post.html',description=description,tags_all=tags_all,post_from_user=post_from_user ,reset=reset, reply=reply,posts=posts,replyes=replyes,tags=tags,search=search,popular_posts=popular_posts,location=location,keywords=keywords)
     else:
         login = LoginForm(request.form)
         register = RegisterForm(request.form)
-        return render_template('post.html',tags_all=tags_all,post_from_user=post_from_user, reset=reset, reply=reply,posts=posts,replyes=replyes,search=search,login=login,tags=tags,register=register,popular_posts=popular_posts,location=location,keywords=keywords)
+        return render_template('post.html',description=description,tags_all=tags_all,post_from_user=post_from_user, reset=reset, reply=reply,posts=posts,replyes=replyes,search=search,login=login,tags=tags,register=register,popular_posts=popular_posts,location=location,keywords=keywords)
 
 @home_pages.route('/edit/post/<int:id>', methods=['POST','GET'])
 def edit_post(id):

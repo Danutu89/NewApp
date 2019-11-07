@@ -15157,3 +15157,63 @@ Traceback (most recent call last):
   File "/home/newapp/Flask/NewApp/views/users.py", line 12, in <module>
     from models import Gits, PostModel, ReplyModel, UserModel, bcrypt, Analyze_Pages, Analyze_Session, TagModel
 ImportError: cannot import name 'Gits'
+[2019-11-06 10:38:09,719] INFO in app: NewApp Launched successfully
+[2019-11-06 10:38:09,728] INFO in app: Security keys
+[2019-11-06 10:38:09,728] INFO in app: Session keys
+[2019-11-06 10:38:09,728] INFO in app: Î,CHÀÒK9ã ZÍùÝNÿ¯;rï
+[2019-11-06 10:38:09,728] INFO in app: Cryptography key
+[2019-11-06 10:38:09,728] INFO in app: b'vgF_Yo8-IutJs-AcwWPnuNBgRSgncuVo1yfc9uqSiiU='
+[2019-11-06 10:38:09,732] INFO in app: JWT Key
+[2019-11-06 10:38:09,732] INFO in app: mRo48tU4ebP6jIshqaoNf2HAnesrCGHm
+[2019-11-06 10:38:09,732] INFO in app: JWT Algorithm
+[2019-11-06 10:38:09,732] INFO in app: HS256
+[2019-11-06 10:38:09,733] INFO in app: NewApp Launched successfully
+[2019-11-06 10:38:09,733] INFO in app: Security keys
+[2019-11-06 10:38:09,734] INFO in app: Session keys
+[2019-11-06 10:38:09,734] INFO in app: Î,CHÀÒK9ã ZÍùÝNÿ¯;rï
+[2019-11-06 10:38:09,734] INFO in app: Cryptography key
+[2019-11-06 10:38:09,734] INFO in app: b'vgF_Yo8-IutJs-AcwWPnuNBgRSgncuVo1yfc9uqSiiU='
+[2019-11-06 10:38:09,734] INFO in app: JWT Key
+[2019-11-06 10:38:09,734] INFO in app: mRo48tU4ebP6jIshqaoNf2HAnesrCGHm
+[2019-11-06 10:38:09,734] INFO in app: JWT Algorithm
+[2019-11-06 10:38:09,734] INFO in app: HS256
+[2019-11-06 10:38:09,736] INFO in app: NewApp Launched successfully
+[2019-11-06 10:38:09,737] INFO in app: Security keys
+[2019-11-06 10:38:09,737] INFO in app: Session keys
+[2019-11-06 10:38:09,737] INFO in app: Î,CHÀÒK9ã ZÍùÝNÿ¯;rï
+[2019-11-06 10:38:09,737] INFO in app: Cryptography key
+[2019-11-06 10:38:09,737] INFO in app: b'vgF_Yo8-IutJs-AcwWPnuNBgRSgncuVo1yfc9uqSiiU='
+[2019-11-06 10:38:09,737] INFO in app: JWT Key
+[2019-11-06 10:38:09,738] INFO in app: mRo48tU4ebP6jIshqaoNf2HAnesrCGHm
+[2019-11-06 10:38:09,738] INFO in app: JWT Algorithm
+[2019-11-06 10:38:09,738] INFO in app: HS256
+[2019-11-06 10:38:21,403] INFO in app: NewApp Launched successfully
+[2019-11-06 10:38:21,404] INFO in app: Security keys
+[2019-11-06 10:38:21,408] INFO in app: Session keys
+[2019-11-06 10:38:21,408] INFO in app: Î,CHÀÒK9ã ZÍùÝNÿ¯;rï
+[2019-11-06 10:38:21,408] INFO in app: Cryptography key
+[2019-11-06 10:38:21,409] INFO in app: b'vgF_Yo8-IutJs-AcwWPnuNBgRSgncuVo1yfc9uqSiiU='
+[2019-11-06 10:38:21,409] INFO in app: JWT Key
+[2019-11-06 10:38:21,409] INFO in app: mRo48tU4ebP6jIshqaoNf2HAnesrCGHm
+[2019-11-06 10:38:21,409] INFO in app: JWT Algorithm
+[2019-11-06 10:38:21,409] INFO in app: HS256
+[2019-11-06 10:38:21,435] INFO in app: NewApp Launched successfully
+[2019-11-06 10:38:21,435] INFO in app: Security keys
+[2019-11-06 10:38:21,435] INFO in app: Session keys
+[2019-11-06 10:38:21,440] INFO in app: Î,CHÀÒK9ã ZÍùÝNÿ¯;rï
+[2019-11-06 10:38:21,440] INFO in app: Cryptography key
+[2019-11-06 10:38:21,440] INFO in app: b'vgF_Yo8-IutJs-AcwWPnuNBgRSgncuVo1yfc9uqSiiU='
+[2019-11-06 10:38:21,440] INFO in app: JWT Key
+[2019-11-06 10:38:21,440] INFO in app: mRo48tU4ebP6jIshqaoNf2HAnesrCGHm
+[2019-11-06 10:38:21,440] INFO in app: JWT Algorithm
+[2019-11-06 10:38:21,441] INFO in app: HS256
+[2019-11-06 10:38:21,461] INFO in app: NewApp Launched successfully
+[2019-11-06 10:38:21,462] INFO in app: Security keys
+[2019-11-06 10:38:21,462] INFO in app: Session keys
+[2019-11-06 10:38:21,462] INFO in app: Î,CHÀÒK9ã ZÍùÝNÿ¯;rï
+[2019-11-06 10:38:21,462] INFO in app: Cryptography key
+[2019-11-06 10:38:21,462] INFO in app: b'vgF_Yo8-IutJs-AcwWPnuNBgRSgncuVo1yfc9uqSiiU='
+[2019-11-06 10:38:21,463] INFO in app: JWT Key
+[2019-11-06 10:38:21,463] INFO in app: mRo48tU4ebP6jIshqaoNf2HAnesrCGHm
+[2019-11-06 10:38:21,463] INFO in app: JWT Algorithm
+[2019-11-06 10:38:21,463] INFO in app: HS256

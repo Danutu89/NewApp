@@ -1,4 +1,5 @@
 <wrapper class="sidebar" id="wrapper-left" style="display: block;">
+    {% if request.url_rule.endpoint == 'home.home' %}
     {% if current_user.is_authenticated %}
     <div class="user-card">
             <a href="{{url_for('users.user', id=current_user.id, name=current_user.name)}}" style="display: flex;">
@@ -11,6 +12,20 @@
                         <span class="user-tag">@{{current_user.name}}</span>
                     </div>
                     </a>
+    </div>
+    {% else %}
+    <div class="widget" id="widget-register">
+        <div class="logo">
+                <img style="vertical-align: middle;margin-left: -1px;" src="https://newapp.nl/static/logo.svg" width="100" alt="">
+        </div>
+        <div class="moto">
+            JOIN US
+        </div>
+        <div class="register">
+            <a href="#register-modal">
+                <button>REGISTER</button>
+            </a>
+        </div>
     </div>
     {% endif %}
     <div class="widget">
@@ -47,7 +62,7 @@
         <div class="widget-list" style="overflow: auto;">
             {% if current_user.is_authenticated %}
             {% for tag in current_user.int_tags %}
-            {% if tag  %}
+            {% if tag %}
             <div class="widget-item" id="widget-tags" style="border-top: none;display: flex;">
                 <div class="text">
                     <a style="text-decoration: underline;" href="{{url_for('home.home',tag_finder=tag)}}">
@@ -64,9 +79,9 @@
                 </div>
             </div>
             {% endif %}
-            {% for tag in tagi %}
+            {% for tag in most_tags %}
             {% if current_user.is_authenticated %}
-            {% if tag.tag not in current_user.int_tags %}
+            {% if tag.name not in current_user.int_tags %}
             {% if tag.name %}
             <div class="widget-item" id="widget-tags" style="border-top: none;display: flex;">
                 <div class="text">
@@ -93,4 +108,138 @@
             {% endfor %}
         </div>
     </div>
+    <div class="widget" style="display: block;padding: 1rem;">
+        <a href="https://newapp.nl"><img style="vertical-align: middle;margin-left: -1px;" src="https://newapp.nl/static/logo.svg"
+            width="25" height="30" alt=""></a>
+        <a href="https://www.facebook.com/newapp.nl"><i class="na-facebook-square" style="font-size: 2rem;
+            color: #18BC9C;
+            vertical-align: middle;
+            margin-left: 0.5rem;"></i></a>
+        <a href="https://twitter.com/_NewApp_"><i class="na-twitter" style="font-size: 2rem;
+            color: #18BC9C;
+            vertical-align: middle;
+            margin-left: 0.5rem;"></i></a>
+        <a href="{{url_for('home.about')}}" style="display: block;margin-top: 0.5rem;">About</a>
+        <a href="{{url_for('home.contact')}}" style="display: block;margin-top: 0.5rem;">Contact</a>
+        <a href="{{url_for('home.privacy')}}" style="display: block;margin-top: 0.5rem;">Privacy</a>
+    </div>
+    {% endif %}
+    {% if request.url_rule.endpoint == 'home.post' %}
+    {% if current_user.is_authenticated %}
+    {% if current_user.roleinfo.edit_post_permission == True %}
+    <div class="widget">
+        <div class="widget-header">
+            <div class="widget-title">Post Actions</div>
+        </div>
+        <div class="widget-list">
+            {% if current_user.roleinfo.close_post_permission == True %}
+            {% if posts.closed == False %}
+            <div class="widget-item" style="display: flex;justify-content: space-between;">
+                <div class="text">Close Post</div>
+                <form action="{{url_for('jsons.close_post', id=posts.id)}}">
+                    <button class="widget-button">Close</button>
+                </form>
+            </div>
+            {% endif %}
+            {% endif %}
+            {% if current_user.roleinfo.delete_post_permission == True %}
+            <div class="widget-item" style="display: flex;justify-content: space-between;">
+                <div class="text">Delete Post</div>
+                <form action="{{url_for('jsons.delete_post', id=posts.id)}}">
+                    <button class="widget-button">Delete</button>
+                </form>
+            </div>
+            {% endif %} 
+            {% if current_user.roleinfo.edit_post_permission or current_user.id == posts.userinf.id %}
+            <div class="widget-item" style="display: flex;justify-content: space-between;">
+                    <div class="text" style="display:flex;white-space: nowrap;">Edit Post</div>
+                    <a href="{{url_for('home.edit_post', id=posts.id)}}" style="margin: 0;width:0;display:contents"><button class="widget-button">Edit</button></a>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+    {% endif %}
+    {% endif %}
+    <div class="user-card" style="align-items: unset">
+        <a href="{{url_for('users.user', name=posts.user_in.name, id=posts.user_in.id )}}"
+            style="margin-bottom:0.2rem;display: flex">
+        <div class="user-image">
+            <img class="profile_image" src="{{posts.user_in.avatar}}" height="50px" width="50px" {% if current_user.is_authenticated %}{% if current_user.id != posts.user_in.id %}style="margin-top: 0.3rem;"{% endif %}{% endif %} title="profile image">
+        </div>
+        
+            <div class="user-info">
+                <span style="display: flex;height:0.92em;">{{posts.user_in.real_name}}<span
+                        class="{% if posts.user_in.is_online %}dot_online{% else %}dot_offline{% endif %}"
+                        style="margin-left: 2%;height: 10px;width: 10px;margin-right: 0;margin-top: 4px;"></span></span>
+                <span class="user-tag">@{{posts.user_in.name}}</span>
+            </div>
+        </a>
+            {% if current_user.is_authenticated %}
+            {% if current_user.id != posts.user_in.id %}
+            <div class="profile-actions">
+                <button class="follow-user" onclick="Follow_User({{posts.user_in.id}})"
+                    id="follow-user-{{posts.user_in.id}}">{% if posts.user_in.id in current_user.follow %}&#x2713
+                    Following{% else %}Follow{% endif %}</button>
+            </div>
+            {% endif %}
+            {% endif %}
+        
+    </div>
+    <div class="widget">
+        <div class="widget-header">
+            <div class="widget-">@{{posts.user_in.name}} Info:</div>
+        </div>
+        <div class="widget-list">
+            {% if posts.user_in.profession != 'None' %}
+            <div class="widget-item">
+                <div class="text">
+                    <span style="font-size: 0.8rem;"><i class="na-briefcase"></i> Profession: {{posts.user_in.profession}}</span>
+                </div>
+            </div>
+            {% endif %}
+            <div class="widget-item">
+                <div class="text">
+                    <span style="font-size: 0.8rem;"><i class="na-home"></i> Location: {{posts.user_in.country_name}} <span
+                            class="flag-icon flag-icon-{{posts.user_in.country_flag}}"></span></span>
+                </div>
+            </div>
+            <div class="widget-item">
+                <div class="text">
+                    <span style="font-size: 0.8rem;"><i class="na-clock"></i> Joined on: {{posts.user_in.join_date}}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="widget">
+        <div class="widget-header" style="border:none;">
+            <div class="widget-title">More From {{posts.user_in.name}}</div>
+        </div>
+        <div class="widget-list" style="padding: 0.1rem;max-height: 550px;overflow: auto;">
+            {% for post in post_from_user %}
+            <div class="widget-post">
+                <div class="post-header">
+                    <img style="border-radius: 20px;margin-top: 0.25rem;" src="{{posts.user_in.avatar}}" height="40px"
+                        width="40px">
+                        
+                    </div>
+                <div class="post-footer" style="margin-left: 2%;">
+                    <div class="post-title">
+                        <a href="{{url_for('home.post',id=post.id, title=post.title)}}">
+                                <span class="post-title">{{post.title}}</span>
+                            </a>
+                    </div>
+                    <div class="post-tags">
+                        {% for tag in tags_all %}
+                        {% if post.id in tag.post %}
+                        <a href="{{url_for('home.home',tag_finder=tag.name)}}"><tag class="article-tag">{{tag.name}}</tag></a>
+                        {% endif %}
+                        {% endfor %}
+                    </div>
+                    
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
 </wrapper>

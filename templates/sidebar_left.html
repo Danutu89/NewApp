@@ -21,7 +21,7 @@
         </div>
         <div class="widget-list">
             <div class="widget-item" id='posts-show'>
-                <div class="text"><a href="{{url_for('home.home')}}"><span class="section">Posts</span></a></div>
+                <div class="text"><a href="{{url_for('home.home')}}"><span class="section"><i class="na-pen-square"></i> Posts</span></a></div>
                 <div class='multilevel' id='posts'>
                     {% if current_user.is_authenticated %}
                     <div class="widget-item">
@@ -46,7 +46,7 @@
                 </div>
             </div>
             <div class="widget-item" id='podcasts-show'>
-                <div class="text"><a href="{{url_for('home.podcast')}}"><span class="section">Podcasts</span></a></div>
+                <div class="text"><a href="{{url_for('home.podcast')}}"><span class="section"><i class="na-headphones"></i> Podcasts</span></a></div>
                 <div class='multilevel' id='podcasts'>
                     {% if current_user.is_authenticated %}
                     <div class="widget-item">
@@ -118,10 +118,16 @@
         </div>
     </div>
     <div class="widget" style="display: block;padding: 1rem;">
-        <span style="display: block;">Links</span>
-        <img style="vertical-align: middle;margin-left: -1px;" src="https://newapp.nl/static/logo.svg"
-            width="35" height="50" alt="">
-        <a href="https://www.facebook.com/newapp.nl"><i class="na-facebook" style="font-size: 2rem;color:#18BC9C;"></i></a>
+        <a href="https://newapp.nl"><img style="vertical-align: middle;margin-left: -1px;" src="https://newapp.nl/static/logo.svg"
+            width="25" height="30" alt=""></a>
+        <a href="https://www.facebook.com/newapp.nl"><i class="na-facebook-square" style="font-size: 2rem;
+            color: #18BC9C;
+            vertical-align: middle;
+            margin-left: 0.5rem;"></i></a>
+        <a href="https://twitter.com/_NewApp_"><i class="na-twitter" style="font-size: 2rem;
+            color: #18BC9C;
+            vertical-align: middle;
+            margin-left: 0.5rem;"></i></a>
         <a href="{{url_for('home.about')}}" style="display: block;margin-top: 0.5rem;">About</a>
         <a href="{{url_for('home.contact')}}" style="display: block;margin-top: 0.5rem;">Contact</a>
         <a href="{{url_for('home.privacy')}}" style="display: block;margin-top: 0.5rem;">Privacy</a>

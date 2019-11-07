@@ -342,6 +342,7 @@ def like_post(id):
                 None,
                 'unlike'
             )
+            not_check = db.session.query(Notifications_Model).filter_by(title='{} unliked your post'.format(current_user.name)).filter_by(body=str(post.title)).first()
         else:
             response = jsonify({'operation': 'liked'})
             post.likes = post.likes + 1
@@ -357,6 +358,7 @@ def like_post(id):
                 None,
                 'like'
             )
+            not_check = db.session.query(Notifications_Model).filter_by(title='{} liked your post'.format(current_user.name)).filter_by(body=post.title).first()
     else:
         response = jsonify({'operation': 'liked'})
         post.likes = post.likes + 1
@@ -372,8 +374,12 @@ def like_post(id):
             None,
             'like'
         )
-    
-    db.session.add(notify)
+        not_check = db.session.query(Notifications_Model).filter_by(title='{} liked your post'.format(current_user.name)).filter_by(body=post.title).first()
+
+    if not_check is not None:
+        not_check.checked = False
+    else:
+        db.session.add(notify)
 
     current_user.liked_posts = like
     db.session.commit()

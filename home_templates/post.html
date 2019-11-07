@@ -46,7 +46,7 @@ content .sidebar#sidebar-right{
                     {% if current_user.is_authenticated %}
                     <div class="user-actions">
                         <span onclick="Like_Post({{posts.id}})" style="cursor: pointer;"><i id="heart"
-                                class="{% if posts.id in current_user.liked_posts %}fas{% else %}fal{% endif %} fa-heart"></i>
+                                class="{% if posts.id in current_user.liked_posts %}na-heart{% else %}na-heart1{% endif %}"></i>
                             Like</span>
                         <!-- <span style="cursor: pointer;"><i class="fas fa-share-alt"></i> Share</span> -->
                     </div>
