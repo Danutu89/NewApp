@@ -25,6 +25,7 @@ from werkzeug.wrappers import BaseRequest
 from werkzeug.wsgi import responder
 from werkzeug.exceptions import HTTPException, NotFound
 from pywebpush import webpush, WebPushException
+from flask_socketio import SocketIO
 
 key_c = '\xce,CH\xc0\xd2K9\xe3\x87\xa0Z\x19\x8a\xcd\xf9\x91\x94\xddN\xff\xaf;r\xef'
 key_cr = b'vgF_Yo8-IutJs-AcwWPnuNBgRSgncuVo1yfc9uqSiiU='
@@ -81,6 +82,7 @@ db.create_all()
 bcrypt = Bcrypt(app)
 login_manager = LoginManager()
 login_manager.init_app(app)
+#socket = SocketIO(app, message_queue='redis://',manage_session=False)
 
 translate = FullClient("7eaa96e0-be79-11e9-8f72-af685da1b20e",apiServer="http://api.cortical.io/rest", retinaName="en_associative")
 
@@ -88,6 +90,26 @@ login_manager.login_view = "home.home"
 login_manager.session_protection = "strong"
 
 cipher_suite = Fernet(key_cr)
+
+# @socket.on('message')
+# def handle_message(message):
+#     print('received message: ' + message)
+
+# @socket.on('connect')
+# def on_connect():
+#     if current_user.is_authenticated:
+#         user = db.session.query(UserModel).filter_by(id=current_user.id).first()
+#         user.is_online = True
+#         db.session.commit()
+#     print('my response', {'data': 'Connected'})
+
+# @socket.on('disconnect')
+# def on_disconnect():
+#     if current_user.is_authenticated:
+#         user = db.session.query(UserModel).filter_by(id=current_user.id).first()
+#         user.is_online = False
+#         db.session.commit()
+#     print('my response', {'data': 'Disconnected'})
 
 @app.route('/sw.js')
 def service_worker():
@@ -173,6 +195,7 @@ def make_celery(app):
 
 celery = make_celery(app)
 
+
 if __name__=="__main__":
     app.jinja_env.cache = {}
-    socket.run(app, threading=True);
+    socket.run(app, threading=True,host='0.0.0.0',port=8000);

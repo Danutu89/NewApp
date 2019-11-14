@@ -8,7 +8,7 @@
       </div>
       <div class="navbar-item navbar-center navbar-search">
         <form action="/" method="GET">
-          <input type="text" name="search" placeholder="Search">
+          <input type="text" name="search" placeholder="Search" id="search">
         </form>
       </div>
 
@@ -91,7 +91,7 @@
               <div class="newapp-dropdown-content" id="user">
                 @{{current_user.name}}
                 <hr>
-                <a href="{{url_for('users.user', id=current_user.id, name=current_user.name)}}" style="color: white;">
+                <a href="{{url_for('users.user', name=current_user.name)}}" style="color: white;">
                 <div class="dropdown-item">
                   <i class="na-user"></i> Profile
                 </div>

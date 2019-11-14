@@ -161,7 +161,7 @@
     {% endif %}
     {% endif %}
     <div class="user-card" style="align-items: unset">
-        <a href="{{url_for('users.user', name=posts.user_in.name, id=posts.user_in.id )}}"
+        <a href="{{url_for('users.user', name=posts.user_in.name)}}"
             style="margin-bottom:0.2rem;display: flex">
         <div class="user-image">
             <img class="profile_image" src="{{posts.user_in.avatar}}" height="50px" width="50px" {% if current_user.is_authenticated %}{% if current_user.id != posts.user_in.id %}style="margin-top: 0.3rem;"{% endif %}{% endif %} title="profile image">
@@ -169,8 +169,7 @@
         
             <div class="user-info">
                 <span style="display: flex;height:0.92em;">{{posts.user_in.real_name}}<span
-                        class="{% if posts.user_in.is_online %}dot_online{% else %}dot_offline{% endif %}"
-                        style="margin-left: 2%;height: 10px;width: 10px;margin-right: 0;margin-top: 4px;"></span></span>
+                    class="dot_status"style="margin-left: 2%;height: 10px;width: 10px;margin-right: 0;margin-top: 4px;background-color:{{posts.user_in.status_color}};"></span></span>
                 <span class="user-tag">@{{posts.user_in.name}}</span>
             </div>
         </a>

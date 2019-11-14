@@ -24,7 +24,7 @@
 							<div class="large">{{analyze.posts_15_days()}}{% if  analyze.perc_posts() > 0 %}
 								<span style="color:green;font-size:0.5em;">+{{analyze.perc_posts()}}%</span>
 								{% else %}
-								<span style="color:red;font-size:0.5em;">-{{analyze.perc_posts()}}%</span>
+								<span style="color:red;font-size:0.5em;">{{analyze.perc_posts()}}%</span>
 								{% endif %}</div>
 							
 							<div class="text-muted">New Questions</div>
@@ -45,7 +45,7 @@
 							<div class="large">{{analyze.user_15_days()}}{% if  analyze.perc_users() > 0 %}
 								<span style="color:green;font-size:0.5em;">+{{analyze.perc_users()}}%</span>
 								{% else %}
-								<span style="color:red;font-size:0.5em;">-{{analyze.perc_users()}}%</span>
+								<span style="color:red;font-size:0.5em;">{{analyze.perc_users()}}%</span>
 								{% endif %}</div>
 							<div class="text-muted">New Users</div>
 						</div>
@@ -57,7 +57,7 @@
 							<div class="large">{{analyze.views_15_days()}}{% if  analyze.perc_views() > 0 %}
 								<span style="color:green;font-size:0.5em;">+{{analyze.perc_views()}}%</span>
 								{% else %}
-								<span style="color:red;font-size:0.5em;">-{{analyze.perc_views()}}%</span>
+								<span style="color:red;font-size:0.5em;">{{analyze.perc_views()}}%</span>
 								{% endif %}</div>
 							
 							<div class="text-muted">New Page Views</div>
@@ -133,7 +133,7 @@
 								{% if  per_devices['computer'] > 0 %}
 								<span style="color:green">+{{per_devices['computer']}}%</span>
 								{% else %}
-								<span style="color:red">-{{per_devices['computer']}}%</span>
+								<span style="color:red">{{per_devices['computer']}}%</span>
 								{% endif %}
 							</div>
 							<div class="mobile" style="    width: 50%;
@@ -145,7 +145,7 @@
 								{% if  per_devices['mobile'] > 0 %}
 								<span style="color:green">+{{per_devices['mobile']}}%</span>
 								{% else %}
-								<span style="color:red">-{{per_devices['mobile']}}%</span>
+								<span style="color:red">{{per_devices['mobile']}}%</span>
 								{% endif %}
 							</div>
 						</div>
@@ -367,7 +367,7 @@
 						return country[tooltipItem[0]['index']];
 					},
 					label: function(tooltipItem, data) {
-						return "Views: " + (({{analyze.views_15_days()}} - data['datasets'][tooltipItem['datasetIndex']]['data'][tooltipItem['index']])/{{analyze.posts_15_days()}})%100;
+						return "Views: " + parseFloat((data['datasets'][tooltipItem['datasetIndex']]['data'][tooltipItem['index']]/{{analyze.views_15_days()}})*100).toFixed(2) + "%";
 					}
 				}
 			},

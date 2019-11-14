@@ -12,7 +12,10 @@ self.addEventListener('install', function(event) {
           'https://newappcdn.b-cdn.net/dark_code.css',
           'https://newapp.nl/static/logo.svg',
           'https://newapp.nl/static/favicon.png',
-          'https://newapp.nl/static/manifest.json'
+          'https://newapp.nl/static/manifest.json',
+          'https://newappcdn.b-cdn.net/fonts/NewApp-Icons.ttf',
+          'https://newappcdn.b-cdn.net/style.css',
+          '/static/offline.html'
         
         ]
       );
@@ -36,7 +39,13 @@ self.addEventListener("fetch", function(event) {
 			.then(function(response) { 
 				return response; 
 			}); 
-		}) 
+		}).catch(function() {
+      // If both fail, show a generic fallback:
+      return caches.match('/static/offline.html');
+      // However, in reality you'd have many different
+      // fallbacks, depending on URL & headers.
+      // Eg, a fallback silhouette image for avatars.
+    }) 
 	); 
 });
 // self.addEventListener('pushsubscriptionchange', function(event) {

@@ -3,7 +3,7 @@
 <div class="sidebar" id="sidebar-left">
     {% if current_user.is_authenticated %}
     <div class="user-card">
-        <a href="{{url_for('users.user', id=current_user.id, name=current_user.name)}}" style="display: flex;">
+        <a href="{{url_for('users.user', name=current_user.name)}}" style="display: flex;">
         <div class="user-image" style="margin-bottom:0;">
             <img class="profile_image" src="{{current_user.avatar}}" height="50px" width="50px" title="profile image">
         </div>

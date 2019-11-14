@@ -485,7 +485,8 @@ def trending():
 
     for post in posts:
         published_on = post.posted_on
-        today = dt.date.today()
+        today = dt.datetime.today()
+        today_date = dt.date.today()
 
         total_days = (today - published_on).days - 1
         
@@ -494,9 +495,9 @@ def trending():
 
         for analyze in analyze_posts:
             if analyze.name == 'Post_{}'.format(post.id):
-                if (today-analyze.first_visited).days < 2:
+                if (today_date-analyze.first_visited).days < 2:
                     day_1 += analyze.visits
-                if (today-analyze.first_visited).days < 1:
+                if (today_date-analyze.first_visited).days < 1:
                     day_0 += analyze.visits
         
         total = (day_1 + day_0)/2
@@ -655,3 +656,30 @@ def upload():
     picture_fn = file_name + '.webp'
 
     return jsonify({'image': '/static/images/posts/'+picture_fn})
+
+@json_pages.route("/api/set_user_offline/<int:id>")
+def set_offline(id):
+    user = db.session.query(UserModel).filter_by(id=id).first()
+    user.status = 'Offline'
+    user.status_color = '#cc1616'
+    db.session.commit()
+
+    return jsonify({'operation': 'success'})
+
+@json_pages.route("/api/set_user_online/<int:id>")
+def set_online(id):
+    user = db.session.query(UserModel).filter_by(id=id).first()
+    user.status = 'Online'
+    user.status_color = '#00c413'
+    db.session.commit()
+
+    return jsonify({'operation': 'success'})
+
+@json_pages.route("/api/set_user_away/<int:id>")
+def set_away(id):
+    user = db.session.query(UserModel).filter_by(id=id).first()
+    user.status = 'Away'
+    user.status_color = '#ffe81b'
+    db.session.commit()
+
+    return jsonify({'operation': 'success'})

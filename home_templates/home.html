@@ -34,7 +34,7 @@
                     <div class="article-title"><a href="{{url_for('home.post', id=post.id, title=post.title)}}"><h1 style="font-size: 1.5rem;
                         font-weight: 400;
                         margin: 0;">{{post.title}}</h1></a></div>
-                    <div class="article-author">Author: <a href="{{url_for('users.user', name=post.user_in.name, id=post.user_in.id )}}">{{post.user_in.name}}</a></div>
+                    <div class="article-author">Author: <a href="{{url_for('users.user', name=post.user_in.name )}}">{{post.user_in.name}}</a></div>
                     <div class="article-tags">
                         <span>Tags: </span>
                         {% for tag in tags %}
@@ -46,7 +46,7 @@
                 </div>
                 </div>
                 <div class="article-footbar">
-                <div class="article-date">Published on {{post.posted_on}}</div>
+                <div class="article-date">Published on {{(post.posted_on.date()) }} {% if (((post.posted_on - now).days|string)[1:])|int > 1 %}({{((post.posted_on - now).days|string)[1:]}} days ago){% elif (post.posted_on - now).seconds|int / 3600 > 0 %} ({{ ((post.posted_on - now).seconds|int / 3600)|int }} hours ago){% else %}({{ ((post.posted_on - now).seconds|int / 60)|int }} min ago){% endif %}</div>
                 
                 
                 <div class="article-misc">

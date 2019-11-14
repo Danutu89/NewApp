@@ -23,6 +23,7 @@ from webptools import webplib as webp
 import socket
 import smtplib
 import dns.resolver
+import urllib
 
 users_pages = Blueprint(
     'users',__name__,
@@ -88,7 +89,8 @@ def login():
         print(e)
         pass
 
-    user.is_online = True
+    user.status = 'Online'
+    user.status_color = '#00c413'
     user.ip_address = userIP
     user.browser = userInfo['browser']['name']
     user.country_name = str(userLoc['country'])
@@ -103,7 +105,8 @@ def logout():
     if current_user.is_authenticated == False:
         return redirect(url_for('home.home'))
     user = db.session.query(UserModel).filter_by(name=current_user.name).first_or_404()
-    user.is_online = False
+    user.status = 'Offline'
+    user.status_color = '#cc1616'
     db.session.commit()
     logout_user()
     flash("You were just logged out!", 'success')
@@ -181,7 +184,6 @@ def register():
             None,
             None,
             False,
-            False,
             userIP,
             userInfo['browser']['name'],
             str(userLoc['country']),
@@ -201,6 +203,8 @@ def register():
             None,
             None,
             'Light',
+            None,
+            None,
             None
         )
     db.session.add(new_user)
@@ -232,27 +236,38 @@ def confirm_register(email,token):
   flash('Register successfully', 'success')
   return redirect(url_for('home.home'))
 
-@users_pages.route("/user/<string:name>/id=<int:id>")
-def user(name,id):
+@users_pages.route("/user/<string:name>")
+def user(name):
     data = [request.path, GetSessionId(), str(datetime.now().replace(microsecond=0))]
     parseVisitator(data)
     search = SearchForm(request.form)
     register = RegisterForm(request.form)
     loginf = LoginForm(request.form)
     reset = ResetPasswordForm(request.form)
-    user = db.session.query(UserModel).filter_by(id=id).first_or_404()
-    posts = db.session.query(PostModel).filter_by(user=id).order_by(desc(PostModel.id)).all()
+    user = db.session.query(UserModel).filter_by(name=name).first_or_404()
+    posts = db.session.query(PostModel).filter_by(user=user.id).order_by(desc(PostModel.id)).all()
     follow = db.session.query(UserModel).filter(UserModel.id.in_(user.follow)).limit(6).all()
     tags = db.session.query(TagModel).all()
-    post_count = db.session.query(PostModel).filter_by(user=id).count()
-    reply_count = db.session.query(ReplyModel).filter_by(user=id).count()
+    post_count = db.session.query(PostModel).filter_by(user=user.id).count()
+    reply_count = db.session.query(ReplyModel).filter_by(user=user.id).count()
     location = db.session.query(Analyze_Session).filter_by(session=session['user']).first()
+    now = dt.datetime.now
+
+    if current_user.is_authenticated:
+        post_views = 0
+        for post in posts:
+            p = db.session.query(Analyze_Pages).filter_by(name=urllib.parse.unquote(str(url_for('home.post',title=post.title,id=post.id)))).count()
+            post_views += p
+
 
     if request.args.get('notification'):
         db.session.query(Notifications_Model).filter_by(id=request.args.get('notification')).delete()
         db.session.commit()
 
-    return render_template('user_page.html',follow=follow,tags=tags,posts=posts,user=user,post_count=post_count,reply_count=reply_count,search=search,register=register,login=loginf, reset=reset,location=location)
+    if current_user.is_authenticated:
+        return render_template('user_page.html',now=now(),post_views=post_views,post_count=post_count,reply_count=reply_count,follow=follow,tags=tags,posts=posts,user=user,register=register,login=loginf, reset=reset,location=location)
+
+    return render_template('user_page.html',now=now(),follow=follow,tags=tags,posts=posts,user=user,register=register,login=loginf, reset=reset,location=location)
 
 
 def save_img(user_id,type):

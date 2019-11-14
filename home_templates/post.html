@@ -102,11 +102,7 @@ content .sidebar#sidebar-right{
                         <a id="reply_name" style="color: #333;font-size: 1rem;"
                             href="{{url_for('users.user', name=replies.user_in.name, id=replies.user_in.id )}}">@{{replies.user_in.name}}</a>
                         <p style="font-size: 60%;opacity: 0.6;margin-bottom: 0;margin-top: 0;">
-                            {% if replies.user_in.is_online %}
-                            Online
-                            {% else %}
-                            Offline
-                            {% endif %}
+                            {{ replies.user_in.status }}
                         </p>
                     </div>
                 </div>

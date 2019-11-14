@@ -2,11 +2,8 @@
 {% block content %}
 <form action="{{url_for('users.modify_profile', idm=user.id)}}" {% if request.MOBILE == False %}enctype='multipart/form-data'{% endif %} method="POST">
 <profile class="profile-page">
-  <div class="profile-cover" {%if not user.cover %}style="background-color: #14947b;border: var(--border);height:350px;"{% endif %}>
-    {% if user.cover %}
-    <img src="{{user.cover}}" alt="">
-    {% endif %}
-  </div>
+    <div class="profile-cover" {%if not user.cover %}style="background-color: #14947b;border: var(--border);height:350px;"{% endif %} {% if user.cover %}style="height:450px;background-image:url({{user.cover}}); background-position:center;background-size: cover;"{% endif %}>
+      </div>
   <div class="profile-main">
     <div class="sidebar-info">
       <div class="profile-image">

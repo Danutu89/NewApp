@@ -30,7 +30,8 @@ class UserModel(db.Model):
     role = db.Column(db.Integer, ForeignKey('roles.id') ,default = 0)
     bio = db.Column(db.String(250), primary_key = False, default = 'Hey i`m new here')
     activated = db.Column(db.Boolean, primary_key = False)
-    is_online = db.Column(db.Boolean, primary_key = False)
+    status = db.Column(db.String, primary_key = False)
+    status_color = db.Column(db.String, primary_key = False)
     ip_address = db.Column(db.String, primary_key = False)
     browser = db.Column(db.String, primary_key = False)
     country_name = db.Column(db.String, primary_key = False)
@@ -57,9 +58,9 @@ class UserModel(db.Model):
     likes = relationship("LikeModel", backref="user_in")
     following = db.relationship("UserModel",foreign_keys=[follow])
 
-    def __init__(self,id,join_date,name,real_name,email,password,avatar,genre,role,bio,activated,is_online,
+    def __init__(self,id,join_date,name,real_name,email,password,avatar,genre,role,bio,activated,
                     ip_address,browser,country_name,country_flag,lang,int_tags,birthday,profession,saved_posts,liked_posts,follow,followed,cover,
-                    instagram,facebook,twitter,github,website,theme,int_podcasts):
+                    instagram,facebook,twitter,github,website,theme,int_podcasts,status,status_color):
         self.id = id
         self.join_date = join_date
         self.name = name
@@ -92,6 +93,8 @@ class UserModel(db.Model):
         self.website = website
         self.theme = theme
         self.int_podcasts = int_podcasts
+        self.status = status
+        self.status_color = status_color
 
     def is_authenticated(self):
         return True
@@ -389,15 +392,15 @@ class Analyze_Pages(Base):
 
     @staticmethod
     def perc_posts():
-        return ((Analyze_Pages.posts_30_days() - Analyze_Pages.posts_15_days()) - Analyze_Pages.posts_30_days())%100
+        return round(((Analyze_Pages.posts_15_days() - Analyze_Pages.posts_30_days()) / Analyze_Pages.posts_30_days())*100,2)
 
     @staticmethod
     def perc_views():
-        return ((Analyze_Pages.views_30_days() - Analyze_Pages.views_15_days()) - Analyze_Pages.views_30_days())%100
+        return round(((Analyze_Pages.views_15_days() - Analyze_Pages.views_30_days()) / Analyze_Pages.views_30_days())*100,2)
 
     @staticmethod
     def perc_users():
-        return ((Analyze_Pages.user_30_days() - Analyze_Pages.user_15_days()) - Analyze_Pages.user_30_days())%100
+        return round(((Analyze_Pages.user_15_days() - Analyze_Pages.user_30_days()) / Analyze_Pages.user_30_days())*100,2)
 
     @staticmethod
     def count_replies():

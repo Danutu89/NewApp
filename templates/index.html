@@ -58,12 +58,14 @@
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://newapp.nl/">
   <meta property="og:site_name" content="NewApp">
+  <meta property="og:image" itemprop="image primaryImageOfPage" content="https://newapp.nl/static/logo.jpg">
   <meta property="og:description"
     content="The newest community for developers to learn, share​ ​their programming ​knowledge, and build their careers.">
   {% elif request.url_rule.endpoint == 'home.podcast' %}
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://newapp.nl/podcast">
-  <meta property="og:site_name" content="NewApp">
+  <meta property="og:site_name" content="NewApp - Podcast">
+  <meta property="og:image" itemprop="image primaryImageOfPage" content="https://newapp.nl/static/logo.jpg">
   <meta property="og:description"
     content="NewApp Podcasts, where you can listen to listen podcast radio.">
   {% elif request.url_rule.endpoint == 'users.user' %}
@@ -81,7 +83,7 @@
   {% else %}
   <meta property="og:image" itemprop="image primaryImageOfPage" content="https://newapp.nl/static/favicon.png">
   {% endif %}
-  <meta property="og:description" content="{{posts.text[3:100]}}">
+  <meta property="og:description" content="{{description[:97]}}...">
   {% endif %}
   {% endif %}
   <meta name="environment" content="production">
@@ -90,6 +92,8 @@
   <script async src="https://newappcdn.b-cdn.net/jquery.js"></script>
   <!-- <script async src="https://code.jquery.com/jquery-3.3.1.min.js"></script> -->
   <script async src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"></script>
+  <link async rel="preload" href="https://newappcdn.b-cdn.net/fonts/NewApp-Icons.ttf" as="font" type="font/ttf" crossorigin>
+  <link async rel="preload" href="https://newappcdn.b-cdn.net/fonts/NewApp-Icons.woff" as="font" type="font/woff" crossorigin>
   {% include 'style.html' %}
 </head>
 <header>
@@ -312,6 +316,32 @@
               n.css('display','none');
           }
       });
+      {% if current_user.is_authenticated %}
+      window.onbeforeunload = function (e) {
+        if ((window.event.clientY < 0)) {
+          let set_offline = fetch("https://newapp.nl/api/set_user_offline/{{current_user.id}}");
+        }
+        console.log(window.event.clientY );
+      };
+      window.onload = function () {
+        let set_online = fetch("https://newapp.nl/api/set_user_online/{{current_user.id}}");
+      };
+      $(window).on('focus', function () {
+        let set_online = fetch("https://newapp.nl/api/set_user_online/{{current_user.id}}");
+      });
+
+      $(window).on('blur', function () {
+        let set_away = fetch("https://newapp.nl/api/set_user_away/{{current_user.id}}");
+      });
+      {% endif %}
+      
+       $(document).on('keydown',function(event){
+          if(event.keyCode==191){
+               if(!$('#search').is(':focus')) {
+                    $('#search').focus().select();  
+                }
+          }
+       });
     });
     {% if request.MOBILE %}
     PullToRefresh.init({
