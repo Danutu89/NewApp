@@ -1,0 +1,320 @@
+<script>
+  const imageHandler = () => {
+  const input = document.createElement('input');
+
+  input.setAttribute('type', 'file');
+  input.setAttribute('accept', 'image/*');
+  input.click();
+
+  input.onchange = async () => {
+    const file = input.files[0];
+    const formData = new FormData();
+
+    formData.append('image', file);
+
+    // Save current cursor state
+    const range = this.quill.getSelection(true);
+
+    // Insert temporary loading placeholder image
+    //this.quill.insertEmbed(range.index, 'image', `${ window.location.origin }{{url_for('static',filename='loading/loading.gif')}}`); 
+
+    // Move cursor to right side of image (easier to continue typing)
+    this.quill.setSelection(range.index + 1);
+
+    // Post to an api endpoint which uploads to s3. It returns the s3 url
+
+    var res = null;
+
+    await $.ajax({
+      type : 'POST',
+      url : window.location.origin + '/api/upload_post',
+      data: formData,
+      contentType: false,
+      processData: false,
+      success: function(data){
+        res = data.image
+      }
+    })
+    
+    // Remove placeholder image
+    this.quill.deleteText(range.index, 1);
+
+    // Insert uploaded image
+    this.quill.insertEmbed(range.index, 'image', res); 
+  }
+}
+</script>
+<script>
+  var quill = null;
+  var loadCss = function(cssPath){
+    var cssLink = document.createElement('link');
+    cssLink.rel = 'stylesheet';
+    cssLink.href = cssPath;
+    var head = document.getElementsByTagName('head')[0];
+    head.appendChild(cssLink);
+  };
+  var loadJs = function(cssPath){
+    var cssLink = document.createElement('script');
+    cssLink.src = cssPath;
+    var head = document.getElementsByTagName('head')[0];
+    head.appendChild(cssLink);
+  };
+  window.onload = function () {
+    var socket = io.connect("https://newapp.nl/",{transports: [ 'websocket', 'polling' ]});
+    socket.on('connect', function () {
+        socket.emit('myevent', {
+            data: 'I\'m connected!'
+        });
+    });
+    loadCss("https://newappcdn.b-cdn.net/style.css");
+    loadCss("https://newappcdn.b-cdn.net/styles.css");
+    loadJs("https://www.googletagmanager.com/gtag/js?id=UA-145440871-1");
+    {% if request.MOBILE == False %}
+    loadJs("https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js");
+    {% endif %}
+    {% if current_user.is_authenticated %}
+    {% if current_user.theme_mode == 'system' %}
+    if(window.matchMedia("(prefers-color-scheme: dark)").matches){
+      loadCss("https://newappcdn.b-cdn.net/dark_code.css");
+    }else{
+      loadCss("https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/prettify.css");
+    }
+    {% else %}
+    {% if current_user.theme == 'Dark' %}
+    loadCss("https://newappcdn.b-cdn.net/dark_code.css");
+    {% else %}
+    loadCss("https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/prettify.css");
+    {% endif %}
+    {% endif %}
+    {% else %}
+    loadCss("https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/prettify.css");
+    {% endif %}
+    setTimeout(init_NewApp,1000);
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+    gtag('js', new Date());
+
+    gtag('config', 'UA-145440871-1', {
+      'optimize_id': 'GTM-KKCQ2T7'
+    });
+    {% if request.MOBILE %}
+    (adsbygoogle = window.adsbygoogle || []).push({
+          google_ad_client: "ca-pub-8464409235663505",
+          enable_page_level_ads: true
+     });
+     {% endif %}
+    {% if current_user.is_authenticated %}
+    gtag('set', {'user_id': '{{current_user.id}}'});
+    {% endif %}
+    {%  if request.endpoint == 'home.home' %}
+    LoadTrending();
+    {% endif %}
+    if ('serviceWorker' in navigator) {
+      
+        navigator.serviceWorker.register("https://newapp.nl/sw.js").then(function(registration) {
+          // Registration was successful
+          console.log('ServiceWorker registration successful with scope: ', registration.scope);
+        }, function(err) {
+          // registration failed :(
+          console.log('ServiceWorker registration failed: ', err);
+        });
+    
+    };
+    {% if current_user.is_authenticated  %}
+    {% if request.url_rule.endpoint == 'home.post' or request.url_rule.endpoint == 'home.newpost' or request.url_rule.endpoint == 'home.edit_post' %}
+    var toolbarOptions = [
+      ['bold', 'italic', 'underline'],
+      ['blockquote', 'code-block'],
+      ['link', 'image'],
+      [{
+          'header': [1, 2, 3, 4, 5, 6, false]
+      }],
+      [{
+          'color': []
+      }, {
+          'background': []
+      }],
+      [{
+          'font': []
+      }],
+      [{
+          'align': []
+      }],
+    ];
+    function LoadQuill(){
+        quill = new Quill('#editor', {
+            modules: {
+                toolbar: {
+                  container: toolbarOptions,
+                  handlers: {
+                      image: imageHandler
+                  },
+                }
+            },
+            theme: 'snow',
+        });
+    }
+  
+    jQuery(document).ready(function() {
+      {% if request.url_rule.endpoint == 'home.post' %}
+      {% if posts.closed == False %}
+      LoadQuill();
+      {% endif %}
+      {% else %}
+      LoadQuill();
+      {% endif %}
+      PR.prettyPrint();
+      jQuery(".form-thread").submit(function() { 
+          var hidden_text_field = document.getElementById('text');
+          hidden_text_field.value = decodeURIComponent(encodeURIComponent(String(document.querySelector(".ql-editor").innerHTML)));
+      });
+      {% if request.url_rule.endpoint == 'home.edit_post' %}
+      quill.pasteHTML(document.getElementById('text').value);
+      {% endif %}
+    });
+    
+    {% endif %}
+    {% endif %}
+    jQuery(document).ready(function() {
+    window.setTimeout(function() {
+        $("alert-box").fadeTo(500, 0).slideUp(500, function(){
+            $(this).remove(); 
+        });
+    }, 500);
+      $('#notification-center').on('click',function(){
+        var n = $('#notifications');
+        if (n.css('display') == 'none'){
+          n.css('display','block');
+        }else{
+          n.css('display','none');
+        }
+      });
+      $('#user-center').on('click',function(){
+        var n = $('#user');
+        if (n.css('display') == 'none'){
+          n.css('display','block');
+        }else{
+          n.css('display','none');
+        }
+      });
+      $(document).on('click', function (e) {
+          if ($(e.target).closest("#notifications").length === 0 && $(e.target).closest("#notification-center").length === 0) {
+            var n = $('#notifications');
+              n.css('display','none');
+          }
+          if ($(e.target).closest("#user").length === 0 && $(e.target).closest("#user-center").length === 0) {
+            var n = $('#user');
+              n.css('display','none');
+          }
+      });
+      {% if current_user.is_authenticated %}
+      window.onload = function () {
+        let set_online = fetch("https://newapp.nl/api/set_user_online/{{current_user.id}}");
+      };
+      $(window).on('focus', function () {
+        let set_online = fetch("https://newapp.nl/api/set_user_online/{{current_user.id}}");
+      });
+
+      $(window).on('blur', function () {
+        let set_away = fetch("https://newapp.nl/api/set_user_away/{{current_user.id}}");
+      });
+      {% endif %}
+      
+       $(document).on('keydown',function(event){
+          if(event.keyCode==191){
+               if(!$('#search').is(':focus')) {
+                    $('#search').focus().select();  
+                }
+          }
+       });
+    });
+    {% if request.MOBILE %}
+    PullToRefresh.init({
+      mainElement: 'content',
+      triggerElement: 'content', // above which element?
+      onRefresh: function (done) {
+        setTimeout(function () {
+          done(); // end pull to refresh
+          window.location.reload(false);
+        }, 1500);
+      }
+      });
+    {% endif %}
+  };
+  {% if request.url_rule.endpoint == 'users.settings' %}
+  function ShowMisc(){
+    var x = document.getElementById('main');
+    x.style.display = 'none';
+    x = document.getElementById('misc');
+    x.style.display = {% if request.MOBILE %}'block'{% else %}'flex'{% endif %};
+  }
+  function ShowMain(){
+    var x = document.getElementById('misc');
+    x.style.display = 'none';
+    x = document.getElementById('main');
+    x.style.display = {% if request.MOBILE %}'block'{% else %}'flex'{% endif %};
+  }
+  {% endif %}
+</script>
+
+{% if request.url_rule.endpoint == 'home.home' or request.url_rule.endpoint == 'home.post' %}
+{% if request.MOBILE %}
+<script>
+
+let touchstartX = 0;
+let touchstartY = 0;
+let touchendX = 0;
+let touchendY = 0;
+var wrapper_opened = true;
+
+document.addEventListener('touchstart', function(event) {
+    touchstartX = event.changedTouches[0].screenX;
+    touchstartY = event.changedTouches[0].screenY;
+}, false);
+
+document.addEventListener('touchend', function(event) {
+    touchendX = event.changedTouches[0].screenX;
+    touchendY = event.changedTouches[0].screenY;
+    handleGesture();
+}, false); 
+
+function handleGesture() {
+    //Right Swipe
+    if (touchendX - 50 < touchstartX && touchendY - touchstartY < 20 && touchstartY - touchendY < 20 && touchendX != touchstartX) {
+      if (!wrapper_opened){
+        $("#wrapper-left").toggleClass('toggled');
+        wrapper_opened = true;
+      }
+    }
+    //Left Swipe
+    if (touchendX - 50 > touchstartX && touchstartY - touchendY < 20 && touchendY - touchstartY < 20 && touchendX != touchstartX) {
+      if (wrapper_opened){
+        $("#wrapper-left").toggleClass('toggled');
+        wrapper_opened = false;
+      }
+    }
+    
+    // if (touchendY < touchstartY) {
+    //     console.log('Swiped up');
+    // }
+    
+    // if (touchendY > touchstartY) {
+    //     console.log('Swiped down');
+    // }
+    //TAP
+    $(document).on('click', function (e) {
+    if (touchendY === touchstartY) {
+        if ($(e.target).closest("#wrapper-lrft").length === 0 && !wrapper_opened) {
+          $("#wrapper-left").toggleClass('toggled');
+          wrapper_opened = true;
+        }
+    }
+    });
+}
+</script>
+
+{% endif %}
+{% endif %}

@@ -9,7 +9,7 @@ from app import (BadSignature, BadTimeSignature, SignatureExpired, db, mail,
                  serializer,cipher_suite,app)
 from forms import (LoginForm, ModifyProfileForm, RegisterForm,
                    ResetPasswordForm, SearchForm)
-from models import  PostModel, ReplyModel, UserModel, bcrypt, Analyze_Pages, Analyze_Session, TagModel, Notifications_Model
+from models import  PostModel, ReplyModel, UserModel, bcrypt, Analyze_Pages, Analyze_Session, TagModel, Notifications_Model, User_DevicesModel
 from cryptography.fernet import Fernet
 import os
 from PIL import Image
@@ -24,6 +24,8 @@ import socket
 import smtplib
 import dns.resolver
 import urllib
+from device_detector import DeviceDetector
+from sqlalchemy.schema import Sequence
 
 users_pages = Blueprint(
     'users',__name__,
@@ -58,18 +60,6 @@ def login():
         flash("Wrong Password", 'error')
         return redirect("https://newapp.nl"+request.args.get('url'))
 
-    if user.activated == False:
-        flash("Account not activated", 'error')
-    else:
-        if login.remember.data:
-            if request.MOBILE:
-                login_user(user,remember=login.remember.data,duration=dt.timedelta(days=30))
-            else:
-                login_user(user,remember=login.remember.data,duration=dt.timedelta(days=1))
-        else:
-            login_user(user,remember=login.remember.data,duration=dt.timedelta(hours=1))
-        flash("You were just logged in!", 'success')
-
     userInfo = httpagentparser.detect(request.headers.get('User-Agent'))
 
     if request.environ.get('HTTP_X_FORWARDED_FOR') is None:
@@ -88,6 +78,94 @@ def login():
         print("Not supported country", userLoc["country"])
         print(e)
         pass
+
+
+    if user.activated == False:
+        flash("Account not activated", 'error')
+    else:
+
+        device_info = request.headers.get('User-Agent')
+        device = DeviceDetector(device_info).parse()
+
+        user_first_device = db.session.query(User_DevicesModel).filter_by(user=user.id).first()
+        user_device = db.session.query(User_DevicesModel).filter_by(user=user.id).filter_by(device_model=device.device_model()).first()
+
+        if user_first_device is None:
+            new_device = User_DevicesModel(
+                None,
+                user.id,
+                device.device_type(),
+                device.device_model(),
+                device.device_brand_name(),
+                dt.datetime.now(),
+                True,
+                [userIP]
+            )
+            db.session.add(new_device)
+            db.session.commit()
+        elif user_device is None:
+            new_device = User_DevicesModel(
+                None,
+                user.id,
+                device.device_type(),
+                device.device_model(),
+                device.device_brand_name(),
+                dt.datetime.now(),
+                True,
+                [userIP]
+            )
+            db.session.add(new_device)
+            db.session.commit()
+        else:
+            ips = list(user_device.ip_address)
+            ips.append(str(userIP))
+            print(userIP)
+            user_device.ip_address = ips
+            user_device.last_access = dt.datetime.now()
+            db.session.commit()
+
+            # if check_device is None or check_device.activated == False:
+            #     new_device = User_DevicesModel(
+            #         None,
+            #         user.id,
+            #         device.device_type(),
+            #         device.device_model(),
+            #         device.device_brand_name(),
+            #         dt.datetime.now(),
+            #         False,
+            #         [userIP]
+            #     )
+            #     db.session.add(new_device)
+            #     db.session.commit()
+            #     token = serializer.dumps(user.email,salt='confirm_device')
+            #     msg = Message('Confirm Device', sender='contact@newapp.nl', recipients=[user.email])
+            #     link = 'https://newapp.nl' + url_for('users.confirm_device',email=user.email ,token=token,id= db.session.execute(Sequence('user_devices_id_seq'))-1)
+            #     msg.html = render_template('email_device.html',link=link,email='contact@newapp.nl')
+            #     mail.send(msg)
+            #     return redirect(url_for('users.check'))
+            # elif check_device.activated:
+            #     if check_device.device_type == 'computer':
+            #         if userIP in list(check_device.ip_address):
+            #             check_device.last_access = datetime.datetime.now
+            #         else:
+            #             token = serializer.dumps(user.email,salt='confirm_device')
+            #             msg = Message('Confirm Device', sender='contact@newapp.nl', recipients=[user.email])
+            #             link = 'https://newapp.nl' + url_for('users.confirm_device_ip',email=user.email ,token=token,id= db.session.execute(Sequence('user_devices_id_seq'))-1,ip=userIP)
+            #             msg.html = render_template('email_device.html',link=link,email='contact@newapp.nl')
+            #             mail.send(msg)
+            #             return redirect(url_for('users.check'))
+            #     else:
+            #         check_device.last_access = dt.datetime.now()
+
+        if login.remember.data:
+            if request.MOBILE:
+                login_user(user,remember=login.remember.data,duration=dt.timedelta(days=30))
+            else:
+                login_user(user,remember=login.remember.data,duration=dt.timedelta(days=1))
+        else:
+            login_user(user,remember=login.remember.data,duration=dt.timedelta(hours=1))
+        flash("You were just logged in!", 'success')
+
 
     user.status = 'Online'
     user.status_color = '#00c413'
@@ -205,7 +283,8 @@ def register():
             'Light',
             None,
             None,
-            None
+            None,
+            'system'
         )
     db.session.add(new_user)
     db.session.commit()
@@ -236,11 +315,64 @@ def confirm_register(email,token):
   flash('Register successfully', 'success')
   return redirect(url_for('home.home'))
 
+@users_pages.route('/register/confirm/device/<string:email>/<string:token>/<int:id>',  methods=['GET','POST'])
+def confirm_device(email,token,id):
+  if current_user.is_authenticated:
+        return redirect(url_for('home.home'))
+
+  try:
+      email = serializer.loads(token,salt='confirm_device', max_age=300)
+  except SignatureExpired:
+      flash('Expired Token', 'error')
+      return redirect(url_for('home.home'))
+  except BadTimeSignature:
+      flash('Invalid Token', 'error')
+      return redirect(url_for('home.home'))
+  except BadSignature:
+      flash('Invalid Token', 'error')
+      return redirect(url_for('home.home'))
+
+  user = db.session.query(UserModel).filter_by(email=email).first()
+  device = db.session.query(User_DevicesModel).filter_by(id=id).first()
+  device.activated = True
+
+  db.session.commit()
+  login_user(user)
+
+  flash("You were just logged in!", 'success')
+  return redirect(url_for('home.home'))
+
+@users_pages.route('/register/confirm/device/<string:email>/<string:token>/<int:id>/<string:ip>',  methods=['GET','POST'])
+def confirm_device_ip(email,token,id,ip):
+  if current_user.is_authenticated:
+        return redirect(url_for('home.home'))
+
+  try:
+      email = serializer.loads(token,salt='confirm_device', max_age=300)
+  except SignatureExpired:
+      flash('Expired Token', 'error')
+      return redirect(url_for('home.home'))
+  except BadTimeSignature:
+      flash('Invalid Token', 'error')
+      return redirect(url_for('home.home'))
+  except BadSignature:
+      flash('Invalid Token', 'error')
+      return redirect(url_for('home.home'))
+
+  user = db.session.query(UserModel).filter_by(email=email).first()
+  device = db.session.query(User_DevicesModel).filter_by(id=id).first()
+  ips = device.ip_address
+  ips.append(ip)
+  device.ip_address = ips
+
+  db.session.commit()
+  login_user(user)
+
+  flash("You were just logged in!", 'success')
+  return redirect(url_for('home.home'))
+
 @users_pages.route("/user/<string:name>")
 def user(name):
-    data = [request.path, GetSessionId(), str(datetime.now().replace(microsecond=0))]
-    parseVisitator(data)
-    search = SearchForm(request.form)
     register = RegisterForm(request.form)
     loginf = LoginForm(request.form)
     reset = ResetPasswordForm(request.form)
@@ -317,6 +449,8 @@ def settings(name):
     modify_prof = ModifyProfileForm(request.form)
     modify_prof.theme.default = user.theme
     modify_prof.genre.default = user.genre
+    if user.theme_mode == 'system':
+        modify_prof.theme_mode.default = "checked"
     modify_prof.process()
     return render_template('user_settings.html', profile=profile, user=user,modify_prof=modify_prof)
 
@@ -339,7 +473,12 @@ def modify_profile(idm):
     user.twitter = modify_prof.twitter.data
     user.github = modify_prof.github.data
     user.website = modify_prof.website.data
-    user.theme = modify_prof.theme.data
+
+    if modify_prof.theme_mode.data == False:
+        user.theme = modify_prof.theme.data
+        user.theme_mode = 'manual'
+    else:
+        user.theme_mode = 'system'
 
     if request.MOBILE is not True:
         if request.files['avatarimg']:
@@ -362,11 +501,10 @@ def modify_profile(idm):
 def check():
     users = db.session.query(UserModel).all()
     posts = db.session.query(PostModel).all()
-    search = SearchForm(request.form)
     register = RegisterForm(request.form)
     login = LoginForm(request.form)
     reset = ResetPasswordForm(request.form)
-    return render_template('confirm_email.html',users=users,posts=posts,search=search,register=register,login=login,reset=reset)
+    return render_template('confirm_email.html',users=users,posts=posts,register=register,login=login,reset=reset)
 
 @users_pages.route('/password/reset', methods = ['GET','POST'])
 def reset_password():

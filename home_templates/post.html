@@ -23,7 +23,7 @@ content .sidebar#sidebar-right{
                         <img style="border-radius:50px;margin-right: 5px;" height="40px" width="40px"
                             src="{{posts.user_in.avatar}}">
                         <div class="author-info">
-                            <a href="{{url_for('users.user', id=posts.user_in.id,name=posts.user_in.name)}}"><span class="author-name">{{posts.user_in.real_name}}</span></a>
+                            <a href="{{url_for('users.user',name=posts.user_in.name)}}"><span class="author-name">{{posts.user_in.real_name}}</span></a>
                             <div class="post-tags">
                                 {% if tags[0].name %}
                                 {% for tag in tags %}
@@ -60,7 +60,9 @@ content .sidebar#sidebar-right{
                             <div class="editor" id="editor" style="margin-bottom:1%;" minlength="0"  autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"></div>
                             {{reply.csrf_token}}
                             {{reply.text}}
-                            <button class="reply-button" type="submit">Post Reply</button>
+                            <div style="display:flex;">
+                            <button class="reply-button" type="submit" style="margin-inline-start:auto;">Post Reply</button>
+                            </div>
                         </form>
                     </div>
                     {% else %}

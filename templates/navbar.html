@@ -3,7 +3,7 @@
       <div class="navbar-item">
         <a href="/" class="navbar-logo"><img style="vertical-align: middle;margin-left: -1px;" src="https://newapp.nl/static/logo.svg"
             width="25" alt=""><span style="margin-left: 0.2rem;" class="newapp-title"><span style="color:#18BC9C;">New</span><span
-              style="color:white;">App</span><span style="color:#18BC9C;font-size: 55%;font-weight: 600;">
+              style="color:var(--navbar-color);">App</span><span style="color:#18BC9C;font-size: 55%;font-weight: 600;">
               Beta</span></span></a>
       </div>
       <div class="navbar-item navbar-center navbar-search">
@@ -14,7 +14,7 @@
 
       {% if current_user.is_authenticated == false %}
       <div class="navbar-item" style="margin-inline-start: auto;display:flex;">
-        <a href="#login-modal" style="color: white;margin-block-start:auto;margin-block-end: auto;cursor: pointer;"><span
+        <a href="#login-modal" style="color: var(--navbar-color);margin-block-start:auto;margin-block-end: auto;cursor: pointer;"><span
             style="vertical-align: inherit;"><i class="na-sign-in-alt"></i> Login</span></a>
       </div>
       {% else %}
@@ -26,7 +26,7 @@
         </div>
         <div class="navbar-item" style="cursor: pointer;">
             <a href="{{url_for('users.notifications')}}" style="position: relative;
-            display: inline-block;color:white;">
+            display: inline-block;color:var(--navbar-color);">
                 <i class="na-bell" style="display:block;margin-top: 0.4rem;font-size:1.2rem;
                 margin-right:0.9rem;"></i>
                 {% if current_user.n_receiver | length > 0 %}
@@ -54,9 +54,9 @@
                     {% if notification.checked == False %}
                     <a href="{{notification.link}}?notification={{notification.id}}">
                       <div class="dropdown-item" style="display:flex;">
-                        <img src="{{notification.author.avatar}}" height="30px" width="30px" style="border-radius: 30px;" alt="">
+                        <img src="{{notification.author.avatar}}" height="30px" width="30px" style="border-radius: 30px;margin-top: 0.2rem;" alt="">
                         <div style="display: block;margin-left: 0.4rem;line-height: 1.2;">
-                          <span style="color: white;font-size:1rem;line-height: 1;"><span style="font-weight: 500;">{{notification.title.split(" ")[0] }}</span> {{notification.title[notification.title.split(" ")[0] | length::]}}</span>
+                          <span style="color: var(--navbar-color);font-size:1rem;line-height: 1;"><span style="font-weight: 500;">{{notification.title.split(" ")[0] }}</span> {{notification.title[notification.title.split(" ")[0] | length::]}}</span>
                           {% if notification.category != 'follow' and notification.category != 'unfollow' %}
                           <span style="color: var(--link)">{{notification.body}}</span>
                           {% endif %}
@@ -80,7 +80,7 @@
           </div>
           {% else %}
           <div class="navbar-item">
-              <a href="/newpost"><i class="na-plus-circle" style="color:white;display:block;margin-top: 0.4rem;font-size:1.2rem;
+              <a href="/newpost"><i class="na-plus-circle" style="color:var(--navbar-color);display:block;margin-top: 0.4rem;font-size:1.2rem;
                 margin-right:0.9rem;"></i></a>
           </div>
           {% endif %}
@@ -91,25 +91,25 @@
               <div class="newapp-dropdown-content" id="user">
                 @{{current_user.name}}
                 <hr>
-                <a href="{{url_for('users.user', name=current_user.name)}}" style="color: white;">
+                <a href="{{url_for('users.user', name=current_user.name)}}" style="color: var(--navbar-color);">
                 <div class="dropdown-item">
                   <i class="na-user"></i> Profile
                 </div>
                 </a>
                 {% if current_user.roleinfo.admin_panel_permission %}
-                <a href="{{url_for('admin.main')}}" style="color: white;">
+                <a href="{{url_for('admin.main')}}" style="color: var(--navbar-color);">
                 <div class="dropdown-item">
                 <i class="na-user-shield"></i>
                     Admin
                 </div>
                 </a>
                 {% endif %}
-                <a href="{{url_for('users.settings', name=current_user.name)}}" style="color: white;">
+                <a href="{{url_for('users.settings', name=current_user.name)}}" style="color: var(--navbar-color);">
                 <div class="dropdown-item">
                   <i class="na-user-cog"></i></i> Settings
                 </div>
                 </a>
-                <a href="{{url_for('users.logout')}}" style="color: white;">
+                <a href="{{url_for('users.logout')}}" style="color: var(--navbar-color);">
                 <div class="dropdown-item">
                   <i class="na-sign-out-alt"></i> Logout
                 </div>

@@ -12,10 +12,12 @@
     </url>
     {% endfor %}
     {% for user in users %}
+    {% if user.activated %}
     <url>
-        <loc>https://www.newapp.nl/user/{{user.name}}/id%3D{{user.id}}</loc>
+        <loc>https://www.newapp.nl/user/{{user.name}}</loc>
         <lastmod>{{user.join_date}}</lastmod>
         <priority>0.80</priority>
     </url>
+    {% endif %}
     {% endfor %}
 </urlset>

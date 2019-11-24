@@ -234,6 +234,9 @@ class ModifyProfileForm(FlaskForm):
             "class":"modal-button",
         }
     )
+    theme_mode = BooleanField(
+        'Theme Mode'
+    )
 
 class SearchForm(FlaskForm):
     search = TextField(

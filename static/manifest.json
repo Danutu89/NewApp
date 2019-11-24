@@ -5,7 +5,7 @@
     "start_url": "/",
     "display": "standalone",
     "background_color": "#25527B",
-    "theme_color": "#222222",
+    "theme_color": "#171717",
     "homepage_url": "https://newapp.nl/",
     "icons": [{
       "src": "https://newapp.nl/static/favicon.png",

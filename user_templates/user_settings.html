@@ -1,6 +1,6 @@
 {% extends "index.html" %}
 {% block content %}
-<form action="{{url_for('users.modify_profile', idm=user.id)}}" {% if request.MOBILE == False %}enctype='multipart/form-data'{% endif %} method="POST">
+<form action="{{url_for('users.modify_profile', idm=user.id)}}" {% if request.MOBILE == False %}enctype='multipart/form-data'{% endif %} method="POST" style="width: 100%;">
 <profile class="profile-page">
     <div class="profile-cover" {%if not user.cover %}style="background-color: #14947b;border: var(--border);height:350px;"{% endif %} {% if user.cover %}style="height:450px;background-image:url({{user.cover}}); background-position:center;background-size: cover;"{% endif %}>
       </div>
@@ -89,6 +89,8 @@
       </div>
       <div class="edit-misc" id="misc">
           <div class="col-1" style="text-align:left;">
+          {{modify_prof.theme_mode}} Get theme from the system
+          <br>
           Theme:
           <br>
           {{modify_prof.theme}}

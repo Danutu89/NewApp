@@ -19,9 +19,11 @@ from sqlalchemy import desc
 
 from datetime import datetime
 import os
-
+import urllib
 from PIL import Image
 from webptools import webplib as webp
+
+from flask_jwt_extended import create_access_token
 
 json_pages = Blueprint(
     'jsons',__name__,
@@ -101,21 +103,6 @@ def delete_postt(id):
     db.session.commit()
     return jsonify({'operation': 'success'})
 
-
-@json_pages.route('/api/login/<string:name>/<string:password>')
-def login(name, password):
-    user = db.session.query(UserModel).filter_by(name=name).first()
-
-    if user is None:
-        user = db.session.query(UserModel).filter_by(email=name).first()
-    if user is None:
-        return jsonify({'login': 'no_user'})
-
-    if bcrypt.check_password_hash(user.password, password):
-        return jsonify({'login': 'success'})
-    else:
-        return jsonify({'login': 'wrong_pass'})
-
 @json_pages.route("/api/login", methods=['POST'])
 def login_app():
     if not request.json:
@@ -125,10 +112,10 @@ def login_app():
 
     print(data)
 
-    user = db.session.query(UserModel).filter_by(name=data['user']).first()
+    user = db.session.query(UserModel).filter_by(name=data['username']).first()
 
     if user is None:
-        user = db.session.query(UserModel).filter_by(email=data['user']).first()
+        user = db.session.query(UserModel).filter_by(email=data['username']).first()
     if user is None:
         return jsonify({"login": "No user"})
 
@@ -136,12 +123,16 @@ def login_app():
         return jsonify({"login": "Incorrect password"})
 
     if user.activated == False:
-      return jsonify({"login": "Account not activated"})
+        return jsonify({"login": "Account not activated"})
 
     else:
-        payload = {'user': data['user'], 'user_id': user.id,'exp': time.datetime.utcnow() + time.timedelta(minutes=30)}
-        token = jwt.encode(payload,key_jwt['k'],algorithm=key_jwt['alg']).decode('utf-8')
-        return jsonify({"login": 'success', 'token': token})
+        access_token = create_access_token(identity = {
+                'username': user.name,
+                'real_name': user.real_name,
+                'email': user.email
+            })
+        result = jsonify({"token": access_token})
+        return result
 
 @json_pages.route('/app/register',  methods=['POST'])
 def register_app():
@@ -156,19 +147,6 @@ def register_app():
 
     if check is not None:
         return jsonify({'register': 'Email taken'})
-
-    if data['github']:
-      git = requests.get(('https://api.github.com/users/{}').format(data['github']))
-      git_check = git.json()
-
-      try:
-        if git_check['login'] == data['github']:
-          check = db.session.query(UserModel).filter_by(github_name=data['github']).first()
-
-          if check is not None:
-              return jsonify({'register': 'GitHub account taken'})
-      except KeyError:
-        return jsonify({'register': 'No GitHub user'})
 
     token = serializer.dumps(data['email'],salt='register-confirm')
 
@@ -188,7 +166,29 @@ def register_app():
             None,
             None,
             None,
-            False
+            False,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+            'Light',
+            None,
+            None,
+            None
         )
     db.session.add(new_user)
     db.session.commit()
@@ -482,11 +482,12 @@ def trending():
     data = []
     temp = {}
     analyze_json = []
+    today = dt.datetime.today()
+    today_date = dt.date.today()
 
     for post in posts:
         published_on = post.posted_on
-        today = dt.datetime.today()
-        today_date = dt.date.today()
+        
 
         total_days = (today - published_on).days - 1
         
@@ -494,7 +495,7 @@ def trending():
         day_0 = 0
 
         for analyze in analyze_posts:
-            if analyze.name == 'Post_{}'.format(post.id):
+            if analyze.name == urllib.parse.unquote(str(url_for('home.post',id=post.id,title=post.title))):
                 if (today_date-analyze.first_visited).days < 2:
                     day_1 += analyze.visits
                 if (today_date-analyze.first_visited).days < 1:

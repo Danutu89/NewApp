@@ -1,4 +1,39 @@
 <style type="text/css">
+    {% if current_user.is_authenticated %}
+    {% if current_user.theme_mode == 'system' %}
+    @media (prefers-color-scheme: dark){
+      :root {
+          --background: #171717;
+          --color: rgb(196, 196, 196);
+          --body-bg: #121212;
+          --border: 1px solid rgba(0, 0, 0, 0.125);
+          --editor: #212121;
+          --code: #212121;
+          --placeholder: rgba(255, 255, 255, 0.836);
+          --link: rgb(0, 157, 230);
+          --navbar: #171717;
+          --navbar-color: rgb(196, 196, 196);
+          --navbar-dropdown-hover: #1f1f1f;
+          --wrapper-background: #171717;
+        }
+    }
+    @media (prefers-color-scheme: light){
+      :root {
+          --background: white;
+          --color: #212529;
+          --body-bg: #efefef;
+          --border: 1px solid #d6d6d6;
+          --editor: trasparent;
+          --code: #efefef;
+          --placeholder: rgba(90, 90, 90, 0.836);
+          --link: rgb(0, 157, 230);
+          --navbar: white;
+          --navbar-color: #212529;
+          --navbar-dropdown-hover: #ececec;
+          --wrapper-background: white;
+        }
+    }
+    {% else %}
     :root {
       --background: white;
       --color: #212529;
@@ -8,17 +43,60 @@
       --code: #efefef;
       --placeholder: rgba(90, 90, 90, 0.836);
       --link: rgb(0, 157, 230);
+      --navbar: white;
+      --navbar-color: #212529;
+      --navbar-dropdown-hover: #ececec;
+      --wrapper-background: white;
     }
     :root[data-theme='dark'] {
-      --background: #272727;
+      --background: #171717;
       --color: rgb(196, 196, 196);
-      --body-bg: #3a3a3a;
+      --body-bg: #121212;
       --border: 1px solid rgba(0, 0, 0, 0.125);
       --editor: #212121;
       --code: #212121;
       --placeholder: rgba(255, 255, 255, 0.836);
       --link: rgb(0, 157, 230);
+      --navbar: #171717;
+      --navbar-color: rgb(196, 196, 196);
+      --navbar-dropdown-hover: #1f1f1f;
+      --wrapper-background: #171717;
     }
+    {% endif %}
+    {% else %}
+    @media (prefers-color-scheme: dark){
+      :root {
+          --background: #171717;
+          --color: rgb(196, 196, 196);
+          --body-bg: #121212;
+          --border: 1px solid rgba(0, 0, 0, 0.125);
+          --editor: #212121;
+          --code: #212121;
+          --placeholder: rgba(255, 255, 255, 0.836);
+          --link: rgb(0, 157, 230);
+          --navbar: #171717;
+          --navbar-color: rgb(196, 196, 196);
+          --navbar-dropdown-hover: #1f1f1f;
+          --wrapper-background: #171717;
+        }
+    }
+    @media (prefers-color-scheme: light){
+      :root {
+          --background: white;
+          --color: #212529;
+          --body-bg: #efefef;
+          --border: 1px solid #d6d6d6;
+          --editor: trasparent;
+          --code: #efefef;
+          --placeholder: rgba(90, 90, 90, 0.836);
+          --link: rgb(0, 157, 230);
+          --navbar: white;
+          --navbar-color: #212529;
+          --navbar-dropdown-hover: #ececec;
+          --wrapper-background: white;
+        }
+    }
+    {% endif %}
     body {
       margin: 0;
       padding: 0;
@@ -133,12 +211,12 @@
     }
 
     .ql-toolbar.ql-snow {
-      border: var(--border) !important;
-      background-color: var(--editor);
+      border: none !important;
+      background-color: none;
     }
 
     .ql-container {
-      border-radius: 0px 0px 5px 5px;
+      border-radius: 5px 5px 5px 5px;
     }
 
     .ql-toolbar {
@@ -391,13 +469,13 @@
     }
 
     .newapp-navbar {
-      background-color: rgb(34, 34, 34);
+      background-color: var(--navbar);
       height: 30px;
       margin: 0;
       padding: 0.4rem 0.5rem;
       font-size: 0.9375rem;
       display: flex;
-      color: white;
+      color: var(--navbar-color);
       z-index: 7;
       position: fixed;
       top: 0;
@@ -430,7 +508,7 @@
     }
 
     .navbar-item {
-      color: white;
+      color: var(--navbar-color);
     }
 
     .navbar-items {
@@ -505,7 +583,7 @@
 
     .navbar-logo {
       text-decoration: none;
-      color: white !important;
+      color: var(--navbar-color) !important;
     }
 
     .newapp-title {
@@ -520,12 +598,12 @@
     .newapp-dropdown-content {
       display: none;
       position: absolute;
-      background-color:rgb(34, 34, 34);;
+      background-color: var(--navbar);
       min-width: 10rem;
       box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
       padding: 0.6rem 0.5rem;
       border-radius: 4px;
-      color: white;
+      color: var(--navbar-color);
       z-index: 5;
       margin-inline-start: -8.9rem;
     }
@@ -582,7 +660,7 @@
       vertical-align: baseline;
       vertical-align: -webkit-baseline-middle;
       border: none;
-      background-color: rgb(60, 60, 60) !important;
+      background-color: var(--body-bg) !important;
       border-radius: 2px;
       padding: 0.4rem 0.4rem 0.4rem 0.4rem;
       color: white;
@@ -594,7 +672,7 @@
     }
 
     .newapp-dropdown .dropdown-item:hover {
-      background-color: #313131;
+      background-color: var(--navbar-dropdown-hover);
     }
 
     content {
@@ -647,7 +725,7 @@
 
     wrapper#wrapper-left {
       height: calc(100% - 5.6rem);
-      width: 0;
+      width: 250px;
       position: fixed;
       z-index: 6;
       top: 0;
@@ -658,11 +736,21 @@
       padding: 0.5rem;
       padding-top: 3rem;
       padding-bottom: 3rem;
-      background: rgba(34, 34, 34, 0.98);
-      -webkit-transition: all 0.2s ease;
+      margin: 0 0 0 20px;
+      background: var(--wrapper-background);
+      /* -webkit-transition: all 0.2s ease;
       -moz-transition: all 0.2s ease;
       -o-transition: all 0.2s ease;
-      transition: all 0.2s ease;
+      transition: all 0.2s ease; */
+      -webkit-transform: translateX(-500px);
+			transform: translateX(-500px);
+	    transition: transform 300ms linear;
+    }
+
+    wrapper#wrapper-left.toggled{
+      -webkit-transform: translateX(-20px);
+			transform: translateX(-20px);
+      transition: transform 300ms linear;
     }
 
     wrapper#wrapper-left::-webkit-scrollbar{
@@ -684,15 +772,6 @@
     /* Handle on hover */
     wrapper#wrapper-left::-webkit-scrollbar-thumb:hover {
       background: #555;
-    }
-
-
-    wrapper#wrapper-left.toggled {
-      width: 250px;
-    }
-
-    #wrapper-left.toggled {
-      padding-left: 280px;
     }
 
     wrapper #wrapper-right {

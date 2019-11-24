@@ -52,6 +52,7 @@ class UserModel(db.Model):
     website = db.Column(db.String, primary_key = False)
     theme = db.Column(db.String, primary_key = False, default = 'Light')
     int_podcasts = db.Column(sq.ARRAY(db.Integer),default=[], primary_key = False)
+    theme_mode = db.Column(db.String, primary_key = False, default = 'system')
 
     posts = relationship("PostModel", backref="user_in")
     replyes = relationship("ReplyModel", backref="user_in")
@@ -60,7 +61,7 @@ class UserModel(db.Model):
 
     def __init__(self,id,join_date,name,real_name,email,password,avatar,genre,role,bio,activated,
                     ip_address,browser,country_name,country_flag,lang,int_tags,birthday,profession,saved_posts,liked_posts,follow,followed,cover,
-                    instagram,facebook,twitter,github,website,theme,int_podcasts,status,status_color):
+                    instagram,facebook,twitter,github,website,theme,int_podcasts,status,status_color,theme_mode):
         self.id = id
         self.join_date = join_date
         self.name = name
@@ -95,6 +96,7 @@ class UserModel(db.Model):
         self.int_podcasts = int_podcasts
         self.status = status
         self.status_color = status_color
+        self.theme_mode = theme_mode
 
     def is_authenticated(self):
         return True
@@ -499,6 +501,29 @@ class Subscriber(Base):
     @subscription_info_json.setter
     def subscription_info_json(self, value):
         self.subscription_info = json.dumps(value)
+
+class User_DevicesModel(db.Model):
+
+    __tablename__ = 'user_devices'
+
+    id = db.Column(db.Integer, db.Sequence('user_devices_id_seq'), primary_key=True)
+    user =  db.Column(db.Integer, ForeignKey('users.id'))
+    device_type = db.Column(db.String(), primary_key = False)
+    device_model = db.Column(db.String(), primary_key = False)
+    device_brand = db.Column(db.String(), primary_key = False)
+    last_access = db.Column(db.DateTime, primary_key = False)
+    activated = db.Column(db.Boolean, primary_key = False)
+    ip_address = db.Column(sq.ARRAY(db.String()),default=[], primary_key = False)
+
+    def __init__(self,id,user,device_type,device_model,device_brand,last_access,activated,ip_address):
+        self.id = id
+        self.user = user
+        self.device_type = device_type
+        self.device_model = device_model
+        self.device_brand = device_brand
+        self.last_access = last_access
+        self.activated = activated
+        self.ip_address = ip_address
 
 # class Private_ConversationsModel:
 
