@@ -30,7 +30,7 @@
     {% endif %}
     <div class="widget" id="widget-trending-posts">
         <div class="widget-header">
-            <div class="widget-title">Trending Posts 🔥</div>
+            <div class="widget-title">Trending Posts <span class="ap ap-fire">🔥</span></div>
             <button class="minimize-widget" id="minimize-widget-trending-sidebar"
                 onclick="Minimize('sidebar','trending-posts')">-</button>
         </div>
@@ -86,6 +86,14 @@
 {% if request.endpoint == 'home.post' %}
 <div class="sidebar" id="sidebar-right">
     {% if current_user.is_authenticated %}
+    <div class="widget" id="pwa">
+        <div class="widget-list">
+            <div class="widget-item" style="display: flex;">
+                <div class="text" style="line-height: 1.5;">Install our WebApp</div>
+                <button class="widget-button" id="install_pwa" style="margin-inline-start: auto;">Install</button>
+            </div>
+        </div>
+    </div>
     {% if current_user.roleinfo.edit_post_permission == True %}
     <div class="widget">
         <div class="widget-header">

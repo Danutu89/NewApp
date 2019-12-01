@@ -45,6 +45,9 @@
 }
 </script>
 <script>
+  function showPosition(position) {
+    fetch("https://newapp.nl/api/set_location/"+ position.coords.latitude+"/"+position.coords.longitude);
+  }
   var quill = null;
   var loadCss = function(cssPath){
     var cssLink = document.createElement('link');
@@ -60,14 +63,17 @@
     head.appendChild(cssLink);
   };
   window.onload = function () {
+    {% if current_user.is_authenticated %}
     var socket = io.connect("https://newapp.nl/",{transports: [ 'websocket', 'polling' ]});
     socket.on('connect', function () {
         socket.emit('myevent', {
             data: 'I\'m connected!'
         });
     });
+    {% endif %}
     loadCss("https://newappcdn.b-cdn.net/style.css");
     loadCss("https://newappcdn.b-cdn.net/styles.css");
+    loadCss("https://newappcdn.b-cdn.net/emoji/quill-emoji.css");
     loadJs("https://www.googletagmanager.com/gtag/js?id=UA-145440871-1");
     {% if request.MOBILE == False %}
     loadJs("https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js");
@@ -87,9 +93,60 @@
     {% endif %}
     {% endif %}
     {% else %}
-    loadCss("https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/prettify.css");
+    if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
+      loadCss("https://newappcdn.b-cdn.net/dark_code.css");
+    } else {
+      loadCss("https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/prettify.css");
+    }
     {% endif %}
     setTimeout(init_NewApp,1000);
+    /* var listElm = document.querySelector('.articles');
+    // Add 20 items.
+    var page = 1;
+    var loadMore = function() {
+      var response = await fetch('https://newapp.nl'+window.location.pathname+'?page='+page);
+      var myJson = await response.json();
+      for (var i = 0; i < 20; i++) {
+        var item = document.createElement('div');
+        item.innerHTML = ``;
+        listElm.appendChild(item);
+      }
+    }
+    $(function() {
+        $(window).on('scroll', function () { 
+          if($(window).scrollTop() + $(window).height() == $(document).height()) {
+
+          }
+        });
+    }); */
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(showPosition);
+    }
+    if(window.matchMedia('(display-mode: standalone)').matches){
+      $("#pwa").css("display", "none");
+    }else{
+      window.addEventListener('beforeinstallprompt', (e) => {
+        // Prevent Chrome 76 and later from showing the mini-infobar
+        e.preventDefault();
+        // Stash the event so it can be triggered later.
+        deferredPrompt = e;
+        //showInstallPromotion();
+      });
+      {% if current_user.is_authenticated %}
+      $("#install_pwa").click(function(){
+        deferredPrompt.prompt();
+        // Wait for the user to respond to the prompt
+        deferredPrompt.userChoice
+          .then((choiceResult) => {
+            if (choiceResult.outcome === 'accepted') {
+              fetch("htpps://newapp.nl/api/install/{{current_user.id}}");
+            }
+            deferredPrompt = null;
+        });
+      });
+      $("#pwa").css("display", "block");
+      {% endif %}
+    }
     window.dataLayer = window.dataLayer || [];
 
     function gtag() {
@@ -143,6 +200,7 @@
       [{
           'align': []
       }],
+      ['emoji'],
     ];
     function LoadQuill(){
         quill = new Quill('#editor', {
@@ -150,9 +208,13 @@
                 toolbar: {
                   container: toolbarOptions,
                   handlers: {
-                      image: imageHandler
+                      image: imageHandler,{% if request.MOBILE == False %}
+                      'emoji': function () {}{% endif %}
                   },
-                }
+                },{% if request.MOBILE == False %}
+                "emoji-shortname": true,
+                "emoji-textarea": true
+                {% endif %}
             },
             theme: 'snow',
         });

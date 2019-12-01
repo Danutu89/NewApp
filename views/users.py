@@ -9,7 +9,7 @@ from app import (BadSignature, BadTimeSignature, SignatureExpired, db, mail,
                  serializer,cipher_suite,app)
 from forms import (LoginForm, ModifyProfileForm, RegisterForm,
                    ResetPasswordForm, SearchForm)
-from models import  PostModel, ReplyModel, UserModel, bcrypt, Analyze_Pages, Analyze_Session, TagModel, Notifications_Model, User_DevicesModel
+from models import PostModel, ReplyModel, UserModel, bcrypt, Analyze_Pages, Analyze_Session, TagModel, Notifications_Model, User_DevicesModel, Ip_Coordinates
 from cryptography.fernet import Fernet
 import os
 from PIL import Image
@@ -67,19 +67,30 @@ def login():
     else:
         userIP = request.environ['HTTP_X_FORWARDED_FOR']
 
-    resp = requests.get(('https://www.iplocate.io/api/lookup/{}').format(userIP))
-    userLoc = resp.json()
+    ip_user = db.session.query(Ip_Coordinates).filter_by(ip=userIP).first()
 
-    try:
-        api_2 = requests.get(("https://restcountries.eu/rest/v2/alpha/{}").format(userLoc["country_code"]))
+    if ip_user is None:
+        resp = requests.get(('https://www.iplocate.io/api/lookup/{}').format(userIP))
+        userLoc = resp.json()
+        iso_code = userLoc['country_code']
+        country_name = userLoc['country']
+        rest = False
+    else:
+        resp = requests.get(
+            ("https://restcountries.eu/rest/v2/alpha/{}").format(ip_user.location.iso_code))
+        userLoc = resp.json()
+        country_name = userLoc['name']
+        iso_code = ip_user.location.iso_code
+        rest = True
+
+    if rest:
+        userLanguage = userLoc['languages'][0]['iso639_1']
+    else:
+        api_2 = requests.get(
+            ("https://restcountries.eu/rest/v2/alpha/{}").format(iso_code))
         result_2 = api_2.json()
         userLanguage = result_2['languages'][0]['iso639_1']
-    except Exception as e:
-        print("Not supported country", userLoc["country"])
-        print(e)
-        pass
-
-
+        
     if user.activated == False:
         flash("Account not activated", 'error')
     else:
@@ -117,12 +128,16 @@ def login():
             db.session.add(new_device)
             db.session.commit()
         else:
-            ips = list(user_device.ip_address)
-            ips.append(str(userIP))
-            print(userIP)
-            user_device.ip_address = ips
-            user_device.last_access = dt.datetime.now()
-            db.session.commit()
+            if userIP in list(user_device.ip_address):
+                user_device.last_access = dt.datetime.now()
+                db.session.commit()
+            else:
+                ips = list(user_device.ip_address)
+                ips.append(str(userIP))
+                print(userIP)
+                user_device.ip_address = ips
+                user_device.last_access = dt.datetime.now()
+                db.session.commit()
 
             # if check_device is None or check_device.activated == False:
             #     new_device = User_DevicesModel(
@@ -171,8 +186,8 @@ def login():
     user.status_color = '#00c413'
     user.ip_address = userIP
     user.browser = userInfo['browser']['name']
-    user.country_name = str(userLoc['country'])
-    user.country_flag = str(userLoc['country_code']).lower()
+    user.country_name = str(country_name)
+    user.country_flag = str(iso_code).lower()
     user.lang = str(userLanguage).lower()
 
     db.session.commit()
@@ -235,16 +250,30 @@ def register():
     else:
         userIP = request.environ['HTTP_X_FORWARDED_FOR']
 
-    resp = requests.get(('https://www.iplocate.io/api/lookup/{}').format(userIP))
-    userLoc = resp.json()
+    ip_user = db.session.query(Ip_Coordinates).filter_by(ip=userIP).first()
 
-    try:
-        api_2 = requests.get(("https://restcountries.eu/rest/v2/alpha/{}").format(userLoc["country_code"]))
+    if ip_user is None:
+        resp = requests.get(
+            ('https://www.iplocate.io/api/lookup/{}').format(userIP))
+        userLoc = resp.json()
+        iso_code = userLoc['country_code']
+        country_name = userLoc['country']
+        rest = False
+    else:
+        resp = requests.get(
+            ("https://restcountries.eu/rest/v2/alpha/{}").format(ip_user.location.iso_code))
+        userLoc = resp.json()
+        county_name = userLoc['name']
+        iso_code = ip_user.location.iso_code
+        rest = True
+
+    if rest:
+        userLanguage = userLoc['languages'][0]['iso639_1']
+    else:
+        api_2 = requests.get(
+            ("https://restcountries.eu/rest/v2/alpha/{}").format(iso_code))
         result_2 = api_2.json()
         userLanguage = result_2['languages'][0]['iso639_1']
-    except Exception as e:
-        print("Not supported country", userLoc["country"])
-        print(e)
 
     msg = Message('Confirm Email Registration', sender='contact@newapp.nl', recipients=[register.email.data])
     link = 'https://newapp.nl' + url_for('users.confirm_register',email=register.email.data ,token=token)
@@ -264,8 +293,8 @@ def register():
             False,
             userIP,
             userInfo['browser']['name'],
-            str(userLoc['country']),
-            str(userLoc['country_code']).lower(),
+            str(country_name),
+            str(iso_code).lower(),
             str(userLanguage).lower(),
             None,
             None,
@@ -284,7 +313,8 @@ def register():
             None,
             None,
             None,
-            'system'
+            'system',
+            None
         )
     db.session.add(new_user)
     db.session.commit()

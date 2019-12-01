@@ -1,6 +1,5 @@
 {% extends "index.html" %}
 {% block content %}
-
         <div class="articles">
             {% if request.MOBILE %}
             {% for success in get_flashed_messages(category_filter=["success"]) %}
@@ -17,6 +16,10 @@
             {% endfor %}
             {% endif %}
             {% for post in posts %}
+            {% if current_user.is_authenticated == False %}
+            {% if loop.index == 3 %}
+            {% endif %}
+            {% endif %}
             {% if post.approved %}
             <div class="article-card" id="post_{{post.id}}">
                 {% if post.thumbnail %}
@@ -47,8 +50,6 @@
                 </div>
                 <div class="article-footbar">
                 <div class="article-date">Published on {{(post.posted_on.date()) }} {% if (((post.posted_on - now).days|string)[1:])|int > 1 %}({{((post.posted_on - now).days|string)[1:]}} days ago){% elif (post.posted_on - now).seconds|int / 3600 > 0 %} ({{ ((post.posted_on - now).seconds|int / 3600)|int }} hours ago){% else %}({{ ((post.posted_on - now).seconds|int / 60)|int }} min ago){% endif %}</div>
-                
-                
                 <div class="article-misc">
                         <span class="article-readtime" style="
                         font-size: 0.8rem;
@@ -62,10 +63,8 @@
                     <button class="article-save" id="save-{{post.id}}" onclick="Save_Post({{post.id}})">{% if post.id in current_user.saved_posts %}Saved{% else %}Save{% endif %}</button>
                     {% endif %}
                 </div>
-                
                 </div>
-            </div>
-            
+            </div> 
             {% endif %}
             {% endfor %}
         </div>

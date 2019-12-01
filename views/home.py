@@ -17,7 +17,7 @@ from app import app
 from PIL import Image
 import readtime
 from webptools import webplib as webp
-import re
+import re 
 
 home_pages = Blueprint(
     'home',__name__,
@@ -263,13 +263,24 @@ def newpost():
     if current_user.is_authenticated == False:
         flash('You have to be logged in to post.', 'error')
         return redirect(url_for('home.home'))
-    
+        
     new_question = NewQuestionForm(request.form)
 
     return render_template('newpost.html',new_question=new_question)
 
 @home_pages.route('/post/<string:title>/id=<int:id>')
 def post(title,id):
+
+    if current_user.is_authenticated:
+        if request.args.get('notification'):
+                notification = db.session.query(Notifications_Model).filter_by(id=int(request.args.get('notification'))).first()
+                if notification is None:
+                    pass
+                else:
+                    notification.checked = True
+                    db.session.query(Notifications_Model).filter_by(id=int(request.args.get('notification'))).delete()
+                    db.session.commit()
+
     search = SearchForm(request.form)
     reply = ReplyForm(request.form)
     reset = ResetPasswordForm(request.form)
@@ -285,15 +296,6 @@ def post(title,id):
     location = db.session.query(Analyze_Session).filter_by(session=session['user']).first()
 
     if current_user.is_authenticated:
-        if request.args.get('notification'):
-            notification = db.session.query(Notifications_Model).filter_by(id=int(request.args.get('notification'))).first()
-            if notification is None:
-                pass
-            else:
-                notification.checked = True
-                db.session.query(Notifications_Model).filter_by(id=int(request.args.get('notification'))).delete()
-                db.session.commit()
-
         return render_template('post.html',description=description,tags_all=tags_all,post_from_user=post_from_user ,reset=reset, reply=reply,posts=posts,replyes=replyes,tags=tags,search=search,popular_posts=popular_posts,location=location,keywords=keywords)
     else:
         login = LoginForm(request.form)

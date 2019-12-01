@@ -27,6 +27,7 @@ from werkzeug.exceptions import HTTPException, NotFound
 from pywebpush import webpush, WebPushException
 from flask_socketio import SocketIO
 from flask_jwt_extended import JWTManager
+from geopy.geocoders import Nominatim
 
 key_c = '\xce,CH\xc0\xd2K9\xe3\x87\xa0Z\x19\x8a\xcd\xf9\x91\x94\xddN\xff\xaf;r\xef'
 key_cr = b'vgF_Yo8-IutJs-AcwWPnuNBgRSgncuVo1yfc9uqSiiU='
@@ -85,6 +86,7 @@ bcrypt = Bcrypt(app)
 login_manager = LoginManager()
 login_manager.init_app(app)
 socket = SocketIO(app, message_queue='redis://',manage_session=False)
+geolocator = Nominatim(user_agent="NewApp")
 
 translate = FullClient("7eaa96e0-be79-11e9-8f72-af685da1b20e",apiServer="http://api.cortical.io/rest", retinaName="en_associative")
 

@@ -75,49 +75,56 @@ def main():
     func.count(Analyze_Pages.name).desc()).limit(10).all()
     label_days.clear()
     for session in sessions:
-        year, month, day = str(session.created_at).split("-")
-        date = dt.datetime(int(year),int(month),int(day))
-        if int(year) == int(now.year):
-            if date <= now and date >= back_days:
-                if str(session.os).lower() == 'android' or str(session.os).lower() == 'ios':
-                    devices_now['Mobile'] += 1
-                else:
-                    devices_now['Computer'] += 1
-                try:
-                    sess[calendar.day_name[int(calendar.weekday(int(year),int(month),int(day)))]+' '+str(day)] += 1
-                except:
-                    sess.__setitem__(calendar.day_name[int(calendar.weekday(int(year),int(month),int(day)))]+' '+str(day),1)
-
-                if str(day) not in label_days and str(months[str(month)]+' '+day) not in label_days:
-                    if int(day) == 1:
-                        label_days.append(months[str(month)]+' '+day)
+        if session.referer is not None:
+            year, month, day = str(session.created_at).split("-")
+            date = dt.datetime(int(year),int(month),int(day))
+            if int(year) == int(now.year):
+                if date <= now and date >= back_days:
+                    if str(session.os).lower() == 'android' or str(session.os).lower() == 'ios':
+                        devices_now['Mobile'] += 1
                     else:
-                        label_days.append(str(day))
-
-                if str(session.referer) != 'None':
+                        devices_now['Computer'] += 1
                     try:
-                        referer[str(session.referer)][str(day)] += 1
+                        sess[calendar.day_name[int(calendar.weekday(int(year),int(month),int(day)))]+' '+str(day)] += 1
                     except:
-                        referer[str(session.referer)][str(day)] = 1
-                
-                if str(session.iso_code) != 'None':
-                    try:
-                        country[str(session.iso_code)] += 1
-                    except:
-                        country[str(session.iso_code)] = 1
-                    countries[str(session.iso_code)] = str(session.country)
-                
+                        sess.__setitem__(calendar.day_name[int(calendar.weekday(int(year),int(month),int(day)))]+' '+str(day),1)
 
-            if date <= back_days and date >= back_perc:
-                if str(session.os).lower() == 'android' or str(session.os).lower() == 'ios':
-                    devices_old['Mobile'] += 1
-                else:
-                    devices_old['Computer'] += 1
-                try:
-                    sess_old[calendar.day_name[int(calendar.weekday(int(year),int(month),int(day)))]+' '+str(day)] += 1
-                except:
-                    sess_old.__setitem__(calendar.day_name[int(calendar.weekday(int(year),int(month),int(day)))]+' '+str(day),1)
-        
+                    if str(day) not in label_days and str(months[str(month)]+' '+day) not in label_days:
+                        if int(day) == 1:
+                            label_days.append(months[str(month)]+' '+day)
+                        else:
+                            label_days.append(str(day))
+
+                    if str(session.referer) != 'None':
+                        try:
+                            if int(day) == 1:
+                                referer[str(session.referer)][months[str(month)]+' '+day] += 1
+                            else:
+                                referer[str(session.referer)][str(day)] += 1
+                        except:
+                            if int(day) == 1:
+                                referer[str(session.referer)][months[str(month)]+' '+day] = 1
+                            else:
+                                referer[str(session.referer)][str(day)] = 1
+                    
+                    if str(session.iso_code) != 'None':
+                        try:
+                            country[str(session.iso_code)] += 1
+                        except:
+                            country[str(session.iso_code)] = 1
+                        countries[str(session.iso_code)] = str(session.country)
+                    
+
+                if date <= back_days and date >= back_perc:
+                    if str(session.os).lower() == 'android' or str(session.os).lower() == 'ios':
+                        devices_old['Mobile'] += 1
+                    else:
+                        devices_old['Computer'] += 1
+                    try:
+                        sess_old[calendar.day_name[int(calendar.weekday(int(year),int(month),int(day)))]+' '+str(day)] += 1
+                    except:
+                        sess_old.__setitem__(calendar.day_name[int(calendar.weekday(int(year),int(month),int(day)))]+' '+str(day),1)
+            
     per_devices['mobile'] = ((devices_old['Mobile'] - devices_now['Mobile']) - devices_old['Mobile']) % 100
     per_devices['computer'] = ((devices_old['Computer'] - devices_now['Computer']) - devices_old['Computer']) % 100
 

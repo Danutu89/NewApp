@@ -5,7 +5,7 @@ import httpagentparser
 import hashlib
 from datetime import datetime
 from flask import request, session
-from models import Analyze_Pages, Analyze_Session
+from models import Analyze_Pages, Analyze_Session, Ip_Coordinates
 import requests
 from flask_login import current_user
 from urllib.parse import urlparse
@@ -115,32 +115,41 @@ def getAnalyticsData():
             userIP = request.environ['REMOTE_ADDR']
         else:
             userIP = request.environ['HTTP_X_FORWARDED_FOR']
-        #api = requests.get(('https://www.iplocate.io/api/lookup/{}').format(userIP))
+
         if userIP != '127.0.0.1':
-            try:
-                res = gip.city(userIP)
-            except:
-                ip = userIP.split(', ')
-                res = gip.city(ip[0])
-            #print(res)
-            #match = geolite2.lookup(userIP)
-            #print(match)
-            try:
-                #result = api.json()                                                                                                   
-                userCountry = res.country.name
-                userContinent = res.continent.name
-                userCity = res.city.name
-                iso_code = res.country.iso_code
+            local_ip = db.session.query(Ip_Coordinates).filter_by(ip=userIP).first()
+
+            if local_ip is None:
                 try:
-                    api_2 = requests.get(("https://restcountries.eu/rest/v2/alpha/{}").format(res.country.iso_code))
-                    result_2 = api_2.json()
-                    userLanguage = result_2['languages'][0]['iso639_1']
+                    res = gip.city(userIP)
+                except:
+                    ip = userIP.split(', ')
+                    res = gip.city(ip[0])
+                try:                                                                                                 
+                    userCountry = res.country.name
+                    userContinent = res.continent.name
+                    userCity = res.city.name
+                    iso_code = res.country.iso_code
+                    try:
+                        api_2 = requests.get(("https://restcountries.eu/rest/v2/alpha/{}").format(res.country.iso_code))
+                        result_2 = api_2.json()
+                        userLanguage = result_2['languages'][0]['iso639_1']
+                    except Exception as e:
+                        print("Not supported country", res.country.name)
+                        print(e)
                 except Exception as e:
-                    print("Not supported country", res.country.name)
+                    print("Could not find: ", userIP)
                     print(e)
-            except Exception as e:
-                print("Could not find: ", userIP)
-                print(e)
+            else:
+                api_2 = requests.get(
+                    ("https://restcountries.eu/rest/v2/alpha/{}").format(local_ip.location.iso_code))
+                result_2 = api_2.json()
+                userCountry = result_2['name']
+                userContinent = local_ip.location.continent
+                userCity = local_ip.location.city
+                iso_code = str(local_ip.location.iso_code).upper()
+                userLanguage = result_2['languages'][0]['iso639_1']
+
             getSession()
     
 

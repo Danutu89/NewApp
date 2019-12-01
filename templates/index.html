@@ -88,6 +88,11 @@
   {% endif %}
   <script async src="https://newappcdn.b-cdn.net/newapp.min.js"></script>
   <script async src="https://newappcdn.b-cdn.net/jquery.js"></script>
+  {% if current_user.is_authenticated  %}
+  {% if request.url_rule.endpoint == 'home.post' or request.url_rule.endpoint == 'home.newpost' or request.url_rule.endpoint == 'home.edit_post' %}
+  <script async src="https://newappcdn.b-cdn.net/emoji/quill-emoji.js"></script>
+  {% endif %}
+  {% endif %}
   <script async src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"></script>
   <link async rel="preload" href="https://newappcdn.b-cdn.net/fonts/NewApp-Icons.ttf" as="font" type="font/ttf" crossorigin>
   <link async rel="preload" href="https://newappcdn.b-cdn.net/fonts/NewApp-Icons.woff" as="font" type="font/woff" crossorigin>

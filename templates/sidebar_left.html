@@ -2,6 +2,14 @@
 {% if request.endpoint == 'home.home' or request.endpoint == 'home.podcast' %}
 <div class="sidebar" id="sidebar-left">
     {% if current_user.is_authenticated %}
+    <div class="widget" id="pwa">
+        <div class="widget-list">
+            <div class="widget-item" style="display: flex;">
+                <div class="text" style="line-height: 1.5;">Install our WebApp</div>
+                <button class="widget-button" id="install_pwa" style="margin-inline-start: auto;">Install</button>
+            </div>
+        </div>
+    </div>
     <div class="user-card">
         <a href="{{url_for('users.user', name=current_user.name)}}" style="display: flex;">
         <div class="user-image" style="margin-bottom:0;">
