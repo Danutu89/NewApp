@@ -6,18 +6,18 @@ from flask_login import current_user
 from jinja2 import TemplateNotFound
 from sqlalchemy import desc, func, or_
 from sqlalchemy.schema import Sequence
-from app import db, translate
+from app import db, translate, cipher_suite
 from forms import (LoginForm, NewQuestionForm, RegisterForm, ReplyForm,
                    ResetPasswordForm, SearchForm)
 from models import PostModel, ReplyModel, TagModel, UserModel, Analyze_Session, Notifications_Model, Podcast_SeriesModel, PodcastsModel
 import os
 from analyze import parseVisitator, sessionID, GetSessionId, getAnalyticsData
-from celery_worker import cleanup_sessions, verify_post
+from celery_worker import cleanup_sessions, verify_post, Parse_Visitator
 from app import app
 from PIL import Image
 import readtime
 from webptools import webplib as webp
-import re 
+import re
 
 home_pages = Blueprint(
     'home',__name__,
@@ -48,7 +48,7 @@ def save_img(post_id):
 def views():
     getAnalyticsData()
     data = [request.path, GetSessionId(), str(datetime.datetime.now().replace(microsecond=0))]
-    parseVisitator(data)
+    Parse_Visitator.delay(data)
     
 
 @home_pages.route("/", methods=['GET','POST'])
@@ -73,7 +73,7 @@ def home():
                 thumbnail = save_img(index)
                 thumbnail_link = url_for('static', filename='thumbail_post/{}'.format(thumbnail))
 
-            lang = translate.getLanguageForText(new_question.text.data)
+            lang = translate.getLanguageForText(str(new_question.text.data).encode('utf-8-sig'))
             new_post = PostModel(
                 None,
                 new_question.title.data,
@@ -254,9 +254,9 @@ def home():
     tags = db.session.query(TagModel).order_by(desc(func.array_length(TagModel.post, 1))).all()
 
     if current_user.is_authenticated:
-        return render_template('home.html',now=datetime.datetime.now(),tagi=flw_tags ,reset=reset,posts=posts,tags=tags,replyes=replyes,popular_posts=popular_posts,most_tags=most_tags,location=location)
+        return render_template('home.html',tagi=flw_tags ,reset=reset,posts=posts,tags=tags,replyes=replyes,popular_posts=popular_posts,most_tags=most_tags,location=location)
     else:
-        return render_template('home.html',now=datetime.datetime.now(), tagi=flw_tags,reset=reset,login=login,register=register,posts=posts,tags=tags,replyes=replyes,popular_posts=popular_posts,most_tags=most_tags,location=location)
+        return render_template('home.html',tagi=flw_tags,reset=reset,login=login,register=register,posts=posts,tags=tags,replyes=replyes,popular_posts=popular_posts,most_tags=most_tags,location=location)
 
 @home_pages.route('/newpost')
 def newpost():
@@ -273,13 +273,13 @@ def post(title,id):
 
     if current_user.is_authenticated:
         if request.args.get('notification'):
-                notification = db.session.query(Notifications_Model).filter_by(id=int(request.args.get('notification'))).first()
-                if notification is None:
-                    pass
-                else:
-                    notification.checked = True
-                    db.session.query(Notifications_Model).filter_by(id=int(request.args.get('notification'))).delete()
-                    db.session.commit()
+            notification = db.session.query(Notifications_Model).filter_by(id=int(request.args.get('notification'))).first()
+            if notification is None:
+                pass
+            else:
+                notification.checked = True
+                db.session.query(Notifications_Model).filter_by(id=int(request.args.get('notification'))).delete()
+                db.session.commit()
 
     search = SearchForm(request.form)
     reply = ReplyForm(request.form)
@@ -292,20 +292,23 @@ def post(title,id):
     popular_posts = db.session.query(PostModel).order_by(PostModel.views.desc()).limit(9)
     keywords = str(posts.title).split(" ")
     description = cleanhtml(posts.text)
-
+    short_link = cipher_suite.encrypt(str(request.path).encode())
     location = db.session.query(Analyze_Session).filter_by(session=session['user']).first()
 
     if current_user.is_authenticated:
-        return render_template('post.html',description=description,tags_all=tags_all,post_from_user=post_from_user ,reset=reset, reply=reply,posts=posts,replyes=replyes,tags=tags,search=search,popular_posts=popular_posts,location=location,keywords=keywords)
+        return render_template('post.html',short_link=short_link.decode('utf-8'),description=description,tags_all=tags_all,post_from_user=post_from_user ,reset=reset, reply=reply,posts=posts,replyes=replyes,tags=tags,search=search,popular_posts=popular_posts,location=location,keywords=keywords)
     else:
         login = LoginForm(request.form)
         register = RegisterForm(request.form)
-        return render_template('post.html',description=description,tags_all=tags_all,post_from_user=post_from_user, reset=reset, reply=reply,posts=posts,replyes=replyes,search=search,login=login,tags=tags,register=register,popular_posts=popular_posts,location=location,keywords=keywords)
+        return render_template('post.html',short_link=short_link.decode('utf-8'),description=description,tags_all=tags_all,post_from_user=post_from_user, reset=reset, reply=reply,posts=posts,replyes=replyes,search=search,login=login,tags=tags,register=register,popular_posts=popular_posts,location=location,keywords=keywords)
 
 @home_pages.route('/edit/post/<int:id>', methods=['POST','GET'])
 def edit_post(id):
     post = db.session.query(PostModel).filter_by(id=id).first()
     editpost = NewQuestionForm(request.form)
+    editpost.text.default = post.text
+    editpost.title.default = post.title
+    editpost.process()
     text = post.text
     if request.method == 'POST':
         post.text = editpost.text.data
@@ -315,7 +318,7 @@ def edit_post(id):
         flash('Post updated successfully.')
         return redirect(url_for('home.home'))
 
-    return render_template('edit_post.html', post=post, editpost=editpost,text=text)
+    return render_template('edit_post.html', editpost=editpost,id=post.id)
 
 @home_pages.route('/post/reply/id=<int:id>/<string:title>', methods=['POST','GET'])
 def reply(id,title):

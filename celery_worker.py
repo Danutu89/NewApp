@@ -2,6 +2,7 @@ from app import celery, db, app
 from flask import session
 from models import PostModel
 import re
+from analyze import parseVisitator, sessionID, GetSessionId, getAnalyticsData
 
 @celery.task
 def cleanup_sessions(*args, **kwargs):
@@ -24,3 +25,7 @@ def verify_post(post_id, *args, **kwargs):
     result = regex.sub(lambda match: bad_words[match.group(0)], text)
     post.text = result
     db.session.commit()
+
+@celery.task
+def Parse_Visitator(data):
+    parseVisitator(data)

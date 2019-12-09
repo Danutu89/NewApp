@@ -10,6 +10,7 @@ from app import bcrypt, db, db_engine, ma, fields
 from search_engine import SearchableMixin
 
 from flask import url_for, json
+import pytz
 
 Base = declarative_base()
 
@@ -223,7 +224,7 @@ class PostModel(SearchableMixin, db.Model):
     likes = db.Column(db.Integer, primary_key=False, default=0)
     read_time = db.Column(db.String, primary_key=False)
 
-    author = db.relationship("UserModel", backref="author")
+    author = db.relationship("UserModel", backref="post_by")
 
     def __init__(self, id, title, text, views, reply, user, posted_on, approved, closed, closed_on, closed_by, lang, thumbnail, likes, read_time):
         self.id = id
@@ -254,6 +255,20 @@ class PostModel(SearchableMixin, db.Model):
 
     def unique_views(self):
         return db.session.query(Analyze_Pages).filter_by(name=url_for('home.post', id=self.id, title=self.title)).count()
+
+    def time_ago(self):
+        now = datetime.datetime.now()
+        now = pytz.utc.localize(now)
+        now_aware = pytz.utc.localize(self.posted_on)
+        if (now - now_aware).days / 30 > 1:
+            return str(int((now - now_aware).days / 30)) + ' months'
+        elif int((now - now_aware).days) > 0:
+            return str((now - now_aware).days) + ' days'
+        elif int((now - now_aware).seconds / 3600) > 0:
+            return str(int((now - now_aware).seconds / 3600)) + ' hours'
+        elif (now - now_aware).seconds / 60 > 0:
+            return str(int((now - now_aware).seconds / 60)) + ' minutes'
+
 
 
 class PostSchema(ma.Schema):
@@ -428,15 +443,24 @@ class Analyze_Pages(Base):
 
     @staticmethod
     def perc_posts():
-        return round(((Analyze_Pages.posts_15_days() - Analyze_Pages.posts_30_days()) / Analyze_Pages.posts_30_days())*100, 2)
+        try:
+            return round(((Analyze_Pages.posts_30_days() - Analyze_Pages.posts_15_days()) / Analyze_Pages.posts_30_days())*100, 2)
+        except:
+            return -100
 
     @staticmethod
     def perc_views():
-        return round(((Analyze_Pages.views_15_days() - Analyze_Pages.views_30_days()) / Analyze_Pages.views_30_days())*100, 2)
+        try:
+            return round(((Analyze_Pages.views_30_days() - Analyze_Pages.views_15_days()) / Analyze_Pages.views_30_days())*100, 2)
+        except:
+            return -100
 
     @staticmethod
     def perc_users():
-        return round(((Analyze_Pages.user_15_days() - Analyze_Pages.user_30_days()) / Analyze_Pages.user_30_days())*100, 2)
+        try:
+            return round(((Analyze_Pages.user_30_days() - Analyze_Pages.user_15_days()) / Analyze_Pages.user_30_days())*100, 2)
+        except:
+            return -100
 
     @staticmethod
     def count_replies():
@@ -451,17 +475,17 @@ class Notifications_Model(db.Model):
         'notifications_id_seq'), primary_key=True)
     user = db.Column(db.Integer, ForeignKey('users.id'))
     author = db.relationship(
-        "UserModel", backref="n_author", foreign_keys=[user])
+        "UserModel", backref="n_author", foreign_keys=[user], order_by=id.desc())
     title = db.Column(db.String, primary_key=False)
     body = db.Column(db.String, primary_key=False)
     link = db.Column(db.String, primary_key=False)
     for_user = db.Column(db.Integer, ForeignKey('users.id'))
-    receiver = db.relationship(
-        "UserModel", backref="n_receiver", foreign_keys=[for_user])
     checked = db.Column(db.Boolean, primary_key=False, default=False)
     created_on = db.Column(db.Date, primary_key=False,
-                           default=datetime.datetime.utcnow)
+                           default=datetime.datetime.now)
     category = db.Column(db.String, primary_key=False)
+    receiver = db.relationship(
+        "UserModel", backref="n_receiver", foreign_keys=[for_user], order_by=id.desc())
 
     def __init__(self, id, user, title, body, link, for_user, checked, created_on, category):
         self.id = id
@@ -473,6 +497,21 @@ class Notifications_Model(db.Model):
         self.checked = checked
         self.created_on = created_on
         self.category = category
+
+    def time_ago(self):
+        now = datetime.datetime.now()
+        now = pytz.utc.localize(now)
+        now_aware = pytz.utc.localize(self.created_on)
+        if (now - now_aware).days / 30 > 1:
+            return str(int((now - now_aware).days / 30)) + ' months'
+        elif int((now - now_aware).days) > 0:
+            return str((now - now_aware).days) + ' days'
+        elif int((now - now_aware).seconds / 3600) > 0:
+            return str(int((now - now_aware).seconds / 3600)) + ' hours'
+        elif (now - now_aware).seconds / 60 > 0:
+            return str(int((now - now_aware).seconds / 60)) + ' minutes'
+
+
 
 
 class Podcast_SeriesModel(Base):
@@ -613,7 +652,6 @@ class Coordinates_Location(Base):
         self.county = county
         self.city = city
         self.iso_code = iso_code
-
 
 # class Private_ConversationsModel:
 

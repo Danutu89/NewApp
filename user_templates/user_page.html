@@ -6,7 +6,7 @@
     <div class="profile-main">
       <div class="sidebar-info">
         <div class="profile-image" >
-          <div><img src="{{user.avatar}}" alt=""></div>
+          <div><img loading="lazy" src="{{user.avatar}}" alt=""></div>
 
           <div class="user-name" style="line-height: 1.7rem;">
             <h1 style="font-weight: 400;">{{user.real_name}}</h1>
@@ -33,7 +33,7 @@
               <p><i class="na-briefcase"></i> Profession {{user.profession}}</p>
               {% endif %}
               <p><i class="na-home"></i> From {{user.country_name}} <span class="flag-icon flag-icon-{{user.country_flag}}"></span></p>
-              <p><i class="na-clock"></i> Joined on {{user.join_date}}</p>
+              <p><i class="na-clock"></i> Joined on {{(user.join_date.ctime()|string)[:-14]}} {{(user.join_date.ctime()|string)[20:]}}</p>
               <p><i class="na-rss"></i> Followed by {{user.followed|length}} people</p>
             </div>
           </div>
@@ -112,7 +112,7 @@
 
                 <div class="article-main">
                   <div class="article-author-image"><img class="profile_image"
-                    src="{{post.user_in.avatar}}" height="50px" width="50px" title="profile image">
+                    loading="lazy" src="{{post.user_in.avatar}}" height="50px" width="50px" title="profile image">
                 </div>
                 <div class="article-info">
                   <div class="article-title"><a href="{{url_for('home.post', id=post.id, title=post.title)}}">{{post.title}}</a></div>
@@ -128,8 +128,20 @@
                 </div>
                 </div>
                 <div class="article-footbar">
-                  <div class="article-date">Published on {{(post.posted_on.date()) }} {% if (((post.posted_on - now).days|string)[1:])|int > 1 %}({{((post.posted_on - now).days|string)[1:]}} days ago){% elif (post.posted_on - now).seconds|int / 3600 > 0 %} ({{ ((post.posted_on - now).seconds|int / 3600)|int }} hours ago){% else %}({{ ((post.posted_on - now).seconds|int / 60)|int }} min ago){% endif %}</div>
-
+                  <div class="article-date">Published {{post.time_ago()}} ago</div>
+                  <div class="article-misc">
+                    <span class="article-readtime" style="
+                    font-size: 0.8rem;
+                    color: grey;
+                    margin-right: 0.4rem;">
+                        {% if post.read_time %}
+                        {{ post.read_time }}
+                        {% endif %}
+                    </span>
+                    {% if current_user.is_authenticated %}
+                <button class="article-save" id="save-{{post.id}}" onclick="Save_Post({{post.id}})">{% if post.id in current_user.saved_posts %}Saved{% else %}Save{% endif %}</button>
+                {% endif %}
+            </div>
                 </div>
 
             </div>
@@ -142,10 +154,11 @@
         <div class="widgets">
           <div class="user-follows">
             <div class="header">{{user.real_name}} Follows</div>
+            <hr>
             <div class="users">
               {% for fllw in follow %}
               <div class="user-followed" id="user-1">
-                  <div class="user-img"><img src="{{fllw.avatar}}" alt=""></div>
+                  <div class="user-img"><img loading="lazy" src="{{fllw.avatar}}" alt=""></div>
                   <a href="{{url_for('users.user',name=fllw.name)}}">
                   <div class="user-info">
                     <span>{{fllw.real_name}}</span>

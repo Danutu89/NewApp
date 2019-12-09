@@ -11,11 +11,11 @@ content .sidebar#sidebar-right{
     <div class="post">
         {% if posts.thumbnail %}
         <div class="thumbnail">
-            <img src="https://newapp.nl/static/thumbnail_post/post_{{posts.id}}.jpeg"  style='width: 100%;border-top-left-radius: 5px;
+            <img loading="lazy" src="https://newapp.nl/static/thumbnail_post/post_{{posts.id}}.jpeg"  style='width: 100%;border-top-left-radius: 5px;
             border-top-right-radius: 5px;'>
         </div>
         {% endif %}
-        <div class="content-post" style="padding:0.5rem;">
+        <div class="content-post" style="padding:0.8rem;">
                 <div class="info" style="display:flex;">
                         <h1 style="margin-top: 0;font-weight: 400;font-size: 2rem;">{{posts.title}}</h1>
                     </div>
@@ -38,17 +38,25 @@ content .sidebar#sidebar-right{
                             </div>
                         </div>
                     </div>
-                    <br>
                     <div class="post_content">
                         {{posts.text | safe}}
                     </div>
                     <br>
                     {% if current_user.is_authenticated %}
                     <div class="user-actions">
-                        <span onclick="Like_Post({{posts.id}})" style="cursor: pointer;"><i id="heart"
+                        <span onclick="Like_Post({{posts.id}})" style="cursor: pointer;margin-right:0.5rem;"><i id="heart"
                                 class="{% if posts.id in current_user.liked_posts %}na-heart{% else %}na-heart1{% endif %}"></i>
                             Like</span>
-                        <!-- <span style="cursor: pointer;"><i class="fas fa-share-alt"></i> Share</span> -->
+                        <span id="share" style="cursor: pointer;"><i class="na-share"></i> Share</span>
+                        <div id="share-options" class="share_post">
+                            <div class="list">
+                                Share
+                                <hr>
+                                <div class="item" onclick="Share_Post(1)"><i class="na-facebook-square"></i> Facebook</div>
+                                <div class="item" onclick="Share_Post(2)"><i class="na-twitter"></i> Twitter</div>
+                                <div class="item" onclick="Share_Post(3)"><i class="na-globe"></i> Hacker News</div>
+                            </div>
+                        </div>
                     </div>
                     <div class="user-actions-info">
                         <span><span id="hearts">{{posts.likes}}</span> Likes</span>

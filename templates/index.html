@@ -54,6 +54,9 @@
   {% if location %}
   <meta http-equiv="content-language" content="{{location.lang}}">{% endif %}
   <link rel="search" type="application/opensearchdescription+xml" title="NewApp" href="https://newapp.nl/opensearch">
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:site" content="@_NewApp_" />
+  <meta name="twitter:card" content="summary_large_image">
   {% if request.url_rule.endpoint == 'home.home' %}
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://newapp.nl/">
@@ -61,6 +64,9 @@
   <meta property="og:image" itemprop="image primaryImageOfPage" content="https://newapp.nl/static/logo.jpg">
   <meta property="og:description"
     content="The newest community for developers to learn, share​ ​their programming ​knowledge, and build their careers.">
+  <meta name="twitter:title" content="NewApp">
+  <meta name="twitter:description" content="The newest community for developers to learn, share​ ​their programming ​knowledge, and build their careers.">
+  <meta name="twitter:image:src" content="https://newapp.nl/static/logo.jpg">
   {% elif request.url_rule.endpoint == 'home.podcast' %}
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://newapp.nl/podcast">
@@ -68,31 +74,36 @@
   <meta property="og:image" itemprop="image primaryImageOfPage" content="https://newapp.nl/static/logo.jpg">
   <meta property="og:description"
     content="NewApp Podcasts, where you can listen to listen podcast radio.">
+  <meta name="twitter:title" content="NewApp - Podcast">
+  <meta name="twitter:description" content="NewApp Podcasts, where you can listen to listen podcast radio.">
+  <meta name="twitter:image:src" content="https://newapp.nl/static/logo.jpg">
   {% elif request.url_rule.endpoint == 'users.user' %}
   <meta property="og:type" content="website">
   <meta property="og:url" content="{{request.path}}">
   <meta property="og:site_name" content="{{user.name}}">
   <meta property="og:image" itemprop="image primaryImageOfPage" content="https://newapp.nl{{user.avatar}}">
   <meta property="og:description" content="{{user.bio}}">
+  <meta name="twitter:title" content="{{user.name}}">
+  <meta name="twitter:description" content="{{user.bio}}">
+  <meta name="twitter:image:src" content="https://newapp.nl{{user.avatar}}">
   {% elif request.url_rule.endpoint == 'home.post' %}
   <meta property="og:type" content="website">
   <meta property="og:url" content="{{request.path}}">
   <meta property="og:site_name" content="{{posts.title}}">
+  <meta name="twitter:title" content="{{posts.title}}">
   {% if posts.thumbnail %}
   <meta property="og:image" itemprop="image primaryImageOfPage" content="https://newapp.nl/static/thumbnail_post/post_{{posts.id}}.jpeg">
+  <meta name="twitter:image:src" content="https://newapp.nl/static/thumbnail_post/post_{{posts.id}}.jpeg">
   {% else %}
-  <meta property="og:image" itemprop="image primaryImageOfPage" content="https://newapp.nl/static/favicon.png">
+  <meta property="og:image" itemprop="image primaryImageOfPage" content="https://newapp.nl{{posts.user_in.avatar}}">
+  <meta name="twitter:image:src" content="https://newapp.nl{{posts.user_in.avatar}}">
   {% endif %}
   <meta property="og:description" content="{{description[:97]}}...">
+  <meta name="twitter:description" content="{{description[:97]}}...">
   {% endif %}
   {% endif %}
   <script async src="https://newappcdn.b-cdn.net/newapp.min.js"></script>
   <script async src="https://newappcdn.b-cdn.net/jquery.js"></script>
-  {% if current_user.is_authenticated  %}
-  {% if request.url_rule.endpoint == 'home.post' or request.url_rule.endpoint == 'home.newpost' or request.url_rule.endpoint == 'home.edit_post' %}
-  <script async src="https://newappcdn.b-cdn.net/emoji/quill-emoji.js"></script>
-  {% endif %}
-  {% endif %}
   <script async src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"></script>
   <link async rel="preload" href="https://newappcdn.b-cdn.net/fonts/NewApp-Icons.ttf" as="font" type="font/ttf" crossorigin>
   <link async rel="preload" href="https://newappcdn.b-cdn.net/fonts/NewApp-Icons.woff" as="font" type="font/woff" crossorigin>
@@ -106,9 +117,6 @@
   {% if error_check != True %}
     {% if request.MOBILE %}
       {% if request.url_rule.endpoint == 'home.home' or request.url_rule.endpoint == 'home.post' %}
-      <!-- <div class="open-wrapper">
-          <i class="fas fa-coins fa-lg" id="open-wrapper" onclick="openNav()"></i>
-      </div> -->
         {% include 'wrapper_left.html' %}
       {% endif %}
     {% else %}
@@ -124,5 +132,4 @@
 {% include 'modals.html' %}
 {% include 'scripts.html' %}
 </body>
-
 </html>

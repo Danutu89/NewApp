@@ -47,7 +47,7 @@ serializer = URLSafeTimedSerializer(key_c)
 JWTManager(app)
 
 app.secret_key = key_c
-app.config['SESSION_TYPE'] = 'filesystem'
+app.config['SESSION_TYPE'] = 'redis'
 app.config['ELASTISEARCH_URL'] = 'http://localhost:9200'
 app.config['SQLALCHEMY_DATABASE_URI'] = "postgresql:///newapp"
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True

@@ -30,7 +30,7 @@
     {% endif %}
     <div class="widget" id="widget-trending-posts">
         <div class="widget-header">
-            <div class="widget-title">Trending Posts <span class="ap ap-fire">🔥</span></div>
+            <div class="widget-title">Trending Posts 🔥</div>
             <button class="minimize-widget" id="minimize-widget-trending-sidebar"
                 onclick="Minimize('sidebar','trending-posts')">-</button>
         </div>
@@ -172,7 +172,7 @@
             </div>
             <div class="widget-item">
                 <div class="text">
-                    <span style="font-size: 0.8rem;"><i class="na-clock"></i> Joined on: {{posts.user_in.join_date}}</span>
+                    <span style="font-size: 0.8rem;"><i class="na-clock"></i> Joined on: {{(posts.user_in.join_date.ctime()|string)[:-14]}} {{(posts.user_in.join_date.ctime()|string)[20:]}}</span>
                 </div>
             </div>
         </div>

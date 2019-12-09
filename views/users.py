@@ -413,7 +413,6 @@ def user(name):
     post_count = db.session.query(PostModel).filter_by(user=user.id).count()
     reply_count = db.session.query(ReplyModel).filter_by(user=user.id).count()
     location = db.session.query(Analyze_Session).filter_by(session=session['user']).first()
-    now = dt.datetime.now
 
     if current_user.is_authenticated:
         post_views = 0
@@ -427,9 +426,9 @@ def user(name):
         db.session.commit()
 
     if current_user.is_authenticated:
-        return render_template('user_page.html',now=now(),post_views=post_views,post_count=post_count,reply_count=reply_count,follow=follow,tags=tags,posts=posts,user=user,register=register,login=loginf, reset=reset,location=location)
+        return render_template('user_page.html',post_views=post_views,post_count=post_count,reply_count=reply_count,follow=follow,tags=tags,posts=posts,user=user,register=register,login=loginf, reset=reset,location=location)
 
-    return render_template('user_page.html',now=now(),follow=follow,tags=tags,posts=posts,user=user,register=register,login=loginf, reset=reset,location=location)
+    return render_template('user_page.html',follow=follow,tags=tags,posts=posts,user=user,register=register,login=loginf, reset=reset,location=location)
 
 
 def save_img(user_id,type):

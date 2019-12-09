@@ -43,7 +43,7 @@ def main():
       
     users = db.session.query(UserModel).all()
     posts = db.session.query(PostModel).all()
-    sessions = db.session.query(Analyze_Session).order_by(Analyze_Session.id).filter_by(bot=False).all()
+    sessions = db.session.query(Analyze_Session).order_by(Analyze_Session.id).all()
     now = datetime.now()
     sess = {}
     sess_old = {}
@@ -51,6 +51,7 @@ def main():
     referer = CustomDict()
     country = CustomDict()
     countries = CustomDict()
+    shares = {'old': 0, 'new': 0, 'perc': 0}
     per_devices = {'mobile': 0, 'computer': 0}
     devices_now = {'Mobile' : 0, 'Computer': 0}
     devices_old = {'Mobile' : 0, 'Computer': 0}
@@ -79,7 +80,14 @@ def main():
             year, month, day = str(session.created_at).split("-")
             date = dt.datetime(int(year),int(month),int(day))
             if int(year) == int(now.year):
-                if date <= now and date >= back_days:
+                if date <= now and date >= back_days and session.bot == True:
+                    if str(session.browser) == 'TwitterBot' or str(session.browser) == 'FacebookExternalHit':
+                        shares['new'] += 1
+                if date <= back_days and date >= back_perc and session.bot == True:
+                    if str(session.browser) == 'TwitterBot' or str(session.browser) == 'FacebookExternalHit':
+                        shares['old'] += 1
+
+                if date <= now and date >= back_days and session.bot == False:
                     if str(session.os).lower() == 'android' or str(session.os).lower() == 'ios':
                         devices_now['Mobile'] += 1
                     else:
@@ -115,7 +123,7 @@ def main():
                         countries[str(session.iso_code)] = str(session.country)
                     
 
-                if date <= back_days and date >= back_perc:
+                if date <= back_days and date >= back_perc and session.bot == False:
                     if str(session.os).lower() == 'android' or str(session.os).lower() == 'ios':
                         devices_old['Mobile'] += 1
                     else:
@@ -124,11 +132,12 @@ def main():
                         sess_old[calendar.day_name[int(calendar.weekday(int(year),int(month),int(day)))]+' '+str(day)] += 1
                     except:
                         sess_old.__setitem__(calendar.day_name[int(calendar.weekday(int(year),int(month),int(day)))]+' '+str(day),1)
-            
+    
     per_devices['mobile'] = ((devices_old['Mobile'] - devices_now['Mobile']) - devices_old['Mobile']) % 100
     per_devices['computer'] = ((devices_old['Computer'] - devices_now['Computer']) - devices_old['Computer']) % 100
+    shares['perc'] = ((shares['old'] - shares['new']) - shares['old']) % 100
 
-    return render_template('main.html',countries=countries,country=country,referer=referer,label_days=label_days,users=users,posts=posts,pages=pages,sessions=sessions,analyze=Analyze_Pages,data=sess,devices=devices_now,devices_old=devices_old,sess_old=sess_old,per_devices=per_devices)
+    return render_template('main.html',shares=shares,countries=countries,country=country,referer=referer,label_days=label_days,users=users,posts=posts,pages=pages,sessions=sessions,analyze=Analyze_Pages,data=sess,devices=devices_now,devices_old=devices_old,sess_old=sess_old,per_devices=per_devices)
 
 @admin_pages.route('/admin/sessions')
 @login_required

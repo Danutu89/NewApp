@@ -114,7 +114,7 @@
     body {
       margin: 0;
       padding: 0;
-      font-family: "Lato", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
       background-color: var(--body-bg);
 
     }
@@ -849,6 +849,29 @@
       margin-bottom: 0.2rem;
       color: var(--color);
       box-shadow: 5px 5px 11px 0px rgba(0, 0, 0, 0.2);
+    }
+
+    content .article .post .user-actions .share_post {
+      background-color: var(--code);
+      width: auto;
+      border-radius: 5px;
+      position: absolute;
+      left: 4.3rem;
+      margin-top: 0.3rem;
+      z-index: 3;
+      display: none;
+      box-shadow: 5px 5px 11px 0px rgba(0, 0, 0, 0.2);
+      padding: 0.4rem;
+    }
+
+    content .article .post .user-actions .share_post .list .item{
+      cursor: pointer;
+      padding: 0.5rem;
+      border-radius: 5px;
+    }
+
+    content .article .post .user-actions .share_post .list .item:hover {
+      background-color: var(--body-bg);
     }
 
     content .article .reply .info .reply-actions {
@@ -1643,7 +1666,7 @@
     }
 
     content profile .profile-main .sidebar-right .widgets .user-follows .users {
-      border-top: var(--border);
+      
     }
 
     content profile .profile-main .sidebar-right .widgets .users .user-followed {
@@ -1671,7 +1694,6 @@
     }
 
     content profile .profile-main .sidebar-right .widgets .user-follows .header {
-      padding: 0.4rem;
       color: var(--color);
     }
 

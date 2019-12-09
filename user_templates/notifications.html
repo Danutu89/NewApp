@@ -7,11 +7,16 @@
     <a href="{{notification.link}}?notification={{notification.id}}">
         <div class="notification" style="display:flex;">
         <img src="{{notification.author.avatar}}" height="40px" width="40px" style="border-radius: 40px;" alt="">
-        <div style="display: block;margin-left: 0.4rem;line-height: 1.2;">
+        <div style="display: block;margin-left: 0.4rem;line-height: 1.2;width: 100%;">
             <span style="color: var(--color);font-size:1rem;"><span style="font-weight: 500;">{{notification.title.split(" ")[0] }}</span> {{notification.title[notification.title.split(" ")[0] | length::]}}</span>
             {% if notification.category != 'follow' and notification.category != 'unfollow' %}
             <span style="color: var(--link)">{{notification.body}}</span>
             {% endif %}
+            <span style="color: #828282;
+                          width: max-content;
+                          display: flex;
+                          margin-inline-start: auto;
+                          font-size: 0.6rem;margin-top: 0.6rem;">{{notification.time_ago()}} ago</span>
         </div>
         </div>
     </a>    

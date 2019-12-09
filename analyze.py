@@ -91,6 +91,8 @@ def getSession():
                     referer = 'Organic'
                 if referer == 'nl' or referer == 'Newapp':
                     referer = None
+                if referer == 'T':
+                    referer = 'Twitter'
             else:
                 referer = 'App'
         except:
@@ -102,7 +104,7 @@ def getSession():
         sessionID = session['user']
 
 def getAnalyticsData():
-    if request.endpoint != 'static' and request.endpoint != 'sitemap' and request.endpoint != 'opensearch' and request.endpoint != 'flask_session':
+    if request.endpoint != 'static' and request.endpoint != 'sitemap' and request.endpoint != 'opensearch' and request.endpoint != 'flask_session' and request.url_rule.endpoint != 'users.login' and request.url_rule.endpoint != 'users.logout' and request.url_rule.endpoint != 'admin.main':
         global userOS, userBrowser, userIP, userContinent, userCity, userCountry, sessionID, bot, userLanguage, iso_code
         userInfo = httpagentparser.detect(request.headers.get('User-Agent'))
         try:

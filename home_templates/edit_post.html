@@ -6,13 +6,13 @@
     }
 </style>
 <new_post>
-    <form role="form" class="form-thread" method="POST"  enctype='multipart/form-data' action="{{url_for('home.edit_post', id=post.id)}}">
+    <form role="form" class="form-thread" method="POST" enctype='multipart/form-data' action="{{url_for('home.edit_post', id=id)}}">
         <div class="header">
             {{editpost.csrf_token}}
-            {{editpost.title(value=post.title)}}
+            {{editpost.title}}
         </div>
         <br>
-        <div class="body">{{editpost.text(value=post.text)}}<div id="editor"></div></div>
+        <div class="body">{{editpost.text}}<div id="editor"></div></div>
         <div class="footer">
             <button type="submit" class="newpost">Post</button>
         </div>

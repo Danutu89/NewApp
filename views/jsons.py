@@ -22,6 +22,7 @@ import os
 from urllib.parse import unquote
 from PIL import Image
 from webptools import webplib as webp
+from geopy.exc import GeocoderTimedOut
 
 from flask_jwt_extended import create_access_token
 
@@ -500,9 +501,12 @@ def getItemForKey(value):
 @json_pages.route('/api/trending', methods=['GET'])
 def trending():
 
+    now = dt.datetime.now()
+    back_days = now - dt.timedelta(days=2)
+
     posts = db.session.query(PostModel).order_by(
         desc(PostModel.posted_on)).filter_by(approved=True).all()
-    analyze_posts = db.session.query(Analyze_Pages).all()
+    analyze_posts = db.session.query(Analyze_Pages).filter(Analyze_Pages.first_visited.between('{}-{}-{}'.format(back_days.year, back_days.month, back_days.day), '{}-{}-{}'.format(now.year, now.month, now.day))).all()
 
     data = []
     temp = {}
@@ -519,7 +523,7 @@ def trending():
         day_0 = 0
 
         for analyze in analyze_posts:
-            if analyze.name == unquote(str(url_for('home.post', id=post.id, title=post.title))):
+            if analyze.name == '/post/{post.title}/id={post.id}':
                 if (today_date-analyze.first_visited).days < 2:
                     day_1 += analyze.visits
                 if (today_date-analyze.first_visited).days < 1:
@@ -733,6 +737,11 @@ def install_pwa(id):
 
     return jsonify({'operation': 'success'})
 
+def GetLocation(coords):
+    try:
+        return geolocator.reverse(coords)
+    except GeocoderTimedOut:
+        return GetLocation(coords)
 
 @json_pages.route("/api/set_location/<string:lat>/<string:lon>")
 def set_loc(lat, lon):
@@ -754,8 +763,7 @@ def set_loc(lat, lon):
         )
 
         db.session.add(ip_new)
-        db.session.commit()
-        index = db.session.execute(Sequence('ip_coordinated_seq'))
+        index = db.session.execute(Sequence('ip_coordinates_code_seq')) + 1
     else:
         ip.longitude = float(lon)
         ip.latitude = float(lat)
@@ -763,10 +771,15 @@ def set_loc(lat, lon):
 
     coordinates = db.session.query(Coordinates_Location).filter_by(code_ip=index).first()
 
-    location = geolocator.reverse([float(lat), float(lon)])
+    location = GetLocation([float(lat), float(lon)])
     api_2 = requests.get(
         ("https://restcountries.eu/rest/v2/alpha/{}").format(location.raw['address']['country_code']))
     api_2 = api_2.json()
+
+    try:
+        city = location.raw['address']['town']
+    except:
+        city = location.raw['address']['city']
 
 
     if coordinates is None:
@@ -775,19 +788,25 @@ def set_loc(lat, lon):
             api_2['region'],
             location.raw['address']['country'],
             location.raw['address']['county'],
-            location.raw['address']['town'],
+            city,
             location.raw['address']['country_code']
         )
 
         db.session.add(new_coordinates)
-        db.session.commit()
     else:
         coordinates.continent = api_2['region']
         coordinates.country = location.raw['address']['country']
         coordinates.county = location.raw['address']['county']
-        coordinates.city = location.raw['address']['town']
+        coordinates.city = city
         coordinates.iso_code = location.raw['address']['country_code']
 
-        db.session.commit()
+    db.session.commit()
 
     return jsonify({'opration': 'success'})
+
+@json_pages.route('/short/<string:short>')
+def short_url(short):
+
+    link = cipher_suite.decrypt(str(short).encode())
+
+    return redirect(link)

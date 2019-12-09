@@ -62,6 +62,18 @@
     var head = document.getElementsByTagName('head')[0];
     head.appendChild(cssLink);
   };
+  {% if request.url_rule.endpoint == 'home.post' %}
+  function Share_Post(choice){
+    if (choice == 1){
+      newwindow=window.open("https://www.facebook.com/sharer.php?u=https://newapp.nl/short/{{short_link}}","Share on Facebook",'height=650,width=550');
+    }else if (choice == 2) {
+      newwindow=window.open("https://twitter.com/intent/tweet?url=https://newapp.nl/short/{{short_link}}&text={{posts.title}} by {{posts.author.name}}","Share on Twitter",'height=650,width=550');
+    }else if (choice == 3) {
+      newwindow=window.open("https://news.ycombinator.com/submitlink?u=https://newapp.nl/short/{{short_link}}&text={{posts.title}} by {{posts.author.name}}","Share on Hacker News",'height=650,width=550');
+    }
+    if (window.focus) {newwindow.focus()}
+  }
+  {% endif %}
   window.onload = function () {
     {% if current_user.is_authenticated %}
     var socket = io.connect("https://newapp.nl/",{transports: [ 'websocket', 'polling' ]});
@@ -73,7 +85,6 @@
     {% endif %}
     loadCss("https://newappcdn.b-cdn.net/style.css");
     loadCss("https://newappcdn.b-cdn.net/styles.css");
-    loadCss("https://newappcdn.b-cdn.net/emoji/quill-emoji.css");
     loadJs("https://www.googletagmanager.com/gtag/js?id=UA-145440871-1");
     {% if request.MOBILE == False %}
     loadJs("https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js");
@@ -208,13 +219,9 @@
                 toolbar: {
                   container: toolbarOptions,
                   handlers: {
-                      image: imageHandler,{% if request.MOBILE == False %}
-                      'emoji': function () {}{% endif %}
-                  },
-                },{% if request.MOBILE == False %}
-                "emoji-shortname": true,
-                "emoji-textarea": true
-                {% endif %}
+                      image: imageHandler
+                  }
+                }
             },
             theme: 'snow',
         });
@@ -271,7 +278,16 @@
             var n = $('#user');
               n.css('display','none');
           }
+          if ($(e.target).closest("#share").length === 0 && $(e.target).closest("#share-options").length === 0) {
+            var n = $('#share-options');
+              n.css('display','none');
+          }
       });
+      {% if request.url_rule.endpoint == 'home.post' %}
+      $('#share').on('click',function(){
+        $('#share-options').toggle();
+      });
+      {% endif %}
       {% if current_user.is_authenticated %}
       window.onload = function () {
         let set_online = fetch("https://newapp.nl/api/set_user_online/{{current_user.id}}");

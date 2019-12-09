@@ -15,11 +15,7 @@ self.addEventListener('install', function(event) {
           'https://newapp.nl/static/manifest.json',
           'https://newappcdn.b-cdn.net/fonts/NewApp-Icons.ttf',
           'https://newappcdn.b-cdn.net/style.css',
-          '/static/offline.html',
-          'https://newappcdn.b-cdn.net/emoji/quill-emoji.js',
-          'https://newappcdn.b-cdn.net/emoji/quill-emoji.css',
-          'https://newappcdn.b-cdn.net/emoji/1e7b63404cd2fb8e6525b2fd4ee4d286.png'
-        
+          '/static/offline.html'
         ]
       );
     })
