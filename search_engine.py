@@ -22,7 +22,7 @@ def query_index(index, query, page, per_page):
     search = es.search(
         index=index,
         body={'query': {'multi_match': {'query': query, 'fields': ['*']}},
-              'from': (page - 1) * per_page, 'size': per_page})
+              'from': 0, 'size': 99})
     ids = [int(hit['_id']) for hit in search['hits']['hits']]
     return ids, search['hits']['total']['value']
 
@@ -37,19 +37,18 @@ class SearchableMixin(object):
         for i in range(len(ids)):
             when.append((ids[i], i))
         return cls.query.filter(cls.id.in_(ids)).order_by(
-            db.case(when, value=cls.id)), total
+            db.case(when, value=cls.id)).paginate(page=page,per_page=per_page), total
 
     @classmethod
     def search_post(cls, expression, page, per_page,lang):
         ids, total = query_index(cls.__tablename__, expression, page, per_page)
         if total == 0:
-            return cls.query.filter_by(id=0), 0
+            return [], 0
         when = []
         for i in range(len(ids)):
             when.append((ids[i], i))
         
-        return cls.query.filter(or_(cls.lang.like(lang),cls.lang.like('en'))).filter(cls.id.in_(ids)).order_by(
-            db.case(when, value=cls.id)), total
+        return ids, total
 
     @classmethod
     def before_commit(cls, session):

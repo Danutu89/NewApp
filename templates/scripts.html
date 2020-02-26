@@ -67,9 +67,9 @@
     if (choice == 1){
       newwindow=window.open("https://www.facebook.com/sharer.php?u=https://newapp.nl/short/{{short_link}}","Share on Facebook",'height=650,width=550');
     }else if (choice == 2) {
-      newwindow=window.open("https://twitter.com/intent/tweet?url=https://newapp.nl/short/{{short_link}}&text={{posts.title}} by {{posts.author.name}}","Share on Twitter",'height=650,width=550');
+      newwindow=window.open("https://twitter.com/intent/tweet?url=https://newapp.nl/short/{{short_link}}&text={{posts.title}}","Share on Twitter",'height=650,width=550');
     }else if (choice == 3) {
-      newwindow=window.open("https://news.ycombinator.com/submitlink?u=https://newapp.nl/short/{{short_link}}&text={{posts.title}} by {{posts.author.name}}","Share on Hacker News",'height=650,width=550');
+      newwindow=window.open("https://news.ycombinator.com/submitlink?u=https://newapp.nl/short/{{short_link}}&text={{posts.title}}","Share on Hacker News",'height=650,width=550');
     }
     if (window.focus) {newwindow.focus()}
   }
@@ -385,7 +385,7 @@ function handleGesture() {
     //TAP
     $(document).on('click', function (e) {
     if (touchendY === touchstartY) {
-        if ($(e.target).closest("#wrapper-lrft").length === 0 && !wrapper_opened) {
+        if ($(e.target).closest("#wrapper-left").length === 0 && !wrapper_opened) {
           $("#wrapper-left").toggleClass('toggled');
           wrapper_opened = true;
         }

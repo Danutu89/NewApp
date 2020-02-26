@@ -60,6 +60,7 @@
         <form role="form" method="post" action="{{url_for('users.reset_password')}}">
             <div class="modal-content">
                 {{reset.email}}
+                {{reset.password}}
             </div>
             <div class="modal-footer">
                 <span style="font-size: 0.6rem;color:var(--color)">Already have an account?<a href="#login-modal"> Login here</a></span>

@@ -125,6 +125,10 @@ class UserModel(db.Model):
     def get_notifications(self):
         return db.session.query(Notifications_Model).filter_by(for_user=self.id).all()
 
+    @staticmethod
+    def get_not_count(user):
+        return Notifications_Model.query.filter_by(checked=False).filter_by(for_user=user).count()
+
 
 class UserSchema(ma.Schema):
     class Meta:
@@ -187,7 +191,7 @@ class RoleModel(db.Model):
         return ('<name {}').format(self.name)
 
 
-class TagModel(Base):
+class TagModel(db.Model):
 
     __tablename__ = 'tags'
 
@@ -289,10 +293,12 @@ class ReplyModel(db.Model):
 
     id = db.Column(db.Integer, db.Sequence('replyes_id_seq'), primary_key=True)
     text = db.Column(db.String, primary_key=False)
-    post_id = db.Column(db.Integer, primary_key=False)
+    post_id = db.Column(db.Integer,  ForeignKey('posts.id'))
     user = db.Column(db.Integer, ForeignKey('users.id'))
     posted_on = db.Column(db.Date, primary_key=False,
                           default=datetime.datetime.now)
+
+    post = db.relationship('PostModel', backref='replyes', foreign_keys=[post_id])
 
     def __init__(self, id, text, post_id, user, posted_on):
         self.id = id
@@ -373,7 +379,7 @@ class Analyze_Sessions_Schema(ma.Schema):
 SessionsSchema = Analyze_Sessions_Schema(many=True)
 
 
-class Analyze_Pages(Base):
+class Analyze_Pages(db.Model):
 
     __tablename__ = 'analyze_pages'
 
@@ -560,15 +566,16 @@ class PodcastsModel(Base):
         self.source = source
 
 
-class Subscriber(Base):
+class Subscriber(db.Model):
     __tablename__ = 'subscriber'
 
     id = db.Column(db.Integer(), primary_key=True, default=None)
-    user = db.Column(db.Integer)
+    user = db.Column(db.Integer,ForeignKey('users.id'))
     created = db.Column(db.DateTime())
     modified = db.Column(db.DateTime())
     subscription_info = db.Column(db.Text())
     is_active = db.Column(db.Boolean(), default=True)
+    user_s = db.relationship("UserModel", backref="subscription", foreign_keys=[user])
 
     def __init__(self, id, user, created, modified, subscription_info, is_active):
         self.id = id
@@ -613,7 +620,7 @@ class User_DevicesModel(db.Model):
         self.ip_address = ip_address
 
 
-class Ip_Coordinates(Base):
+class Ip_Coordinates(db.Model):
 
     __tablename__ = 'ip_coordinated'
 
@@ -630,7 +637,7 @@ class Ip_Coordinates(Base):
         self.latitude = latitude
 
 
-class Coordinates_Location(Base):
+class Coordinates_Location(db.Model):
 
     __tablename__ = 'coordinates_locations'
 

@@ -513,12 +513,12 @@ def modify_profile(idm):
         if request.files['avatarimg']:
             if  request.files.get('avatarimg', None):
                 profile_file = save_img(user.id,'profile')
-                user.avatar = url_for('static', filename='profile_pics/{}'.format(profile_file))
+                user.avatar = 'https://newapp.nl'+url_for('static', filename='profile_pics/{}'.format(profile_file))
 
         if request.files['coverimg']:
             if  request.files.get('coverimg', None):
                 profile_file = save_img(user.id,'cover')
-                user.cover = url_for('static', filename='profile_cover/{}'.format(profile_file))
+                user.cover = 'https://newapp.nl'+url_for('static', filename='profile_cover/{}'.format(profile_file))
 
         if modify_prof.genre.data:
             user.genre = modify_prof.genre.data
@@ -540,9 +540,6 @@ def reset_password():
     reset = ResetPasswordForm(request.form)
 
     if current_user.is_authenticated:
-        return redirect(url_for('home.home'))
-
-    if reset.validate_on_submit() == False:
         return redirect(url_for('home.home'))
 
     users = db.session.query(UserModel).filter_by(email=reset.email.data).first()

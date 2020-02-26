@@ -29,7 +29,7 @@ from flask_socketio import SocketIO
 from flask_jwt_extended import JWTManager
 from geopy.geocoders import Nominatim
 
-key_c = '\xce,CH\xc0\xd2K9\xe3\x87\xa0Z\x19\x8a\xcd\xf9\x91\x94\xddN\xff\xaf;r\xef'
+key_c = "mRo48tU4ebP6jIshqaoNf2HAnesrCGHm"
 key_cr = b'vgF_Yo8-IutJs-AcwWPnuNBgRSgncuVo1yfc9uqSiiU='
 key_jwt = {
   "kty": "oct",
@@ -41,10 +41,13 @@ key_jwt = {
 
 app = Flask(__name__)
 
+CORS(app)
 ma = Marshmallow(app)
 Mobility(app)
 serializer = URLSafeTimedSerializer(key_c)
 JWTManager(app)
+
+config = app.config
 
 app.secret_key = key_c
 app.config['SESSION_TYPE'] = 'redis'
@@ -106,7 +109,7 @@ def on_connect():
       user.status = 'Online'
       user.status_color = '#00c413'
       db.session.commit()
-    #print('my response', {'data': 'Connected'})
+    print('my response', {'data': 'Connected'})
 
 @socket.on('disconnect')
 def on_disconnect():
@@ -115,7 +118,7 @@ def on_disconnect():
         user.status = 'Offline'
         user.status_color = '#cc1616'
         db.session.commit()
-    #print('my response', {'data': 'Disconnected'})
+    print('my response', {'data': 'Disconnected'})
 
 @app.route('/sw.js')
 def service_worker():
@@ -161,12 +164,14 @@ from views.users import users_pages
 from views.home import home_pages
 from views.jsons import json_pages
 from views.admin import admin_pages
+from views.api import api
 
 app.register_blueprint(users_pages)
 app.register_blueprint(admin_pages)
 app.register_blueprint(home_pages)
 app.register_blueprint(json_pages)
 app.register_blueprint(admin_pages)
+app.register_blueprint(api)
 
 #flask_whooshalchemy.whoosh_index(app,PostModel)
 

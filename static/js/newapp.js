@@ -81,19 +81,6 @@ function ShowPasswordReset() {
     y.classList.toggle("fa-eye-slash");
 }
 
-
-function Minimize(type, widget) {
-    var button = document.getElementById('minimize-widget-' + widget + '-' + type);
-    var list = document.getElementById('widget-list-' + widget + '-' + type);
-    if (list.style.display == 'block') {
-        list.style.display = 'none';
-        //button.innerHTML = '+';
-    } else {
-        list.style.display = 'block';
-        //button.innerHTML = '-';
-    }
-}
-
 var substringMatcher = function (strs) {
     return function findMatches(q, cb) {
         var matches, substringRegex;

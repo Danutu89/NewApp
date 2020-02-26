@@ -304,19 +304,23 @@ def post(title,id):
 
 @home_pages.route('/edit/post/<int:id>', methods=['POST','GET'])
 def edit_post(id):
-    post = db.session.query(PostModel).filter_by(id=id).first()
-    editpost = NewQuestionForm(request.form)
-    editpost.text.default = post.text
-    editpost.title.default = post.title
-    editpost.process()
-    text = post.text
+
     if request.method == 'POST':
+        post = db.session.query(PostModel).filter_by(id=id).first()
+        editpost = NewQuestionForm(request.form)
         post.text = editpost.text.data
         post.title = editpost.title.data
         post.read_time = str(readtime.of_html(editpost.text.data))
         db.session.commit()
-        flash('Post updated successfully.')
+        flash('Post updated successfully.', 'success')
         return redirect(url_for('home.home'))
+
+    post = db.session.query(PostModel).filter_by(id=id).first()
+    editpost = NewQuestionForm(request.form)
+    
+    editpost.text.default = post.text
+    editpost.title.default = post.title
+    editpost.process()
 
     return render_template('edit_post.html', editpost=editpost,id=post.id)
 
