@@ -11,6 +11,7 @@
   <a href="#">
     <img src="https://img.shields.io/badge/build-passing-brightgreen.svg" alt="rails version">
   </a>
+<a href="https://app.fossa.io/projects/git%2Bgithub.com%2FDanutu89%2FNewApp?ref=badge_shield" alt="FOSSA Status"><img src="https://app.fossa.io/api/projects/git%2Bgithub.com%2FDanutu89%2FNewApp.svg?type=shield"/></a>
 </p>
 
 Welcome to [newapp.nl](https://newapp.nl). With your help, we can build out NewApp to be more stable and better serve our community.
@@ -33,3 +34,5 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 Any questions, please refer to our email contact@newapp.nl
+
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2FDanutu89%2FNewApp.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2FDanutu89%2FNewApp?ref=badge_large)
