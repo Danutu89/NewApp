@@ -54,7 +54,7 @@ idna==2.8
 importlib-metadata==0.19
 isort==4.3.20
 itsdangerous==1.1.0
-Jinja2==2.10.1
+Jinja2==2.11.3
 jmespath==0.9.4
 jsmin==2.2.2
 kombu==4.6.4
