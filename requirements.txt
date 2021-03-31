@@ -60,7 +60,7 @@ jsmin==2.2.2
 kombu==4.6.4
 lazy-object-proxy==1.4.1
 lesscpy==0.13.0
-lxml==4.4.1
+lxml==4.6.3
 Markdown==3.1.1
 markdown2==2.3.8
 MarkupSafe==1.1.1
