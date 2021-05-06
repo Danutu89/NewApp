@@ -30,7 +30,7 @@ flake8==3.7.7
 Flask==1.0.3
 Flask-Bcrypt==0.7.1
 Flask-Compress==1.4.0
-Flask-Cors==3.0.8
+Flask-Cors==3.0.9
 Flask-Login==0.4.1
 Flask-Mail==0.9.1
 flask-marshmallow==0.10.1
