@@ -25,7 +25,7 @@ docutils==0.15.2
 dominate==2.3.5
 elasticsearch==7.0.4
 entrypoints==0.3
-eventlet==0.25.0
+eventlet==0.31.0
 flake8==3.7.7
 Flask==1.0.3
 Flask-Bcrypt==0.7.1
